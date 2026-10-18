@@ -12,6 +12,7 @@ Release history for Sharetronix, with the latest changes first.
 - Required an active administrator and session-bound confirmation before installed-site updates; disabled the obsolete installer entry point.
 - Defined the private temporary-directory path and corrected cron cleanup for expired files, including filenames equal to zero.
 - Corrected request-token expiry to use the existing database column, allowing cron processing to continue past token cleanup.
+- Replaced removed curly-brace string offsets in core redirects/password generation and bundled CAPTCHA/audio code, restoring PHP 8.4 parsing.
 
 ### Added
 

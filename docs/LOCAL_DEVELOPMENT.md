@@ -112,4 +112,4 @@ The initial run verified all 48 table checksums, 23 storage files, and the confi
 
 Logs are in `.local/logs/`; configuration, sessions, dumps, and captured email also remain under `.local`. Do not add these files to Git or paste unsanitized diagnostics into reports. Public test reports should contain synthetic examples, relative source paths, and summarized evidence.
 
-To reproduce the modern-PHP failure separately, stop the stack, run `scripts/dev.ps1 Start -PhpVersion 8.4`, and request `/`. The tested source returns HTTP 500. Stop it and start with the default PHP 7.2 again for the diagnostic baseline. This probe does not establish PHP 8.4 support.
+To probe modern PHP separately, stop the stack, run `scripts/dev.ps1 Start -PhpVersion 8.4`, and request `/`. After the focused syntax fixes, the homepage and 15 HTTP smoke checks passed, but PHP 8.4 deprecations and unverified flows remain; see the follow-up fix report. Stop it and start with the default PHP 7.2 again for the diagnostic baseline. This probe does not establish complete PHP 8.4 support.

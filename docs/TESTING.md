@@ -43,6 +43,9 @@ With the Windows local stack running, use its PHP configuration for the focused 
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\temp-cleanup.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\token-cleanup.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\token-expiry.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -n tests\php-offsets.php
+.\tests\php-syntax.ps1
+.\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
 .\tests\response-output.ps1
 .\tests\installer.ps1
 .\scripts\smoke-local.ps1

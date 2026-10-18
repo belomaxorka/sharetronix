@@ -264,7 +264,7 @@
 	{
 		$word	= '';
 		for($i=0; $i<$len; $i++) {
-			$word	.= $let{ rand(0,strlen($let)-1) };
+			$word	.= $let[ rand(0,strlen($let)-1) ];
 		}
 		return $word;
 	}
