@@ -172,6 +172,9 @@
 	* Linked API user avatars (profile_image_url) to the storage directory. The API still built them
 	  from the 2.x upload directory i/, which 3.x no longer has, so the link answered an HTML page
 	  instead of the image.
+	* Reported the API rate limit again (account/rate_limit_status). It read $C->rate_limit_number,
+	  whose default of 150 was commented out in 3.x, so the answer had an empty hourly limit and
+	  each request logged undefined-property notices or warnings. Requests are still not limited.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

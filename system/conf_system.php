@@ -113,7 +113,7 @@
 	//$C->THEME	= 'default';
 	$C->DEF_LANGUAGE	= $C->LANGUAGE;
 	
-	//$C->rate_limit_number = 150;
+	$C->rate_limit_number = 150;
 	$C->NOTIF_POSTS_HANDLE	= 'ignore'; //|'ignore'|'replace'|'quit'| - handling notification posts, 'ignore' doesn't check if notification post has 
 							//already been posted. It could cause heavy performance leaks, if you use other options on larger communities.
 	$C->show_sent_invites_in_todo	= FALSE; 	//(FALSE or TRUE) if you want your members to see sent invites in the to do block set the value TRUE,
