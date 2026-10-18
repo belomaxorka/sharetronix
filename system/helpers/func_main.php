@@ -262,6 +262,10 @@
 	
 	function format_date($format, $timestamp)
 	{
+		if( PHP_VERSION_ID < 80100 ) {
+			// strftime() is not deprecated here and keeps the language-pack locale.
+			return strftime($format, $timestamp);
+		}
 		// Preserve the percent directives used by the bundled English UI.
 		$formats = array(
 			'a'=>'D', 'A'=>'l', 'b'=>'M', 'h'=>'M', 'B'=>'F', 'd'=>'d',

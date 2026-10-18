@@ -22,7 +22,7 @@
 		$menu_bdate_d[$i]	= $i;
 	}
 	for($i=1; $i<=12; $i++) {
-		$menu_bdate_m[$i]	= date('F', mktime(0,0,1,$i,1,2009));
+		$menu_bdate_m[$i]	= format_date('%B', mktime(0,0,1,$i,1,2009));
 	}
 	for($i=intval(date('Y')); $i>=1900; $i--) {
 		$menu_bdate_y[$i]	= $i;
