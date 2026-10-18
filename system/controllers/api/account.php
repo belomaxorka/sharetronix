@@ -143,7 +143,7 @@
 		}
 		if(isset($_POST['birthdate']) && !is_valid_date($_POST['birthdate']) ){
 			if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 403 Forbidden');
-				else echo generate_error($api_session->format, 'Invalid birthdate paramater, the birth date should be in YYYY-DD-MM format.', $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Invalid birthdate paramater, the birth date should be in YYYY-MM-DD format.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		if(isset($_POST['gender']) && ($_POST['gender'] != 'm' && $_POST['gender'] != 'f')){

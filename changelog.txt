@@ -190,6 +190,9 @@
 	  shape of Twitter API v1 errors. XML, RSS and Atom errors escape the request URI, so a second
 	  query parameter no longer breaks them; the Atom error closes its <item>, and the RSS and Atom
 	  links use the site URL instead of http://http://....
+	* Fixed birthdate updates through the account API (update_profile): the date check called
+	  split(), which PHP 7 removed, so any request with a birthdate stopped with a fatal error. Its
+	  error message now names the format the check accepts, YYYY-MM-DD (it said YYYY-DD-MM).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

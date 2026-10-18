@@ -91,7 +91,7 @@
 	{
 		if(preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date))
 		{
-			$arr = split("-", $date); 
+			$arr = explode("-", $date); 
 			if(intval(date("Y", time())) < intval($arr[0]) || intval($arr[0]) < 1900) return false;
 		      if (is_numeric($arr[0]) && is_numeric($arr[1]) && is_numeric($arr[2])) return checkdate($arr[1], $arr[2], $arr[0]);
 		        else return false;
