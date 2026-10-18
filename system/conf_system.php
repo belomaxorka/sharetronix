@@ -39,7 +39,7 @@
 	$C->DEBUG_MODE		= in_array($_SERVER['REMOTE_ADDR'], $C->DEBUG_USERS);
 	$C->DEBUG_CONSOLE  	= FALSE;
 	if( $C->DEBUG_MODE ) {
-		ini_set( 'error_reporting', E_ALL | E_STRICT	);
+		ini_set( 'error_reporting', E_ALL	);
 		ini_set( 'display_errors',			1	);
 	}
 	

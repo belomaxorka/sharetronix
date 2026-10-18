@@ -55,6 +55,7 @@ With the Windows local stack running, use its PHP configuration for the focused 
 .\tests\installer.ps1 -PhpVersion 8.4
 .\tests\before-after.ps1
 .\tests\cron-worker.ps1
+.\tests\cron-worker.ps1 -PhpVersion 8.4
 .\scripts\smoke-local.ps1
 ```
 
