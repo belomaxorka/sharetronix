@@ -177,6 +177,10 @@
 	  each request logged undefined-property notices or warnings. Requests are still not limited.
 	* Answered account API sign-outs (end_session) with valid JSON, {"logout": true}. The JSON
 	  answer was "logout": true, which JSON clients cannot parse. The XML answer is unchanged.
+	* Stopped the account API from logging PHP warnings and deprecations: update_profile_image read
+	  an unset error flag after a successful upload, end_session created a dynamic property, and the
+	  "API is disabled" answer read undefined variables, so it was always XML. That answer now uses
+	  the requested format.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

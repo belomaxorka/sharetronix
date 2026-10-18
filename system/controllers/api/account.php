@@ -10,7 +10,7 @@
 	
 	if( !$C->API_STATUS || $_SERVER['REQUEST_METHOD'] == 'COOKIE'){
 		if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 404 Not Found');
-			else echo generate_error($format, 'API is disabled', $_SERVER['REQUEST_URI'], $callback);
+			else echo generate_error($api_session->format, 'API is disabled', $_SERVER['REQUEST_URI'], $api_session->callback);
 		exit;	
 	}
 	setlocale(LC_TIME, 'en_US');	
@@ -267,7 +267,7 @@
 		if($user->is_logged){
 			$user->is_logged 				= false;
 			$user->id 					= false;
-			$this->info					= new stdClass;
+			$user->info					= new stdClass;
 		}
 		
 		switch($api_session->format){
@@ -325,6 +325,8 @@
 			exit;
 		}
 		
+		$error	= FALSE;
+		$errmsg	= '';
 		$fl	= $C->TMP_DIR.'tmp_'.md5(time().rand(0,9999));
 		file_put_contents($fl, base64_decode($_POST['image']));
 		
