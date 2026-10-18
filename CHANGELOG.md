@@ -11,6 +11,7 @@ Release history for Sharetronix, with the latest changes first.
 - Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
 - Required an active administrator and session-bound confirmation before installed-site updates; disabled the obsolete installer entry point.
 - Defined the private temporary-directory path and corrected cron cleanup for expired files, including filenames equal to zero.
+- Corrected request-token expiry to use the existing database column, allowing cron processing to continue past token cleanup.
 
 ### Added
 
