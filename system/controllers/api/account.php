@@ -1,7 +1,6 @@
 <?php
 	require_once( $C->INCPATH.'helpers/func_api.php' );
 	//require_once( $C->INCPATH.'classes/class_oauth.php' );
-	require_once( $C->INCPATH.'classes/class_rssfeed.php' );
 	//require_once( $C->INCPATH.'helpers/func_images.php' );
 	require_once( $C->INCPATH.'classes/class_twitterdata.php' );
 	

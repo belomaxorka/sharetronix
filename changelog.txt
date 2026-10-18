@@ -155,6 +155,11 @@
 	  who is not signed in, the menu read the username, name, avatar and position of a missing
 	  account, logging seven warnings on every mobile page, and offered profile, dashboard and
 	  "Sign out" links; like the desktop header, it now offers the mobile sign-in page.
+	* Made the account API (/1/account/*: verify_credentials, update_profile, update_profile_image,
+	  rate_limit_status, end_session) answer again. Since 3.0.1 its controller required
+	  classes/class_rssfeed.php, which was removed together with the RSS feed reader, so every
+	  account request stopped with a fatal error before authentication. The other API resources were
+	  not affected.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
