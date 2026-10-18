@@ -43,6 +43,10 @@
 		ini_set( 'error_reporting', E_ALL	);
 		ini_set( 'display_errors',			1	);
 	}
+	else {
+		// Visitors never see PHP errors, whatever the server shows; the error log still gets them.
+		ini_set( 'display_errors',			0	);
+	}
 	
 	$C->DEF_SITE_URL		= $C->SITE_URL;
 	$C->OUTSIDE_DOMAIN		= $C->DOMAIN;

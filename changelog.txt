@@ -319,6 +319,13 @@
 	  suppress_response_codes turns into an error body) instead of "OAuth otorization problem" or
 	  "OAuth otorization error": the API supports Basic authentication only. The status codes are
 	  unchanged.
+	* Turned off the display of PHP errors outside debug mode. The application only switched
+	  display_errors on for the addresses in $C->DEBUG_USERS and otherwise kept the server setting,
+	  so on servers configured to display errors every visitor saw warnings and fatal errors with
+	  file paths, the database host and user. Errors are now shown only in debug mode and are logged
+	  as before; the command-line cron worker still prints them. Administrators who relied on the
+	  server's display_errors to see errors in the browser add their address to $C->DEBUG_USERS
+	  instead.
 
 	Removed:
 	* Removed the obsolete root README.txt.
