@@ -7,6 +7,7 @@
 		protected $filter;
 		public  $tab;
 		public  $subtab;
+		public  $newer_post_id;
 		protected $db2;
 		protected $tpl;
 		protected $onlygroup;
