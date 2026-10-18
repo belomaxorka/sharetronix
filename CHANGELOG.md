@@ -11,10 +11,10 @@ Release history for Sharetronix, with the latest changes first.
 - Kept all-error reporting enabled without referencing the deprecated `E_STRICT` constant; cron regressions now inspect both process output and private PHP logs on PHP 7.2/8.4.
 - Used an empty string when clearing persistent-login cookies, preserving logout and invalid-cookie rejection without PHP null-argument deprecations.
 - Preserved the saved post type before converting its ID to an integer in activity responses, selecting the correct public/private table without array-offset warnings.
-- Rendered the English profile month selector without deprecated `strftime()`, retaining all twelve labels.
+- Rendered the profile month selector through the shared date formatter instead of calling deprecated `strftime()` directly, retaining all twelve labels.
 - Initialized language-package metadata through `__construct()` on PHP 8 while retaining explicit calls to the legacy initializer.
-- Replaced the removed `create_function()` callback in post URL rendering with a closure, retaining link markup, punctuation, and escaping.
-- Rendered older-post and profile-information dates without deprecated `strftime()`, preserving the bundled English percent-format strings and PHP timezone.
+- Replaced the removed `create_function()` callbacks in post, comment, and FAQ link rendering with closures, retaining link markup, punctuation, and escaping. Comments containing links, the posts and profiles that display them, and the FAQ page no longer fail on PHP 8.
+- Rendered older-post and profile-information dates through a shared formatter: PHP 7.2–8.0 keep native, locale-aware `strftime()` output for language packs, while PHP 8.1+ uses the bundled English percent formats and PHP timezone without the deprecated function.
 - Declared the feed polling cursor used by background activity checks, removing a PHP 8.4 warning observed in the browser.
 - Restored administrator plugin/language controller initialization on PHP 8 while preserving legacy initializer calls and reference arguments.
 - Restored plugin-installer option, adapter, validation-message, and singleton initialization on PHP 8 without changing their legacy method entry points.
