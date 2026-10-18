@@ -278,6 +278,12 @@
 	* Checked for a missing user or group id in the follow, unfollow, join and leave services. Such
 	  requests logged an "Undefined array key" warning; in debug mode the printed warning came
 	  before the "ERROR" answer, so the service reported status "OK".
+	* Showed an error message when a service request fails. When a service answered with an error
+	  status or an empty body, for example after a database error, the shared service script passed
+	  undefined data to the page's handlers, which then failed with a JavaScript error: posting,
+	  commenting, liking and following silently did nothing. The handlers now receive a failure with
+	  the message "The request failed. Please try again.", on the desktop and mobile pages; the link
+	  attachment handler shows it too instead of an undefined text.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

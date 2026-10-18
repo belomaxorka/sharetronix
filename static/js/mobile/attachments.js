@@ -172,7 +172,7 @@ var Attachments = function () {
     }
 
     function attachLinkFail(result, userContext) {
-        STX.showMessage(result._message, 'error');
+        STX.showMessage(result.message, 'error');
         var linkCnt = $(userContext).parents('.data-content-placeholder');
         hideLoading(linkCnt);
 

@@ -8,13 +8,22 @@ var Services = function () {
 			data:		args.data,
 			success:	function(response) {
 							if (context) context.data('status', 'enabled').removeClass('disabled');
+							// An empty or unexpected answer, e.g. after a server error, is a failure.
+							if (!response || !response.data) {
+								onfail(failure(), context);
+								return;
+							}
 							onsuccess(response.data, context);
 						},
 			error:		function(response) {
 							if (context) context.data('status', 'enabled').removeClass('disabled');
-							onfail(response.data, context) 
+							onfail(failure(), context) 
 						}
 		});
+	}
+
+	function failure() {
+		return { status: 'ERROR', message: 'The request failed. Please try again.', html: '' };
 	}
 
 	function _init() {
