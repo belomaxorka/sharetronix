@@ -271,7 +271,7 @@
 		}
 		
 		switch($api_session->format){
-			case 'json': echo '"logout": true';
+			case 'json': echo '{"logout": true}';
 				break;
 			case 'xml': echo '<logout>true</logout>';
 				break;
