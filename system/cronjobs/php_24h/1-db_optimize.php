@@ -9,7 +9,6 @@
 		$db1->query('ANALYZE TABLE '.$tbl, FALSE);
 	}
 	
-	$db1->query('TRUNCATE TABLE `users_rssfeeds_posts`'); // this table is useless
 	
 	echo "Done.\n";
 	

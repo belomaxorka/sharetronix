@@ -1,6 +1,6 @@
 <?php
 	
-	function __autoload($class_name)
+	function sharetronix_autoload($class_name)
 	{
 		global $C;
 		
@@ -11,16 +11,22 @@
 		}
 	}
 	
+	spl_autoload_register('sharetronix_autoload');
+
 	function my_session_name($domain)
 	{
 		global $C;
-		return $C->RNDKEY.str_replace(array('.','-'), '', $domain);
+		$name	= preg_replace('/[^a-z0-9]/i', '', $C->RNDKEY.$domain);
+		return preg_match('/[a-z]/i', $name) ? $name : 'stx'.$name;
 	}
 	
 	function cookie_domain()
 	{
 		global $C;
-		$tmp	= $GLOBALS['C']->DOMAIN;
+		$tmp	= parse_url('http://'.$GLOBALS['C']->DOMAIN, PHP_URL_HOST);
+		if( ! $tmp || substr($tmp,0,1)=='[' ) {
+			return '';
+		}
 		if( substr($tmp,0,2) == 'm.' ) {
 			$tmp	= substr($tmp,2);
 		}
@@ -258,7 +264,7 @@
 	{
 		$word	= '';
 		for($i=0; $i<$len; $i++) {
-			$word	.= $let{ rand(0,strlen($let)-1) };
+			$word	.= $let[ rand(0,strlen($let)-1) ];
 		}
 		return $word;
 	}

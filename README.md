@@ -27,7 +27,7 @@ The legacy codebase lists Apache, PHP 5.2+, and MySQL 5.0+ as its requirements. 
 
 The installer creates `system/conf_main.php`. This installation-specific configuration, caches, and uploaded files are excluded from Git.
 
-A reproducible local development stack and a verified runtime matrix are planned in the roadmap. See the [testing guide](docs/TESTING.md) for environment records and application scenarios.
+A Windows diagnostic stack is available in the [local development guide](docs/LOCAL_DEVELOPMENT.md). It provides isolated Apache/PHP/MySQL processes, captured email, and repeatable HTTP smoke checks. See the [baseline test report](docs/test-runs/2026-10-18-baseline.md) for verified scenarios and known defects, and the [testing guide](docs/TESTING.md) for broader coverage.
 
 ## Contributing
 

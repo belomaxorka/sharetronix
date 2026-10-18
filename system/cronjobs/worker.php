@@ -78,25 +78,24 @@
 		echo "RUNNING CRON: ".$cr."\n\n";
 		
 		$current_directory	= dirname(__FILE__).'/php_'.$cr;
-		if( FALSE == is_dir($current_directory) ) {
-			continue;
-		}
-		$dir	= opendir($current_directory);
-		$fls	= array();
-		while( $file = readdir($dir) ) {
-			$fls[]	= $file;
-		}
-		sort($fls);
-		foreach($fls as $file) {
-			$current_file	= $current_directory.'/'.$file;
-			$tmp	= pathinfo($current_file);
-			if( 'php' != $tmp['extension'] ) {
-				continue;
+		if( is_dir($current_directory) ) {
+			$dir	= opendir($current_directory);
+			$fls	= array();
+			while( $file = readdir($dir) ) {
+				$fls[]	= $file;
 			}
-			
-			echo "FILE: ".$tmp['basename']."\n\n";
-			
-			include( $current_file );
+			sort($fls);
+			foreach($fls as $file) {
+				$current_file	= $current_directory.'/'.$file;
+				$tmp	= pathinfo($current_file);
+				if( 'php' != $tmp['extension'] ) {
+					continue;
+				}
+
+				echo "FILE: ".$tmp['basename']."\n\n";
+
+				include( $current_file );
+			}
 		}
 		
 		checkCronjobDirectory( $installed_plugins, '/php_'.$cr );

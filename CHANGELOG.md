@@ -4,9 +4,25 @@ Release history for Sharetronix, with the latest changes first.
 
 ## Unreleased
 
+### Fixed
+
+- Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
+- Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
+- Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
+- Required an active administrator and session-bound confirmation before installed-site updates; disabled the obsolete installer entry point.
+- Defined the private temporary-directory path and corrected cron cleanup for expired files, including filenames equal to zero.
+- Corrected request-token expiry to use the existing database column, allowing cron processing to continue past token cleanup.
+- Replaced removed curly-brace string offsets in core redirects/password generation and bundled CAPTCHA/audio code, restoring PHP 8.4 parsing.
+- Removed a daily-maintenance query against the deleted RSS table, allowing database optimization to complete with the current schema.
+- Corrected daily temporary-file cleanup to use the private directory rather than the worker's current directory, preserving placeholders and subdirectories.
+- Completed cron intervals without core job directories, including their plugin jobs and running-flag reset.
+
 ### Added
 
 - Added a maintenance roadmap, contributor workflow, testing guide, and repository instructions for coding agents.
+- Added an isolated Windows development stack with local email capture, fixture accounts, backup commands, and repeatable HTTP smoke checks.
+- Recorded the initial installation, application, restore, and PHP compatibility checks with reproducible defect reports.
+- Added repeatable comparisons of pre-fix and fixed source snapshots, with 28 shared application-flow checks and focused before/after regressions.
 
 ### Changed
 
@@ -17,6 +33,7 @@ Release history for Sharetronix, with the latest changes first.
 ### Removed
 
 - Removed the obsolete root `README.txt`.
+- Removed the retired developer-site version check from background token cleanup.
 
 ## 3.6.2
 

@@ -2,24 +2,25 @@
 
 The goal is to keep Sharetronix usable and maintainable as an evolution of the existing platform. Work starts with reproducible installation and observable behavior, then proceeds through focused fixes and runtime modernization.
 
-All items below are planned. Documentation alone does not establish that the application runs or that a PHP version is supported. Release-blocking defects can be fixed as soon as they are reproduced, without waiting for every earlier checklist item.
+Checked items have recorded implementation or verification; remaining items are planned. Documentation alone does not establish that the application runs or that a PHP version is supported. Release-blocking defects can be fixed as soon as they are reproduced, without waiting for every earlier checklist item.
 
 ## Starting point
 
 - The installer declares Apache with `mod_rewrite`, PHP 5.2+, MySQL 5.0+, GD, short open tags, and cURL or URL fopen support. These are historical requirements, not a current support policy.
 - `system/classes/class_mysql.php` contains both `mysql_*` and `mysqli_*` paths. Its existing interface is a useful boundary for database compatibility work.
-- There is no project-level automated test suite, CI workflow, or versioned local development stack yet. Bundled library examples and installer rewrite fixtures are not an application test suite.
-- Clean installation, upgrades, and core user flows on modern PHP/database releases still need verification.
+- A [Windows diagnostic stack](docs/LOCAL_DEVELOPMENT.md) and a 15-check HTTP smoke script now establish an initial baseline. CI and broader automated coverage remain to be added; bundled library examples are not application tests.
+- The [initial run](docs/test-runs/2026-10-18-baseline.md) covers fresh installation, core browser flows, and backup/restore on PHP 7.2/MySQL 5.7. Upgrades and compatibility with modern releases remain unverified or blocked.
 
 ## 1. Reproducible local installation
 
-- [ ] Inventory required PHP extensions, settings, writable directories, background tasks, and external services from the code and installer.
-- [ ] Add a versioned local Apache/PHP/database stack, preferably with Docker Compose. Pin exact working versions and document startup, shutdown, logs, and reset commands.
-- [ ] Establish a diagnostic baseline for existing behavior. If a historical runtime is necessary, keep it confined to a disposable local environment; it does not become a production support target.
-- [ ] Route email to a local capture service and use synthetic accounts and uploads. Stub or disable external integrations explicitly and record which are unavailable.
-- [ ] Complete a fresh installation through `/install/`, including configuration creation, database setup, rewrite rules, permissions, and the first administrator login.
-- [ ] Record the environment and failures using [docs/TESTING.md](docs/TESTING.md). Create reproducible issues for blockers, including stale external-service dependencies.
-- [ ] Document and verify backup and restore of configuration, database, and uploaded files.
+- [x] Inventory initial PHP extensions, settings, writable directories, background tasks, and external dependencies from the code and installer; findings are in the baseline documentation.
+- [x] Add a versioned local Apache/PHP/database stack with pinned versions and documented startup, shutdown, logs, and reset commands. The initial implementation uses native Windows modules already available on the development host.
+- [x] Establish a local diagnostic baseline for existing behavior without declaring its historical runtime a production support target.
+- [x] Capture email locally, use synthetic accounts/uploads, and disable RPC pings.
+- [ ] Stub or remove the remaining retired external dependencies before enabling recurring background runs. The cron version check has been removed; other integrations still need review.
+- [x] Complete `/install/`, database setup, rewrite checks, writable-path checks, and first administrator login, with local workarounds explicitly recorded.
+- [x] Record the environment, test results, and reproducible blocker reports in [the baseline report](docs/test-runs/2026-10-18-baseline.md).
+- [x] Document and verify backup and restore of configuration, database, and storage for the baseline installation.
 
 **Completion:** another contributor can start from a clean checkout, follow the documented commands, install the application, sign in, create a post, and reset the test environment. Exact versions and remaining limitations are recorded.
 
@@ -29,7 +30,7 @@ All items below are planned. Documentation alone does not establish that the app
 - [ ] Cover clean installation, persistence after restart, and restoration of a populated 3.6.2 test installation.
 - [ ] Record failures as focused issues with reproduction steps, environment, expected behavior, actual behavior, and sanitized logs.
 - [ ] Prioritize security, data loss, installation blockers, authentication, and posting failures ahead of cosmetic defects and new features.
-- [ ] Add a small automated test harness with synthetic fixtures. Start with valuable cases around changed helpers, database behavior, and authentication/visibility boundaries.
+- [x] Add a small automated test harness with synthetic fixtures. Focused helper/database tests, installer authorization, HTTP smoke checks, and a complete cron cycle are recorded in the [fix report](docs/test-runs/2026-10-18-fixes.md); broader coverage remains planned.
 - [ ] Add CI incrementally: PHP syntax checks first, then focused tests and database/HTTP integration checks once the environment is reproducible. Keep existing failures visible rather than silently excluding them.
 
 **Completion:** core scenarios have recorded results, known defects have reproducible reports, and the first regression checks can be repeated locally and in CI. A checklist run does not prove the absence of bugs.
@@ -48,7 +49,7 @@ All items below are planned. Documentation alone does not establish that the app
 
 The initial migration target is **PHP 8.4**, followed by **PHP 8.5** in the verification matrix. Neither is currently claimed as supported by this project. As checked on 2026-10-18, PHP lists security support through 2028-12-31 for 8.4 and 2029-12-31 for 8.5. Recheck the [official PHP support schedule](https://www.php.net/supported-versions.php) before finalizing a release matrix.
 
-- [ ] Run a complete PHP syntax inventory with short tags enabled on the target runtime; classify parse failures, runtime failures, warnings, and deprecations separately.
+- [x] Run a complete PHP syntax inventory with short tags enabled on the target runtime; the initial PHP 8.4 parser failures are fixed, while runtime deprecations and untested flows remain documented in the [fix report](docs/test-runs/2026-10-18-fixes.md).
 - [ ] Audit removed functions and syntax, constructor/callback behavior, resource-to-object assumptions, dynamic properties, and stricter argument handling. Fix confirmed incompatibilities rather than applying blanket rewrites.
 - [ ] Make the existing database wrapper work reliably with `mysqli`, remove the obsolete `mysql_*` dependency, and verify its return values and error behavior against existing callers.
 - [ ] Update installer checks and setup requirements to match the tested runtime and required extensions. Remove reliance on short tags through a focused, separately verified change if needed.

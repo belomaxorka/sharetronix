@@ -2,11 +2,11 @@
 
 	invalidateCachedHTML();
 	
-	if( is_dir($C->INCPATH.'tmp/') ){
-		if ($handle = opendir( $C->INCPATH.'tmp/' )) {
+	if( is_dir($C->TMP_DIR) ){
+		if ($handle = opendir( $C->TMP_DIR )) {
 			while (FALSE !== ($entry = readdir($handle))) {
-				if( $entry !== '.' && $entry !== '..' ){
-					unlink ( $entry );
+				if( $entry !== '.gitkeep' && is_file($C->TMP_DIR.$entry) ){
+					unlink ( $C->TMP_DIR.$entry );
 				}
 			}
 			closedir($handle);
