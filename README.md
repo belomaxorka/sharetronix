@@ -2,7 +2,7 @@
 
 <img src="static/images/mobile/logo-login.png" alt="Sharetronix" width="320">
 
-A community continuation of Sharetronix, starting from version **3.6.2**. A PHP platform for microblogging and social networking, maintained by [@belomaxorka](https://github.com/belomaxorka).
+A maintained fork of Sharetronix **3.6.2**, a PHP platform for microblogging and social networking.
 
 ## Source layout
 
