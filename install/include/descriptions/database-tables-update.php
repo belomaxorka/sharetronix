@@ -176,3 +176,15 @@
 					"INSERT INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.2')"
 			)
 	);
+
+	$db_updates['3.6.3'] = array(
+			'tables' => array(),
+			'queries'=>array(
+					// Display names are stored HTML-escaped; self-registration used to store them raw.
+					// Escaped rows never contain a raw <, > or ", and a bare & outside an entity is raw
+					// as well, so the statement only touches raw rows and can be repeated safely.
+					"UPDATE `users` SET `fullname`=REPLACE(REPLACE(REPLACE(REPLACE(`fullname`, '&', '&amp;'), '<', '&lt;'), '>', '&gt;'), '\"', '&quot;') WHERE `fullname` REGEXP '[<>\"]' OR (`fullname` LIKE '%&%' AND `fullname` NOT REGEXP '&(amp|lt|gt|quot|#0?39);')",
+					// `settings`.`word` is unique and a failed query aborts the updater, so replace instead of insert.
+					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.3')"
+			)
+	);

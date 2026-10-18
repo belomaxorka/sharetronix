@@ -10,6 +10,7 @@ Release history for Sharetronix, with the latest changes first.
 - Hardened `storage/.htaccess` to deny direct execution and serving of scripts and active markup (including `.svg`, `.phar`, `.phtml`) regardless of the handler, covering PHP-FPM deployments where the previous `RemoveHandler` directives had no effect. Reduced uploaded temporary-file permissions from world-writable to `0644`.
 - Rejected missing or malformed Twitter account ids before looking up a linked account. Accounts that never linked Twitter store an empty `twitter_uid`, so a failed or empty Twitter profile response previously matched the first such account (normally the administrator) and signed the visitor in without a password. Lookups now accept only numeric ids, escape them, and the Twitter callback stops when no profile id is returned.
 - Required network-administrator or group-administrator rights to remove a group moderator. The `removemoderator` service previously called `group::deleteAdmin()` with no caller check, so any guest or ordinary user could strip administrators from any group (down to its last admin). The handler now rejects callers who are neither a network administrator nor an administrator of the target group.
+- Stored the display name HTML-escaped on every path that writes it. Self-registration, including the Facebook and Twitter callbacks, saved `fullname` raw while profile pages, menus, feeds and `@mention` rendering print it unescaped, so a visitor could register a name containing markup and run script in the browser of anyone viewing their profile or a post mentioning them. The signup form now escapes the name exactly like the settings and API paths already did and no longer echoes a raw name back into the registration form; the installer escapes the administrator's name the same way. The `3.6.3` updater entry rewrites names that earlier registrations stored raw, leaves already-escaped names unchanged, and can be repeated safely.
 
 ### Fixed
 
@@ -51,6 +52,7 @@ Release history for Sharetronix, with the latest changes first.
 - Licensed the project under GNU AGPLv3 while retaining original author credits and third-party notices.
 - Updated project documentation and converted the release history to Markdown.
 - Refreshed the README branding with a blue Sharetronix wordmark and speech-bubble mascot.
+- Raised the application version to 3.6.3 so that the updater applies the display-name migration to existing installations. After deploying, sign in as an administrator and open `/install/` to run it; cached profiles pick up the change within `CACHE_EXPIRE` (one hour by default) or after clearing `system/cache/`.
 
 ### Removed
 

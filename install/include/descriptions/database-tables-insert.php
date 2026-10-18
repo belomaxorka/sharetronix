@@ -47,7 +47,7 @@
 				username='".$db->e($_SESSION['INSTALL_DATA']['ADMIN_USER'])."',
 				password='".$db->e(md5($_SESSION['INSTALL_DATA']['ADMIN_PASS']))."',
 				email='".$db->e($_SESSION['INSTALL_DATA']['ADMIN_EMAIL'])."',
-				fullname='".$db->e($_SESSION['INSTALL_DATA']['SITE_TITLE'])."',
+				fullname='".$db->e(htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_TITLE']))."',
 				reg_date='".time()."',
 				reg_ip='".ip2long($_SERVER['REMOTE_ADDR'])."',
 				lastpost_date='".time()."',

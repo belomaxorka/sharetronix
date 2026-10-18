@@ -54,7 +54,7 @@
 	check_if_twitter_called(); //check if Twitter has sent some data to us for registration
 	
 	$email 		= isset($_POST['email'])?( strtolower(trim($_POST['email'])) ):'';
-	$fullname 	= isset($_POST['fullname'])?(trim($_POST['fullname'])):'';
+	$fullname 	= isset($_POST['fullname'])?(htmlspecialchars(trim($_POST['fullname']))):'';
 	$username 	= isset($_POST['username'])?(trim($_POST['username'])):'';
 	$password2	= isset($_POST['password2'])?(trim($_POST['password2'])):'';
 	$password 	= isset($_POST['password'])?(trim($_POST['password'])):'';
