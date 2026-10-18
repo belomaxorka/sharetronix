@@ -100,7 +100,7 @@
 				$html .= '<script type="text/javascript" src="'.$system_files_location.$f.'.js?v='.$C->VERSION.'"></script>'."\n";
 			}
 		
-			if( $C->THEME != 'default' ){
+			if( $C->THEME != 'default' && $page->is_mobile !== TRUE ){ // theme styles are desktop-only too (loadCSSData)
 				if ($handle = @opendir($C->INCPATH.'../themes/'.$C->THEME.'/js/')) {
 		
 					while (FALSE !== ($entry = readdir($handle))) {

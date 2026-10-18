@@ -226,6 +226,11 @@
 	  ":" (current_user_<id>-about_user_<id>). Windows does not allow ":" in file names, so these
 	  entries were never stored there. setCachedHTML() also returns FALSE when the cache file cannot
 	  be written instead of always reporting success.
+	* Left a theme's scripts out of mobile pages, as its stylesheets already were. Mobile pages
+	  linked them under the mobile address (/m/themes/...), which is no file, so each script tag was
+	  answered with a redirect to the mobile dashboard: with a 3.x theme package, one mobile page
+	  view cost 15 more page renders and loaded none of the scripts. Sites serving mobile pages from
+	  an m. subdomain loaded the desktop theme scripts there; they no longer do.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
