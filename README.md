@@ -54,7 +54,7 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 1. Back up the database, `system/conf_main.php`, and `storage/`, and make sure the backup can be restored.
 2. Replace the application files with the new version. Keep `system/conf_main.php`, `storage/`, and any themes, plugins, or languages you installed.
 3. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
-4. Clear `system/cache/`, or wait for cached data to expire (one hour by default).
+4. Clear `system/cache/` and `system/cache_html/`, or wait until cached data expires (one hour by default) and the daily cron job clears the cached page HTML.
 
 The APC cache driver has been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM = 'apc'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'mysqlheap'` remain available.
 
