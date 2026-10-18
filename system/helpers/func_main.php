@@ -1,6 +1,6 @@
 <?php
 	
-	function __autoload($class_name)
+	function sharetronix_autoload($class_name)
 	{
 		global $C;
 		
@@ -11,6 +11,8 @@
 		}
 	}
 	
+	spl_autoload_register('sharetronix_autoload');
+
 	function my_session_name($domain)
 	{
 		global $C;

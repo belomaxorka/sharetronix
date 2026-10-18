@@ -7,6 +7,7 @@ Release history for Sharetronix, with the latest changes first.
 ### Fixed
 
 - Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
+- Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
 
 ### Added
 
