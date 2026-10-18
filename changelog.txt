@@ -127,6 +127,12 @@
 	  feeds and search for non-members until the cache expired (one hour by default).
 	* Refreshed the cached author and group after a post is published or deleted, so profile and
 	  group post counts no longer lag behind for up to an hour.
+	* Listed every attachment of a post in RSS feeds. Posts keep a list of attachments per type,
+	  but the feed read each type as a single object, so no link, file, image or video has appeared
+	  in an entry since 3.x, and every such post logged several warnings per feed request. File
+	  links now use the getfile/pid:.../attid:N route of the web feed instead of the file title, and
+	  images and video thumbnails come from the storage URL instead of the removed $C->IMG_URL
+	  setting.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

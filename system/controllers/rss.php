@@ -184,16 +184,24 @@
 		}
 		$content	.= ':<br />'.$p->parse_text().'<br />';
 		if( isset($p->post_attached['link']) ) {
-			$content	.= '<a href="'.htmlspecialchars($p->post_attached['link']->link).'" target="_blank">'.htmlspecialchars($p->post_attached['link']->link).'</a><br />';
+			foreach($p->post_attached['link'] as $at) {
+				$content	.= '<a href="'.htmlspecialchars($at->link).'" target="_blank">'.htmlspecialchars($at->link).'</a><br />';
+			}
 		}
 		if( isset($p->post_attached['file']) ) {
-			$content	.= '<a href="'.$C->SITE_URL.'getfile/pid:'.$p->post_tmp_id.'/'.htmlspecialchars($p->post_attached['file']->title).'" target="_blank">'.htmlspecialchars($p->post_attached['file']->title).'</a><br />';
+			foreach($p->post_attached['file'] as $k=>$at) {
+				$content	.= '<a href="'.$C->SITE_URL.'getfile/pid:'.$p->post_tmp_id.'/attid:'.intval($k).'" target="_blank">'.htmlspecialchars($at->title).'</a><br />';
+			}
 		}
 		if( isset($p->post_attached['image']) ) {
-			$content	.= '<a href="'.$C->IMG_URL.'attachments/'.$this->network->id.'/'.$p->post_attached['image']->file_preview.'" target="_blank"><img src="'.$C->IMG_URL.'attachments/'.$this->network->id.'/'.$p->post_attached['image']->file_thumbnail.'" width="60" height="60" alt="'.htmlspecialchars($p->post_attached['image']->title).'" border="0" /></a><br />';
+			foreach($p->post_attached['image'] as $at) {
+				$content	.= '<a href="'.$C->STORAGE_URL.'attachments/'.$this->network->id.'/'.$at->file_preview.'" target="_blank"><img src="'.$C->STORAGE_URL.'attachments/'.$this->network->id.'/'.$at->file_thumbnail.'" width="60" height="60" alt="'.htmlspecialchars($at->title).'" border="0" /></a><br />';
+			}
 		}
 		if( isset($p->post_attached['videoembed']) ) {
-			$content	.= '<a href="'.$p->post_attached['videoembed']->orig_url.'" target="_blank"><img src="'.$C->IMG_URL.'attachments/'.$this->network->id.'/'.$p->post_attached['videoembed']->file_thumbnail.'" width="60" height="60" alt="'.htmlspecialchars($p->post_attached['videoembed']->orig_url).'" border="0" /></a><br />';
+			foreach($p->post_attached['videoembed'] as $at) {
+				$content	.= '<a href="'.htmlspecialchars($at->orig_url).'" target="_blank"><img src="'.$C->STORAGE_URL.'attachments/'.$this->network->id.'/'.$at->file_thumbnail.'" width="60" height="60" alt="'.htmlspecialchars($at->orig_url).'" border="0" /></a><br />';
+			}
 		}
 		$content	.= '</div>';
 		$content	= preg_replace('/\s+/s', ' ', $content);
