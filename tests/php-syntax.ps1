@@ -11,6 +11,6 @@ foreach ($path in $paths) {
 }
 if ($failures.Count) {
     $failures | Format-List
-    throw "$($failures.Count) of $($paths.Count) PHP files failed syntax checks."
+    throw "$($failures.Count) of $($paths.Count) PHP files failed syntax/definition checks."
 }
 Write-Output "PASS: $($paths.Count) tracked PHP files passed syntax/definition checks with short tags and E_ALL enabled."

@@ -45,7 +45,10 @@ $cases = @(
     @{ name = 'php84-post-links'; before = 'c31463a'; test = 'post-links.php'; version = '8.4'; noIni = $true; error = 'undefined function create_function' },
     @{ name = 'php84-post-dates'; before = 'eb959a1'; test = 'post-dates.php'; version = '8.4'; noIni = $true; error = 'strftime.*deprecated' },
     @{ name = 'legacy-date-output'; before = 'eb959a1'; test = 'post-dates.php'; version = '7.2'; noIni = $true; beforePass = $true },
-    @{ name = 'php84-feed-polling'; before = '0f2c131'; test = 'activity-polling.php'; version = '8.4'; noIni = $true; error = 'dynamic property activityDashboard::' }
+    @{ name = 'php84-feed-polling'; before = '0f2c131'; test = 'activity-polling.php'; version = '8.4'; noIni = $true; error = 'dynamic property activityDashboard::' },
+    @{ name = 'php84-admin-constructors'; before = 'cd25a29'; test = 'admin-constructors.php'; version = '8.4'; noIni = $true; error = 'Initialize administrator controller state' },
+    @{ name = 'php84-plugin-constructors'; before = '484f337'; test = 'plugin-constructors.php'; version = '8.4'; noIni = $true; error = 'Initialize plugin field option values' },
+    @{ name = 'php84-xmlrpc-constructors'; before = 'de92aaf'; test = 'xmlrpc-constructors.php'; version = '8.4'; noIni = $true; error = 'Initialize XML-RPC scalar values' }
 )
 $configs = @{}
 foreach ($version in @('7.2','8.4')) {

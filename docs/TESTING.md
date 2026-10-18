@@ -52,6 +52,9 @@ With the Windows local stack running, use its PHP configuration for the focused 
 & C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\post-links.php
 & C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\post-dates.php
 & C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\activity-polling.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\admin-constructors.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\plugin-constructors.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\xmlrpc-constructors.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\daily-database.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\daily-cache-cleanup.php
 .\tests\php-syntax.ps1
@@ -77,7 +80,7 @@ To compare committed application revisions with the current test suite:
 
 `ObserveBaseline` explicitly expects the historical installer notices, lost session, and guest updater execution on that old revision. It applies the documented hostname workaround only to the disposable baseline fixture so that the same application-flow checks can run before and after. It does not mark the old installation as healthy and does not replace the latest fixed fixture used by cron checks. The fixed revision must pass without that workaround.
 
-The focused comparison exports immutable source snapshots and runs 18 PHP cases against old and new code, including the PHP 8.4 regressions. Expected old failures must match their diagnostic, while the new revision must pass; legacy string-offset/date behavior must pass on both. The token SQL case uses the parent of its fix after the external version request was removed, avoiding the retired network endpoint. Configuration and GD modules match each executable even when the main development stack uses a different PHP version. See the [fix report](test-runs/2026-10-18-fixes.md), [pre-merge comparison](test-runs/2026-10-18-merge-verification.md), and [PHP 8.4 report](test-runs/2026-10-18-php84.md). These historical comparisons require Git history containing the recorded parent revisions.
+The focused comparison exports immutable source snapshots and runs 21 PHP cases against old and new code, including the PHP 8.4 regressions. Expected old failures must match their diagnostic, while the new revision must pass; legacy string-offset/date behavior must pass on both. The token SQL case uses the parent of its fix after the external version request was removed, avoiding the retired network endpoint. Configuration and GD modules match each executable even when the main development stack uses a different PHP version. See the [fix report](test-runs/2026-10-18-fixes.md), [pre-merge comparison](test-runs/2026-10-18-merge-verification.md), and [PHP 8.4 report](test-runs/2026-10-18-php84.md). These historical comparisons require Git history containing the recorded parent revisions.
 
 The daily-database and complete cron-worker regressions require a completed installer-test fixture. They use that disposable database. The worker check makes all eight intervals due, installs a synthetic plugin in the fixture, checks job completion and running flags, and immediately repeats the worker to verify that jobs are not duplicated before their next run.
 
