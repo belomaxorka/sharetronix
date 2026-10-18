@@ -50,12 +50,13 @@ With the Windows local stack running, use its PHP configuration for the focused 
 .\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
 .\tests\response-output.ps1
 .\tests\installer.ps1
+.\tests\cron-worker.ps1
 .\scripts\smoke-local.ps1
 ```
 
 The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. It follows the actual wizard, checks the final redirect, logs in, and exercises update authorization and confirmation without a web-server installer block. Disposable databases and evidence are retained locally; it does not reset the main test installation. The [fix verification report](test-runs/2026-10-18-fixes.md) records failures before each patch and checks afterward.
 
-The daily-database regression requires a completed installer-test fixture. It runs maintenance against that disposable database and verifies that the existing post rows remain.
+The daily-database and complete cron-worker regressions require a completed installer-test fixture. They use that disposable database. The worker check makes all eight intervals due, installs a synthetic plugin in the fixture, checks job completion and running flags, and immediately repeats the worker to verify that jobs are not duplicated before their next run.
 
 ## Application scenarios
 
