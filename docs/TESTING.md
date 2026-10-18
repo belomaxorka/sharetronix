@@ -44,6 +44,7 @@ With the Windows local stack running, use its PHP configuration for the focused 
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\token-cleanup.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\token-expiry.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\php-offsets.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\daily-database.php
 .\tests\php-syntax.ps1
 .\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
 .\tests\response-output.ps1
@@ -52,6 +53,8 @@ With the Windows local stack running, use its PHP configuration for the focused 
 ```
 
 The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. It follows the actual wizard, checks the final redirect, logs in, and exercises update authorization and confirmation without a web-server installer block. Disposable databases and evidence are retained locally; it does not reset the main test installation. The [fix verification report](test-runs/2026-10-18-fixes.md) records failures before each patch and checks afterward.
+
+The daily-database regression requires a completed installer-test fixture. It runs maintenance against that disposable database and verifies that the existing post rows remain.
 
 ## Application scenarios
 
