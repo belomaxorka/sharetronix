@@ -133,6 +133,12 @@
 	  links now use the getfile/pid:.../attid:N route of the web feed instead of the file title, and
 	  images and video thumbnails come from the storage URL instead of the removed $C->IMG_URL
 	  setting.
+	* Kept a custom header logo when an administrator switches the theme. The switch looked for
+	  the logo files under $C->IMG_DIR, which 3.x no longer defines, so the logo was never found
+	  and the site fell back to the default logo; the files are now read and written under the
+	  storage directory. The logo resized for the new theme is remembered for that theme instead of
+	  under a setting named after the file, and a theme without a logo height still falls back to
+	  the default logo.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

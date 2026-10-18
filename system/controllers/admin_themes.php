@@ -38,19 +38,19 @@
 		elseif( $hdr_show_logo == 2 ) {
 			if( isset($C->{'HDR_CUSTOM_LOGO_'.$C->THEME}) && !empty($C->{'HDR_CUSTOM_LOGO_'.$C->THEME}) ) {
 				$fn	= $C->{'HDR_CUSTOM_LOGO_'.$C->THEME};
-				if( file_exists($C->IMG_DIR.'attachments/'.$this->network->id.'/'.$fn) ) {
+				if( file_exists($C->STORAGE_DIR.'attachments/'.$this->network->id.'/'.$fn) ) {
 					$ok	= TRUE;
 					$db2->query('REPLACE INTO settings SET word="HDR_CUSTOM_LOGO", value="'.$db2->e($fn).'" ');
 					$hdr_custom_logo	= 'attachments/'.$this->network->id.'/'.$fn;
 					$changetheme_warn	= TRUE;
 				}
 			}
-			if( !$ok && !empty($hdr_custom_logo) ) {
+			if( !$ok && !empty($hdr_custom_logo) && !empty($C->THEMEOBJ->logo_height) ) {
 				$fn	= 'logo_'.time().rand(100000,999999).'.png';
-				$ok	= networkbranding_logo_resize($C->IMG_DIR.$hdr_custom_logo, $C->IMG_DIR.'attachments/'.$this->network->id.'/'.$fn, intval($C->THEMEOBJ->logo_height));
+				$ok	= networkbranding_logo_resize($C->STORAGE_DIR.$hdr_custom_logo, $C->STORAGE_DIR.'attachments/'.$this->network->id.'/'.$fn, intval($C->THEMEOBJ->logo_height));
 				if( $ok ) {
 					$db2->query('REPLACE INTO settings SET word="HDR_CUSTOM_LOGO", value="'.$db2->e($fn).'" ');
-					$db2->query('REPLACE INTO settings SET word="HDR_CUSTOM_LOGO_'.$db2->e($fn).'", value="" ');
+					$db2->query('REPLACE INTO settings SET word="HDR_CUSTOM_LOGO_'.$db2->e($C->THEME).'", value="'.$db2->e($fn).'" ');
 					$hdr_custom_logo	= 'attachments/'.$this->network->id.'/'.$fn;
 					$changetheme_warn	= TRUE;
 				}
