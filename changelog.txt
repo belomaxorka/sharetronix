@@ -235,6 +235,12 @@
 	  a quote: account/verify_credentials (it includes the user's latest post), the status
 	  timelines and every other answer that TwitterData builds. Such values were only HTML-escaped,
 	  so a single multi-line post made the whole answer unparseable. Ordinary text is unchanged.
+	* Recounted the posts of users with more than 1000 posts on sites without private groups. The 6h
+	  cron job built "NOT IN()" from the empty list of private groups, MySQL rejected the query, and
+	  the worker stopped there: the remaining 6h jobs and the 24h jobs (table optimization, removal
+	  of old notifications and request tokens, clearing of the cached page HTML and temporary files)
+	  did not run while such a user existed, and their running flags stayed set. On PHP 7 this
+	  happened without a log entry.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

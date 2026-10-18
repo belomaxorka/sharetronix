@@ -2,7 +2,7 @@
 	
 	$private_groups	= array();
 	$private_groups	= $network->get_private_groups_ids();
-	$private_groups	= (count($private_groups)>0)? implode(', ', $private_groups) : '';
+	$private_groups	= (count($private_groups)>0)? ('AND group_id NOT IN('.implode(', ', $private_groups).')') : '';
 	
 	$users_to_check = array();
 	$db2->query('SELECT id FROM users WHERE num_posts>1000 LIMIT 10');
@@ -11,7 +11,7 @@
 	}
 	
 	foreach($users_to_check as $usr){
-		$db2->query('SELECT COUNT(*) AS nm FROM posts WHERE user_id="'.$usr.'" AND group_id NOT IN('.$private_groups.') GROUP BY user_id');
+		$db2->query('SELECT COUNT(*) AS nm FROM posts WHERE user_id="'.$usr.'" '.$private_groups.' GROUP BY user_id');
 		if($tmp = $db2->fetch_object()) {
 			$db2->query('UPDATE users SET num_posts="'.$tmp->nm.'" WHERE id="'.$usr.'" LIMIT 1');
 		}	
