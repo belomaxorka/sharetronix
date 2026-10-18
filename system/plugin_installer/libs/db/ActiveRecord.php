@@ -47,7 +47,6 @@ class ActiveRecord{
 		/* connect to db */
 		try {
 			$this->link = new PDO('mysql:host=' . $C->DB_HOST . ";dbname=" . $C->DB_NAME, $C->DB_USER, $C->DB_PASS);
-			$this->link->exec("SET CHARACTER SET UTF-8");
 			$this->link->exec('SET NAMES utf8');
 			$this->link->exec("SET lc_time_names = 'bg_BG'");
 		} catch(PDOException $e) {

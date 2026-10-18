@@ -308,6 +308,11 @@
 	  showed half again as many cache operations and a total time above the real one. All drivers
 	  also listed a hit on a stored empty value (an empty list, 0 or an empty string) as FALSE, like
 	  a miss.
+	* Let the plugin installer connect to the database on PHP 8. Its database layer ran "SET
+	  CHARACTER SET UTF-8", which MySQL rejects; PHP 7 ignored the error, but PDO reports errors as
+	  exceptions since PHP 8.0, so installing or removing a plugin whose installer changes the
+	  database stopped with "Error connecting database!". The connection still uses utf8 through SET
+	  NAMES.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
