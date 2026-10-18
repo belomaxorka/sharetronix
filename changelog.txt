@@ -91,6 +91,10 @@
 	  and served to guests, whose id is also empty; each write raised an undefined-variable
 	  warning. Only plugins use per-user caching. After upgrading, clear system/cache_html/ to drop
 	  entries written the old way.
+	* Shortened long link text in posts and comments on character boundaries. It was cut by bytes,
+	  so a long non-ASCII address produced invalid UTF-8: the post was saved but its response
+	  reported an error, inviting a duplicate, the comment response came back empty, and feed pages
+	  containing the post failed to load.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

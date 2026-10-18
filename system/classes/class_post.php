@@ -614,8 +614,8 @@
 				$url	= preg_replace('/([\.,\?]|&#33;)$/', '', $url);
 			}
 			$txt	= $url;
-			if( strlen($txt) > 60 ) {
-				$txt	= substr($txt, 0, 45).'...'.substr($txt, -10);
+			if( mb_strlen($txt) > 60 ) {
+				$txt	= mb_substr($txt, 0, 45).'...'.mb_substr($txt, -10);
 			}
 			return $before.'<a href="'.$url.'" title="'.$url.'" target="_blank" rel="nofollow">'.$txt.'</a>'.$after;
 		}
