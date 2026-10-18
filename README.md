@@ -19,7 +19,7 @@ git clone https://github.com/belomaxorka/sharetronix.git
 cd sharetronix
 ```
 
-The legacy codebase lists Apache, PHP 5.2+, and MySQL 5.0+ as its requirements. Compatibility with current PHP/MySQL releases has not been established.
+The legacy codebase lists Apache, PHP 5.2+, and MySQL 5.0+ as historical requirements. Fresh installation, current-version updates, and core scenarios have now been verified on PHP **8.4.19**, Apache **2.4.66**, and MySQL **5.7.44** on Windows; see the [PHP 8.4 verification report](docs/test-runs/2026-10-18-php84.md) for the tested scope and remaining limits. Compatibility with newer databases and untested integrations remains separate work.
 
 1. Configure an Apache virtual host for the checkout and enable `mod_rewrite`.
 2. Create an empty MySQL database.

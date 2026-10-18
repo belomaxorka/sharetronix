@@ -11,6 +11,10 @@ class DatabaseValidate implements DatabaseInterface {
 	private $plugin_name;
 	protected $messages; // array<ValidationMessage>
 	
+	public function __construct($plugin_name) {
+		$this->DatabaseValidate($plugin_name);
+	}
+
 	public function DatabaseValidate($plugin_name){
 		$this->db = ActiveRecord::getInstance();
 		$this->plugin_name = $plugin_name;

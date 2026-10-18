@@ -2,6 +2,11 @@
 	
 	class network
 	{
+		public $cache;
+		public $user;
+		public $db1;
+		public $db2;
+
 		public $id;
 		public $info;
 		public $is_private;

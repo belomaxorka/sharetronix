@@ -6,6 +6,10 @@ class Langpack  {
 	protected $version;
 	protected $folder;
 	
+	public function __construct($langkey, $connect = TRUE){
+		$this->Langpack($langkey, $connect);
+	}
+
 	public function Langpack($langkey, $connect = TRUE){
 		global $C;
 		$this->langkey = $connect? $langkey : $langkey->abrv;

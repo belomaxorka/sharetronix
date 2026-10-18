@@ -2,6 +2,22 @@
 	
 	class page
 	{
+		public $network;
+		public $user;
+		public $cache;
+		public $db1;
+		public $db2;
+		public $request;
+		public $params;
+		public $title;
+		public $html;
+		public $controllers;
+		public $lang_data;
+		public $tpl_name;
+		public $plugin_name;
+		public $is_mobile;
+		public $tmp_loaded_langfiles;
+
 		public function __construct()
 		{
 			$this->network	= & $GLOBALS['network'];

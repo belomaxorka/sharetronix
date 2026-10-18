@@ -9,6 +9,10 @@ class DatabaseReal implements DatabaseInterface {
 	private $db;
 	protected $plugin_name;
 	
+	public function __construct($plugin_name) {
+		$this->DatabaseReal($plugin_name);
+	}
+
 	public function DatabaseReal($plugin_name){
 		$this->plugin_name = $plugin_name;
 		$this->db = ActiveRecord::getInstance();

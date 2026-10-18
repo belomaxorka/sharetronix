@@ -2,6 +2,10 @@
 	
 	class post
 	{
+		public $page;
+		public $post_likes;
+		public $post_likesnum;
+
 		private $network;
 		private $user;
 		private $cache;
@@ -337,7 +341,7 @@
 			$message	= ( $this->post_id == 1 ) ? $this->post_message : htmlspecialchars($this->post_message);
 			if( FALSE!==strpos($message,'http://') || FALSE!==strpos($message,'http://') || FALSE!==strpos($message,'ftp://') ) {
 				//$message	= preg_replace('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#ie', 'post::_postparse_build_link("\\2", "\\1")', $message);
-				$message	= preg_replace_callback('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#i', create_function ('$matches', 'return post::_postparse_build_link($matches[2], $matches[1]);'), $message);
+				$message	= preg_replace_callback('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#i', function($matches) { return post::_postparse_build_link($matches[2], $matches[1]); }, $message);
 			}
 			
 			foreach($C->POST_ICONS as $k=>$v) {
@@ -382,7 +386,7 @@
 		public static function parse_date($timestamp, $return_words='auto', $return_dt_format='%b %d %Y, %H:%M')
 		{
 			if( $return_words == FALSE ) {
-				return strftime($return_dt_format, $timestamp);
+				return format_date($return_dt_format, $timestamp);
 			}
 			$time	= time() - $timestamp;
 			$h	= floor($time / 3600);
@@ -391,7 +395,7 @@
 			$time	-= $m * 60;
 			$s	= $time;
 			if( $return_words === 'auto' && $h >= 12 ) {
-				return strftime($return_dt_format, $timestamp);
+				return format_date($return_dt_format, $timestamp);
 			}
 			$txt	= '##BEFORE## ';
 			if( $h > 0 ) {

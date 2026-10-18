@@ -6,6 +6,19 @@ Release history for Sharetronix, with the latest changes first.
 
 ### Fixed
 
+- Corrected template and form signatures with optional parameters before required arguments, keeping their existing positional/reference contracts on PHP 8.4.
+- Declared existing runtime properties in core, rendering, activity, and notification classes to avoid PHP 8.2+ dynamic-property diagnostics while preserving public state and serialized references.
+- Kept all-error reporting enabled without referencing the deprecated `E_STRICT` constant; cron regressions now inspect both process output and private PHP logs on PHP 7.2/8.4.
+- Used an empty string when clearing persistent-login cookies, preserving logout and invalid-cookie rejection without PHP null-argument deprecations.
+- Preserved the saved post type before converting its ID to an integer in activity responses, selecting the correct public/private table without array-offset warnings.
+- Rendered the profile month selector through the shared date formatter instead of calling deprecated `strftime()` directly, retaining all twelve labels.
+- Initialized language-package metadata through `__construct()` on PHP 8 while retaining explicit calls to the legacy initializer.
+- Replaced the removed `create_function()` callbacks in post, comment, and FAQ link rendering with closures, retaining link markup, punctuation, and escaping. Comments containing links, the posts and profiles that display them, and the FAQ page no longer fail on PHP 8.
+- Rendered older-post and profile-information dates through a shared formatter: PHP 7.2–8.0 keep native, locale-aware `strftime()` output for language packs, while PHP 8.1+ uses the bundled English percent formats and PHP timezone without the deprecated function.
+- Declared the feed polling cursor used by background activity checks, removing a PHP 8.4 warning observed in the browser.
+- Restored administrator plugin/language controller initialization on PHP 8 while preserving legacy initializer calls and reference arguments.
+- Restored plugin-installer option, adapter, validation-message, and singleton initialization on PHP 8 without changing their legacy method entry points.
+- Added modern constructors to the bundled XML-RPC library while retaining its legacy initializers and request-serialization behavior.
 - Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
 - Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
 - Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
@@ -19,6 +32,7 @@ Release history for Sharetronix, with the latest changes first.
 
 ### Added
 
+- Added matched PHP 7.2/8.4 test runtimes, private-message/avatar/polling coverage, focused compatibility comparisons, and strict definition/log diagnostics.
 - Added a maintenance roadmap, contributor workflow, testing guide, and repository instructions for coding agents.
 - Added an isolated Windows development stack with local email capture, fixture accounts, backup commands, and repeatable HTTP smoke checks.
 - Recorded the initial installation, application, restore, and PHP compatibility checks with reproducible defect reports.

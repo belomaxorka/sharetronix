@@ -9,6 +9,10 @@ class ValidationNotice  extends ValidationMessage{
 	 * @access	public
 	 * @param 	string	 $message
 	 */
+	public function __construct($message) {
+		$this->ValidationNotice($message);
+	}
+
 	public function ValidationNotice($message) {
 		$this->message = $message;
 	}

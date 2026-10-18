@@ -1,6 +1,8 @@
 <?php
 	class services
 	{
+		public $ajax_data;
+
 		private $ajax_file_name;
 		private $ajax_file_action;
 		private $ajax_file_path;

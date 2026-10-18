@@ -44,18 +44,31 @@ With the Windows local stack running, use its PHP configuration for the focused 
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\token-cleanup.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\token-expiry.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\php-offsets.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\php-signatures.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\php-runtime-state.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\remember-cookie.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\activity-result.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\langpack-constructor.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\post-links.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\post-dates.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\activity-polling.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\admin-constructors.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\plugin-constructors.php
+& C:\OSPanel\modules\PHP-8.4\php.exe -n -d error_reporting=-1 tests\xmlrpc-constructors.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\daily-database.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\daily-cache-cleanup.php
 .\tests\php-syntax.ps1
 .\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
 .\tests\response-output.ps1
 .\tests\installer.ps1
+.\tests\installer.ps1 -PhpVersion 8.4
 .\tests\before-after.ps1
 .\tests\cron-worker.ps1
+.\tests\cron-worker.ps1 -PhpVersion 8.4
 .\scripts\smoke-local.ps1
 ```
 
-The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. Its 57 checks follow the actual wizard, check the final redirect, log in, exercise update authorization without a web-server installer block, and check HTTP cron. The same fixture also exercises posts, comments, likes, edit/delete ownership, profiles, follows, groups, private-content visibility, search, and logout through HTTP forms/services with database assertions. These are HTTP integration checks, not browser JavaScript/UI coverage. Disposable databases and evidence are retained locally; the main test installation is not reset.
+The installer test starts a dedicated PHP 7.2 or 8.4 FastCGI process on loopback port 9074 and an Apache listener on 8093, with a new database on the dedicated local MySQL instance. Its 70 checks follow the actual wizard, check the final redirect, log in, exercise update authorization without a web-server installer block, and check HTTP cron. The fixture also exercises posts/URLs/older dates, background polling, comments, likes, edit/delete ownership, profiles/months, follows, public/private groups, direct-message participant access, search, PNG avatar upload/thumbnail dimensions, and logout through HTTP forms/services with database assertions. PHP logs must be clean on both runtimes. These are HTTP integration checks, not browser JavaScript/UI coverage. The PHP version, source revision, and completed checks are saved in fixture metadata. The main installation is not reset.
 
 To compare committed application revisions with the current test suite:
 
@@ -65,9 +78,9 @@ To compare committed application revisions with the current test suite:
 .\tests\before-after.ps1 -AfterRef HEAD
 ```
 
-`ObserveBaseline` explicitly expects the historical installer notices, lost session, and guest updater execution on that old revision. It applies the documented hostname workaround only to the disposable baseline fixture so that the same 28 application-flow checks can run before and after. It does not mark the old installation as healthy and does not replace the latest fixed fixture used by cron checks. The fixed revision must pass without that workaround.
+`ObserveBaseline` explicitly expects the historical installer notices, lost session, and guest updater execution on that old revision. It applies the documented hostname workaround only to the disposable baseline fixture so that the same application-flow checks can run before and after. It does not mark the old installation as healthy and does not replace the latest fixed fixture used by cron checks. The fixed revision must pass without that workaround.
 
-The focused comparison exports immutable source snapshots and runs the same nine PHP cases against old and new code. Expected old failures must match their diagnostic, while the new revision must pass; the legacy PHP 7.2 string-offset behavior must pass on both. The token SQL case uses the parent of its fix after the external version request was removed, avoiding the retired network endpoint. See the [fix report](test-runs/2026-10-18-fixes.md) and [pre-merge comparison](test-runs/2026-10-18-merge-verification.md).
+The focused comparison exports immutable source snapshots and runs 21 PHP cases against old and new code, including the PHP 8.4 regressions. Expected old failures must match their diagnostic, while the new revision must pass; legacy string-offset/date behavior must pass on both. The token SQL case uses the parent of its fix after the external version request was removed, avoiding the retired network endpoint. Configuration and GD modules match each executable even when the main development stack uses a different PHP version. See the [fix report](test-runs/2026-10-18-fixes.md), [pre-merge comparison](test-runs/2026-10-18-merge-verification.md), and [PHP 8.4 report](test-runs/2026-10-18-php84.md). These historical comparisons require Git history containing the recorded parent revisions.
 
 The daily-database and complete cron-worker regressions require a completed installer-test fixture. They use that disposable database. The worker check makes all eight intervals due, installs a synthetic plugin in the fixture, checks job completion and running flags, and immediately repeats the worker to verify that jobs are not duplicated before their next run.
 

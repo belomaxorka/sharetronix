@@ -401,7 +401,7 @@
 		return $html;
 	}
 	
-	function createTableDetailsBlock( $title = '', $data, $cssClass = '' )
+	function createTableDetailsBlock( $title, $data, $cssClass = '' )
 	{
 		$html = '';
 		
@@ -420,7 +420,7 @@
 		return $html;
 	}
 	
-	function createTableInput( $title='', $rows, $description='', $action = FALSE, $enctype=''  )
+	function createTableInput( $title, $rows, $description='', $action = FALSE, $enctype=''  )
 	{
 		global $C;
 		

@@ -2,6 +2,7 @@
 param(
     [string]$RuntimeRoot = 'C:\OSPanel\modules',
     [string]$SourceRef = '',
+    [ValidateSet('7.2', '8.4')][string]$PhpVersion = '7.2',
     [switch]$ObserveBaseline
 )
 $ErrorActionPreference = 'Stop'
@@ -15,6 +16,10 @@ $baseUrl = 'http://localhost:8093'
 $credentials = Get-Content -LiteralPath "$stateRoot/credentials.json" -Raw | ConvertFrom-Json
 $encoding = [Text.UTF8Encoding]::new($false)
 $server = $null
+$phpServer = $null
+$phpConfig = "$stateRoot/php.ini"
+$phpExecutable = Join-Path $RuntimeRoot "PHP-$PhpVersion/php.exe"
+$completed = $false
 $checks = [Collections.Generic.List[string]]::new()
 $sourceCommit = & git -C $repoRoot rev-parse --verify $(if ($SourceRef) { "$SourceRef^{commit}" } else { 'HEAD^{commit}' })
 if ($LASTEXITCODE -ne 0) { throw 'The source revision must resolve to a commit.' }
@@ -24,6 +29,7 @@ function Check-Installer($Name, $Condition) {
     $checks.Add($Name)
 }
 if (Get-NetTCPConnection -State Listen -LocalPort 8093 -ErrorAction SilentlyContinue) { throw 'Test port 8093 is occupied.' }
+if (Get-NetTCPConnection -State Listen -LocalPort 9074 -ErrorAction SilentlyContinue) { throw 'Test FastCGI port 9074 is occupied.' }
 if ($credentials.database -ne 'sharetronix_local') { throw 'Expected the isolated local stack.' }
 [IO.Directory]::CreateDirectory("$testRoot/logs") | Out-Null
 if ($SourceRef) {
@@ -47,6 +53,18 @@ $config = $config.Replace('127.0.0.1:8092', '127.0.0.1:8093').Replace('localhost
 $config = $config.Replace(($stateRoot.Replace('\', '/') + '/site'), $siteRoot.Replace('\', '/'))
 $config = $config.Replace(($stateRoot.Replace('\', '/') + '/logs'), ($testRoot.Replace('\', '/') + '/logs'))
 $config = $config.Replace(($stateRoot.Replace('\', '/') + '/httpd.pid'), ($testRoot.Replace('\', '/') + '/httpd.pid'))
+$actualPhp = & $phpExecutable -n -r 'echo PHP_VERSION;'
+$expectedPhp = if ($PhpVersion -eq '8.4') { '8.4.19' } else { '7.2.34' }
+if ($actualPhp -ne $expectedPhp) { throw "Expected PHP $expectedPhp, found $actualPhp." }
+$phpConfig = "$testRoot/php.ini"
+$phpIni = [IO.File]::ReadAllText("$stateRoot/php.ini")
+$phpIni = [regex]::Replace($phpIni, 'extension_dir=.*', ('extension_dir="' + (Join-Path $RuntimeRoot "PHP-$PhpVersion/ext").Replace('\', '/') + '"'))
+$phpIni = [regex]::Replace($phpIni, 'extension=php_gd2?\.dll', $(if ($PhpVersion -eq '8.4') { 'extension=php_gd.dll' } else { 'extension=php_gd2.dll' }))
+$phpIni = [regex]::Replace($phpIni, 'error_log=.*', ('error_log="' + $testRoot.Replace('\', '/') + '/logs/php.log"'))
+foreach ($directory in @('sessions', 'tmp')) { [IO.Directory]::CreateDirectory("$testRoot/$directory") | Out-Null }
+$phpIni = $phpIni.Replace(($stateRoot.Replace('\', '/') + '/sessions'), ($testRoot.Replace('\', '/') + '/sessions')).Replace(($stateRoot.Replace('\', '/') + '/tmp'), ($testRoot.Replace('\', '/') + '/tmp'))
+[IO.File]::WriteAllText($phpConfig, $phpIni, $encoding)
+$config = $config.Replace('127.0.0.1:9072', '127.0.0.1:9074')
 # Keep the fixture free of any server-level installer block.
 $config = [regex]::Replace($config, '(?s)<LocationMatch "\^/install.*?</LocationMatch>\r?\n?', '')
 [IO.File]::WriteAllText("$testRoot/httpd.conf", $config, $encoding)
@@ -82,6 +100,15 @@ function Follow-Installer($Response, $Client = $http) {
     $Response
 }
 try {
+    $phpCgi = [IO.Path]::GetFullPath((Join-Path $RuntimeRoot "PHP-$PhpVersion/php-cgi.exe"))
+    $phpServer = Start-Process -FilePath $phpCgi -ArgumentList @('-c', "`"$phpConfig`"", '-b', '127.0.0.1:9074') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$testRoot/logs/php-out.log" -RedirectStandardError "$testRoot/logs/php-err.log"
+    $phpServerStart = $phpServer.StartTime.ToUniversalTime()
+    $phpReady = $false
+    for ($attempt = 0; $attempt -lt 40; $attempt++) {
+        $connection = [Net.Sockets.TcpClient]::new()
+        try { $connection.Connect('127.0.0.1', 9074); $phpReady = $true; break } catch { Start-Sleep -Milliseconds 250 } finally { $connection.Dispose() }
+    }
+    if (-not $phpReady) { throw 'Test PHP FastCGI did not start.' }
     $server = Start-Process -FilePath $apacheExe -ArgumentList @('-f', "`"$testRoot/httpd.conf`"") -WindowStyle Hidden -PassThru -RedirectStandardOutput "$testRoot/logs/process-out.log" -RedirectStandardError "$testRoot/logs/process-err.log"
     $serverStart = $server.StartTime.ToUniversalTime()
     $ready = $false
@@ -188,11 +215,17 @@ try {
     [IO.File]::WriteAllText("$testRoot/http-cron-body.txt", $response.body, $encoding)
     Check-Installer 'HTTP cron fallback completes on the installed application' ($response.status -eq 200 -and $response.body.Trim() -eq 'OK')
     . "$PSScriptRoot/application-flows.ps1"
-    $result = @{ root = $testRoot; database = $database; sourceCommit = $sourceCommit; mode = 'fixed'; checks = $checks.ToArray() }
+    if (Test-Path "$testRoot/logs/php.log") {
+        $diagnostics = @(Get-Content "$testRoot/logs/php.log" | Where-Object { $_ -match 'Deprecated:|Warning:|Notice:|Fatal error:|Parse error:' })
+        if ($diagnostics.Count) { throw "PHP $PhpVersion emitted $($diagnostics.Count) diagnostics; inspect $testRoot/logs/php.log" }
+    }
+    $completed = $true
+    $result = @{ root = $testRoot; database = $database; sourceCommit = $sourceCommit; mode = 'fixed'; phpVersion = $PhpVersion; phpExecutable = $phpExecutable; phpConfig = $phpConfig; checks = $checks.ToArray() }
     [IO.File]::WriteAllText("$testRoot/results.json", ($result | ConvertTo-Json -Depth 3), $encoding)
     [IO.File]::WriteAllText("$stateRoot/installer-tests/latest.json", ($result | ConvertTo-Json -Depth 3), $encoding)
     Write-Output "PASS: $($checks.Count) installation checks; isolated evidence at $testRoot"
 } finally {
+    [IO.File]::WriteAllText("$testRoot/attempt.json", (@{ root = $testRoot; database = $database; sourceCommit = $sourceCommit; phpVersion = $PhpVersion; phpConfig = $phpConfig; completed = $completed; checks = $checks.ToArray() } | ConvertTo-Json -Depth 3), $encoding)
     $http.Dispose()
     if ($server) {
         $running = Get-Process -Id $server.Id -ErrorAction SilentlyContinue
@@ -201,5 +234,9 @@ try {
             Stop-Process -Id $running.Id
             foreach ($child in $children) { Stop-Process -Id $child.ProcessId -ErrorAction SilentlyContinue }
         }
+    }
+    if ($phpServer) {
+        $runningPhp = Get-Process -Id $phpServer.Id -ErrorAction SilentlyContinue
+        if ($runningPhp -and $runningPhp.Path -eq $phpCgi -and $runningPhp.StartTime.ToUniversalTime() -eq $phpServerStart) { Stop-Process -Id $runningPhp.Id }
     }
 }

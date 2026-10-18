@@ -17,7 +17,7 @@
 		
 		private $_used_blocks = array();
 		
-		public function __construct( & $layout_name, $plugin = FALSE, & $tpl )
+		public function __construct( & $layout_name, $plugin, & $tpl )
 		{
 			global $C;
 			

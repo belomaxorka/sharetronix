@@ -1,8 +1,9 @@
 #requires -Version 7.0
-param([string]$SourceRef = '')
+param([string]$SourceRef = '', [ValidateSet('7.2', '8.4')][string]$PhpVersion = '7.2')
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stateRoot = Join-Path $repoRoot '.local'
+$phpExecutable = "C:/OSPanel/modules/PHP-$PhpVersion/php.exe"
 $fixture = Get-Content -LiteralPath "$stateRoot/installer-tests/latest.json" -Raw | ConvertFrom-Json
 $testRoot = [IO.Path]::GetFullPath($fixture.root)
 $allowedRoot = [IO.Path]::GetFullPath((Join-Path $stateRoot 'installer-tests')) + [IO.Path]::DirectorySeparatorChar
@@ -36,13 +37,21 @@ require __DIR__.'/site/system/cronjobs/worker.php';
 echo "\nREGRESSION_WORKER_COMPLETE\n";
 '@
 [IO.File]::WriteAllText("$testRoot/run-worker.php", $runner, [Text.UTF8Encoding]::new($false))
-$output = & C:\OSPanel\modules\PHP-7.2\php.exe -c "$stateRoot/php.ini" "$testRoot/run-worker.php" 2>&1
+$phpConfig = "$testRoot/cron-php$PhpVersion.ini"
+$phpLog = "$testRoot/logs/cron-php$PhpVersion-$([guid]::NewGuid().ToString('N')).log"
+$phpIni = [IO.File]::ReadAllText("$stateRoot/php.ini")
+$phpIni = [regex]::Replace($phpIni, 'extension_dir=.*', "extension_dir=`"C:/OSPanel/modules/PHP-$PhpVersion/ext`"")
+$phpIni = [regex]::Replace($phpIni, 'extension=php_gd2?\.dll', $(if ($PhpVersion -eq '8.4') { 'extension=php_gd.dll' } else { 'extension=php_gd2.dll' }))
+$phpIni = [regex]::Replace($phpIni, 'error_log=.*', ('error_log="' + $phpLog.Replace('\', '/') + '"'))
+[IO.File]::WriteAllText($phpConfig, $phpIni, [Text.UTF8Encoding]::new($false))
+$output = & $phpExecutable -c $phpConfig "$testRoot/run-worker.php" 2>&1
 $workerExit = $LASTEXITCODE
 $output | Set-Content -LiteralPath "$testRoot/cron-output.txt"
 $text = $output -join "`n"
+$logText = if (Test-Path -LiteralPath $phpLog) { Get-Content -LiteralPath $phpLog -Raw } else { '' }
 $running = & $client "--defaults-file=$stateRoot/client.ini" -N -e "SELECT COUNT(*) FROM $($fixture.database).crons WHERE is_running=1;"
 $pluginsCompleted = $text.Contains('REGRESSION_PLUGIN_1min') -and $text.Contains('REGRESSION_PLUGIN_1h')
-$result = [pscustomobject]@{ exitCode = $workerExit; completed = $text.Contains('REGRESSION_WORKER_COMPLETE'); diagnostics = ($text -match 'Warning:|Notice:|Deprecated:|Fatal error:'); runningJobs = [int]$running; pluginJobsCompleted = $pluginsCompleted; evidence = "$testRoot/cron-output.txt" }
+$result = [pscustomobject]@{ phpVersion = $PhpVersion; exitCode = $workerExit; completed = $text.Contains('REGRESSION_WORKER_COMPLETE'); diagnostics = (($text + $logText) -match 'Warning:|Notice:|Deprecated:|Fatal error:'); runningJobs = [int]$running; pluginJobsCompleted = $pluginsCompleted; evidence = "$testRoot/cron-output.txt"; phpLog = $phpLog }
 $result | ConvertTo-Json | Set-Content -LiteralPath "$testRoot/cron-result.json"
 $result | Format-List
 if ($workerExit -ne 0 -or -not $result.completed -or $result.diagnostics -or $result.runningJobs -ne 0 -or -not $pluginsCompleted) {
@@ -50,11 +59,12 @@ if ($workerExit -ne 0 -or -not $result.completed -or $result.diagnostics -or $re
 }
 $scheduled = & $client "--defaults-file=$stateRoot/client.ini" -N -e "SELECT COUNT(*) FROM $($fixture.database).crons WHERE is_running=0 AND next_run>last_run AND last_run>0;"
 if ($LASTEXITCODE -ne 0 -or [int]$scheduled -ne 8) { throw 'Every interval must be scheduled for its next run.' }
-$repeat = & C:\OSPanel\modules\PHP-7.2\php.exe -c "$stateRoot/php.ini" "$testRoot/run-worker.php" 2>&1
+$repeat = & $phpExecutable -c $phpConfig "$testRoot/run-worker.php" 2>&1
 $repeatExit = $LASTEXITCODE
 $repeat | Set-Content -LiteralPath "$testRoot/cron-repeat-output.txt"
 $repeatText = $repeat -join "`n"
-if ($repeatExit -ne 0 -or -not $repeatText.Contains('REGRESSION_WORKER_COMPLETE') -or $repeatText -match 'RUNNING CRON:|REGRESSION_PLUGIN_|Warning:|Notice:|Deprecated:|Fatal error:') {
+$logText = if (Test-Path -LiteralPath $phpLog) { Get-Content -LiteralPath $phpLog -Raw } else { '' }
+if ($repeatExit -ne 0 -or -not $repeatText.Contains('REGRESSION_WORKER_COMPLETE') -or ($repeatText + $logText) -match 'RUNNING CRON:|REGRESSION_PLUGIN_|Warning:|Notice:|Deprecated:|Fatal error:') {
     throw 'An immediate repeat must complete without rerunning jobs that are not due.'
 }
 Write-Output 'PASS: all eight intervals and plugin jobs completed cleanly; an immediate repeat ran no jobs.'

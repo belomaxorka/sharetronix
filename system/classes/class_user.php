@@ -2,6 +2,10 @@
 	
 	class user
 	{
+		public $cache;
+		public $db1;
+		public $db2;
+
 		public $id;
 		public $network;
 		public $is_logged;
@@ -150,7 +154,7 @@
 			if( $tmp[1] == md5($obj->username.'~~'.$obj->password.'~~'.$_SERVER['HTTP_USER_AGENT']) ) {
 				return $this->login($obj->username, $obj->password, TRUE);
 			}
-			setcookie('rememberme', NULL, time()+30*24*60*60, '/', cookie_domain());
+			setcookie('rememberme', '', time()+30*24*60*60, '/', cookie_domain());
 			$_COOKIE['rememberme']	= NULL;
 			return FALSE;
 		}
@@ -160,7 +164,7 @@
 			if( ! $this->is_logged ) {
 				return FALSE;
 			}
-			setcookie('rememberme', NULL, time()+60*24*60*60, '/', cookie_domain());
+			setcookie('rememberme', '', time()+60*24*60*60, '/', cookie_domain());
 			$_COOKIE['rememberme']	= NULL;
 			$this->sess['IS_LOGGED']	= FALSE;
 			$this->sess['LOGGED_USER']	= NULL;

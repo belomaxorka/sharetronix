@@ -36,6 +36,10 @@ class ActiveRecord{
 	 * @param void
 	 * @return void
 	 */
+	private function __construct() {
+		$this->ActiveRecord();
+	}
+
 	private function ActiveRecord(){
 
 		global $C;

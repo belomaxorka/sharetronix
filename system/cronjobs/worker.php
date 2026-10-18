@@ -25,7 +25,7 @@
 	$page		= new page();
 	$pm 		= new pluginsManager();
 	
-	ini_set( 'error_reporting', E_ALL | E_STRICT );
+	ini_set( 'error_reporting', E_ALL );
 	ini_set( 'display_errors', '1' );
 	ini_set( 'max_execution_time',	10*60 );
 	ini_set( 'memory_limit',	64*1024*1024 );

@@ -6,6 +6,10 @@ class TableOwner {
 	
 	private $db;
 	
+	public function __construct() {
+		$this->TableOwner();
+	}
+
 	public function TableOwner(){
 		$this->db = ActiveRecord::getInstance();
 	}

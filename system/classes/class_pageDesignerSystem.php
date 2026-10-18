@@ -1,6 +1,8 @@
 <?php
 	class pageDesignerSystem extends pageDesigner
 	{
+		public $system_files;
+
 		public function dropDownMenu( $link_title, $menu_items = array(), $dropdown_css_class='', $menu_options_css_class='', $tooltip = false)
 		{
 			//need also aoptional additional dropdown CSS

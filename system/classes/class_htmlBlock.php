@@ -1,6 +1,9 @@
 <?php
 	class htmlBlock extends templateElement
 	{
+		public $page;
+		public $user;
+
 		private $chosen_html_block;
 		private $name;
 		public  $plugin_manager;
@@ -10,7 +13,7 @@
 		public  $delimiter;
 		public  $block_type;
 		
-		public function __construct( $block_name, $plugin = FALSE, & $layout )
+		public function __construct( $block_name, $plugin, & $layout )
 		{
 			global $C, $D;
 				

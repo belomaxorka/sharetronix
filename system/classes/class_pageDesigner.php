@@ -244,7 +244,7 @@
 			return $html;
 		}
 		
-		public function createTableDetailsBlock( $title = '', $data, $cssClass = '', $show_semicolon = TRUE )
+		public function createTableDetailsBlock( $title, $data, $cssClass = '', $show_semicolon = TRUE )
 		{
 			$html = '';
 		

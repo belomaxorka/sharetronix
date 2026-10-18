@@ -5,10 +5,10 @@
 		$text	= preg_replace( '#\[i\](.+?)\[/i\]#is', '<i>\\1</i>', $text );
 		$text	= preg_replace( '#\[u\](.+?)\[/u\]#is', '<u>\\1</u>', $text );
 		
-		$text = preg_replace_callback('#(^|\s)((http|https|news|ftp)://\w+[^\s\[\]]+)#i', create_function ('$matches', 'return bb_build_url($matches[2], $matches[2]);'), $text);
-		$text = preg_replace_callback( '#\[url\](\S+?)\[/url\]#i', create_function ('$matches', 'return bb_build_url($matches[1], $matches[1]);'), $text);
-		$text = preg_replace_callback( '#\[url\s*=\s*\&quot\;\s*(\S+?)\s*\&quot\;\s*\](.*?)\[\/url\]#i', create_function ('$matches', 'return bb_build_url($matches[1], $matches[2]);'), $text );
-		$text = preg_replace_callback( '#\[url\s*=\s*(\S+?)\s*\](.*?)\[\/url\]#i', create_function ('$matches', 'return bb_build_url($matches[1], $matches[2]);'), $text );
+		$text = preg_replace_callback('#(^|\s)((http|https|news|ftp)://\w+[^\s\[\]]+)#i', function($matches) { return bb_build_url($matches[2], $matches[2]); }, $text);
+		$text = preg_replace_callback( '#\[url\](\S+?)\[/url\]#i', function($matches) { return bb_build_url($matches[1], $matches[1]); }, $text);
+		$text = preg_replace_callback( '#\[url\s*=\s*\&quot\;\s*(\S+?)\s*\&quot\;\s*\](.*?)\[\/url\]#i', function($matches) { return bb_build_url($matches[1], $matches[2]); }, $text );
+		$text = preg_replace_callback( '#\[url\s*=\s*(\S+?)\s*\](.*?)\[\/url\]#i', function($matches) { return bb_build_url($matches[1], $matches[2]); }, $text );
 	
 		return $text;
 	}

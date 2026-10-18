@@ -12,6 +12,10 @@
 class IXR_Value {
     var $data;
     var $type;
+    function __construct($data, $type = false) {
+        $this->IXR_Value($data, $type);
+    }
+
     function IXR_Value ($data, $type = false) {
         $this->data = $data;
         if (!$type) {
@@ -134,6 +138,10 @@ class IXR_Message {
     var $_currentTagContents;
     // The XML parser
     var $_parser;
+    function __construct($message) {
+        $this->IXR_Message($message);
+    }
+
     function IXR_Message ($message) {
         $this->message = $message;
     }
@@ -277,6 +285,10 @@ class IXR_Server {
     var $callbacks = array();
     var $message;
     var $capabilities;
+    function __construct($callbacks = false, $data = false) {
+        $this->IXR_Server($callbacks, $data);
+    }
+
     function IXR_Server($callbacks = false, $data = false) {
         $this->setCapabilities();
         if ($callbacks) {
@@ -432,6 +444,10 @@ class IXR_Request {
     var $method;
     var $args;
     var $xml;
+    function __construct($method, $args) {
+        $this->IXR_Request($method, $args);
+    }
+
     function IXR_Request($method, $args) {
         $this->method = $method;
         $this->args = $args;
@@ -469,6 +485,10 @@ class IXR_Client {
     var $debug = false;
     // Storage place for an error message
     var $error = false;
+    function __construct($server, $path = false, $port = 80) {
+        $this->IXR_Client($server, $path, $port);
+    }
+
     function IXR_Client($server, $path = false, $port = 80) {
         if (!$path) {
             // Assume we have been given a URL instead
@@ -567,6 +587,10 @@ class IXR_Client {
 class IXR_Error {
     var $code;
     var $message;
+    function __construct($code, $message) {
+        $this->IXR_Error($code, $message);
+    }
+
     function IXR_Error($code, $message) {
         $this->code = $code;
         $this->message = $message;
@@ -600,6 +624,10 @@ EOD;
 class IXR_ErrorNew {
     var $code;
     var $message;
+    function __construct($code, $message) {
+        $this->IXR_ErrorNew($code, $message);
+    }
+
     function IXR_ErrorNew($code, $message) {
         $this->code = $code;
         $this->message = $message;
@@ -636,6 +664,10 @@ class IXR_Date {
     var $hour;
     var $minute;
     var $second;
+    function __construct($time) {
+        $this->IXR_Date($time);
+    }
+
     function IXR_Date($time) {
         // $time can be a PHP timestamp or an ISO one
         if (is_numeric($time)) {
@@ -674,6 +706,10 @@ class IXR_Date {
 
 class IXR_Base64 {
     var $data;
+    function __construct($data) {
+        $this->IXR_Base64($data);
+    }
+
     function IXR_Base64($data) {
         $this->data = $data;
     }
@@ -686,6 +722,10 @@ class IXR_Base64 {
 class IXR_IntrospectionServer extends IXR_Server {
     var $signatures;
     var $help;
+    function __construct() {
+        $this->IXR_IntrospectionServer();
+    }
+
     function IXR_IntrospectionServer() {
         $this->setCallbacks();
         $this->setCapabilities();
@@ -830,6 +870,10 @@ class IXR_IntrospectionServer extends IXR_Server {
 
 class IXR_ClientMulticall extends IXR_Client {
     var $calls = array();
+    function __construct($server, $path = false, $port = 80) {
+        $this->IXR_ClientMulticall($server, $path, $port);
+    }
+
     function IXR_ClientMulticall($server, $path = false, $port = 80) {
         parent::IXR_Client($server, $path, $port);
         $this->useragent = 'The Incutio XML-RPC PHP Library (multicall client)';

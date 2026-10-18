@@ -1,6 +1,12 @@
 <?php
 	class notifier
 	{
+		public $resource_obj;
+		public $resource_obj_hidden;
+		public $mail_notif_users;
+		public $post_notif_users;
+		public $object_user_id;
+
 		private $mass_mail;
 		private $user;
 		private $db2;
