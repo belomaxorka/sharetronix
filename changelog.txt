@@ -313,6 +313,12 @@
 	  exceptions since PHP 8.0, so installing or removing a plugin whose installer changes the
 	  database stopped with "Error connecting database!". The connection still uses utf8 through SET
 	  NAMES.
+	* Buffered the compressed page output until the end of the request. system/LOADER.php passed 6
+	  as the second argument of ob_start('ob_gzhandler'), which is a chunk size, not a compression
+	  level: the buffer was flushed after every 6 bytes of output, so on servers with
+	  output_buffering off any early output, such as a notice shown in debug mode, sent the headers
+	  at once and later redirects and cookies were lost. The compression level still comes from
+	  zlib.output_compression_level.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

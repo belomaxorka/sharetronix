@@ -37,7 +37,8 @@
 	$user		= new user();
 	$user->LOAD();
 	
-	@ob_start('ob_gzhandler', 6);
+	// The compression level comes from zlib.output_compression_level; the second argument would be a chunk size.
+	@ob_start('ob_gzhandler');
 	
 	$plugins_manager = new pluginsManager();
 	
