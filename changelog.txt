@@ -34,6 +34,9 @@
 	  printed it unescaped in the download link, so a file named, for example,
 	  qa<img src=x onerror=...>.txt ran script in the browser of everyone who saw the post. The
 	  upload answer that the post form shows as a preview now escapes the name too.
+	* Stopped printing the server's storage path into pages. getAvatarUrl() echoed the absolute
+	  path of a missing avatar thumbnail (a debug statement left since 3.0.1) before creating the
+	  thumbnail, so visitors of a page showing that avatar saw where the site is installed.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

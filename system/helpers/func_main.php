@@ -415,7 +415,6 @@
 		
 		$filename = $C->STORAGE_DIR	 . 'avatars/' . $size . '/'. $avatar;
 		if(!file_exists($filename)){
-			echo $filename;
 			missingThumbsCreate($C->STORAGE_DIR	 . 'avatars/'.$avatar,$avatar, $size);
 		}
 		return $C->STORAGE_URL . 'avatars/' . $size . '/'. $avatar;
