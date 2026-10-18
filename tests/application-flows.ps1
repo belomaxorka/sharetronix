@@ -66,6 +66,12 @@ function Test-ApplicationFlows {
         $response = Follow-Installer (Request-Installer '/settings/profile' @{ sbm = 'Save'; profile_name = 'Regression User A'; profile_location = 'Local test'; profile_aboutme = 'Проверка профиля'; profile_tags = 'maintest' } $a) $a
         $response = Follow-Installer (Request-Installer '/settings/profile' $null $a) $a
         Check-Installer 'FLOW: profile changes and non-ASCII text survive reload' ($response.status -eq 200 -and $response.body.Contains('Regression User A') -and $response.body.Contains('Проверка профиля'))
+        $months = @('January','February','March','April','May','June','July','August','September','October','November','December')
+        $monthLabelsMatch = $true
+        for ($month = 1; $month -le 12; $month++) {
+            if ($response.body -notmatch ('<option[^>]*value="' + $month + '"[^>]*>' + $months[$month-1] + '</option>')) { $monthLabelsMatch = $false }
+        }
+        Check-Installer 'FLOW: the English profile selector retains all twelve month labels' $monthLabelsMatch
         Check-Installer 'FLOW: profile changes affect only their owner' ((Flow-Sql "SELECT COUNT(*) FROM users WHERE id=$bId AND fullname='Regression qaflowb';") -eq '1')
         $follow = Flow-Service 'users' 'follow' @{ users_id = $bId } $a
         Check-Installer 'FLOW: following another user persists' ($follow.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM users_followed WHERE who=$aId AND whom=$bId;") -eq '1')

@@ -61,7 +61,7 @@ With the Windows local stack running, use its PHP configuration for the focused 
 .\scripts\smoke-local.ps1
 ```
 
-The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. Its 57 checks follow the actual wizard, check the final redirect, log in, exercise update authorization without a web-server installer block, and check HTTP cron. The same fixture also exercises posts, comments, likes, edit/delete ownership, profiles, follows, groups, private-content visibility, search, and logout through HTTP forms/services with database assertions. These are HTTP integration checks, not browser JavaScript/UI coverage. Disposable databases and evidence are retained locally; the main test installation is not reset.
+The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. Its 58 checks follow the actual wizard, check the final redirect, log in, exercise update authorization without a web-server installer block, and check HTTP cron. The same fixture also exercises posts, comments, likes, edit/delete ownership, profiles, follows, groups, private-content visibility, search, and logout through HTTP forms/services with database assertions. These are HTTP integration checks, not browser JavaScript/UI coverage. Disposable databases and evidence are retained locally; the main test installation is not reset.
 
 To compare committed application revisions with the current test suite:
 
@@ -71,7 +71,7 @@ To compare committed application revisions with the current test suite:
 .\tests\before-after.ps1 -AfterRef HEAD
 ```
 
-`ObserveBaseline` explicitly expects the historical installer notices, lost session, and guest updater execution on that old revision. It applies the documented hostname workaround only to the disposable baseline fixture so that the same 28 application-flow checks can run before and after. It does not mark the old installation as healthy and does not replace the latest fixed fixture used by cron checks. The fixed revision must pass without that workaround.
+`ObserveBaseline` explicitly expects the historical installer notices, lost session, and guest updater execution on that old revision. It applies the documented hostname workaround only to the disposable baseline fixture so that the same application-flow checks can run before and after. It does not mark the old installation as healthy and does not replace the latest fixed fixture used by cron checks. The fixed revision must pass without that workaround.
 
 The focused comparison exports immutable source snapshots and runs the same nine PHP cases against old and new code. Expected old failures must match their diagnostic, while the new revision must pass; the legacy PHP 7.2 string-offset behavior must pass on both. The token SQL case uses the parent of its fix after the external version request was removed, avoiding the retired network endpoint. See the [fix report](test-runs/2026-10-18-fixes.md) and [pre-merge comparison](test-runs/2026-10-18-merge-verification.md).
 
