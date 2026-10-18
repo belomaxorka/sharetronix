@@ -171,6 +171,7 @@
 			$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM groups WHERE id="'.$this->group->id.'" LIMIT 1');
 			$this->db2->query('DELETE FROM groups WHERE id="'.$this->group->id.'" LIMIT 1');
 			$this->network->get_group_by_id($this->group->id, TRUE);
+			$this->network->get_group_by_name($this->group->groupname, TRUE);
 			$av	= $this->group->avatar;
 			if( $av != $C->DEF_AVATAR_GROUP ) {
 				rm( $C->STORAGE_DIR.'avatars/'.$av );

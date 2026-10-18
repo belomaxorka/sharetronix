@@ -287,7 +287,7 @@
 			}
 			$cachekey	= 'n:'.$this->id.',groupname:'.strtolower($gname);
 			$gid	= $this->cache->get($cachekey);
-			if( FALSE!==$gid && TRUE!=$gid ) {
+			if( FALSE!==$gid && TRUE!=$force_refresh ) {
 				return $return_id ? $gid : $this->get_group_by_id($gid);
 			}
 			$gid	= FALSE;

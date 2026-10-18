@@ -112,6 +112,10 @@
 	  only if the file had exactly two lines, so every value with a line break (for example a user
 	  whose profile text has several lines) was treated as a miss, deleted and queried again on
 	  each request. del() now also returns its result outside debug mode.
+	* Used the cached group id when a group is looked up by name. The check compared the cached id
+	  with TRUE instead of testing $force_refresh, so the cache was written on every lookup but
+	  never read, and every group URL cost an extra query. Deleting a group now also forgets its
+	  name.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
