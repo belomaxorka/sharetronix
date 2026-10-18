@@ -32,3 +32,7 @@ The installer creates `system/conf_main.php`. This installation-specific configu
 Create a branch for a focused change and open a pull request. Include a description of the change, the PHP/MySQL versions used, and how it was checked. Keep credentials and installation data out of commits.
 
 Original contributor credits remain in the source files.
+
+## License
+
+Sharetronix is licensed under the [GNU Affero General Public License, version 3](LICENSE.txt) (`AGPL-3.0-only`). Third-party components retain their respective licenses and copyright notices.
