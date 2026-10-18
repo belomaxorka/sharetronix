@@ -110,10 +110,7 @@
 				$message	= preg_replace_callback('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#i', function($matches) { return post::_postparse_build_link($matches[2], $matches[1]); }, $message);
 			}
 			
-			foreach($C->POST_ICONS as $k=>$v) {
-				$txt	= '<img src="'.$C->STATIC_IMG_URL.'icons/'.$v.'" class="post_smiley" alt="'.$k.'" title="'.$k.'" />';
-				$message	= str_replace($k, $txt, $message);
-			}
+			$message	= post::_postparse_smileys($message, $C->STATIC_IMG_URL.'icons/');
 			
 			if( count($this->comment_mentioned) > 0 ) {
 				$tmp	= array();

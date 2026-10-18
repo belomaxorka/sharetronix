@@ -344,10 +344,7 @@
 				$message	= preg_replace_callback('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#i', function($matches) { return post::_postparse_build_link($matches[2], $matches[1]); }, $message);
 			}
 			
-			foreach($C->POST_ICONS as $k=>$v) {
-				$txt	= '<img src="'.$C->STATIC_URL.'images/icons/'.$v.'" class="post_smiley" alt="'.$k.'" title="'.$k.'" />';
-				$message	= str_replace($k, $txt, $message);
-			}
+			$message	= post::_postparse_smileys($message, $C->STATIC_URL.'images/icons/');
 			
 			if( count($this->post_mentioned) > 0 ) {
 				$tmp	= array();
@@ -618,6 +615,25 @@
 				$txt	= mb_substr($txt, 0, 45).'...'.mb_substr($txt, -10);
 			}
 			return $before.'<a href="'.$url.'" title="'.$url.'" target="_blank" rel="nofollow">'.$txt.'</a>'.$after;
+		}
+
+		public static function _postparse_smileys($message, $icons_url)
+		{
+			global $C;
+			// Only the text between links, tags and character references gets smileys,
+			// so ":P" in a URL or ";)" in "&quot;)" stays intact.
+			$parts	= preg_split('#(<a\s.*?</a>|<[^>]*>|&\#?\w+;)#is', $message, -1, PREG_SPLIT_DELIM_CAPTURE);
+			foreach($parts as $i=>$part) {
+				if( $i % 2 ) {
+					continue;
+				}
+				foreach($C->POST_ICONS as $k=>$v) {
+					$txt	= '<img src="'.$icons_url.$v.'" class="post_smiley" alt="'.$k.'" title="'.$k.'" />';
+					$part	= str_replace($k, $txt, $part);
+				}
+				$parts[$i]	= $part;
+			}
+			return implode('', $parts);
 		}
 
 		public function get_all_comments()

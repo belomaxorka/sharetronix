@@ -95,6 +95,10 @@
 	  so a long non-ASCII address produced invalid UTF-8: the post was saved but its response
 	  reported an error, inviting a duplicate, the comment response came back empty, and feed pages
 	  containing the post failed to load.
+	* Kept smileys out of links and character entities in posts and comments. A smiley code inside a
+	  URL, such as :P in /wiki/Help:Pages, was replaced inside the link and broke it, and text such
+	  as ("quoted") lost its closing quote to a wink, because the escaped &quot;) contains ;). On
+	  PHP 8.1 and later the same happened to an apostrophe before a closing parenthesis.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
