@@ -39,6 +39,10 @@ abstract class Installer {
 	public static $mode;
 	public static $manifest;
 	
+	public function __construct() {
+		$this->Installer();
+	}
+
 	public function Installer(){
 		
 		if(self::$mode === null) 

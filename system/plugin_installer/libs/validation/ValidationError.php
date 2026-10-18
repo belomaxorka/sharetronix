@@ -10,6 +10,10 @@ class ValidationError extends ValidationMessage{
 	 * @access	public
 	 * @param 	string	 $message
 	 */
+	public function __construct($message) {
+		$this->ValidationError($message);
+	}
+
 	public function ValidationError($message) {
 		$this->message = $message;
 	}

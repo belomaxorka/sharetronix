@@ -9,6 +9,10 @@ abstract class FieldOption {
 	 * @access	public
 	 * @param 	mixed	 $value
 	 */
+	public function __construct($value) {
+		$this->FieldOption($value);
+	}
+
 	public function FieldOption($value) {
 		$this->value = $value;
 	}
