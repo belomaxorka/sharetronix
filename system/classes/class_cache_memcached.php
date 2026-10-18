@@ -6,6 +6,7 @@
 		private $memcached_port;
 		private $keys_prefix;
 		private $mc;
+		private $ext;
 		private $debug_mode;
 		private $debug_info;
 		

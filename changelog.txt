@@ -116,6 +116,9 @@
 	  with TRUE instead of testing $force_refresh, so the cache was written on every lookup but
 	  never read, and every group URL cost an extra query. Deleting a group now also forgets its
 	  name.
+	* Declared the extension-name property of the memcached cache driver, removing the PHP 8.2+
+	  "Creation of dynamic property" deprecation logged on every request and cron run that used
+	  memcached.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
