@@ -30,7 +30,7 @@ Checked items have recorded implementation or verification; remaining items are 
 - [ ] Cover clean installation, persistence after restart, and restoration of a populated 3.6.2 test installation.
 - [ ] Record failures as focused issues with reproduction steps, environment, expected behavior, actual behavior, and sanitized logs.
 - [ ] Prioritize security, data loss, installation blockers, authentication, and posting failures ahead of cosmetic defects and new features.
-- [ ] Add a small automated test harness with synthetic fixtures. Start with valuable cases around changed helpers, database behavior, and authentication/visibility boundaries.
+- [x] Add a small automated test harness with synthetic fixtures. Focused helper/database tests, installer authorization, HTTP smoke checks, and a complete cron cycle are recorded in the [fix report](docs/test-runs/2026-10-18-fixes.md); broader coverage remains planned.
 - [ ] Add CI incrementally: PHP syntax checks first, then focused tests and database/HTTP integration checks once the environment is reproducible. Keep existing failures visible rather than silently excluding them.
 
 **Completion:** core scenarios have recorded results, known defects have reproducible reports, and the first regression checks can be repeated locally and in CI. A checklist run does not prove the absence of bugs.
@@ -49,7 +49,7 @@ Checked items have recorded implementation or verification; remaining items are 
 
 The initial migration target is **PHP 8.4**, followed by **PHP 8.5** in the verification matrix. Neither is currently claimed as supported by this project. As checked on 2026-10-18, PHP lists security support through 2028-12-31 for 8.4 and 2029-12-31 for 8.5. Recheck the [official PHP support schedule](https://www.php.net/supported-versions.php) before finalizing a release matrix.
 
-- [ ] Run a complete PHP syntax inventory with short tags enabled on the target runtime; classify parse failures, runtime failures, warnings, and deprecations separately.
+- [x] Run a complete PHP syntax inventory with short tags enabled on the target runtime; the initial PHP 8.4 parser failures are fixed, while runtime deprecations and untested flows remain documented in the [fix report](docs/test-runs/2026-10-18-fixes.md).
 - [ ] Audit removed functions and syntax, constructor/callback behavior, resource-to-object assumptions, dynamic properties, and stricter argument handling. Fix confirmed incompatibilities rather than applying blanket rewrites.
 - [ ] Make the existing database wrapper work reliably with `mysqli`, remove the obsolete `mysql_*` dependency, and verify its return values and error behavior against existing callers.
 - [ ] Update installer checks and setup requirements to match the tested runtime and required extensions. Remove reliance on short tags through a focused, separately verified change if needed.

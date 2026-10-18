@@ -12,7 +12,7 @@ Use Windows, Git, and PowerShell 7 with the following existing Open Server modul
 | `PHP-7.2` | PHP 7.2.34 NTS, MSVC15 x64, build 2025-09-21 |
 | `MySQL-5.7` | MySQL Community Server 5.7.44, Win64 |
 | `Mailpit` | Mailpit 1.29.3, windows/amd64 |
-| `PHP-8.4` (optional failure probe) | PHP 8.4.19 NTS x64 |
+| `PHP-8.4` (optional compatibility probe) | PHP 8.4.19 NTS x64 |
 
 Startup checks these version pins. Use `-RuntimeRoot 'D:\path\to\modules'` if the same modules are installed elsewhere. Changing a runtime pin requires another recorded verification run.
 
@@ -68,7 +68,7 @@ The fixture script creates `qausera` and `qauserb` with random passwords in `.lo
 
 The HTTP smoke script checks 15 authentication, session, profile-access, and administration boundaries with independent sessions. Results are written to `.local/http-smoke-results.json`. Use [TESTING.md](TESTING.md) for browser scenarios such as posting, groups, privacy, and uploads.
 
-Email from the Windows PHP `mail()` function is delivered to the dedicated Mailpit instance. No SMTP relay is configured. Use synthetic addresses only. RPC pings are disabled; other retired external integrations have not been comprehensively stubbed. The private temporary-directory cleanup has regression coverage, but a recurring cron task is not enabled while the legacy version-check dependency is being addressed. The original worker instructions are in `system/cronjobs/readme.txt`; findings and fixes are in the test reports.
+Email from the Windows PHP `mail()` function is delivered to the dedicated Mailpit instance. No SMTP relay is configured. Use synthetic addresses only. RPC pings are disabled; other retired external integrations have not been comprehensively stubbed. The cron version check has been removed. The full worker, immediate repeat, plugin scheduling, and private temporary-file cleanup have regression coverage on a disposable installer database; the HTTP fallback is also checked after installation. No recurring operating-system task is registered. Use the commands in [TESTING.md](TESTING.md) for verification. The original worker instructions are in `system/cronjobs/readme.txt`; findings and fixes are in the test reports.
 
 ## Stop, synchronize, and reset
 

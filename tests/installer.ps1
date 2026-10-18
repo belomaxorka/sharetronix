@@ -143,6 +143,9 @@ try {
     Check-Installer 'A completed update requires a new confirmation' ($response.status -eq 200 -and $response.body.Contains('name="installer_token"'))
     $response = Request-Installer '/install/old/index.php'
     Check-Installer 'Obsolete installer remains disabled for administrators' ($response.status -eq 403)
+    $response = Request-Installer '/cron'
+    [IO.File]::WriteAllText("$testRoot/http-cron-body.txt", $response.body, $encoding)
+    Check-Installer 'HTTP cron fallback completes on the installed application' ($response.status -eq 200 -and $response.body.Trim() -eq 'OK')
     [IO.File]::WriteAllText("$stateRoot/installer-tests/latest.json", (@{ root = $testRoot; database = $database; checks = $checks.ToArray() } | ConvertTo-Json -Depth 3), $encoding)
     Write-Output "PASS: $($checks.Count) installation checks; isolated evidence at $testRoot"
 } finally {
