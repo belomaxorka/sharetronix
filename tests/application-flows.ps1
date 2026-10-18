@@ -50,6 +50,9 @@ function Test-ApplicationFlows {
         Check-Installer 'FLOW: public post persists with its owner' ((Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId AND user_id=$aId AND message='Regression public message #maintest';") -eq '1')
         $response = Follow-Installer (Request-Installer "/view/post:$postId" $null $b) $b
         Check-Installer 'FLOW: another user can read the public post' ($response.status -eq 200 -and $response.body.Contains('Regression public message'))
+        $linkId = Flow-Post $a 'Regression link http://example.test/path.'
+        $response = Follow-Installer (Request-Installer "/view/post:$linkId" $null $b) $b
+        Check-Installer 'FLOW: a post containing a URL renders its link and punctuation' ($response.status -eq 200 -and $response.body.Contains('href="http://example.test/path"') -and $response.body.Contains('http://example.test/path</a>.'))
         $comment = Flow-Service 'comments' 'set' @{ activities_type = 'public'; activities_id = $postId; comments_text = 'Regression comment from B' } $b
         Check-Installer 'FLOW: another user can comment and the comment persists' ($comment.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM posts_comments WHERE post_id=$postId AND user_id=$bId AND message='Regression comment from B';") -eq '1')
         $like = Flow-Service 'activities' 'like' @{ activities_type = 'public'; activities_id = $postId } $b
