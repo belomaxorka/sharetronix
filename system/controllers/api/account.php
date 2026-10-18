@@ -35,7 +35,7 @@
 	$api_session->oauth_status 		= false;
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
-	$api_session->available_resources 	= array('create', 'destroy', 'exists', 'show', 'verify_credentials', 'incoming', 'outgoing', 'rate_limit_status', /*'delete_feed', 
+	$api_session->available_resources 	= array('verify_credentials', 'rate_limit_status', /*'delete_feed', 
 	'add_feed', */ 'update_profile_image', 'end_session', 'update_profile', 'update_profile_colors');
 	$api_session->oauth_error 		= '';
 	

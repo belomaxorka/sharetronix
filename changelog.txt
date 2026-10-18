@@ -160,6 +160,9 @@
 	  classes/class_rssfeed.php, which was removed together with the RSS feed reader, so every
 	  account request stopped with a fatal error before authentication. The other API resources were
 	  not affected.
+	* Answered 404 for the account API resources create, destroy, exists, show, incoming and
+	  outgoing, which were listed as available but never implemented in 3.x and answered an empty
+	  200.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
