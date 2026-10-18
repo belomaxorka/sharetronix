@@ -4,6 +4,10 @@ Release history for Sharetronix, with the latest changes first.
 
 ## Unreleased
 
+### Fixed
+
+- Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
+
 ### Added
 
 - Added a maintenance roadmap, contributor workflow, testing guide, and repository instructions for coding agents.

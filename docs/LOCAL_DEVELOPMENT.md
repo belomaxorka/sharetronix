@@ -41,7 +41,7 @@ All services bind to loopback. Startup refuses occupied ports. Apache uses `mod_
 2. Enter database host `127.0.0.1:33062`. Use `user`, `password`, and `database` from `.local/credentials.json` for the other database fields.
 3. Use `adminUser` and `adminPassword` from that file for the administrator. Use a synthetic address such as `admin@localhost.test`. The username `admin` is reserved by the application.
 4. Finish installation. The script's site copy receives `system/conf_main.php`; the repository's source configuration is not changed.
-5. Apply the local configuration workaround and restart:
+5. Disable outbound RPC pings in the local configuration and restart:
 
 ```powershell
 .\scripts\dev.ps1 Configure
@@ -49,7 +49,7 @@ All services bind to loopback. Startup refuses occupied ports. Apache uses `mod_
 .\scripts\dev.ps1 Start
 ```
 
-`Configure` sets `DOMAIN` to `localhost` while keeping the port in `SITE_URL`, and disables outbound RPC pings. This works around the installer/session defect described in the test report. On subsequent starts this local configuration is reapplied, and Apache denies `/install/` with HTTP 403. Installation is not automatically locked by the application itself.
+`Configure` disables outbound RPC pings without rewriting the installer-generated `DOMAIN` or `SITE_URL`. Session names retain a safe port suffix, while cookie domain attributes contain only a hostname; no manual domain workaround is required. On subsequent starts this local configuration is reapplied, and Apache denies `/install/` with HTTP 403. Installation is not automatically locked by the application itself.
 
 PHP loads GD, cURL, Fileinfo, Mbstring, MySQLi, and OpenSSL, with the standard XML/DOM, JSON, session, and other built-in modules available in this distribution. Short tags are enabled; output buffering is 4096 bytes. `E_ALL` and logging remain enabled. Browser display of PHP errors is off because legacy diagnostic output corrupts compressed responses. The installer and cron worker can override that display setting; inspect logs even if a page or command appears successful.
 
