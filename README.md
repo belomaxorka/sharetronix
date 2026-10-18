@@ -2,7 +2,7 @@
 
 A maintained fork of Sharetronix **3.6.2**, a PHP platform for microblogging and social networking.
 
-See the [changelog](CHANGELOG.md) for release history.
+See the [changelog](CHANGELOG.md) for release history and the [maintenance roadmap](ROADMAP.md) for planned work.
 
 ## Source layout
 
@@ -27,9 +27,11 @@ The legacy codebase lists Apache, PHP 5.2+, and MySQL 5.0+ as its requirements. 
 
 The installer creates `system/conf_main.php`. This installation-specific configuration, caches, and uploaded files are excluded from Git.
 
+A reproducible local development stack and a verified runtime matrix are planned in the roadmap. See the [testing guide](docs/TESTING.md) for environment records and application scenarios.
+
 ## Contributing
 
-Create a branch for a focused change and open a pull request. Include a description of the change, the PHP/MySQL versions used, and how it was checked. Keep credentials and installation data out of commits.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, Conventional Commits, and verification requirements. Follow existing code conventions, keep changes focused, and preserve author credits and third-party notices. Coding agents must also follow [AGENTS.md](AGENTS.md).
 
 Original contributor credits remain in the source files.
 

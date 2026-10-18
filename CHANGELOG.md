@@ -4,6 +4,10 @@ Release history for Sharetronix, with the latest changes first.
 
 ## Unreleased
 
+### Added
+
+- Added a maintenance roadmap, contributor workflow, testing guide, and repository instructions for coding agents.
+
 ### Changed
 
 - Licensed the project under GNU AGPLv3 while retaining original author credits and third-party notices.
