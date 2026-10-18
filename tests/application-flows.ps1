@@ -1,0 +1,112 @@
+# Loaded by installer.ps1 while its disposable site is running.
+function Test-ApplicationFlows {
+    function Flow-Sql($Statement) {
+        $result = & $clientExe "--defaults-file=$stateRoot/client.ini" --default-character-set=utf8mb4 -N $database -e $Statement
+        if ($LASTEXITCODE -ne 0) { throw 'Application regression database query failed.' }
+        return $result
+    }
+    function Flow-Client {
+        $handler = [Net.Http.HttpClientHandler]::new()
+        $handler.AllowAutoRedirect = $false
+        $handler.CookieContainer = [Net.CookieContainer]::new()
+        return [Net.Http.HttpClient]::new($handler)
+    }
+    function Flow-Service($Module, $Action, $Data, $Client) {
+        $response = Request-Installer "/services/$Module/$Action" $Data $Client
+        if ($response.status -ne 200) { throw "Application service failed: $Module/$Action HTTP $($response.status)" }
+        try { return ($response.body | ConvertFrom-Json).data } catch {
+            [IO.File]::WriteAllText("$testRoot/failed-service-response.txt", $response.body, $encoding)
+            throw "Application service returned invalid JSON: $Module/$Action"
+        }
+    }
+    function Flow-Post($Client, $Message, $Group = 0) {
+        $page = Follow-Installer (Request-Installer '/dashboard' $null $Client) $Client
+        if (-not $page.body.Contains('data-action="set"')) { throw 'The application post composer is unavailable.' }
+        # The browser's attachments.js generates this draft identifier client-side.
+        $draft = [guid]::NewGuid().ToString('N')
+        $post = Flow-Service 'activities' 'set' @{ activities_text = $Message; activities_type = 'dashboard'; activities_group = $Group; token = $draft } $Client
+        if ($post.status -ne 'OK' -or [int]$post.inserted_activities_id -lt 1) { throw 'Application could not publish a fixture post.' }
+        return [int]$post.inserted_activities_id
+    }
+    $a = Flow-Client
+    $b = Flow-Client
+    $guest = Flow-Client
+    try {
+        foreach ($name in @('qaflowa', 'qaflowb')) {
+            $null = Flow-Sql "INSERT INTO users (username,email,password,fullname,active,language,timezone,is_network_admin) SELECT '$name','$name@localhost.test',password,'Regression $name',1,'en','UTC',0 FROM users WHERE username='qainstall';"
+        }
+        $aId = [int](Flow-Sql "SELECT id FROM users WHERE username='qaflowa';")
+        $bId = [int](Flow-Sql "SELECT id FROM users WHERE username='qaflowb';")
+        $response = Follow-Installer (Request-Installer '/signin' @{ email = 'qaflowa'; password = $credentials.adminPassword } $a) $a
+        Check-Installer 'FLOW: user A signs in through an independent session' ($response.url -eq "$baseUrl/dashboard")
+        $response = Follow-Installer (Request-Installer '/signin' @{ email = 'qaflowb'; password = $credentials.adminPassword } $b) $b
+        Check-Installer 'FLOW: user B signs in through an independent session' ($response.url -eq "$baseUrl/dashboard")
+        $response = Follow-Installer (Request-Installer '/admin/general' $null $a) $a
+        Check-Installer 'FLOW: an ordinary user cannot open administration' ($response.url -eq "$baseUrl/dashboard")
+        $response = Follow-Installer (Request-Installer '/admin/general' $null $guest) $guest
+        Check-Installer 'FLOW: a guest cannot open administration' ($response.url -eq "$baseUrl/signin")
+
+        $postId = Flow-Post $a 'Regression public message #maintest'
+        Check-Installer 'FLOW: public post persists with its owner' ((Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId AND user_id=$aId AND message='Regression public message #maintest';") -eq '1')
+        $response = Follow-Installer (Request-Installer "/view/post:$postId" $null $b) $b
+        Check-Installer 'FLOW: another user can read the public post' ($response.status -eq 200 -and $response.body.Contains('Regression public message'))
+        $comment = Flow-Service 'comments' 'set' @{ activities_type = 'public'; activities_id = $postId; comments_text = 'Regression comment from B' } $b
+        Check-Installer 'FLOW: another user can comment and the comment persists' ($comment.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM posts_comments WHERE post_id=$postId AND user_id=$bId AND message='Regression comment from B';") -eq '1')
+        $like = Flow-Service 'activities' 'like' @{ activities_type = 'public'; activities_id = $postId } $b
+        Check-Installer 'FLOW: liking a post persists once' ($like.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM post_likes WHERE post_id=$postId AND user_id=$bId AND comment_id=0;") -eq '1')
+        $unlike = Flow-Service 'activities' 'unlike' @{ activities_type = 'public'; activities_id = $postId } $b
+        Check-Installer 'FLOW: removing the like removes its database row' ($unlike.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM post_likes WHERE post_id=$postId AND user_id=$bId;") -eq '0')
+        $edit = Flow-Service 'activities' 'edit' @{ activities_type = 'public'; activities_id = $postId; message = 'Unauthorized edit' } $b
+        Check-Installer 'FLOW: another user cannot edit the post' ($edit.status -eq 'ERROR' -and (Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId AND message='Regression public message #maintest';") -eq '1')
+        $edit = Flow-Service 'activities' 'edit' @{ activities_type = 'public'; activities_id = $postId; message = 'Regression edited public #maintest' } $a
+        Check-Installer 'FLOW: the owner can edit the post' ($edit.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId AND message='Regression edited public #maintest';") -eq '1')
+        $delete = Flow-Service 'activities' 'delete' @{ activities_type = 'public'; activities_id = $postId } $b
+        Check-Installer 'FLOW: another user cannot delete the post' ($delete.status -eq 'ERROR' -and (Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId;") -eq '1')
+
+        $response = Follow-Installer (Request-Installer '/settings/profile' @{ sbm = 'Save'; profile_name = 'Regression User A'; profile_location = 'Local test'; profile_aboutme = 'Проверка профиля'; profile_tags = 'maintest' } $a) $a
+        $response = Follow-Installer (Request-Installer '/settings/profile' $null $a) $a
+        Check-Installer 'FLOW: profile changes and non-ASCII text survive reload' ($response.status -eq 200 -and $response.body.Contains('Regression User A') -and $response.body.Contains('Проверка профиля'))
+        Check-Installer 'FLOW: profile changes affect only their owner' ((Flow-Sql "SELECT COUNT(*) FROM users WHERE id=$bId AND fullname='Regression qaflowb';") -eq '1')
+        $follow = Flow-Service 'users' 'follow' @{ users_id = $bId } $a
+        Check-Installer 'FLOW: following another user persists' ($follow.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM users_followed WHERE who=$aId AND whom=$bId;") -eq '1')
+        $unfollow = Flow-Service 'users' 'unfollow' @{ users_id = $bId } $a
+        Check-Installer 'FLOW: unfollow removes the relationship' ($unfollow.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM users_followed WHERE who=$aId AND whom=$bId;") -eq '0')
+
+        foreach ($type in @('private', 'public')) {
+            $alias = "qaflow$type"
+            $response = Follow-Installer (Request-Installer '/groups/new' @{ sbm = 'Create'; group_name = "Regression $type"; group_alias = $alias; group_description = 'Synthetic regression group'; group_type = $type } $a) $a
+            $groupId = [int](Flow-Sql "SELECT id FROM groups WHERE groupname='$alias';")
+            Check-Installer "FLOW: a user can create a $type group" ($groupId -gt 0 -and $response.url.Contains("/$alias"))
+            if ($type -eq 'private') {
+                $privateId = Flow-Post $a 'Regression private sentinel #maintest' $groupId
+                $response = Follow-Installer (Request-Installer "/view/post:$privateId" $null $a) $a
+                Check-Installer 'FLOW: the private-group owner can read its post' ($response.body.Contains('Regression private sentinel'))
+                foreach ($client in @($b, $guest)) {
+                    $role = if ($client -eq $b) { 'non-member' } else { 'guest' }
+                    $response = Follow-Installer (Request-Installer "/view/post:$privateId" $null $client) $client
+                    Check-Installer "FLOW: a $role cannot read a private post directly" (-not $response.body.Contains('Regression private sentinel') -and $response.url -ne "$baseUrl/view/post:$privateId")
+                    $response = Follow-Installer (Request-Installer "/$alias" $null $client) $client
+                    Check-Installer "FLOW: a $role cannot open the private group" (-not $response.body.Contains('Regression private sentinel') -and -not $response.url.Contains("/$alias"))
+                }
+            } else {
+                $join = Flow-Service 'groups' 'join' @{ groups_id = $groupId } $b
+                Check-Installer 'FLOW: another user can join the public group' ($join.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM groups_followed WHERE group_id=$groupId AND user_id=$bId;") -eq '1')
+                $groupPost = Flow-Post $b 'Regression public group message' $groupId
+                Check-Installer 'FLOW: a joined user can publish to the public group' ((Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$groupPost AND group_id=$groupId AND user_id=$bId;") -eq '1')
+            }
+        }
+        $response = Follow-Installer (Request-Installer '/search/tab:posts/s:maintest' $null $b) $b
+        Check-Installer 'FLOW: search returns public content without private content' ($response.body.Contains('Regression edited public') -and -not $response.body.Contains('Regression private sentinel'))
+        $delete = Flow-Service 'activities' 'delete' @{ activities_type = 'public'; activities_id = $postId } $a
+        Check-Installer 'FLOW: the owner can delete the public post' ($delete.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId;") -eq '0')
+        $null = Request-Installer '/signout' $null $a
+        $response = Follow-Installer (Request-Installer '/dashboard' $null $a) $a
+        Check-Installer 'FLOW: logout invalidates the session' ($response.url -eq "$baseUrl/signin")
+    } finally {
+        $a.Dispose()
+        $b.Dispose()
+        $guest.Dispose()
+    }
+}
+
+Test-ApplicationFlows

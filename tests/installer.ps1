@@ -1,5 +1,9 @@
 #requires -Version 7.0
-param([string]$RuntimeRoot = 'C:\OSPanel\modules')
+param(
+    [string]$RuntimeRoot = 'C:\OSPanel\modules',
+    [string]$SourceRef = '',
+    [switch]$ObserveBaseline
+)
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stateRoot = Join-Path $repoRoot '.local'
@@ -12,6 +16,9 @@ $credentials = Get-Content -LiteralPath "$stateRoot/credentials.json" -Raw | Con
 $encoding = [Text.UTF8Encoding]::new($false)
 $server = $null
 $checks = [Collections.Generic.List[string]]::new()
+$sourceCommit = & git -C $repoRoot rev-parse --verify $(if ($SourceRef) { "$SourceRef^{commit}" } else { 'HEAD^{commit}' })
+if ($LASTEXITCODE -ne 0) { throw 'The source revision must resolve to a commit.' }
+if ($ObserveBaseline -and -not $SourceRef) { throw 'Baseline observations require an explicit source revision.' }
 function Check-Installer($Name, $Condition) {
     if (-not $Condition) { throw "Installer regression failed: $Name" }
     $checks.Add($Name)
@@ -19,12 +26,18 @@ function Check-Installer($Name, $Condition) {
 if (Get-NetTCPConnection -State Listen -LocalPort 8093 -ErrorAction SilentlyContinue) { throw 'Test port 8093 is occupied.' }
 if ($credentials.database -ne 'sharetronix_local') { throw 'Expected the isolated local stack.' }
 [IO.Directory]::CreateDirectory("$testRoot/logs") | Out-Null
-$paths = & git -C $repoRoot -c core.quotePath=false ls-files -- index.php .htaccess web.config apps install static storage system themes
-if ($LASTEXITCODE -ne 0) { throw 'Could not enumerate application files.' }
-foreach ($path in $paths) {
-    $destination = Join-Path $siteRoot $path
-    [IO.Directory]::CreateDirectory((Split-Path -Parent $destination)) | Out-Null
-    Copy-Item -LiteralPath (Join-Path $repoRoot $path) -Destination $destination
+if ($SourceRef) {
+    & git -C $repoRoot archive --format=zip "--output=$testRoot/source.zip" $sourceCommit -- index.php .htaccess web.config apps install static storage system themes
+    if ($LASTEXITCODE -ne 0) { throw 'Could not export the requested application revision.' }
+    Expand-Archive -LiteralPath "$testRoot/source.zip" -DestinationPath $siteRoot
+} else {
+    $paths = & git -C $repoRoot -c core.quotePath=false ls-files -- index.php .htaccess web.config apps install static storage system themes
+    if ($LASTEXITCODE -ne 0) { throw 'Could not enumerate application files.' }
+    foreach ($path in $paths) {
+        $destination = Join-Path $siteRoot $path
+        [IO.Directory]::CreateDirectory((Split-Path -Parent $destination)) | Out-Null
+        Copy-Item -LiteralPath (Join-Path $repoRoot $path) -Destination $destination
+    }
 }
 $clientExe = Join-Path $RuntimeRoot 'MySQL-5.7/bin/mysql.exe'
 & $clientExe "--defaults-file=$stateRoot/client.ini" -e "CREATE DATABASE $database CHARACTER SET utf8 COLLATE utf8_unicode_ci; GRANT ALL PRIVILEGES ON $database.* TO '$($credentials.user)'@'localhost';"
@@ -88,11 +101,39 @@ try {
     $response = Request-Installer '/install/' @{ submit = 'Install' }
     Check-Installer 'Successful finish redirects to the application' ($response.status -eq 302 -and $response.location.AbsoluteUri -eq "$baseUrl/?installed=ok")
     [IO.File]::WriteAllText("$testRoot/finish-body.html", $response.body, $encoding)
-    Check-Installer 'Successful finish stops before rendering cleared session data' ([string]::IsNullOrWhiteSpace($response.body))
+    if ($ObserveBaseline) {
+        Check-Installer 'KNOWN BASELINE DEFECT: finish renders cleared-session notices' ($response.body -match 'Undefined index: INSTALL_(STEP|DATA)')
+    } else {
+        Check-Installer 'Successful finish stops before rendering cleared session data' ([string]::IsNullOrWhiteSpace($response.body))
+    }
     $response = Follow-Installer $response
     Check-Installer 'New application opens after installation' ($response.status -eq 200 -and $response.body.Contains('name="password"'))
     $response = Follow-Installer (Request-Installer '/signin' @{ email = 'qainstall'; password = $credentials.adminPassword })
+    if ($ObserveBaseline) {
+        Check-Installer 'KNOWN BASELINE DEFECT: generated port-bearing domain loses the login session' ($response.url -eq "$baseUrl/signin")
+        $configPath = "$siteRoot/system/conf_main.php"
+        $config = [IO.File]::ReadAllText($configPath)
+        $config = [regex]::Replace($config, '(\$C->DOMAIN\s*=\s*)''[^'']*'';', '$1''localhost'';')
+        $config = [regex]::Replace($config, '(\$C->RPC_PINGS_ON\s*=\s*)TRUE;', '$1FALSE;')
+        [IO.File]::WriteAllText($configPath, $config, $encoding)
+        $response = Follow-Installer (Request-Installer '/signin' @{ email = 'qainstall'; password = $credentials.adminPassword })
+        Check-Installer 'Baseline comparison uses the documented local domain workaround' ($response.url -eq "$baseUrl/dashboard")
+        & $clientExe "--defaults-file=$stateRoot/client.ini" -e "INSERT INTO $database.posts SET user_id=0, api_id=0, message='Installer guard sentinel', date=UNIX_TIMESTAMP();"
+        if ($LASTEXITCODE -ne 0) { throw 'Could not prepare the baseline updater sentinel.' }
+        $guestHttp = [Net.Http.HttpClient]::new()
+        try { $response = Request-Installer '/install/' $null $guestHttp } finally { $guestHttp.Dispose() }
+        $sentinel = & $clientExe "--defaults-file=$stateRoot/client.ini" -N -e "SELECT COUNT(*) FROM $database.posts WHERE message='Installer guard sentinel';"
+        Check-Installer 'KNOWN BASELINE DEFECT: guest updater executes cleanup' ($response.status -eq 200 -and $response.body.Contains('Your community has been updated') -and $sentinel -eq '0')
+        . "$PSScriptRoot/application-flows.ps1"
+        $result = @{ root = $testRoot; database = $database; sourceCommit = $sourceCommit; mode = 'baseline-with-documented-domain-workaround'; checks = $checks.ToArray() }
+        [IO.File]::WriteAllText("$testRoot/results.json", ($result | ConvertTo-Json -Depth 3), $encoding)
+        Write-Output "PASS: $($checks.Count) baseline observations/application checks; isolated evidence at $testRoot"
+        return
+    }
     Check-Installer 'Fresh administrator retains a session with the generated port-bearing domain' ($response.url -eq "$baseUrl/dashboard" -and $response.body.Contains('qainstall'))
+    $configPath = "$siteRoot/system/conf_main.php"
+    $config = [regex]::Replace([IO.File]::ReadAllText($configPath), '(\$C->RPC_PINGS_ON\s*=\s*)TRUE;', '$1FALSE;')
+    [IO.File]::WriteAllText($configPath, $config, $encoding)
     & $clientExe "--defaults-file=$stateRoot/client.ini" -e "INSERT INTO $database.posts SET user_id=0, api_id=0, message='Installer guard sentinel', date=UNIX_TIMESTAMP();"
     if ($LASTEXITCODE -ne 0) { throw 'Could not prepare update protection fixture.' }
     $guestHttp = [Net.Http.HttpClient]::new()
@@ -146,7 +187,10 @@ try {
     $response = Request-Installer '/cron'
     [IO.File]::WriteAllText("$testRoot/http-cron-body.txt", $response.body, $encoding)
     Check-Installer 'HTTP cron fallback completes on the installed application' ($response.status -eq 200 -and $response.body.Trim() -eq 'OK')
-    [IO.File]::WriteAllText("$stateRoot/installer-tests/latest.json", (@{ root = $testRoot; database = $database; checks = $checks.ToArray() } | ConvertTo-Json -Depth 3), $encoding)
+    . "$PSScriptRoot/application-flows.ps1"
+    $result = @{ root = $testRoot; database = $database; sourceCommit = $sourceCommit; mode = 'fixed'; checks = $checks.ToArray() }
+    [IO.File]::WriteAllText("$testRoot/results.json", ($result | ConvertTo-Json -Depth 3), $encoding)
+    [IO.File]::WriteAllText("$stateRoot/installer-tests/latest.json", ($result | ConvertTo-Json -Depth 3), $encoding)
     Write-Output "PASS: $($checks.Count) installation checks; isolated evidence at $testRoot"
 } finally {
     $http.Dispose()

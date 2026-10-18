@@ -22,6 +22,7 @@ Release history for Sharetronix, with the latest changes first.
 - Added a maintenance roadmap, contributor workflow, testing guide, and repository instructions for coding agents.
 - Added an isolated Windows development stack with local email capture, fixture accounts, backup commands, and repeatable HTTP smoke checks.
 - Recorded the initial installation, application, restore, and PHP compatibility checks with reproducible defect reports.
+- Added repeatable comparisons of pre-fix and fixed source snapshots, with 28 shared application-flow checks and focused before/after regressions.
 
 ### Changed
 

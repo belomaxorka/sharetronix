@@ -1,4 +1,5 @@
 #requires -Version 7.0
+param([string]$SourceRef = '')
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stateRoot = Join-Path $repoRoot '.local'
@@ -8,8 +9,17 @@ $allowedRoot = [IO.Path]::GetFullPath((Join-Path $stateRoot 'installer-tests')) 
 if (-not $testRoot.StartsWith($allowedRoot, [StringComparison]::OrdinalIgnoreCase) -or $fixture.database -notmatch '^sharetronix_test_[0-9a-f_]+$') {
     throw 'Expected a disposable installer-test fixture.'
 }
-$paths = & git -C $repoRoot -c core.quotePath=false ls-files -- system
-foreach ($path in $paths) { Copy-Item -LiteralPath (Join-Path $repoRoot $path) -Destination (Join-Path "$testRoot/site" $path) -Force }
+if ($SourceRef) {
+    $sourceCommit = & git -C $repoRoot rev-parse --verify "$SourceRef^{commit}"
+    if ($LASTEXITCODE -ne 0) { throw 'The worker source revision must resolve to a commit.' }
+    & git -C $repoRoot archive --format=zip "--output=$testRoot/cron-source.zip" $sourceCommit -- system
+    if ($LASTEXITCODE -ne 0) { throw 'Could not export the worker source.' }
+    Expand-Archive -LiteralPath "$testRoot/cron-source.zip" -DestinationPath "$testRoot/site" -Force
+} else {
+    $paths = & git -C $repoRoot -c core.quotePath=false ls-files -- system
+    if ($LASTEXITCODE -ne 0) { throw 'Could not enumerate worker source files.' }
+    foreach ($path in $paths) { Copy-Item -LiteralPath (Join-Path $repoRoot $path) -Destination (Join-Path "$testRoot/site" $path) -Force }
+}
 $client = 'C:\OSPanel\modules\MySQL-5.7\bin\mysql.exe'
 $pluginRoot = "$testRoot/site/apps/RegressionCronPlugin"
 [IO.Directory]::CreateDirectory($pluginRoot) | Out-Null
@@ -33,6 +43,7 @@ $text = $output -join "`n"
 $running = & $client "--defaults-file=$stateRoot/client.ini" -N -e "SELECT COUNT(*) FROM $($fixture.database).crons WHERE is_running=1;"
 $pluginsCompleted = $text.Contains('REGRESSION_PLUGIN_1min') -and $text.Contains('REGRESSION_PLUGIN_1h')
 $result = [pscustomobject]@{ exitCode = $workerExit; completed = $text.Contains('REGRESSION_WORKER_COMPLETE'); diagnostics = ($text -match 'Warning:|Notice:|Deprecated:|Fatal error:'); runningJobs = [int]$running; pluginJobsCompleted = $pluginsCompleted; evidence = "$testRoot/cron-output.txt" }
+$result | ConvertTo-Json | Set-Content -LiteralPath "$testRoot/cron-result.json"
 $result | Format-List
 if ($workerExit -ne 0 -or -not $result.completed -or $result.diagnostics -or $result.runningJobs -ne 0 -or -not $pluginsCompleted) {
     throw 'Cron worker did not finish cleanly. Inspect the isolated fixture output.'
