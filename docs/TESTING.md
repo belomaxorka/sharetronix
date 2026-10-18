@@ -50,6 +50,7 @@ With the Windows local stack running, use its PHP configuration for the focused 
 .\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
 .\tests\response-output.ps1
 .\tests\installer.ps1
+.\tests\installer.ps1 -PhpVersion 8.4
 .\tests\before-after.ps1
 .\tests\cron-worker.ps1
 .\scripts\smoke-local.ps1
