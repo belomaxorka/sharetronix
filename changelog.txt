@@ -188,6 +188,11 @@
 	  ignored. Plugin and theme authors who built such links should link to the image under
 	  storage/attachments/ instead. File downloads (pid:.../attid:N and tmpid:.../attid:N) are
 	  unchanged.
+	* Removed the unused notification class (system/classes/class_notification.php). Nothing
+	  created it, its constructor read an undeclared property, its rendering code was commented
+	  out, and the notifications page does not use it. A plugin that still refers to the class now
+	  gets a "class not found" error; since the class never produced any output, such calls can
+	  simply be removed.
 
 Sharetronix 3.6.2
 	* Bug fixes
