@@ -30,10 +30,12 @@
 			$time	= microtime(TRUE);
 			$res	= FALSE;
 			if( file_exists($file) && is_readable($file) ) {
-				$data	= file($file);
-				if( $data && is_array($data) && count($data)==2 ) {
-					if( intval($data[0]) >= time() ) {
-						$res	= unserialize($data[1]);
+				// The expiry time ends at the first line break; the serialized value may contain more.
+				$data	= file_get_contents($file);
+				$pos	= FALSE===$data ? FALSE : strpos($data, "\n");
+				if( FALSE !== $pos ) {
+					if( intval(substr($data, 0, $pos)) >= time() ) {
+						$res	= unserialize(substr($data, $pos+1));
 					}
 				}
 				if( FALSE === $res ) {
@@ -93,6 +95,7 @@
 				);
 				return $res;
 			}
+			return $res;
 		}
 		
 		public function get_debug_info()

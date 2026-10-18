@@ -108,6 +108,10 @@
 	  warning.
 	* Declared pageDesignerMobile::$system_files, removing a PHP 8.2+ dynamic-property deprecation
 	  on mobile pages.
+	* Read file-cache entries whose value contains a line break. The file cache accepted an entry
+	  only if the file had exactly two lines, so every value with a line break (for example a user
+	  whose profile text has several lines) was treated as a miss, deleted and queried again on
+	  each request. del() now also returns its result outside debug mode.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
