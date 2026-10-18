@@ -260,6 +260,10 @@
 	* Kept a higher or unlimited PHP memory limit in the cron worker. The worker set memory_limit to
 	  64 MB on every run, which lowered the 128 MB default and any larger server setting; it now
 	  only raises a lower limit to 64 MB.
+	* Removed leftover debugging code from the plugin administration page (/admin/plugins). It
+	  turned on the display of all PHP errors for every administrator who opened it, regardless of
+	  debug mode, and declared a global function p(), which made the page fail if a plugin or theme
+	  declared a function with that name.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

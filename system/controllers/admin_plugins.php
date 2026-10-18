@@ -32,14 +32,6 @@
 	}elseif( $this->param('uninstalled') == 'ok' ){
 		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->okMessage($this->lang('admadm_frm_ok'), $this->lang('admin_apps_uninstalled_msg')) );
 	}
-error_reporting(E_ALL);
-ini_set('display_errors', 1); 
-function p($p){
-    echo '<pre>';
-    var_dump($p);
-    echo '</pre>';
-    exit;
-}
 	$ap = new AdminPlugins($this->user, $tpl, $this->params); 
 	call_user_func(array($ap, $tab));
 	
