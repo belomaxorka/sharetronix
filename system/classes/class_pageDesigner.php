@@ -104,7 +104,7 @@
 				if ($handle = @opendir($C->INCPATH.'../themes/'.$C->THEME.'/js/')) {
 		
 					while (FALSE !== ($entry = readdir($handle))) {
-						if( $entry !== '.' && $entry !== '..' ){
+						if( substr($entry, 0, 1) !== '.' && substr($entry, -3) === '.js' && is_file($C->INCPATH.'../themes/'.$C->THEME.'/js/'.$entry) ){
 							$html .= '<script type="text/javascript" src="'.$C->SITE_URL.'themes/'.$C->THEME.'/js/'. $entry .'?v='.$C->VERSION.'"></script>'."\n";
 						}
 					}
@@ -150,7 +150,7 @@
 				if ($handle = @opendir($C->INCPATH.'../themes/'.$C->THEME.'/css/')) {
 		
 					while (FALSE !== ($entry = readdir($handle))) {
-						if( $entry !== '.' && $entry !== '..' ){
+						if( substr($entry, 0, 1) !== '.' && substr($entry, -4) === '.css' && is_file($C->INCPATH.'../themes/'.$C->THEME.'/css/'.$entry) ){
 							$html .= '<link href="'.  str_replace("/m/", "/",$C->SITE_URL) .'themes/'. $C->THEME .'/css/'. $entry .'?v='. $C->VERSION .'" type="text/css" rel="stylesheet" />'."\n";
 						}
 					}
@@ -179,7 +179,7 @@
 					if ($handle = @opendir($C->PLUGINS_DIR.$p.'/static/'.$file_type.'/')) {
 			
 						while (FALSE !== ($entry = readdir($handle))) {
-							if( $entry !== '.' && $entry !== '..' ){
+							if( substr($entry, 0, 1) !== '.' && substr($entry, -strlen($file_type)-1) === '.'.$file_type && is_file($C->PLUGINS_DIR.$p.'/static/'.$file_type.'/'.$entry) ){
 								$html .= $file_credentials[0]. $p . '/static/'.$file_type.'/' . $entry .'?v='.$C->VERSION. $file_credentials[1];
 							}
 						}

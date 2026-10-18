@@ -209,6 +209,10 @@
 	  value) although the 3.x layout reserves 80, so switching back to it shrank the logo. Both now
 	  use the theme's logo_height, or 80 when the theme sets none; switching to such a theme used
 	  to drop the custom logo. Logos resized before keep their size until they are uploaded again.
+	* Included only the .js and .css files of a theme's js/ and css/ folders (and of a plugin's
+	  static/js/ and static/css/) in pages. Every entry was added as a script or stylesheet, so
+	  pages also linked subfolders such as js/mobile/ of the 3.x theme packages, notes and hidden
+	  files.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
