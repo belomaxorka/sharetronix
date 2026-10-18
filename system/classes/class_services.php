@@ -162,6 +162,15 @@
 			
 			unset($result);
 			
-			return json_encode( $this->ajax_data );
+			$json = json_encode( $this->ajax_data );
+			if( FALSE === $json ) {
+				// E.g. invalid UTF-8 in the answer: report a failure instead of sending an empty body.
+				error_log('Sharetronix service '.$this->ajax_file_name.'/'.$this->ajax_file_action.': JSON encoding failed: '.json_last_error_msg());
+				if( ! headers_sent() ) {
+					header('HTTP/1.1 500 Internal Server Error');
+				}
+				return '';
+			}
+			return $json;
 		}
 	}

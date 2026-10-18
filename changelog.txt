@@ -319,6 +319,9 @@
 	  output_buffering off any early output, such as a notice shown in debug mode, sent the headers
 	  at once and later redirects and cookies were lost. The compression level still comes from
 	  zlib.output_compression_level.
+	* Reported service answers that cannot be encoded as JSON. When an answer contained invalid
+	  UTF-8, the services page sent an empty body with HTTP 200 and logged nothing; it now answers
+	  HTTP 500, so the page shows its error message, and logs the service name and the JSON error.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
