@@ -495,6 +495,7 @@
 					}
 					if( $this->user->id > 0 ) {
 						$db2->query('UPDATE users SET num_posts=num_posts+1, lastpost_date="'.time().'" WHERE id="'.$db_user_id.'" LIMIT 1');
+						$this->network->get_user_by_id($db_user_id, TRUE);
 					}
 					if( $this->user->id > 0 && count($this->mentioned) > 0 ) {
 						$notif = new notifier();
@@ -504,6 +505,7 @@
 					}
 					if( $this->group ) {
 						$db2->query('UPDATE groups SET num_posts=num_posts+1 WHERE id="'.$db_group_id.'" LIMIT 1');
+						$this->network->get_group_by_id($db_group_id, TRUE);
 					}
 					if( $this->user->id > 0 ) {
 						$db2->query('INSERT INTO '.($is_private?'posts_pr_comments_watch':'posts_comments_watch').' SET user_id="'.$this->user->id.'", post_id="'.$id.'", newcomments=0');

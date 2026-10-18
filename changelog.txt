@@ -125,6 +125,8 @@
 	* Refreshed the cached list of private groups when a group is made public. Only the change to
 	  private refreshed it, so posts of a group that had just become public stayed hidden from
 	  feeds and search for non-members until the cache expired (one hour by default).
+	* Refreshed the cached author and group after a post is published or deleted, so profile and
+	  group post counts no longer lag behind for up to an hour.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

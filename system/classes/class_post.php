@@ -589,8 +589,10 @@
 			}
 			if( $this->post_type=='public' ) {
 				$this->db2->query('UPDATE users SET num_posts=num_posts-1 WHERE id="'.$this->post_user->id.'" LIMIT 1');
+				$this->network->get_user_by_id($this->post_user->id, TRUE);
 				if( $this->post_group ) {
 					$this->db2->query('UPDATE groups SET num_posts=num_posts-1 WHERE id="'.$this->post_group->id.'" LIMIT 1');
+					$this->network->get_group_by_id($this->post_group->id, TRUE);
 				}
 			}
 			
