@@ -20,55 +20,27 @@
 		if( $p->error ) {
 			exit;
 		}
-		$tmp	= $p->post_attached; 
-		if( $this->param('tp')=='image' ) {
-			if( ! isset($tmp['image']) ) {
-				exit;
-			}
-			$tmp	= $tmp['image'][$attid];
-			$file	= $C->IMG_DIR.'attachments/'.$this->network->id.'/'.$tmp->file_original;
-			if( ! file_exists($file) ) {
-				exit;
-			}
-			$cnttype	= 'application/octet-stream';
-			list($w, $h, $tp)	= getimagesize($file);
-			if( $tp && $tp = image_type_to_mime_type($tp) ) {
-				$cnttype	= $tp;
-			}
-			header('Content-Description: File Transfer');
-			header('Content-type: '.$cnttype);
-			header('Content-Disposition: attachment; filename="'.$tmp->title.'"');
-			header('Content-Transfer-Encoding: binary');
-			header('Expires: 0');
-			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-			header('Pragma: public');
-			if(stripos($_SERVER['HTTP_USER_AGENT'], 'Chrome') === false){
-			   	header('Content-Length: '.filesize($file));
-			}
-			readfile($file);
+		$tmp	= $p->post_attached;
+		if( ! isset($tmp['file']) ) {
+			exit;
 		}
-		else {
-			if( ! isset($tmp['file']) ) {
-				exit;
-			}
-			
-			$tmp	= $tmp['file'][$attid]; //print_r($tmp); exit;
-			$file	= $C->STORAGE_DIR.'attachments/'.$this->network->id.'/'.$tmp->file_original;
-			if( ! file_exists($file) ) {
-				exit;
-			}
-			header('Content-Description: File Transfer');
-			header('Content-type: application/octet-stream');
-			header('Content-Disposition: attachment; filename="'.$tmp->file_original.'"');
-			header('Content-Transfer-Encoding: binary');
-			header('Expires: 0');
-			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-			header('Pragma: public');
-			if(stripos($_SERVER['HTTP_USER_AGENT'], 'Chrome') === false){
-			   	header('Content-Length: '.filesize($file));
-			}
-			readfile($file);
+
+		$tmp	= $tmp['file'][$attid]; //print_r($tmp); exit;
+		$file	= $C->STORAGE_DIR.'attachments/'.$this->network->id.'/'.$tmp->file_original;
+		if( ! file_exists($file) ) {
+			exit;
 		}
+		header('Content-Description: File Transfer');
+		header('Content-type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.$tmp->file_original.'"');
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		if(stripos($_SERVER['HTTP_USER_AGENT'], 'Chrome') === false){
+		   	header('Content-Length: '.filesize($file));
+		}
+		readfile($file);
 		exit;
 	}
 	

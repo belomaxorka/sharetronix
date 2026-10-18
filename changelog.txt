@@ -182,6 +182,12 @@
 	  Configurations that still set $C->CACHE_MECHANISM = 'mysqlheap' now use the file cache in
 	  system/cache/; 'memcached' and 'redis' remain available. The unused cache table is left in
 	  place.
+	* Removed the image branch of the file download route (getfile/.../tp:image/... and its mobile
+	  copy). It looked for the image under $C->IMG_DIR, which 3.x no longer defines, so it never
+	  sent anything and only logged a warning, and no page links to it. The tp parameter is now
+	  ignored. Plugin and theme authors who built such links should link to the image under
+	  storage/attachments/ instead. File downloads (pid:.../attid:N and tmpid:.../attid:N) are
+	  unchanged.
 
 Sharetronix 3.6.2
 	* Bug fixes
