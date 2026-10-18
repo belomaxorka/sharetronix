@@ -257,6 +257,9 @@
 	  shows the query and the error, now HTML-escaped.
 	* Restored the "Cannot connect" and "Database does not exist" messages of installer step 2 on
 	  PHP 8.1+. A wrong database password or name showed a fatal error with a stack trace instead.
+	* Kept a higher or unlimited PHP memory limit in the cron worker. The worker set memory_limit to
+	  64 MB on every run, which lowered the 128 MB default and any larger server setting; it now
+	  only raises a lower limit to 64 MB.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

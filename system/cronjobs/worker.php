@@ -31,7 +31,17 @@
 		ini_set( 'display_errors', '1' );
 	}
 	ini_set( 'max_execution_time',	10*60 );
-	ini_set( 'memory_limit',	64*1024*1024 );
+	// Raise the memory limit to 64 MB, but keep a higher (or unlimited) server setting.
+	$memory_limit	= trim(ini_get('memory_limit'));
+	$memory_bytes	= intval($memory_limit);
+	switch( strtoupper(substr($memory_limit, -1)) ) {
+		case 'G':	$memory_bytes	*= 1024;
+		case 'M':	$memory_bytes	*= 1024;
+		case 'K':	$memory_bytes	*= 1024;
+	}
+	if( $memory_bytes >= 0 && $memory_bytes < 64*1024*1024 ) {
+		ini_set( 'memory_limit',	64*1024*1024 );
+	}
 	
 	$r	= $db1->query('SELECT * FROM crons WHERE is_running=1 AND next_run<"'.(time()-3*60*60).'" ');
 	while( $obj = $db1->fetch_object($r) ) {
