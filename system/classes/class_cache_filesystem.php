@@ -112,6 +112,9 @@
 			$prefixlen	= strlen($prefix);
 			$time	= microtime(TRUE);
 			$dir	= opendir($this->path);
+			if( ! $dir ) {
+				return 0;
+			}
 			$i	= 0;
 			while($filename = readdir($dir)) {
 				if($filename=="." || $filename=="..") {
@@ -121,7 +124,11 @@
 					continue;
 				}
 				$file	= $this->path.'/'.$filename;
-				$fp	= fopen($file, 'r');
+				// A request may delete an expired entry while this runs; a missing file is not an error.
+				$fp	= @fopen($file, 'r');
+				if( ! $fp ) {
+					continue;
+				}
 				$tm	= fread($fp, 10);
 				fclose($fp);
 				if( intval($tm) <= time() && is_writable($file) ) {
@@ -129,6 +136,7 @@
 					$i	++;
 				}
 			}
+			closedir($dir);
 			if( $this->debug_mode ) {
 				$time	= microtime(TRUE)-$time;
 				$this->debug_info->time	+= $time;

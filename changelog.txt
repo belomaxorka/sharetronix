@@ -298,6 +298,11 @@
 	  opens from a small "Debug" link at the bottom right of the page, because browsers block the
 	  window it used to open by itself when the page loaded. The console window also renders in
 	  standards mode and no longer shows an empty "Assigned template variables" section.
+	* Kept the hourly file cache cleanup running when an entry disappears during the scan. Requests
+	  delete expired entries themselves, so the cleanup could list a file that was gone when it
+	  opened it; on PHP 8 this stopped the cron run with a TypeError and left its running flag set.
+	  The cleanup now skips such entries, returns when the cache directory cannot be opened, and
+	  closes the directory.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
