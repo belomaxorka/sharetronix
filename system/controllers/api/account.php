@@ -354,10 +354,12 @@
 		if(!$error){	
 			$old	= $user->info->avatar;
 			if( $old != $C->DEF_AVATAR_USER ) {
-				rm( $C->IMG_DIR.'avatars/'.$old );
-				rm( $C->IMG_DIR.'avatars/thumbs1/'.$old );
-				rm( $C->IMG_DIR.'avatars/thumbs2/'.$old );
-				rm( $C->IMG_DIR.'avatars/thumbs3/'.$old );
+				rm( $C->STORAGE_DIR.'avatars/'.$old );
+				rm( $C->STORAGE_DIR.'avatars/thumbs1/'.$old );
+				rm( $C->STORAGE_DIR.'avatars/thumbs2/'.$old );
+				rm( $C->STORAGE_DIR.'avatars/thumbs3/'.$old );
+				rm( $C->STORAGE_DIR.'avatars/thumbs4/'.$old );
+				rm( $C->STORAGE_DIR.'avatars/thumbs5/'.$old );
 			}
 			$this->db2->query('UPDATE users SET avatar="'.$this->db2->escape($fn).'" WHERE id="'.intval($this->db2->e($user->id)).'" LIMIT 1');
 			$network->get_user_by_id($user->id, TRUE);

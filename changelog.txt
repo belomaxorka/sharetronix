@@ -139,6 +139,11 @@
 	  storage directory. The logo resized for the new theme is remembered for that theme instead of
 	  under a setting named after the file, and a theme without a logo height still falls back to
 	  the default logo.
+	* Deleted the old avatar files when the API replaces an avatar (account/update_profile_image).
+	  The handler removed them under $C->IMG_DIR, which 3.x no longer defines, and skipped two of
+	  the five thumbnail sizes; it now removes all of them from the storage directory, like the
+	  avatar settings page. The account API itself still stops earlier, because it requires the
+	  missing classes/class_rssfeed.php.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
