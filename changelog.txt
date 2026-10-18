@@ -241,6 +241,16 @@
 	  of old notifications and request tokens, clearing of the cached page HTML and temporary files)
 	  did not run while such a user existed, and their running flags stayed set. On PHP 7 this
 	  happened without a log entry.
+	* Handled database errors the same way on every PHP version. On PHP 7 a failed connection or
+	  query ended the request with an empty page, HTTP 200 and nothing in the log. Since PHP 8.1,
+	  where mysqli throws exceptions by default, the same failure ended in an uncaught
+	  mysqli_sql_exception instead, which servers that display errors showed with a stack trace,
+	  file paths and the database user. The database layer now turns mysqli exceptions off, answers
+	  HTTP 500, logs one line with the MySQL error, the start of the query and the calling file, and
+	  exits with status 1, so a failed cron run is visible to the cron daemon. Debug mode still
+	  shows the query and the error, now HTML-escaped.
+	* Restored the "Cannot connect" and "Database does not exist" messages of installer step 2 on
+	  PHP 8.1+. A wrong database password or name showed a fatal error with a stack trace instead.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

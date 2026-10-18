@@ -28,6 +28,8 @@
 			$this->ext	= 'mysql';
 			if( isset($GLOBALS['C']) && isset($GLOBALS['C']->DB_MYEXT) && $GLOBALS['C']->DB_MYEXT=='mysqli' && function_exists('mysqli_connect') ) {
 				$this->ext	= 'mysqli';
+				// PHP 8.1+ throws mysqli exceptions by default; this class checks the return values.
+				mysqli_report(MYSQLI_REPORT_OFF);
 			}
 			$this->disconnect_on_descruct	= TRUE;
 		}
@@ -171,13 +173,28 @@
 		
 		private function fatal_error($query) {
 			$this->fatal_error	= TRUE;
-			$error	= $this->ext=='mysqli' ? mysqli_error($this->connection) : mysql_error($this->connection);
-			if($this->debug_mode) {
-				echo 'MySQL Query: '.$query.'<br />';
-				echo 'MySQL Error: '.$error.'<br />';
-				exit;
+			if( $this->connection ) {
+				$error	= $this->ext=='mysqli' ? mysqli_error($this->connection) : mysql_error($this->connection);
 			}
-			exit;
+			else {
+				$error	= $this->ext=='mysqli' ? mysqli_connect_error() : mysql_error();
+			}
+			$caller	= '';
+			foreach( debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame ) {
+				if( isset($frame['file']) && $frame['file'] != __FILE__ ) {
+					$caller	= ' in '.$frame['file'].':'.$frame['line'];
+					break;
+				}
+			}
+			error_log('Sharetronix MySQL error: '.trim(preg_replace('/\s+/', ' ', $error)).' | Query: '.substr(preg_replace('/\s+/', ' ', $query), 0, 100).$caller);
+			if( ! headers_sent() ) {
+				header('HTTP/1.1 500 Internal Server Error');
+			}
+			if($this->debug_mode) {
+				echo 'MySQL Query: '.htmlspecialchars($query, ENT_QUOTES, 'UTF-8').'<br />';
+				echo 'MySQL Error: '.htmlspecialchars($error, ENT_QUOTES, 'UTF-8').'<br />';
+			}
+			exit(1);
 			//return FALSE;
 		}
 		
