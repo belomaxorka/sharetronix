@@ -4,6 +4,8 @@
 
 A maintained fork of Sharetronix **3.6.2**, a PHP platform for microblogging and social networking.
 
+See the [changelog](CHANGELOG.md) for release history.
+
 ## Source layout
 
 - `index.php`, `.htaccess`, `web.config` — application entry point and server configuration.
