@@ -41,6 +41,10 @@
 		protected $params;
 		protected $page;
 		
+		public function __construct($user, &$tpl, &$params) {
+			$this->AdminLanguages($user, $tpl, $params);
+		}
+
 		public function AdminLanguages($user, &$tpl, &$params){
 			global $db1;
 			$this->db = &$db1;

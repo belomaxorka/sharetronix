@@ -7,6 +7,11 @@
 		protected $tpl;
 		protected $params;
 	
+		public function __construct($user, &$tpl, &$params)
+		{
+			$this->AdminPlugins($user, $tpl, $params);
+		}
+
 		public function AdminPlugins($user, &$tpl, &$params)
 		{
 	

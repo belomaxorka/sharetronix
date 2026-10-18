@@ -16,6 +16,7 @@ Release history for Sharetronix, with the latest changes first.
 - Replaced the removed `create_function()` callback in post URL rendering with a closure, retaining link markup, punctuation, and escaping.
 - Rendered older-post and profile-information dates without deprecated `strftime()`, preserving the bundled English percent-format strings and PHP timezone.
 - Declared the feed polling cursor used by background activity checks, removing a PHP 8.4 warning observed in the browser.
+- Restored administrator plugin/language controller initialization on PHP 8 while preserving legacy initializer calls and reference arguments.
 - Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
 - Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
 - Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
