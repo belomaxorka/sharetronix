@@ -2,24 +2,25 @@
 
 The goal is to keep Sharetronix usable and maintainable as an evolution of the existing platform. Work starts with reproducible installation and observable behavior, then proceeds through focused fixes and runtime modernization.
 
-All items below are planned. Documentation alone does not establish that the application runs or that a PHP version is supported. Release-blocking defects can be fixed as soon as they are reproduced, without waiting for every earlier checklist item.
+Checked items have recorded implementation or verification; remaining items are planned. Documentation alone does not establish that the application runs or that a PHP version is supported. Release-blocking defects can be fixed as soon as they are reproduced, without waiting for every earlier checklist item.
 
 ## Starting point
 
 - The installer declares Apache with `mod_rewrite`, PHP 5.2+, MySQL 5.0+, GD, short open tags, and cURL or URL fopen support. These are historical requirements, not a current support policy.
 - `system/classes/class_mysql.php` contains both `mysql_*` and `mysqli_*` paths. Its existing interface is a useful boundary for database compatibility work.
-- There is no project-level automated test suite, CI workflow, or versioned local development stack yet. Bundled library examples and installer rewrite fixtures are not an application test suite.
-- Clean installation, upgrades, and core user flows on modern PHP/database releases still need verification.
+- A [Windows diagnostic stack](docs/LOCAL_DEVELOPMENT.md) and a 15-check HTTP smoke script now establish an initial baseline. CI and broader automated coverage remain to be added; bundled library examples are not application tests.
+- The [initial run](docs/test-runs/2026-10-18-baseline.md) covers fresh installation, core browser flows, and backup/restore on PHP 7.2/MySQL 5.7. Upgrades and compatibility with modern releases remain unverified or blocked.
 
 ## 1. Reproducible local installation
 
-- [ ] Inventory required PHP extensions, settings, writable directories, background tasks, and external services from the code and installer.
-- [ ] Add a versioned local Apache/PHP/database stack, preferably with Docker Compose. Pin exact working versions and document startup, shutdown, logs, and reset commands.
-- [ ] Establish a diagnostic baseline for existing behavior. If a historical runtime is necessary, keep it confined to a disposable local environment; it does not become a production support target.
-- [ ] Route email to a local capture service and use synthetic accounts and uploads. Stub or disable external integrations explicitly and record which are unavailable.
-- [ ] Complete a fresh installation through `/install/`, including configuration creation, database setup, rewrite rules, permissions, and the first administrator login.
-- [ ] Record the environment and failures using [docs/TESTING.md](docs/TESTING.md). Create reproducible issues for blockers, including stale external-service dependencies.
-- [ ] Document and verify backup and restore of configuration, database, and uploaded files.
+- [x] Inventory initial PHP extensions, settings, writable directories, background tasks, and external dependencies from the code and installer; findings are in the baseline documentation.
+- [x] Add a versioned local Apache/PHP/database stack with pinned versions and documented startup, shutdown, logs, and reset commands. The initial implementation uses native Windows modules already available on the development host.
+- [x] Establish a local diagnostic baseline for existing behavior without declaring its historical runtime a production support target.
+- [x] Capture email locally, use synthetic accounts/uploads, and disable RPC pings.
+- [ ] Stub or remove the remaining retired external dependencies, including the cron version check, before enabling recurring background runs.
+- [x] Complete `/install/`, database setup, rewrite checks, writable-path checks, and first administrator login, with local workarounds explicitly recorded.
+- [x] Record the environment, test results, and reproducible blocker reports in [the baseline report](docs/test-runs/2026-10-18-baseline.md).
+- [x] Document and verify backup and restore of configuration, database, and storage for the baseline installation.
 
 **Completion:** another contributor can start from a clean checkout, follow the documented commands, install the application, sign in, create a post, and reset the test environment. Exact versions and remaining limitations are recorded.
 

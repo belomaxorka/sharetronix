@@ -26,6 +26,8 @@
 !/storage/avatars/**/_NOAVATAR.gif
 
 # Local configuration and editor files.
+/.local/
+/.local-archive-*/
 .env
 .env.*
 !.env.example

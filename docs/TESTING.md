@@ -1,6 +1,6 @@
 # Testing Sharetronix
 
-This is the initial verification plan. It does not record a completed test run. There is no project-level automated test harness or reproducible local stack yet; establishing them is the first part of [ROADMAP.md](../ROADMAP.md).
+This document describes the verification plan. Use [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for the Windows diagnostic stack and the 15-check HTTP smoke script. The [2026-10-18 baseline report](test-runs/2026-10-18-baseline.md) records completed checks and known defects; the scenarios below are not all covered by that run. Broader automated tests and CI remain part of [ROADMAP.md](../ROADMAP.md).
 
 ## Environment and evidence
 
