@@ -53,6 +53,20 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 
 `$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, or `redis`. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the extension the file cache is used; while the Redis server is unreachable, pages are served without the cache.
 
+## Debugging
+
+Debug mode is enabled for client IP addresses listed in `system/conf_main.php`:
+
+```php
+$C->DEBUG_USERS = array('203.0.113.10');
+```
+
+Requests from these addresses display PHP errors of all levels and, when a database query fails, the query and the MySQL error. For everyone else the application turns `display_errors` off, whatever `php.ini` says, so errors only go to the PHP error log. The installer (`/install/`) always displays errors. The address is the one PHP receives as `REMOTE_ADDR`: behind a reverse proxy or CDN this is the proxy's address, and listing it enables debug mode for every visitor; a browser on the server itself may connect as `::1` rather than `127.0.0.1`. Do not leave debug mode enabled on a production site.
+
+With `$C->DEBUG_CONSOLE = TRUE;` pages in debug mode show a small **Debug** link at the bottom right. It opens a window with the page generation time, memory use, and every SQL query and cache call of the request.
+
+Failed database queries, failed e-mail deliveries, and service answers that cannot be encoded are logged as lines starting with `Sharetronix`. Make sure `log_errors` is on and `error_log` points to a file you can read. The command-line cron worker also prints errors to its output.
+
 ## Upgrading
 
 1. Back up the database, `system/conf_main.php`, and `storage/`, and make sure the backup can be restored.
@@ -60,6 +74,8 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 3. Replace the application files with the new version: delete the old files instead of copying the new ones over them, but keep `system/conf_main.php`, `storage/`, and any themes, plugins, or languages you installed. Files that a release removes must not stay behind; for example, a left-over `system/cronjobs/php_6h/7-clean_request_tokens.php` from 3.6.2 stops the cron worker once the 3.6.3 updater has dropped the OAuth tables.
 4. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
 5. Clear `system/cache/` and `system/cache_html/`, or wait until cached data expires (one hour by default) and the daily cron job clears the cached page HTML.
+
+Outside debug mode, PHP errors are no longer displayed to visitors, even when `display_errors` is on in `php.ini`. To see them in the browser, add your address to `$C->DEBUG_USERS` (see [Debugging](#debugging)).
 
 The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM` to `'apc'` or `'mysqlheap'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'redis'` remain available.
 
