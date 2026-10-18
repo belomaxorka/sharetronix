@@ -8,9 +8,11 @@ Release history for Sharetronix, with the latest changes first.
 
 - Restricted post attachment uploads to an allowlisted set of extensions, required an authenticated session for the attachment service, and stored uploads under a single safe extension derived server-side. This closes an unauthenticated remote code execution path where a guest could upload a `.php` file into the web-served `storage/` tree and execute it on PHP-FPM or `AllowOverride None` servers, and the equivalent extension-controlled path in the API. Rejected `.svg` and other active-markup uploads that could run as same-origin script. The allowlist is configurable through `$C->ATTACH_ALLOWED_EXTENSIONS`.
 - Hardened `storage/.htaccess` to deny direct execution and serving of scripts and active markup (including `.svg`, `.phar`, `.phtml`) regardless of the handler, covering PHP-FPM deployments where the previous `RemoveHandler` directives had no effect. Reduced uploaded temporary-file permissions from world-writable to `0644`.
+- Rejected missing or malformed Twitter account ids before looking up a linked account. Accounts that never linked Twitter store an empty `twitter_uid`, so a failed or empty Twitter profile response previously matched the first such account (normally the administrator) and signed the visitor in without a password. Lookups now accept only numeric ids, escape them, and the Twitter callback stops when no profile id is returned.
 
 ### Fixed
 
+- Redirected signed-in users returning from the Twitter callback without a linked account through the page object instead of an undefined `$this`, which previously caused a fatal error.
 - Corrected template and form signatures with optional parameters before required arguments, keeping their existing positional/reference contracts on PHP 8.4.
 - Declared existing runtime properties in core, rendering, activity, and notification classes to avoid PHP 8.2+ dynamic-property diagnostics while preserving public state and serialized references.
 - Kept all-error reporting enabled without referencing the deprecated `E_STRICT` constant; cron regressions now inspect both process output and private PHP logs on PHP 7.2/8.4.

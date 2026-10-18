@@ -175,6 +175,9 @@
 		if (isset($_REQUEST['oauth_verifier'])) {
 		
 			$profile = $twitter->get_profile($_REQUEST['oauth_verifier']);
+			if( ! is_object($profile) || empty($profile->id) ) {
+				return FALSE;
+			}
 			$exists = $user->get_user_by_twitter_uid($profile->id);
 		
 			if (isset($exists->id)) {
@@ -185,7 +188,7 @@
 			} else {
 		
 				if ($user->is_logged && isset($user->info)) {
-					$this->redirect('dashboard');
+					$page->redirect('dashboard');
 				}
 		
 				if( isset($profile->id, $profile->name, $profile->screen_name) ){		

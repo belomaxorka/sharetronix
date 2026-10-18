@@ -434,7 +434,12 @@
 		
 		public function get_user_by_twitter_uid($uid)
 		{
-			$r	= $this->db2->query('SELECT * FROM users WHERE twitter_uid="'.$uid.'" LIMIT 1', FALSE);
+			// Accounts without a linked Twitter id store an empty twitter_uid; never match those.
+			$uid	= is_scalar($uid)? trim((string) $uid) : '';
+			if( ! preg_match('/^[0-9]+$/', $uid) ) {
+				return FALSE;
+			}
+			$r	= $this->db2->query('SELECT * FROM users WHERE twitter_uid="'.$this->db2->e($uid).'" LIMIT 1', FALSE);
 				
 			if($o = $this->db2->fetch_object($r)) {
 				return $o;
