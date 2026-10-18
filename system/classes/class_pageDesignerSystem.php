@@ -22,7 +22,7 @@
 				}
 				
 				//@TODO: use createMenuLink() method for this menu type
-				$item['url'] 	= ( strpos($item['url'], 'http://') === FALSE )? 'http://'.$item['url'] : $item['url'];
+				$item['url'] 	= ( strpos($item['url'], 'http://') === FALSE && strpos($item['url'], 'https://') === FALSE )? 'http://'.$item['url'] : $item['url'];
 				$target_blank 	= ( strpos($item['url'], $C->SITE_URL) === FALSE )? ' target="_blank" ' : '';
 				
 				$html .= '<li><a href="'. $item['url'] .'" '. (isset($item['css_class'])? 'class="'.$item['css_class'].'"' : '') .$data_attr.$target_blank.'>'. $item['text'] .'</a></li>';

@@ -101,6 +101,8 @@
 	  PHP 8.1 and later the same happened to an apostrophe before a closing parenthesis.
 	* Recognized links whose scheme is written in capitals, such as HTTPS://, in posts and comments;
 	  the link pattern already ignored case, but the check in front of it did not.
+	* Kept https:// addresses in the group settings menu. On HTTPS sites its Invite and Settings
+	  links pointed to http://https://...
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
