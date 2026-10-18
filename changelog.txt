@@ -119,6 +119,9 @@
 	* Declared the extension-name property of the memcached cache driver, removing the PHP 8.2+
 	  "Creation of dynamic property" deprecation logged on every request and cron run that used
 	  memcached.
+	* Passed integers to rand() when the HTTP cron reschedules jobs stuck for more than six hours.
+	  rand(0.5, 1.5) already behaved as rand(0, 1), but logged two "Implicit conversion from float"
+	  deprecations per job on PHP 8.1+.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

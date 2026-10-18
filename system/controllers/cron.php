@@ -35,7 +35,7 @@
 	$i	= 0;
 	$res	= $db->query('SELECT cron, last_run FROM crons WHERE is_running=1 AND last_run<"'.(time()-6*60*60).'" ');
 	while( $obj = $db->fetch_object($res) ) {
-		$tmp	= time() + $i*5*60*rand(0.5,1.5);
+		$tmp	= time() + $i*5*60*rand(0,1);
 		$tmp	= round($tmp);
 		$db->query('UPDATE crons SET is_running=0, next_run="'.$tmp.'" WHERE cron="'.$obj->cron.'" LIMIT 1');
 		$i	++;
