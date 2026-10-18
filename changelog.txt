@@ -216,6 +216,9 @@
 	* Shortened long link text in posts and comments as it is displayed. The text was measured and
 	  cut in its HTML-escaped form, so &amp; counted as five characters and a cut could fall inside
 	  an entity, leaving fragments such as "&amp" or "p;b=2" in the post.
+	* Kept the Leave item of the group settings menu as a script link (href="#"). The menu prefixed
+	  it with http:// and opened it in a new window like an off-site link, so opening it in a new
+	  tab, or without JavaScript, led to the invalid address http://#.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
