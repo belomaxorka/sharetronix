@@ -231,6 +231,10 @@
 	  answered with a redirect to the mobile dashboard: with a 3.x theme package, one mobile page
 	  view cost 15 more page renders and loaded none of the scripts. Sites serving mobile pages from
 	  an m. subdomain loaded the desktop theme scripts there; they no longer do.
+	* Wrote valid JSON for API answers that carry a text with a line break, a tab, a backslash or
+	  a quote: account/verify_credentials (it includes the user's latest post), the status
+	  timelines and every other answer that TwitterData builds. Such values were only HTML-escaped,
+	  so a single multi-line post made the whole answer unparseable. Ordinary text is unchanged.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

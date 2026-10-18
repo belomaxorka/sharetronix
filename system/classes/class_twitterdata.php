@@ -136,7 +136,7 @@ class TwitterData
 			{			
 				$answer .= '"created_at": "'.gmdate('D M d H:i:s \+0000 Y', $status->date).'",';
 				$answer .= '"id": '.$status->id.',';
-				$answer .= '"text": "'.htmlspecialchars($status->message).'",';	
+				$answer .= '"text": "'.$this->json_string(htmlspecialchars($status->message)).'",';	
 				$answer .= '"source": "web",';
 				$answer .= '"truncated": false,';
 				$answer .= '"in_reply_to_status_id": null,';
@@ -225,10 +225,10 @@ class TwitterData
 			elseif($this->format == 'json')
 			{			
 				$answer .= '"id": '.$u->id.',';
-				$answer .= '"name": "'.htmlspecialchars($u->fullname).'",';
-				$answer .= '"screen_name": "'.htmlspecialchars($u->username).'",';
-				$answer .= '"location": "'.htmlspecialchars($u->location).'",';
-				$answer .= '"description": "'.htmlspecialchars($u->about_me).'",';
+				$answer .= '"name": "'.$this->json_string(htmlspecialchars($u->fullname)).'",';
+				$answer .= '"screen_name": "'.$this->json_string(htmlspecialchars($u->username)).'",';
+				$answer .= '"location": "'.$this->json_string(htmlspecialchars($u->location)).'",';
+				$answer .= '"description": "'.$this->json_string(htmlspecialchars($u->about_me)).'",';
 				$answer .= '"profile_image_url": "'.$img_path.$img_check.'",';
 				$answer .= '"url": null,';
 				$answer .= '"protected": false,';
@@ -244,7 +244,7 @@ class TwitterData
 				$answer .= '"created_at": "'.gmdate('D M d H:i:s \+0000 Y',$u->reg_date).'",';
 				$answer .= '"favourites_count": "'.$favorites.'",';
 				$answer .= '"utc_offset": null,';
-				$answer .= '"timezone": "'.htmlspecialchars($u->timezone).'",';
+				$answer .= '"timezone": "'.$this->json_string(htmlspecialchars($u->timezone)).'",';
 				$answer .= '"profile_background_image_url": false,';
 				$answer .= '"statuses_count": '.$u->num_posts.',';
 				$answer .= '"language": "en",';
@@ -289,12 +289,19 @@ class TwitterData
 			return $answer;
 		}
 	
+		private function json_string($value)
+		{
+			// The inside of a JSON string, with line breaks, tabs, backslashes and quotes escaped. The
+			// HTML escaping that the API has always applied to most values is left to the callers.
+			return substr(json_encode((string) $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), 1, -1);
+		}
+		
 		public function data_field($field_name, $field_value, $comma = TRUE, $is_string = TRUE)
 		{
 			$check = ($comma)?',':'';
 			
 			if($this->format == 'xml' || $this->format == 'rss' || $this->format == 'atom') $field = '<'.$field_name.'>'.$field_value.'</'.$field_name.'>';
-			elseif($this->format == 'json' && $is_string) $field = '"'.$field_name.'": "'.$field_value.'"'.$check;
+			elseif($this->format == 'json' && $is_string) $field = '"'.$field_name.'": "'.$this->json_string($field_value).'"'.$check;
 			elseif($this->format == 'json' && !$is_string) $field = '"'.$field_name.'": '.$field_value.$check;
 	
 			return $field;
