@@ -54,6 +54,7 @@ The initial migration target is **PHP 8.4**, followed by **PHP 8.5** in the veri
 - [ ] Make the existing database wrapper work reliably with `mysqli`, remove the obsolete `mysql_*` dependency, and verify its return values and error behavior against existing callers.
 - [ ] Update installer checks and setup requirements to match the tested runtime and required extensions. Remove reliance on short tags through a focused, separately verified change if needed.
 - [ ] Check bundled dependencies and session, mail, image, upload, cache, and network operations on each target PHP version.
+- [x] Verify fresh setup, current-version updater authorization, and core scenarios on PHP 8.4 with the diagnostic MySQL baseline. The [PHP 8.4 report](docs/test-runs/2026-10-18-php84.md) records 70 integration checks, private messages/avatar uploads, browser checks, and clean logs; older-version migrations and untested integrations remain open.
 - [ ] Select and pin a maintained database release after compatibility testing. Verify installation SQL, queries, SQL modes, indexes, and upgrade scripts. Test MySQL and MariaDB separately before claiming support for both.
 - [ ] Treat any charset/collation or schema modernization as an explicit migration with backup, data-integrity checks, and a tested restore procedure.
 - [ ] Compare core behavior with the diagnostic baseline and run the same regression scenarios on every supported PHP/database combination. Do not retain obsolete PHP compatibility at the expense of the supported targets.

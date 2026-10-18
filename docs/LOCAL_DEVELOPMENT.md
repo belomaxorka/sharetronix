@@ -12,7 +12,7 @@ Use Windows, Git, and PowerShell 7 with the following existing Open Server modul
 | `PHP-7.2` | PHP 7.2.34 NTS, MSVC15 x64, build 2025-09-21 |
 | `MySQL-5.7` | MySQL Community Server 5.7.44, Win64 |
 | `Mailpit` | Mailpit 1.29.3, windows/amd64 |
-| `PHP-8.4` (optional compatibility probe) | PHP 8.4.19 NTS x64 |
+| `PHP-8.4` (compatibility runtime) | PHP 8.4.19 NTS x64 |
 
 Startup checks these version pins. Use `-RuntimeRoot 'D:\path\to\modules'` if the same modules are installed elsewhere. Changing a runtime pin requires another recorded verification run.
 
@@ -112,4 +112,6 @@ The initial run verified all 48 table checksums, 23 storage files, and the confi
 
 Logs are in `.local/logs/`; configuration, sessions, dumps, and captured email also remain under `.local`. Do not add these files to Git or paste unsanitized diagnostics into reports. Public test reports should contain synthetic examples, relative source paths, and summarized evidence.
 
-To probe modern PHP separately, stop the stack, run `scripts/dev.ps1 Start -PhpVersion 8.4`, and request `/`. After the focused syntax fixes, the homepage and 15 HTTP smoke checks passed, but PHP 8.4 deprecations and unverified flows remain; see the follow-up fix report. Stop it and start with the default PHP 7.2 again for the diagnostic baseline. This probe does not establish complete PHP 8.4 support.
+Run `tests/installer.ps1 -PhpVersion 8.4` for a fresh, separate site/database with its own PHP 8.4 process on port 9074; it does not require switching the main stack. The 70-check integration suite requires clean PHP logs. Run `tests/cron-worker.ps1 -PhpVersion 8.4` afterward for the disposable fixture's full worker cycle and repeat. Both scripts also accept PHP 7.2 for behavior comparisons and use matching extension/configuration paths regardless of the main stack's runtime.
+
+For the ordinary development site, stop the stack and run `scripts/dev.ps1 Start -PhpVersion 8.4`, then `scripts/smoke-local.ps1` and `tests/response-output.ps1`. The PHP 8.4 run passed those checks and the browser scenarios recorded in the [PHP 8.4 report](test-runs/2026-10-18-php84.md). The default startup version remains PHP 7.2 for the historical baseline; select 8.4 explicitly. Neither a completed local test run nor this diagnostic MySQL version establishes a production support policy for all integrations.

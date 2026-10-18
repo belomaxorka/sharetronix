@@ -41,7 +41,7 @@ $phpConfig = "$testRoot/cron-php$PhpVersion.ini"
 $phpLog = "$testRoot/logs/cron-php$PhpVersion-$([guid]::NewGuid().ToString('N')).log"
 $phpIni = [IO.File]::ReadAllText("$stateRoot/php.ini")
 $phpIni = [regex]::Replace($phpIni, 'extension_dir=.*', "extension_dir=`"C:/OSPanel/modules/PHP-$PhpVersion/ext`"")
-$phpIni = $phpIni.Replace('php_gd2.dll', $(if ($PhpVersion -eq '8.4') { 'php_gd.dll' } else { 'php_gd2.dll' }))
+$phpIni = [regex]::Replace($phpIni, 'extension=php_gd2?\.dll', $(if ($PhpVersion -eq '8.4') { 'extension=php_gd.dll' } else { 'extension=php_gd2.dll' }))
 $phpIni = [regex]::Replace($phpIni, 'error_log=.*', ('error_log="' + $phpLog.Replace('\', '/') + '"'))
 [IO.File]::WriteAllText($phpConfig, $phpIni, [Text.UTF8Encoding]::new($false))
 $output = & $phpExecutable -c $phpConfig "$testRoot/run-worker.php" 2>&1
