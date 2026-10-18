@@ -14,6 +14,7 @@ Release history for Sharetronix, with the latest changes first.
 - Corrected request-token expiry to use the existing database column, allowing cron processing to continue past token cleanup.
 - Replaced removed curly-brace string offsets in core redirects/password generation and bundled CAPTCHA/audio code, restoring PHP 8.4 parsing.
 - Removed a daily-maintenance query against the deleted RSS table, allowing database optimization to complete with the current schema.
+- Corrected daily temporary-file cleanup to use the private directory rather than the worker's current directory, preserving placeholders and subdirectories.
 
 ### Added
 

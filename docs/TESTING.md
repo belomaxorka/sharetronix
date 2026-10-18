@@ -45,6 +45,7 @@ With the Windows local stack running, use its PHP configuration for the focused 
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\token-expiry.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -n tests\php-offsets.php
 & C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\daily-database.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -n tests\daily-cache-cleanup.php
 .\tests\php-syntax.ps1
 .\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
 .\tests\response-output.ps1
