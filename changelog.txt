@@ -169,6 +169,9 @@
 	* Answered account API profile updates (update_profile) with the updated profile. The cached
 	  user was refreshed only after the answer had been built from it, so clients received the
 	  values from before the change.
+	* Linked API user avatars (profile_image_url) to the storage directory. The API still built them
+	  from the 2.x upload directory i/, which 3.x no longer has, so the link answered an HTML page
+	  instead of the image.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -155,7 +155,7 @@ class TwitterData
 		public function print_user($id)
 		{
 			global $network, $db2, $C;
-			$img_path = $C->SITE_URL.'i/avatars/thumbs1/';
+			$img_path = $C->STORAGE_URL.'avatars/thumbs1/';
 			
 			$u = $network->get_user_by_id($id);
 			
