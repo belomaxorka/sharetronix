@@ -1,6 +1,8 @@
 <?php
 	class pageDesignerMobile extends pageDesigner
 	{
+		public $system_files;
+
 		public function __call($method, $args)
 		{
 			if( !method_exists($this,$method) ){

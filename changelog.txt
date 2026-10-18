@@ -106,6 +106,8 @@
 	* Built RSS avatar addresses from the storage URL. The feed read the $C->IMG_URL setting, which
 	  no longer exists, so avatar images had no host and each entry logged an undefined-property
 	  warning.
+	* Declared pageDesignerMobile::$system_files, removing a PHP 8.2+ dynamic-property deprecation
+	  on mobile pages.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
