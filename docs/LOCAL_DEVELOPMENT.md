@@ -68,7 +68,7 @@ The fixture script creates `qausera` and `qauserb` with random passwords in `.lo
 
 The HTTP smoke script checks 15 authentication, session, profile-access, and administration boundaries with independent sessions. Results are written to `.local/http-smoke-results.json`. Use [TESTING.md](TESTING.md) for browser scenarios such as posting, groups, privacy, and uploads.
 
-Email from the Windows PHP `mail()` function is delivered to the dedicated Mailpit instance. No SMTP relay is configured. Use synthetic addresses only. RPC pings are disabled; other retired external integrations have not been comprehensively stubbed. Do not enable a recurring cron task yet: the initial worker check exposed a broken temporary-directory setting and an unconditional legacy version-check request. The original worker instructions are in `system/cronjobs/readme.txt`; findings are in the test report.
+Email from the Windows PHP `mail()` function is delivered to the dedicated Mailpit instance. No SMTP relay is configured. Use synthetic addresses only. RPC pings are disabled; other retired external integrations have not been comprehensively stubbed. The private temporary-directory cleanup has regression coverage, but a recurring cron task is not enabled while the legacy version-check dependency is being addressed. The original worker instructions are in `system/cronjobs/readme.txt`; findings and fixes are in the test reports.
 
 ## Stop, synchronize, and reset
 
