@@ -29,6 +29,11 @@
 	  and no longer echoes a raw name back into the registration form; the installer escapes the
 	  administrator's name the same way. The 3.6.3 updater entry rewrites names that earlier
 	  registrations stored raw, leaves already-escaped names unchanged, and can be repeated safely.
+	* Escaped attachment file names where they are shown. A file keeps the name its uploader gave
+	  it (the browser's file name, or the file_type of the API statuses/update), and the post view
+	  printed it unescaped in the download link, so a file named, for example,
+	  qa<img src=x onerror=...>.txt ran script in the browser of everyone who saw the post. The
+	  upload answer that the post form shows as a preview now escapes the name too.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

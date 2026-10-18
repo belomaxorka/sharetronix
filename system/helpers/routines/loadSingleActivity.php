@@ -101,7 +101,7 @@
 			
 			if( isset($buff->post_attached['file']) ){
 				foreach($buff->post_attached['file'] as $k => $file){
-					$tpl->layout->inner_block->setVar('activity_attachments_files', '<a class="icon file '.(isset($file->filetype)? $file->filetype : '').'" href="'.$C->SITE_URL.'getfile/pid:'.$buff->post_tmp_id.'/attid:'.intval($k).'" title="'.$file->title.'">'.$file->title.'</a><span class="clear-right"></span>');
+					$tpl->layout->inner_block->setVar('activity_attachments_files', '<a class="icon file '.(isset($file->filetype)? $file->filetype : '').'" href="'.$C->SITE_URL.'getfile/pid:'.$buff->post_tmp_id.'/attid:'.intval($k).'" title="'.htmlspecialchars($file->title).'">'.htmlspecialchars($file->title).'</a><span class="clear-right"></span>');
 				}
 			}
 			

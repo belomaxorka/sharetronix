@@ -116,7 +116,7 @@
 			}
 			//
 			$answer = array(	'token'=>$token,
-					'file_name'=>$file->name,
+					'file_name'=>htmlspecialchars($file->name),
 					'file_type'=>$file_type,
 					'att_type'=>$attachment_type,
 					'att_id'=>$attachment_id,
