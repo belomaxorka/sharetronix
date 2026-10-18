@@ -26,7 +26,10 @@
 	$pm 		= new pluginsManager();
 	
 	ini_set( 'error_reporting', E_ALL );
-	ini_set( 'display_errors', '1' );
+	if( php_sapi_name() == 'cli' ) {
+		// The public /cron page runs this file as well; only a command-line run prints errors.
+		ini_set( 'display_errors', '1' );
+	}
 	ini_set( 'max_execution_time',	10*60 );
 	ini_set( 'memory_limit',	64*1024*1024 );
 	

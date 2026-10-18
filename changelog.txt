@@ -37,6 +37,12 @@
 	* Stopped printing the server's storage path into pages. getAvatarUrl() echoed the absolute
 	  path of a missing avatar thumbnail (a debug statement left since 3.0.1) before creating the
 	  thumbnail, so visitors of a page showing that avatar saw where the site is installed.
+	* Stopped the public /cron page from showing PHP errors and the job list to visitors. The cron
+	  worker turned display_errors on for every run, and /cron discarded the worker's output only
+	  when it finished, so an error in any background job, including plugin jobs, sent the error
+	  message with the full file paths and stack trace to whoever requested /cron, even on servers
+	  configured not to display errors. The worker now enables error display only on the command
+	  line, and /cron discards the worker's output in all cases; errors are still logged.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

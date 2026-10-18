@@ -27,7 +27,8 @@
 	}
 	
 	if( $run_cron ) {
-		ob_start();
+		// Discard the worker's output, also when a job ends the request with an error.
+		ob_start(function($buffer) { return ''; });
 		require( $C->INCPATH.'cronjobs/worker.php' );
 		ob_end_clean();
 	}
