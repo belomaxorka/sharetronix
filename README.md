@@ -52,6 +52,8 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 3. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
 4. Clear `system/cache/`, or wait for cached data to expire (one hour by default).
 
+The APC cache driver has been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM = 'apc'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'mysqlheap'` remain available.
+
 ## Known limitations
 
 - Sign-in through Twitter and Facebook and other integrations with retired third-party services are untested and may not work.

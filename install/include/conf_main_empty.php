@@ -22,7 +22,7 @@
 	
 	// CACHE SETTINGS
 	// 
-		$C->CACHE_MECHANISM	= '';	// 'apc' or 'memcached' or 'mysqlheap' or 'filesystem'
+		$C->CACHE_MECHANISM	= '';	// 'memcached' or 'mysqlheap' or 'filesystem'
 		$C->CACHE_EXPIRE		= '';
 		$C->CACHE_KEYS_PREFIX	= '';
 		

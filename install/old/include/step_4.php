@@ -6,7 +6,7 @@
 	
 	$options	= array (
 		'memcached'		=> class_exists('Memcached',FALSE)||class_exists('Memcache',FALSE) ? TRUE : FALSE,
-		'apc'			=> function_exists('apc_cache_info') ? TRUE : FALSE,
+		'apc'			=> FALSE,
 		'mysqlheap'		=> FALSE,
 		'filesystem'	=> TRUE,
 	);

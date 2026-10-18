@@ -8,10 +8,6 @@
 			class cache extends cache_memcached {}
 			break;
 			
-		case 'apc':
-			class cache extends cache_apc {}
-			break;
-		
 		case 'mysqlheap':
 			class cache extends cache_mysqlheap {}
 			break;
