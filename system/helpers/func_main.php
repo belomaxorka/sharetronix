@@ -322,6 +322,21 @@
 		return $ext;
 	}
 
+	function attachment_disposition($filename, $fallback)
+	{
+		// Content-Disposition for an attachment download under its original name. Quotes,
+		// backslashes and control characters are dropped. A name that is not plain ASCII goes
+		// in filename* (RFC 6266) with the stored name as the plain fallback.
+		$filename	= trim( preg_replace('/[\x00-\x1F\x7F"\\\\]/', '', (string) $filename) );
+		if( $filename === '' || ! preg_match('//u', $filename) ) {
+			return 'Content-Disposition: attachment; filename="'.$fallback.'"';
+		}
+		if( preg_match('/[^\x20-\x7E]/', $filename) ) {
+			return 'Content-Disposition: attachment; filename="'.$fallback.'"; filename*=UTF-8\'\''.rawurlencode($filename);
+		}
+		return 'Content-Disposition: attachment; filename="'.$filename.'"';
+	}
+
 	function generate_password($len=8, $let='abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPRSTUVWXYZ23456789')
 	{
 		$word	= '';

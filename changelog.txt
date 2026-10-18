@@ -196,6 +196,9 @@
 	* Answered ERROR to activity feed requests (services/activities/checknew, getnew and getall)
 	  with an unknown activities_type instead of stopping with a fatal error. The activity factory
 	  no longer lists the type "view", whose class activityView never existed in any 3.x release.
+	* Offered attachment downloads under the name they were uploaded with again, as 2.x did. Since
+	  3.0.1 they were saved under the random stored name (for example 1729341234123456.pdf). Names
+	  that are not plain ASCII, such as Cyrillic ones, are sent in the RFC 6266 filename* form.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

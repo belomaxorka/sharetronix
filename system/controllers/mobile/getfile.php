@@ -32,7 +32,7 @@
 		}
 		header('Content-Description: File Transfer');
 		header('Content-type: application/octet-stream');
-		header('Content-Disposition: attachment; filename="'.$tmp->file_original.'"');
+		header(attachment_disposition($tmp->title, $tmp->file_original));
 		header('Content-Transfer-Encoding: binary');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -60,7 +60,7 @@
 			}
 			header('Content-Description: File Transfer');
 			header('Content-type: application/octet-stream');
-			header('Content-Disposition: attachment; filename="'.$tmp->tempfile.'"');
+			header(attachment_disposition($tmp->filename, $tmp->tempfile));
 			header('Content-Transfer-Encoding: binary');
 			header('Expires: 0');
 			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
