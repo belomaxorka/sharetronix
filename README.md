@@ -45,6 +45,10 @@ By default, pages viewed in a browser trigger the periodic jobs with a backgroun
 
 Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [system/cronjobs/readme.txt](system/cronjobs/readme.txt).
 
+## Cache
+
+`$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, `redis`, or `mysqlheap`. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the extension the file cache is used; while the Redis server is unreachable, pages are served without the cache.
+
 ## Upgrading
 
 1. Back up the database, `system/conf_main.php`, and `storage/`, and make sure the backup can be restored.

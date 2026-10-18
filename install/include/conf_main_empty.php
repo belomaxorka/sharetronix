@@ -22,13 +22,19 @@
 	
 	// CACHE SETTINGS
 	// 
-		$C->CACHE_MECHANISM	= '';	// 'memcached' or 'mysqlheap' or 'filesystem'
+		$C->CACHE_MECHANISM	= '';	// 'memcached' or 'redis' or 'mysqlheap' or 'filesystem'
 		$C->CACHE_EXPIRE		= '';
 		$C->CACHE_KEYS_PREFIX	= '';
 		
 		// If 'memcached':
 		$C->CACHE_MEMCACHE_HOST	= '';
 		$C->CACHE_MEMCACHE_PORT	= '';
+		
+		// If 'redis' (empty values use 127.0.0.1:6379, no password, database 0):
+		$C->CACHE_REDIS_HOST	= '';
+		$C->CACHE_REDIS_PORT	= '';
+		$C->CACHE_REDIS_PASS	= '';
+		$C->CACHE_REDIS_DB	= '';
 		
 		// If 'filesystem':
 		$C->CACHE_FILESYSTEM_PATH	= '';
