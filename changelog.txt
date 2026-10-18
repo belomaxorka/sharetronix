@@ -144,6 +144,13 @@
 	  the five thumbnail sizes; it now removes all of them from the storage directory, like the
 	  avatar settings page. The account API itself still stops earlier, because it requires the
 	  missing classes/class_rssfeed.php.
+	* Made installation and updates through /install/ work over HTTPS. The mod_rewrite check always
+	  requested its test files over http://, so on an HTTPS-only site it reported "mod_rewrite:
+	  FAIL" and offered no button to continue, and the wizard always saved an http:// site address
+	  in system/conf_main.php. Both now use the scheme of the current request. The check skips
+	  certificate verification for this request to the server itself, so self-signed certificates
+	  work, uses cURL when it is available, and when the server cannot reach its own address it
+	  shows a warning and lets the installation continue instead of failing.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

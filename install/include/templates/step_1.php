@@ -29,13 +29,16 @@
 							</tr>
 							<tr>
 								<td style="<?= $v?'':'color:red;font-weight:bold;' ?>"><?= $txt ?></td>
-								<td style="text-align:right; font-weight:bold;"><?= $v?'<span style="color:#008506;">OK</span>':'<span style="color:red;">FAIL</span>' ?></td>
+								<td style="text-align:right; font-weight:bold;"><?= isset($D->warnings[$k])?'<span style="color:#c77c02;">WARNING</span>':($v?'<span style="color:#008506;">OK</span>':'<span style="color:red;">FAIL</span>') ?></td>
 								</tr>
 						<?php endforeach; ?>
 							<tr>
 								<td colspan="2" style="font-size:0; line-height:0; height: 0; padding: 0; border-bottom: 1px solid #efefef;"></td>
 						</tr>
 					</table>
+					<?php foreach($D->warnings as $w): ?>
+						<p class="install-warning" style="margin:10px 0 0; color:#c77c02;"><?= $w ?></p>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>	

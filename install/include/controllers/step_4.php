@@ -9,7 +9,7 @@
 	$D->ADMIN_PASS2	= '';
 	$D->ADMIN_EMAIL	= '';
 	
-	$D->SITE_URL	= 'http://'.trim($_SERVER['HTTP_HOST']);
+	$D->SITE_URL	= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http').'://'.trim($_SERVER['HTTP_HOST']);
 	$uri	= $_SERVER['REQUEST_URI'];
 	$pos	= strpos($uri, 'install');
 	if( FALSE !== $pos ) {

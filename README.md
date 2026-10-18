@@ -35,6 +35,10 @@ PHP 8.5 is the next target. CI already checks syntax on it, but it has not been 
 4. Give the web-server user write access to `system/`, `storage/`, `themes/`, `apps/`, and `.htaccess`. The installer lists any path it cannot write to.
 5. Open `/install/` in a browser and follow the wizard. It checks the requirements, creates the database tables and the administrator account, and writes the configuration to `system/conf_main.php`.
 
+The wizard saves the address you opened `/install/` with, including `http://` or `https://`, as the site address (`$C->SITE_URL`), so open it over HTTPS if the site should use HTTPS. To check `mod_rewrite`, it requests two test files from that address on the same server without verifying the TLS certificate, so a self-signed certificate works. If the server cannot connect to its own address, for example because of NAT or container port mapping, the check shows a warning and the installation can continue.
+
+Behind a proxy or load balancer that terminates TLS and forwards plain HTTP to Apache, PHP sees an `http://` request, so the wizard saves an `http://` address. After the installation, change `$C->SITE_URL` in `system/conf_main.php` to the `https://` address.
+
 ## Background tasks
 
 By default, pages viewed in a browser trigger the periodic jobs with a background request to `/cron`. On a server with cron, run the worker every minute instead:

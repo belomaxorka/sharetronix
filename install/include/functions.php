@@ -91,6 +91,36 @@
 		return (string) implode('', array_fill(0, strlen($pass)-1, '*') );
 	}
 	
+	function loopback_request($url)
+	{
+		// Fetches one of the installer's own test files from this server. Returns the response
+		// body, or FALSE when the server could not be reached at all. As in WordPress loopback
+		// requests, the certificate is not verified: the request only reads a fixed test file from
+		// this server, and a self-signed certificate must not block the installation.
+		if( function_exists('curl_init') ) {
+			$ch	= curl_init();
+			curl_setopt_array($ch, array(
+				CURLOPT_URL		=> $url,
+				CURLOPT_RETURNTRANSFER	=> TRUE,
+				CURLOPT_HEADER	=> FALSE,
+				CURLOPT_CONNECTTIMEOUT	=> 5,
+				CURLOPT_TIMEOUT	=> 10,
+				CURLOPT_FOLLOWLOCATION	=> TRUE,
+				CURLOPT_MAXREDIRS	=> 5,
+				CURLOPT_SSL_VERIFYPEER	=> FALSE,
+				CURLOPT_SSL_VERIFYHOST	=> 0,
+				CURLOPT_PROXY	=> '',
+			));
+			$res	= curl_exec($ch);
+			return curl_errno($ch) ? FALSE : $res;
+		}
+		$ctx	= stream_context_create(array(
+			'http'	=> array('timeout' => 10, 'ignore_errors' => TRUE),
+			'ssl'	=> array('verify_peer' => FALSE, 'verify_peer_name' => FALSE),
+		));
+		return @file_get_contents($url, FALSE, $ctx);
+	}
+	
 	/*function directory_tree_is_writable($node)
 	{
 		$node	= realpath($node);

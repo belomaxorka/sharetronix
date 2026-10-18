@@ -10,6 +10,7 @@
 	
 	$D->error	= FALSE;
 	$D->errtype = '';
+	$D->warnings	= array();
 	
 	if( isset($_POST['submit']) ) {
 		$a	= isset($_POST['accept1']) && $_POST['accept1']=="1";
@@ -111,13 +112,19 @@
 			}
 		}
 		if( !$D->check['apache_mod_rewrite'] ) {
-			$url	= 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$url	= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 			$pos	= strpos($url, 'install');
 			if( FALSE !== $pos ) {
 				$url	= rtrim(substr($url, 0, $pos+8),'/').'/etc/modrewritetest/';
-				$tmp1	= @file_get_contents($url.'test1.txt');
-				$tmp2	= @file_get_contents($url.'test2.txt');
-				if( $tmp1=='123' && $tmp2!='123' ) {
+				$tmp1	= loopback_request($url.'test1.txt');
+				$tmp2	= FALSE === $tmp1 ? FALSE : loopback_request($url.'test2.txt');
+				if( FALSE === $tmp1 || FALSE === $tmp2 ) {
+					// The server could not be reached from itself (NAT, container port mapping,
+					// firewall): the rewrite rule cannot be tested, so do not block the installation.
+					$D->check['apache_mod_rewrite']	= TRUE;
+					$D->warnings['apache_mod_rewrite']	= 'The installer could not connect to '.htmlspecialchars($url).' to test mod_rewrite. Make sure that mod_rewrite is enabled and that .htaccess files may override its settings (AllowOverride All); otherwise every page except the home page will return "Not Found".';
+				}
+				elseif( $tmp1=='123' && $tmp2!='123' ) {
 					$D->check['apache_mod_rewrite']	= TRUE;
 				}
 			}
