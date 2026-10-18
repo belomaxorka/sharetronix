@@ -284,6 +284,11 @@
 	  commenting, liking and following silently did nothing. The handlers now receive a failure with
 	  the message "The request failed. Please try again.", on the desktop and mobile pages; the link
 	  attachment handler shows it too instead of an undefined text.
+	* Accepted any value of $C->DEBUG_USERS in system/conf_main.php. A single address written as a
+	  string, an empty string or a missing setting made every request fail with a TypeError on PHP 8
+	  (HTTP 500 for the whole site) and logged a warning on PHP 7. A string is now read as one
+	  address, and addresses must match exactly, so a listed TRUE no longer turns debug mode on for
+	  everyone.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

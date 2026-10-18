@@ -36,7 +36,8 @@
 	
 	chdir( $C->INCPATH );
 	
-	$C->DEBUG_MODE		= in_array($_SERVER['REMOTE_ADDR'], $C->DEBUG_USERS);
+	// DEBUG_USERS lists client IP addresses; a single address given as a string also works.
+	$C->DEBUG_MODE		= isset($C->DEBUG_USERS, $_SERVER['REMOTE_ADDR']) && in_array($_SERVER['REMOTE_ADDR'], (array) $C->DEBUG_USERS, TRUE);
 	$C->DEBUG_CONSOLE  	= FALSE;
 	if( $C->DEBUG_MODE ) {
 		ini_set( 'error_reporting', E_ALL	);
