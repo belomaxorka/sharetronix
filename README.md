@@ -1,4 +1,4 @@
-<img src="static/images/mobile/logo-login.png" alt="Sharetronix" width="320">
+<img src="static/images/sharetronix-logo.png" alt="Sharetronix" width="500">
 
 A maintained fork of Sharetronix **3.6.2**, a PHP platform for microblogging and social networking.
 

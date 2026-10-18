@@ -8,6 +8,7 @@ Release history for Sharetronix, with the latest changes first.
 
 - Licensed the project under GNU AGPLv3 while retaining original author credits and third-party notices.
 - Updated project documentation and converted the release history to Markdown.
+- Refreshed the README branding with a blue Sharetronix wordmark and speech-bubble mascot.
 
 ### Removed
 
