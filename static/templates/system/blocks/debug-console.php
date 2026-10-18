@@ -16,7 +16,7 @@
 	$debug_info_mysql .= '<table id="table_assigned_vars"><tr><td><h2>Query Time</h2></td><td><h2>Query Value</h2></td></tr>';
 	
 	foreach($sql1->queries as $query) {
-		$debug_info_mysql .= '<tr><td>'. ( ( floatval($query->time) > 0.5 )? '<span style="color: red;">'.$query->time.'</span>' : $query->time ).'</td><td>'. $query->query .'</td></tr>';
+		$debug_info_mysql .= '<tr><td>'. ( ( floatval($query->time) > 0.5 )? '<span style="color: red;">'.$query->time.'</span>' : $query->time ).'</td><td>'. htmlspecialchars($query->query, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8') .'</td></tr>';
 	}
 	
 	$debug_info_mysql .= '</table>';
@@ -26,13 +26,11 @@
 	$debug_info_cache .= '<em>Query Time:</em> <strong>'.floatval($mch->time).'</strong><br />';
 	$debug_info_cache .= '<table id="table_assigned_vars"><tr><td><h2>Query Time</h2></td><td><h2>Query Action</h2></td><td><h2>Query Key</h2></td><td><h2>Query Result</h2></td></tr>';
 	foreach($mch->queries as $query) {
-		$debug_info_cache .= '<tr><td>'. $query->time .'</td><td>'. $query->action .'</td><td>'. $query->key .'</td><td>'. $query->result .'</td></tr>';
+		$debug_info_cache .= '<tr><td>'. $query->time .'</td><td>'. htmlspecialchars($query->action, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8') .'</td><td>'. htmlspecialchars($query->key, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8') .'</td><td>'. htmlspecialchars($query->result, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8') .'</td></tr>';
 	}
 	$debug_info_cache .= '</table>';
 	
-	$debug_template = '
-			
-	<!DOCTYPE html>
+	$debug_template = '<!DOCTYPE html>
 	<html>
 	<head>
 	    <title>Debug Console</title>
@@ -70,9 +68,6 @@
 			(!empty($loadavg)? '<em>Server Load Average:</em> <strong>'.( ( $sys_loadavg[0] > 2 )? '<span style="color: red;">'.$loadavg.'</span>' : $loadavg).'</strong>' : '' ) .'
 		</div>
 			
-		<h2>Assigned template variables</h2>
-			
-			
 		<h2>MySQL Queries</h2>
 		'.$debug_info_mysql.'
 	
@@ -84,8 +79,16 @@
 	
 	$debug_template = strtr($debug_template, array("\\" => "\\\\", "'" => "\\'", "\"" => "\\\"", "\r" => "\\r", "\n" => "\\n", "</" => "<\/" ));
 	
-	echo 	'<script type="text/javascript">
-	    			_debug_console = window.open("","consoled41d8cd98f00b204e9800998ecf8427e","width=680,height=600,resizable,scrollbars=yes");
-	    			_debug_console.document.write("'. $debug_template.'");
-	    			_debug_console.document.close();
-				</script>';
+	// Browsers block windows opened without a click, so the console opens from a small link.
+	echo 	'<a href="#" id="debug-console-link" style="position:fixed; right:10px; bottom:10px; z-index:10000; padding:2px 8px; font:bold 12px/18px arial, sans-serif; color:#fff; background:#DD4B39; text-decoration:none;">Debug</a>
+			<script type="text/javascript">
+				document.getElementById("debug-console-link").onclick = function () {
+					var _debug_console = window.open("","consoled41d8cd98f00b204e9800998ecf8427e","width=680,height=600,resizable,scrollbars=yes");
+					if (_debug_console) {
+						_debug_console.document.open();
+						_debug_console.document.write("'. $debug_template.'");
+						_debug_console.document.close();
+					}
+					return false;
+				};
+			</script>';

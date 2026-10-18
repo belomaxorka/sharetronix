@@ -38,7 +38,8 @@
 	
 	// DEBUG_USERS lists client IP addresses; a single address given as a string also works.
 	$C->DEBUG_MODE		= isset($C->DEBUG_USERS, $_SERVER['REMOTE_ADDR']) && in_array($_SERVER['REMOTE_ADDR'], (array) $C->DEBUG_USERS, TRUE);
-	$C->DEBUG_CONSOLE  	= FALSE;
+	// $C->DEBUG_CONSOLE = TRUE; in conf_main.php adds the debug console link to pages in debug mode.
+	$C->DEBUG_CONSOLE  	= ! empty($C->DEBUG_CONSOLE);
 	if( $C->DEBUG_MODE ) {
 		ini_set( 'error_reporting', E_ALL	);
 		ini_set( 'display_errors',			1	);

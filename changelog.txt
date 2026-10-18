@@ -43,6 +43,10 @@
 	  message with the full file paths and stack trace to whoever requested /cron, even on servers
 	  configured not to display errors. The worker now enables error display only on the command
 	  line, and /cron discards the worker's output in all cases; errors are still logged.
+	* Escaped the SQL queries and cache keys shown in the debug console. They were written into the
+	  console window as HTML, and the window runs with the site's origin, so a crafted link (for
+	  example a search term containing markup) could run script with the session of a developer
+	  whose address is in $C->DEBUG_USERS and who had the console enabled.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -289,6 +293,11 @@
 	  (HTTP 500 for the whole site) and logged a warning on PHP 7. A string is now read as one
 	  address, and addresses must match exactly, so a listed TRUE no longer turns debug mode on for
 	  everyone.
+	* Made the debug console usable. $C->DEBUG_CONSOLE = TRUE; in system/conf_main.php now enables
+	  it for debug mode (system/conf_system.php used to reset the setting to FALSE), and the console
+	  opens from a small "Debug" link at the bottom right of the page, because browsers block the
+	  window it used to open by itself when the page loaded. The console window also renders in
+	  standards mode and no longer shows an empty "Assigned template variables" section.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
