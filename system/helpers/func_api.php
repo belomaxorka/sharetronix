@@ -117,16 +117,16 @@
 		{
 			$error .= '<?xml version="1.0" encoding="UTF-8" ?'.'>';
 			$error .= '<hash>';
-			$error .= '<request>'.$link.'</request>';
-			$error .= '<error>'.$err.'</error>';
+			$error .= '<request>'.htmlspecialchars($link).'</request>';
+			$error .= '<error>'.htmlspecialchars($err).'</error>';
 			$error .= '</hash>';			
 		}elseif($format == 'json')
 		{
 			$error .= ($fancy_function && $fancy_function != '?')? $fancy_function.'(':'';
 			$error .= ($fancy_function && $fancy_function == '?')? '(':'';
-			$error .= '"hash":{';
-			$error .= '"request": "'.$link.'",';
-			$error .= '"error": "'.$err.'"';
+			$error .= '{';
+			$error .= '"request": '.json_encode($link, JSON_INVALID_UTF8_SUBSTITUTE).',';
+			$error .= '"error": '.json_encode($err, JSON_INVALID_UTF8_SUBSTITUTE);
 			$error .= '}';
 			if($fancy_function) $error .= ')';	
 		}elseif($format == 'rss')
@@ -134,13 +134,13 @@
 			$error .= '<rss version="2.0">';
    			$error .= '<channel>';
    			
-			$error .= '<title> '.$C->SITE_TITLE.' API Error </title> ';
-			$error .= '<link>http://'.$C->SITE_URL.'/</link> ';
+			$error .= '<title> '.htmlspecialchars($C->SITE_TITLE).' API Error </title> ';
+			$error .= '<link>'.htmlspecialchars($C->SITE_URL).'</link> ';
 			$error .= '<description>Error message.</description> ';
 			$error .= '<item>';
 			
-			$error .= '<request>'.$link.'</request>';
-			$error .= '<error>'.$err.'</error>';
+			$error .= '<request>'.htmlspecialchars($link).'</request>';
+			$error .= '<error>'.htmlspecialchars($err).'</error>';
 			
 			$error .= '</item>';			
 			$error .= '</channel></rss>';	
@@ -148,23 +148,24 @@
 		{
 			$error .= '<?xml version="1.0" encoding="utf-8"?'.'>';
  			$error .= '<feed xmlns="http://www.w3.org/2005/Atom">';
-			$error .= '<link href="http://'.$C->SITE_URL.'/" />';
+			$error .= '<link href="'.htmlspecialchars($C->SITE_URL).'" />';
 			$error .= '<id>urn:'.md5(time()).'</id>';
 			$error .= '<author>';
-			$error .= '<name>'.$C->SITE_URL.'</name>';
+			$error .= '<name>'.htmlspecialchars($C->SITE_URL).'</name>';
 			$error .= '</author>';
 			 
 			 
 			$error .= '<entry>';
    			
-			$error .= '<title> '.$C->SITE_TITLE.' API Error </title> ';
-			$error .= '<link>http://'.$C->SITE_URL.'/</link> ';
+			$error .= '<title> '.htmlspecialchars($C->SITE_TITLE).' API Error </title> ';
+			$error .= '<link>'.htmlspecialchars($C->SITE_URL).'</link> ';
 			$error .= '<description>Error message.</description> ';
 			$error .= '<item>';
 			
-			$error .= '<request>'.$link.'</request>';
-			$error .= '<error>'.$err.'</error>';
+			$error .= '<request>'.htmlspecialchars($link).'</request>';
+			$error .= '<error>'.htmlspecialchars($err).'</error>';
 						
+			$error .= '</item>';
 			$error .= '</entry></feed>';	
 		}
 		

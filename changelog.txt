@@ -185,6 +185,11 @@
 	  resources too (statuses, users, friendships, groups and the rest). With the API switched off
 	  and suppress_response_codes set, they read undefined variables, so the answer was always XML
 	  and PHP warnings were logged.
+	* Made API error answers (requested with suppress_response_codes) parseable. JSON errors were
+	  "hash":{...} without the enclosing object and are now {"request": ..., "error": ...}, the
+	  shape of Twitter API v1 errors. XML, RSS and Atom errors escape the request URI, so a second
+	  query parameter no longer breaks them; the Atom error closes its <item>, and the RSS and Atom
+	  links use the site URL instead of http://http://....
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
