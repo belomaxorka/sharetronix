@@ -260,6 +260,41 @@
 		return TRUE;
 	}
 	
+	function format_date($format, $timestamp)
+	{
+		// Preserve the percent directives used by the bundled English UI.
+		$formats = array(
+			'a'=>'D', 'A'=>'l', 'b'=>'M', 'h'=>'M', 'B'=>'F', 'd'=>'d',
+			'D'=>'m/d/y', 'F'=>'Y-m-d', 'H'=>'H', 'I'=>'h', 'm'=>'m',
+			'M'=>'i', 'p'=>'A', 'P'=>'a', 'r'=>'h:i:s A', 'R'=>'H:i',
+			'S'=>'s', 'T'=>'H:i:s', 'u'=>'N', 'V'=>'W', 'w'=>'w',
+			'x'=>'m/d/y', 'X'=>'H:i:s', 'y'=>'y', 'Y'=>'Y', 'G'=>'o',
+			'z'=>'O', 'Z'=>'T'
+		);
+		return preg_replace_callback('/%([a-zA-Z%])/', function($matches) use ($formats, $timestamp) {
+			$code = $matches[1];
+			if( isset($formats[$code]) ) {
+				return date($formats[$code], $timestamp);
+			}
+			switch($code) {
+				case '%': return '%';
+				case 'n': return "\n";
+				case 't': return "\t";
+				case 'e': return str_pad(date('j', $timestamp), 2, ' ', STR_PAD_LEFT);
+				case 'k': return str_pad(date('G', $timestamp), 2, ' ', STR_PAD_LEFT);
+				case 'l': return str_pad(date('g', $timestamp), 2, ' ', STR_PAD_LEFT);
+				case 'j': return str_pad(date('z', $timestamp)+1, 3, '0', STR_PAD_LEFT);
+				case 'C': return str_pad(floor(date('Y', $timestamp)/100), 2, '0', STR_PAD_LEFT);
+				case 'g': return substr(date('o', $timestamp), -2);
+				case 's': return (string) $timestamp;
+				case 'U': return sprintf('%02d', floor((date('z', $timestamp)+7-date('w', $timestamp))/7));
+				case 'W': return sprintf('%02d', floor((date('z', $timestamp)+8-date('N', $timestamp))/7));
+				case 'c': return format_date('%a %b %e %T %Y', $timestamp);
+			}
+			return $matches[0];
+		}, $format);
+	}
+
 	function generate_password($len=8, $let='abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPRSTUVWXYZ23456789')
 	{
 		$word	= '';

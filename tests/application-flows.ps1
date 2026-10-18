@@ -50,6 +50,11 @@ function Test-ApplicationFlows {
         Check-Installer 'FLOW: public post persists with its owner' ((Flow-Sql "SELECT COUNT(*) FROM posts WHERE id=$postId AND user_id=$aId AND message='Regression public message #maintest';") -eq '1')
         $response = Follow-Installer (Request-Installer "/view/post:$postId" $null $b) $b
         Check-Installer 'FLOW: another user can read the public post' ($response.status -eq 200 -and $response.body.Contains('Regression public message'))
+        $oldDate = [DateTimeOffset]::UtcNow.AddDays(-2).ToUnixTimeSeconds()
+        $null = Flow-Sql "UPDATE posts SET date=$oldDate WHERE id=$postId;"
+        $response = Follow-Installer (Request-Installer "/view/post:$postId" $null $b) $b
+        $expectedDate = [DateTimeOffset]::FromUnixTimeSeconds($oldDate).UtcDateTime.ToString('MMM dd yyyy, HH:mm', [Globalization.CultureInfo]::InvariantCulture)
+        Check-Installer 'FLOW: an older post retains its absolute English date and timezone' ($response.status -eq 200 -and $response.body.Contains($expectedDate))
         $linkId = Flow-Post $a 'Regression link http://example.test/path.'
         $response = Follow-Installer (Request-Installer "/view/post:$linkId" $null $b) $b
         Check-Installer 'FLOW: a post containing a URL renders its link and punctuation' ($response.status -eq 200 -and $response.body.Contains('href="http://example.test/path"') -and $response.body.Contains('http://example.test/path</a>.'))
@@ -76,6 +81,8 @@ function Test-ApplicationFlows {
         }
         Check-Installer 'FLOW: the English profile selector retains all twelve month labels' $monthLabelsMatch
         Check-Installer 'FLOW: profile changes affect only their owner' ((Flow-Sql "SELECT COUNT(*) FROM users WHERE id=$bId AND fullname='Regression qaflowb';") -eq '1')
+        $response = Follow-Installer (Request-Installer '/qaflowa/tab:info' $null $b) $b
+        Check-Installer 'FLOW: public profile information renders dates and saved text' ($response.status -eq 200 -and $response.body.Contains('Regression User A') -and $response.body.Contains('Проверка профиля'))
         $follow = Flow-Service 'users' 'follow' @{ users_id = $bId } $a
         Check-Installer 'FLOW: following another user persists' ($follow.status -eq 'OK' -and (Flow-Sql "SELECT COUNT(*) FROM users_followed WHERE who=$aId AND whom=$bId;") -eq '1')
         $unfollow = Flow-Service 'users' 'unfollow' @{ users_id = $bId } $a

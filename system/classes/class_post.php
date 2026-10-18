@@ -386,7 +386,7 @@
 		public static function parse_date($timestamp, $return_words='auto', $return_dt_format='%b %d %Y, %H:%M')
 		{
 			if( $return_words == FALSE ) {
-				return strftime($return_dt_format, $timestamp);
+				return format_date($return_dt_format, $timestamp);
 			}
 			$time	= time() - $timestamp;
 			$h	= floor($time / 3600);
@@ -395,7 +395,7 @@
 			$time	-= $m * 60;
 			$s	= $time;
 			if( $return_words === 'auto' && $h >= 12 ) {
-				return strftime($return_dt_format, $timestamp);
+				return format_date($return_dt_format, $timestamp);
 			}
 			$txt	= '##BEFORE## ';
 			if( $h > 0 ) {

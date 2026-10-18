@@ -90,10 +90,10 @@
 					if( !$is_profile_protected ){
 					   
 						if( !empty($u->reg_date) ){
-							$dtls[$this->lang('usr_info_aboutme_datereg')] = strftime($this->lang('usr_info_birthdate_dtformat'), $u->reg_date);
+							$dtls[$this->lang('usr_info_aboutme_datereg')] = format_date($this->lang('usr_info_birthdate_dtformat'), $u->reg_date);
 						}
 						if( !empty($u->lastlogin_date) ){
-							$dtls[$this->lang('usr_info_aboutme_datelgn')] = strftime($this->lang('usr_info_birthdate_dtformat'), $u->lastlogin_date);
+							$dtls[$this->lang('usr_info_aboutme_datelgn')] = format_date($this->lang('usr_info_birthdate_dtformat'), $u->lastlogin_date);
 						}							
 						if( !empty($u->location) ){
 							$dtls[$this->lang('usr_info_aboutme_location')] = $u->location;
