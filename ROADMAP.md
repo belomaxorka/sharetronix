@@ -17,7 +17,7 @@ Checked items have recorded implementation or verification; remaining items are 
 - [x] Add a versioned local Apache/PHP/database stack with pinned versions and documented startup, shutdown, logs, and reset commands. The initial implementation uses native Windows modules already available on the development host.
 - [x] Establish a local diagnostic baseline for existing behavior without declaring its historical runtime a production support target.
 - [x] Capture email locally, use synthetic accounts/uploads, and disable RPC pings.
-- [ ] Stub or remove the remaining retired external dependencies, including the cron version check, before enabling recurring background runs.
+- [ ] Stub or remove the remaining retired external dependencies before enabling recurring background runs. The cron version check has been removed; other integrations still need review.
 - [x] Complete `/install/`, database setup, rewrite checks, writable-path checks, and first administrator login, with local workarounds explicitly recorded.
 - [x] Record the environment, test results, and reproducible blocker reports in [the baseline report](docs/test-runs/2026-10-18-baseline.md).
 - [x] Document and verify backup and restore of configuration, database, and storage for the baseline installation.

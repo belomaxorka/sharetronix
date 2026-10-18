@@ -27,6 +27,7 @@ Release history for Sharetronix, with the latest changes first.
 ### Removed
 
 - Removed the obsolete root `README.txt`.
+- Removed the retired developer-site version check from background token cleanup.
 
 ## 3.6.2
 
