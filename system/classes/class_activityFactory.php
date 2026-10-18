@@ -17,9 +17,6 @@
 				case 'search':
 					return new activitySearch();
 					break;
-				case 'view':
-					return new activityView();
-					break;
 				case 'private':
 					return new activityPrivate();
 					break;

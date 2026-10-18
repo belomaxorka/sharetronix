@@ -27,6 +27,10 @@
 			}
 			
 			$activity = activityFactory::select($activities_type);
+			if( !$activity ){
+				echo 'ERROR';
+				return;
+			}
 			if( !empty($activities_group) ){
 				$g = $network->get_group_by_id($activities_group);
 				$activity->setGroup( $g );
@@ -71,6 +75,10 @@
 			$tpl->staticHTML->useActivityContainer();
 			
 			$activity = activityFactory::select($activities_type);
+			if( !$activity ){
+				echo 'ERROR';
+				return;
+			}
 			$activity->setTemplate( $tpl );
 			if( !empty($activities_group) ){
 				$g = $network->get_group_by_id($activities_group);
@@ -103,6 +111,10 @@
 				$tpl->staticHTML->useActivityContainer();
 				
 				$activity = activityFactory::select($activities_type);
+				if( !$activity ){
+					echo 'ERROR';
+					return;
+				}
 				$activity->setTemplate( $tpl );
 				if( !empty($activities_group) ){
 					$g = $network->get_group_by_id($activities_group);

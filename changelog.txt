@@ -193,6 +193,9 @@
 	* Fixed birthdate updates through the account API (update_profile): the date check called
 	  split(), which PHP 7 removed, so any request with a birthdate stopped with a fatal error. Its
 	  error message now names the format the check accepts, YYYY-MM-DD (it said YYYY-DD-MM).
+	* Answered ERROR to activity feed requests (services/activities/checknew, getnew and getall)
+	  with an unknown activities_type instead of stopping with a fatal error. The activity factory
+	  no longer lists the type "view", whose class activityView never existed in any 3.x release.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
