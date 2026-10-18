@@ -1,0 +1,4 @@
+# Sharetronix sources are stored with CRLF line endings on purpose.
+# Disable end-of-line conversion so the committed bytes are preserved
+# verbatim on every platform and edits never silently flip line endings.
+* -text
