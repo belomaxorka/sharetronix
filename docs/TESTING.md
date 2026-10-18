@@ -33,6 +33,20 @@ Replace `index.php` with the changed path, including templates containing PHP. E
 
 During the compatibility inventory, lint all PHP sources and templates on the target runtime and retain the complete failure list. Once a test harness and CI are added, document their exact commands here.
 
+## Focused regressions
+
+With the Windows local stack running, use its PHP configuration for the focused checks:
+
+```powershell
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\session.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\autoload.php
+.\tests\response-output.ps1
+.\tests\installer.ps1
+.\scripts\smoke-local.ps1
+```
+
+The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. It follows the actual wizard, checks the final redirect, and logs in to the fresh installation. Disposable databases and evidence are retained locally; it does not reset the main test installation. The [fix verification report](test-runs/2026-10-18-fixes.md) records failures before each patch and checks afterward.
+
 ## Application scenarios
 
 Start with an administrator, ordinary users A and B, and a guest. Include a public group, a private group that B cannot access, public posts, and private content. Repeat applicable scenarios through the web UI and direct URLs/API endpoints so visibility is checked on the server.
