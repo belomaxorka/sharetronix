@@ -2,6 +2,10 @@
 	
 	class post
 	{
+		public $page;
+		public $post_likes;
+		public $post_likesnum;
+
 		private $network;
 		private $user;
 		private $cache;

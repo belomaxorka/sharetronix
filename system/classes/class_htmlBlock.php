@@ -1,6 +1,9 @@
 <?php
 	class htmlBlock extends templateElement
 	{
+		public $page;
+		public $user;
+
 		private $chosen_html_block;
 		private $name;
 		public  $plugin_manager;

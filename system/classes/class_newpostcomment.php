@@ -4,6 +4,8 @@
 	
 	class newpostcomment
 	{
+		public $comment_date;
+
 		private $network	= FALSE;
 		public $id		= FALSE;
 		private $user	= FALSE;

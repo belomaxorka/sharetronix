@@ -2,6 +2,10 @@
 	
 	class user
 	{
+		public $cache;
+		public $db1;
+		public $db2;
+
 		public $id;
 		public $network;
 		public $is_logged;

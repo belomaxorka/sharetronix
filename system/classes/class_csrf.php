@@ -2,6 +2,8 @@
 	
 	class csrf
 	{
+		public $user;
+
 		private $token_area;
 				
 		public function __construct($token_area = 'dashboard')

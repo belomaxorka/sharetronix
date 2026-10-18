@@ -2,6 +2,8 @@
 
 	class template extends templateElement
 	{
+		public $header_data;
+
 		private $page;
 		private $user;
 		private $network;	
