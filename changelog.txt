@@ -275,6 +275,9 @@
 	  trace. A failed delivery now writes one line to the PHP error log with the mailer error, the
 	  recipient's domain and the subject, and both functions return FALSE. Pages still show their
 	  usual confirmation.
+	* Checked for a missing user or group id in the follow, unfollow, join and leave services. Such
+	  requests logged an "Undefined array key" warning; in debug mode the printed warning came
+	  before the "ERROR" answer, so the service reported status "OK".
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

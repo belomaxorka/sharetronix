@@ -17,7 +17,7 @@
 		
 		case 'follow': 
 			
-			$users_id = intval($_POST['users_id']);
+			$users_id = isset($_POST['users_id']) ? intval($_POST['users_id']) : 0;
 			
 			$u	= $network->get_user_by_id( $users_id );
 			if( ! $u ) {
@@ -43,7 +43,7 @@
 			
 		case 'unfollow':
 			
-			$users_id = intval($_POST['users_id']);
+			$users_id = isset($_POST['users_id']) ? intval($_POST['users_id']) : 0;
 				
 			$u	= $network->get_user_by_id( $users_id );
 			if( ! $u ) {

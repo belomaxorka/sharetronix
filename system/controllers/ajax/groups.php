@@ -16,7 +16,7 @@
 		
 		case 'join': 
 			
-			$groups_id = intval($_POST['groups_id']);
+			$groups_id = isset($_POST['groups_id']) ? intval($_POST['groups_id']) : 0;
 			
 			$g	= $network->get_group_by_id( $groups_id );
 			if( ! $g ) {
@@ -38,7 +38,7 @@
 			break;
 		case 'leave':
 			
-			$groups_id = intval($_POST['groups_id']);
+			$groups_id = isset($_POST['groups_id']) ? intval($_POST['groups_id']) : 0;
 				
 			$g	= $network->get_group_by_id( $groups_id );
 			if( ! $g ) {
