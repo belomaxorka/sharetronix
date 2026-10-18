@@ -303,6 +303,11 @@
 	  opened it; on PHP 8 this stopped the cron run with a TypeError and left its running flag set.
 	  The cleanup now skips such entries, returns when the cache directory cannot be opened, and
 	  closes the directory.
+	* Corrected the cache statistics of the debug console. The file cache recorded an extra DELETE
+	  entry for every write and for every expired read and counted that time twice, so the console
+	  showed half again as many cache operations and a total time above the real one. All drivers
+	  also listed a hit on a stored empty value (an empty list, 0 or an empty string) as FALSE, like
+	  a miss.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

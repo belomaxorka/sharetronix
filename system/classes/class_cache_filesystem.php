@@ -24,6 +24,14 @@
 			return $this->path.'/'.md5($this->keys_prefix).'-'.md5($key);
 		}
 		
+		private function remove_file($file)
+		{
+			if( file_exists($file) && is_writable($file) ) {
+				unlink($file);
+			}
+			return !file_exists($file);
+		}
+		
 		public function get($key)
 		{
 			$file	= $this->find_filename($key);
@@ -39,7 +47,7 @@
 					}
 				}
 				if( FALSE === $res ) {
-					$this->del($key);
+					$this->remove_file($file);
 				}
 			}
 			if( $this->debug_mode ) {
@@ -48,7 +56,7 @@
 				$this->debug_info->queries[]	= (object) array (
 					'action'	=> 'GET',
 					'key'		=> $this->keys_prefix.$key,
-					'result'	=> !$res ? 'FALSE' : gettype($res),
+					'result'	=> FALSE===$res ? 'FALSE' : gettype($res),
 					'time'	=> number_format($time, 5, '.', ''),
 				);
 			}
@@ -59,7 +67,7 @@
 		{
 			$file	= $this->find_filename($key);
 			$time	= microtime(TRUE);
-			$this->del($key);
+			$this->remove_file($file);
 			$data	= (time()+$ttl)."\n".serialize($data);
 			$res	= file_put_contents($file, $data);
 			chmod($file, 0777);
@@ -80,10 +88,7 @@
 		{
 			$file	= $this->find_filename($key);
 			$time	= microtime(TRUE);
-			if( file_exists($file) && is_writable($file) ) {
-				unlink($file);
-			}
-			$res	= !file_exists($file);
+			$res	= $this->remove_file($file);
 			if( $this->debug_mode ) {
 				$time	= microtime(TRUE)-$time;
 				$this->debug_info->time	+= $time;

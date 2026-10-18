@@ -92,7 +92,7 @@
 				$this->debug_info->queries[]	= (object) array (
 					'action'	=> $action,
 					'key'		=> $key,
-					'result'	=> $action=='GET' ? (!$res ? 'FALSE' : gettype($res)) : ($res ? 'TRUE' : 'FALSE'),
+					'result'	=> $action=='GET' ? (FALSE===$res ? 'FALSE' : gettype($res)) : ($res ? 'TRUE' : 'FALSE'),
 					'time'	=> number_format($time, 5, '.', ''),
 				);
 			}
