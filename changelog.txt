@@ -181,6 +181,10 @@
 	  an unset error flag after a successful upload, end_session created a dynamic property, and the
 	  "API is disabled" answer read undefined variables, so it was always XML. That answer now uses
 	  the requested format.
+	* Answered "API is disabled" in the requested format and JSONP callback in the other API
+	  resources too (statuses, users, friendships, groups and the rest). With the API switched off
+	  and suppress_response_codes set, they read undefined variables, so the answer was always XML
+	  and PHP warnings were logged.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

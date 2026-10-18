@@ -7,7 +7,7 @@
 	
 	if( !$C->API_STATUS || $_SERVER['REQUEST_METHOD'] == 'COOKIE' ){
 		if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 404 Not Found');
-			else echo generate_error($format, 'API is disabled', $_SERVER['REQUEST_URI'], $callback);
+			else echo generate_error($api_session->format, 'API is disabled', $_SERVER['REQUEST_URI'], $api_session->callback);
 		exit;	
 	}
 	setlocale(LC_TIME, 'en_US');	
