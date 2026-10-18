@@ -1,30 +1,44 @@
-# Sharetronix
+# Sharetronix 3.6.2
 
-Sharetronix is a legacy PHP platform for microblogging and social networking.
+<img src="static/images/mobile/logo-login.png" alt="Sharetronix" width="320">
 
-An unofficial preservation and maintenance initiative by [@belomaxorka](https://github.com/belomaxorka). Original software and author credits belong to Sharetronix, LLC and the upstream contributors.
+A legacy PHP platform for microblogging and social networking, preserved for continued maintenance and contributions by [@belomaxorka](https://github.com/belomaxorka).
 
-## Status
+This is an unofficial repository. Original author credits and notices from Sharetronix, LLC and the upstream contributors are preserved.
 
-**Documentation only — source publication is pending redistribution permission.**
+## Source layout
 
-The `sharetronix-3.6.2.rar` distribution has been inspected locally. Its bundled personal and commercial licenses both withhold distribution rights for the software and derivative works. No separate redistribution permission has been established, so the source code, release archive, and bundled logos are not published here.
+The application comes from the `upload/` directory of the supplied `sharetronix-3.6.2.rar` archive. Its contents are placed directly in this repository's root:
 
-See [the license review](LICENSE-REVIEW.md) for the findings and archive fingerprint. This repository does not grant a license to Sharetronix or claim official affiliation.
+- `index.php`, `.htaccess`, `web.config` — application entry point and server configuration.
+- `system/` — application code, libraries, and languages.
+- `themes/`, `static/` — templates, styles, scripts, and images.
+- `install/` — installation and upgrade wizard.
+- `apps/`, `storage/` — extensions and application storage.
 
-## About version 3.6.2
+## Getting started
 
-- The installer identifies the supplied distribution as version **3.6.2**.
-- The original package contains an `upload/` application directory, `README.txt`, and `LICENSE.txt`.
-- The original README lists Apache, PHP 5.2+, and MySQL 5.0+ as historical requirements. Modern PHP compatibility and application security have not been tested.
+```sh
+git clone https://github.com/belomaxorka/sharetronix.git
+cd sharetronix
+```
 
-## Next step
+The upstream README lists Apache, PHP 5.2+, and MySQL 5.0+ as historical requirements. These are the original requirements; compatibility with current runtimes has not been established.
 
-Obtain written permission covering public source redistribution and maintenance, or identify a specific older release with a verified license that permits both. Preserve upstream license texts, copyright notices, and third-party notices when importing any authorized release.
+1. Configure an Apache virtual host for the checkout and enable `mod_rewrite`.
+2. Create an empty MySQL database.
+3. Open `/install/` on that virtual host and follow the installation wizard.
 
-## Historical references
+The installer creates `system/conf_main.php`. This installation-specific configuration, caches, and uploaded files are excluded from Git. See [the original README](README.txt) for the upstream installation notes; its references to `upload/` refer to this repository's root.
 
-- [Sharetronix source repository](https://github.com/vassilmladjov/Sharetronix-OSS)
-- [Sharetronix on SourceForge](https://sourceforge.net/projects/sharetronix/)
+## Contributing
 
-The historical references do not establish redistribution rights for version 3.6.2.
+Create a branch for a focused change and open a pull request. Include a description of the change, the PHP/MySQL versions used, and how it was checked. Preserve upstream attribution and third-party notices, and keep credentials and installation data out of commits.
+
+The initial import preserves the application files as supplied. Modernization and bug fixes can be reviewed separately from the import.
+
+## License and provenance
+
+The original [Sharetronix personal/commercial license](LICENSE.txt) is retained without relicensing the application. It contains restrictions on redistribution and derivative works. See [the license review](LICENSE-REVIEW.md) for the terms, archive fingerprint, and source provenance.
+
+[Upstream changelog](whatsnew.txt) · [Historical source repository](https://github.com/vassilmladjov/Sharetronix-OSS)

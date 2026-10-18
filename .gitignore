@@ -1,11 +1,29 @@
-# The supplied distribution withholds redistribution rights.
-# Keep it local until an appropriate publication grant has been established.
-/upload/
-/LICENSE.txt
-/README.txt
-/whatsnew.txt
+# Local note from the supplied archive.
 /Редми.txt
 *.rar
+
+# Installation-specific configuration.
+/system/conf_main.php
+
+# Generated cache, temporary files, and attachments.
+/system/cache/*
+!/system/cache/.gitkeep
+/system/cache_html/*
+!/system/cache_html/.gitkeep
+/system/tmp/*
+!/system/tmp/.gitkeep
+/storage/tmp/*
+!/storage/tmp/.gitkeep
+/storage/attachments/*
+!/storage/attachments/1/
+/storage/attachments/1/*
+!/storage/attachments/1/.gitkeep
+
+# Keep bundled default avatars; exclude uploaded avatars.
+/storage/avatars/**
+!/storage/avatars/**/
+!/storage/avatars/**/_noavatar_*.gif
+!/storage/avatars/**/_NOAVATAR.gif
 
 # Local configuration and editor files.
 .env
@@ -15,3 +33,4 @@
 .vscode/
 Thumbs.db
 Desktop.ini
+.DS_Store
