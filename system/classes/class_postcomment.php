@@ -105,7 +105,7 @@
 				return FALSE;
 			}
 			$message	= htmlspecialchars($this->comment_message);
-			if( FALSE!==strpos($message,'http://') || FALSE!==strpos($message,'https://') || FALSE!==strpos($message,'ftp://') ) {
+			if( FALSE!==stripos($message,'http://') || FALSE!==stripos($message,'https://') || FALSE!==stripos($message,'ftp://') ) {
 				//$message	= preg_replace('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#ie', 'post::_postparse_build_link("\\2", "\\1")', $message);
 				$message	= preg_replace_callback('#(^|\s)((http|https|ftp)://\w+[^\s\[\]]+)#i', function($matches) { return post::_postparse_build_link($matches[2], $matches[1]); }, $message);
 			}

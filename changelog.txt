@@ -99,6 +99,8 @@
 	  URL, such as :P in /wiki/Help:Pages, was replaced inside the link and broke it, and text such
 	  as ("quoted") lost its closing quote to a wink, because the escaped &quot;) contains ;). On
 	  PHP 8.1 and later the same happened to an apostrophe before a closing parenthesis.
+	* Recognized links whose scheme is written in capitals, such as HTTPS://, in posts and comments;
+	  the link pattern already ignored case, but the check in front of it did not.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
