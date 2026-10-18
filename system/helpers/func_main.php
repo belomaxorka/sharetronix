@@ -459,7 +459,8 @@
 	{
 			
 		global $C, $page;
-			
+		$user = & $GLOBALS['user'];
+
 		$name = strval($name);
 		$value = strval($value);
 			
