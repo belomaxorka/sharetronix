@@ -11,7 +11,12 @@
 	
 	require $C->INCPATH.'helpers/func_additional.php';
 	//require $C->INCPATH.'helpers/func_images.php';
-	
+
+	if( ! $user->is_logged ) {
+		echo 'ERROR:'.$page->lang('global_ajax_post_error4');
+		return;
+	}
+
 	$token = $page->param('token');
 
 	if( !$token ){
@@ -51,18 +56,18 @@
 				return;
 			}	
 			
-			$ext	= '';
-			$pos	= mb_strpos($file->name, '.');
-			if( FALSE !== $pos ) {
-				$ext	= '.'.mb_strtolower(mb_substr($file->name,$pos+1));
+			$ext	= safe_attachment_extension($file->name);
+			if( FALSE === $ext ) {
+				echo 'ERROR:'.$page->lang('global_ajax_post_error5');
+				return;
 			}
-			$tempfile	= time().rand(1000000,9999999).$ext;
+			$tempfile	= time().rand(1000000,9999999).'.'.$ext;
 			move_uploaded_file($file->tmp_name, $C->STORAGE_TMP_DIR.$tempfile);
 			if( ! file_exists($C->STORAGE_TMP_DIR.$tempfile) ) {
 				$data	= FALSE;
 				return;
 			}
-			chmod($C->STORAGE_TMP_DIR.$tempfile, 0777);
+			chmod($C->STORAGE_TMP_DIR.$tempfile, 0644);
 			$data	= (object) array (
 					'tempfile'	=> $tempfile,
 					'filename'	=> $file->name,

@@ -305,16 +305,15 @@
 			if( ! file_exists($source) ) {
 				return FALSE;
 			}
-			$ext	= '';
-			$pos	= mb_strpos($filename, '.');
-			if( FALSE !== $pos ) {
-				$ext	= '.'.mb_strtolower(mb_substr($filename,$pos+1));
+			$ext	= safe_attachment_extension($filename);
+			if( FALSE === $ext ) {
+				return FALSE;
 			}
 			$data	= (object) array (
 				'in_tmpdir'	=> TRUE,
 				'title'		=> $filename,
 				'filetype'		=> $file_type,
-				'file_original'	=> time().rand(100000,999999).$ext,
+				'file_original'	=> time().rand(100000,999999).'.'.$ext,
 				'filesize'	=> 0,
 				'hits'	=> 0,
 			);
@@ -322,7 +321,7 @@
 			if( ! file_exists($C->STORAGE_TMP_DIR.$data->file_original) ) {
 				return FALSE;
 			}
-			chmod($C->STORAGE_TMP_DIR.$data->file_original, 0666);
+			chmod($C->STORAGE_TMP_DIR.$data->file_original, 0644);
 			$data->filesize	= filesize($C->STORAGE_TMP_DIR.$data->file_original); 
 			return $this->attached['file'][] = $data;
 		}

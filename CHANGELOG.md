@@ -4,6 +4,11 @@ Release history for Sharetronix, with the latest changes first.
 
 ## Unreleased
 
+### Security
+
+- Restricted post attachment uploads to an allowlisted set of extensions, required an authenticated session for the attachment service, and stored uploads under a single safe extension derived server-side. This closes an unauthenticated remote code execution path where a guest could upload a `.php` file into the web-served `storage/` tree and execute it on PHP-FPM or `AllowOverride None` servers, and the equivalent extension-controlled path in the API. Rejected `.svg` and other active-markup uploads that could run as same-origin script. The allowlist is configurable through `$C->ATTACH_ALLOWED_EXTENSIONS`.
+- Hardened `storage/.htaccess` to deny direct execution and serving of scripts and active markup (including `.svg`, `.phar`, `.phtml`) regardless of the handler, covering PHP-FPM deployments where the previous `RemoveHandler` directives had no effect. Reduced uploaded temporary-file permissions from world-writable to `0644`.
+
 ### Fixed
 
 - Corrected template and form signatures with optional parameters before required arguments, keeping their existing positional/reference contracts on PHP 8.4.

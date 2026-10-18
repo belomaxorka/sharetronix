@@ -299,6 +299,29 @@
 		}, $format);
 	}
 
+	function safe_attachment_extension($filename)
+	{
+		global $C;
+		// Allowlist of uploadable attachment extensions; override with $C->ATTACH_ALLOWED_EXTENSIONS.
+		$allowed = isset($C->ATTACH_ALLOWED_EXTENSIONS)? $C->ATTACH_ALLOWED_EXTENSIONS : array(
+			'jpg','jpeg','png','gif','bmp','webp',
+			'pdf','doc','docx','xls','xlsx','ppt','pptx','txt','csv','rtf','odt','ods','odp',
+			'zip','rar','7z','gz','tar',
+			'mp3','wav','ogg','oga','m4a','aac','flac',
+			'mp4','m4v','mov','avi','webm','mkv','wmv','flv','3gp'
+		);
+		$filename	= (string) $filename;
+		$pos	= mb_strrpos($filename, '.');
+		if( FALSE === $pos ) {
+			return FALSE;
+		}
+		$ext	= mb_strtolower( trim( mb_substr($filename, $pos+1) ) );
+		if( $ext === '' || ! in_array($ext, $allowed, TRUE) ) {
+			return FALSE;
+		}
+		return $ext;
+	}
+
 	function generate_password($len=8, $let='abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPRSTUVWXYZ23456789')
 	{
 		$word	= '';

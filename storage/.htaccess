@@ -25,6 +25,19 @@ FileETag INode MTime Size
 </IfModule>
 
 #php_flag engine off 
-AddType text/plain .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi .htm .html
-RemoveHandler .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi .htm .html
-RemoveType .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi .htm .html
+AddType text/plain .php .php2 .php3 .php4 .php5 .php6 .php7 .phps .pht .phtm .phtml .phar .pl .py .jsp .asp .aspx .shtml .sh .cgi .htm .html .svg .svgz .xml .xhtml
+RemoveHandler .php .php2 .php3 .php4 .php5 .php6 .php7 .phps .pht .phtm .phtml .phar .pl .py .jsp .asp .aspx .shtml .sh .cgi .htm .html .svg .svgz .xml .xhtml
+RemoveType .php .php2 .php3 .php4 .php5 .php6 .php7 .phps .pht .phtm .phtml .phar .pl .py .jsp .asp .aspx .shtml .sh .cgi .htm .html .svg .svgz .xml .xhtml
+
+# Deny direct execution/serving of scripts and active markup regardless of handler (e.g. PHP-FPM).
+<IfModule mod_authz_core.c>
+	<FilesMatch "\.(php[0-9]?|phps|pht|phtm|phtml|phar|pl|py|jsp|asp|aspx|shtml|sh|cgi|svg|svgz|xml|xhtml|htm|html)$">
+		Require all denied
+	</FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+	<FilesMatch "\.(php[0-9]?|phps|pht|phtm|phtml|phar|pl|py|jsp|asp|aspx|shtml|sh|cgi|svg|svgz|xml|xhtml|htm|html)$">
+		Order allow,deny
+		Deny from all
+	</FilesMatch>
+</IfModule>
