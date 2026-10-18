@@ -49,7 +49,7 @@ All services bind to loopback. Startup refuses occupied ports. Apache uses `mod_
 .\scripts\dev.ps1 Start
 ```
 
-`Configure` disables outbound RPC pings without rewriting the installer-generated `DOMAIN` or `SITE_URL`. Session names retain a safe port suffix, while cookie domain attributes contain only a hostname; no manual domain workaround is required. On subsequent starts this local configuration is reapplied, and Apache denies `/install/` with HTTP 403. Installation is not automatically locked by the application itself.
+`Configure` disables outbound RPC pings without rewriting the installer-generated `DOMAIN` or `SITE_URL`. Session names retain a safe port suffix, while cookie domain attributes contain only a hostname; no manual domain workaround is required. After installation the application itself denies updater access to guests and ordinary users with HTTP 403. An active administrator must sign in and submit the update confirmation with its session-bound token before update processing can run. Back up first; the obsolete `/install/old/` wizard is disabled, and updates use `/install/`. No blanket Apache installer block is required.
 
 PHP loads GD, cURL, Fileinfo, Mbstring, MySQLi, and OpenSSL, with the standard XML/DOM, JSON, session, and other built-in modules available in this distribution. Short tags are enabled; output buffering is 4096 bytes. `E_ALL` and logging remain enabled, with browser display off by default. The loader regression also verifies clean compressed HTML with displayed diagnostics enabled. The installer and cron worker can override the display setting; inspect logs even if a page or command appears successful.
 

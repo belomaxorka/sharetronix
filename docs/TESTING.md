@@ -45,7 +45,7 @@ With the Windows local stack running, use its PHP configuration for the focused 
 .\scripts\smoke-local.ps1
 ```
 
-The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. It follows the actual wizard, checks the final redirect, and logs in to the fresh installation. Disposable databases and evidence are retained locally; it does not reset the main test installation. The [fix verification report](test-runs/2026-10-18-fixes.md) records failures before each patch and checks afterward.
+The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. It follows the actual wizard, checks the final redirect, logs in, and exercises update authorization and confirmation without a web-server installer block. Disposable databases and evidence are retained locally; it does not reset the main test installation. The [fix verification report](test-runs/2026-10-18-fixes.md) records failures before each patch and checks afterward.
 
 ## Application scenarios
 

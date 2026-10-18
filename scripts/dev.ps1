@@ -125,11 +125,6 @@ if (Test-Path -LiteralPath "$siteRoot/system/conf_main.php") { Configure-Site }
 $phpExtensions = @('curl', 'fileinfo', 'mbstring', 'mysqli', 'openssl')
 $phpExtensions += $(if ($PhpVersion -eq '7.2') { 'gd2' } else { 'gd' })
 $extensionLines = ($phpExtensions | ForEach-Object { "extension=php_$_.dll" }) -join "`n"
-$installerAccess = if (Test-Path -LiteralPath "$siteRoot/system/conf_main.php") {
-    '<LocationMatch "^/install(?:/|$)">
-    Require all denied
-</LocationMatch>'
-} else { '' }
 Write-LocalFile "$stateRoot/php.ini" @"
 extension_dir="$(UnixPath $phpRoot)/ext"
 $extensionLines
@@ -197,7 +192,6 @@ ProxyFCGIBackendType GENERIC
 <FilesMatch "^\.ht">
     Require all denied
 </FilesMatch>
-$installerAccess
 "@
 $credentialsFile = Join-Path $stateRoot 'credentials.json'
 if (-not (Test-Path -LiteralPath $credentialsFile)) {

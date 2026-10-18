@@ -1,5 +1,7 @@
 <?php
 
+	chdir(dirname(__FILE__));
+	require_once('./include/authorize.php');
 	require_once('./config/config_system.php');
 	require_once('./config/config.php');
 	require_once( $C->INCPATH.'classes/class_mysql.php' );
@@ -45,6 +47,12 @@
 		$controller_name = 'step_' . $_SESSION['INSTALL_STEP'];
 	}
 
-	loadController( $controller_name  ); 
+	if( $controller_name=='update' ) {
+		unset($_SESSION['INSTALL_UPDATE_ALLOWED']);
+	}
+	loadController( $controller_name  );
+	if( $controller_name=='update' ) {
+		unset($_SESSION['INSTALL_DATA'], $_SESSION['INSTALL_STEP']);
+	}
 	
 ?>

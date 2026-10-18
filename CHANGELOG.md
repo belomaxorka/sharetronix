@@ -9,6 +9,7 @@ Release history for Sharetronix, with the latest changes first.
 - Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
 - Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
 - Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
+- Required an active administrator and session-bound confirmation before installed-site updates; disabled the obsolete installer entry point.
 
 ### Added
 

@@ -34,7 +34,7 @@ $config = $config.Replace('127.0.0.1:8092', '127.0.0.1:8093').Replace('localhost
 $config = $config.Replace(($stateRoot.Replace('\', '/') + '/site'), $siteRoot.Replace('\', '/'))
 $config = $config.Replace(($stateRoot.Replace('\', '/') + '/logs'), ($testRoot.Replace('\', '/') + '/logs'))
 $config = $config.Replace(($stateRoot.Replace('\', '/') + '/httpd.pid'), ($testRoot.Replace('\', '/') + '/httpd.pid'))
-# Exercise application protection without the development server's mitigation.
+# Keep the fixture free of any server-level installer block.
 $config = [regex]::Replace($config, '(?s)<LocationMatch "\^/install.*?</LocationMatch>\r?\n?', '')
 [IO.File]::WriteAllText("$testRoot/httpd.conf", $config, $encoding)
 $apacheExe = [IO.Path]::GetFullPath((Join-Path $RuntimeRoot 'Apache/bin/httpd.exe'))
@@ -45,7 +45,7 @@ $handler.AllowAutoRedirect = $false
 $handler.CookieContainer = [Net.CookieContainer]::new()
 $http = [Net.Http.HttpClient]::new($handler)
 $http.Timeout = [TimeSpan]::FromSeconds(15)
-function Request-Installer($Url, $Data = $null) {
+function Request-Installer($Url, $Data = $null, $Client = $http) {
     if (-not $Url.StartsWith('http')) { $Url = $baseUrl + $Url }
     $uri = [Uri]$Url
     if ($uri.Host -ne 'localhost' -or $uri.Port -ne 8093) { throw 'Refusing an off-site installer request.' }
@@ -56,15 +56,15 @@ function Request-Installer($Url, $Data = $null) {
         $request.Content = [Net.Http.FormUrlEncodedContent]::new($form)
     }
     try {
-        $response = $http.SendAsync($request).GetAwaiter().GetResult()
+        $response = $Client.SendAsync($request).GetAwaiter().GetResult()
         $body = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
         [pscustomobject]@{ status = [int]$response.StatusCode; body = $body; location = $response.Headers.Location; url = $Url }
     } finally { $request.Dispose() }
 }
-function Follow-Installer($Response) {
+function Follow-Installer($Response, $Client = $http) {
     for ($redirect = 0; $redirect -lt 10 -and $Response.location; $redirect++) {
         $target = [Uri]::new([Uri]$Response.url, $Response.location)
-        $Response = Request-Installer $target.AbsoluteUri
+        $Response = Request-Installer $target.AbsoluteUri $null $Client
     }
     $Response
 }
@@ -93,6 +93,56 @@ try {
     Check-Installer 'New application opens after installation' ($response.status -eq 200 -and $response.body.Contains('name="password"'))
     $response = Follow-Installer (Request-Installer '/signin' @{ email = 'qainstall'; password = $credentials.adminPassword })
     Check-Installer 'Fresh administrator retains a session with the generated port-bearing domain' ($response.url -eq "$baseUrl/dashboard" -and $response.body.Contains('qainstall'))
+    & $clientExe "--defaults-file=$stateRoot/client.ini" -e "INSERT INTO $database.posts SET user_id=0, api_id=0, message='Installer guard sentinel', date=UNIX_TIMESTAMP();"
+    if ($LASTEXITCODE -ne 0) { throw 'Could not prepare update protection fixture.' }
+    $guestHttp = [Net.Http.HttpClient]::new()
+    try {
+        foreach ($entry in @('/install/', '/install/index.php', '/install/old/index.php')) {
+            $response = Request-Installer $entry $null $guestHttp
+            Check-Installer "Guest cannot execute $entry" ($response.status -eq 403)
+            $response = Request-Installer $entry @{ confirm_update = '1'; installer_token = 'invalid' } $guestHttp
+            Check-Installer "Guest POST cannot execute $entry" ($response.status -eq 403)
+        }
+    } finally { $guestHttp.Dispose() }
+    function Sentinel-Count {
+        & $clientExe "--defaults-file=$stateRoot/client.ini" -N -e "SELECT COUNT(*) FROM $database.posts WHERE message='Installer guard sentinel';"
+    }
+    Check-Installer 'Guest requests do not execute update cleanup' ((Sentinel-Count) -eq '1')
+    & $clientExe "--defaults-file=$stateRoot/client.ini" -e "INSERT INTO $database.users (username,email,password,fullname,active,language,timezone,is_network_admin) SELECT 'qainstallmember','member@localhost.test',password,'Installer member',1,'en','UTC',0 FROM $database.users WHERE username='qainstall';"
+    if ($LASTEXITCODE -ne 0) { throw 'Could not prepare ordinary updater user.' }
+    $memberHandler = [Net.Http.HttpClientHandler]::new()
+    $memberHandler.AllowAutoRedirect = $false
+    $memberHandler.CookieContainer = [Net.CookieContainer]::new()
+    $memberHttp = [Net.Http.HttpClient]::new($memberHandler)
+    try {
+        $response = Follow-Installer (Request-Installer '/signin' @{ email = 'qainstallmember'; password = $credentials.adminPassword } $memberHttp) $memberHttp
+        Check-Installer 'Ordinary updater fixture can sign in' ($response.url -eq "$baseUrl/dashboard")
+        $response = Request-Installer '/install/' $null $memberHttp
+        Check-Installer 'Ordinary user cannot open the updater' ($response.status -eq 403)
+        $response = Request-Installer '/install/' @{ confirm_update = '1'; installer_token = 'invalid' } $memberHttp
+        Check-Installer 'Ordinary user cannot confirm an update' ($response.status -eq 403)
+    } finally { $memberHttp.Dispose() }
+    $response = Request-Installer '/install/'
+    Check-Installer 'Administrator GET offers confirmation instead of running an update' ($response.status -eq 200 -and $response.body.Contains('name="installer_token"'))
+    $tokenMatch = [regex]::Match($response.body, 'name="installer_token" value="([^"]+)"')
+    if (-not $tokenMatch.Success) { throw 'Updater confirmation token is missing.' }
+    Check-Installer 'Administrator GET preserves update cleanup data' ((Sentinel-Count) -eq '1')
+    $response = Request-Installer '/install/' @{ confirm_update = '1'; installer_token = 'invalid' }
+    Check-Installer 'Administrator POST requires a valid confirmation token' ($response.status -eq 403)
+    $response = Request-Installer '/install/' @{ submit = 'unconfirmed' }
+    Check-Installer 'Installer POST cannot bypass update confirmation' ($response.status -eq 403)
+    Check-Installer 'Rejected administrator POST preserves update cleanup data' ((Sentinel-Count) -eq '1')
+    & $clientExe "--defaults-file=$stateRoot/client.ini" -e "UPDATE $database.users SET is_network_admin=0 WHERE username='qainstall';"
+    $response = Request-Installer '/install/'
+    Check-Installer 'Revoked administration is checked against the database' ($response.status -eq 403)
+    & $clientExe "--defaults-file=$stateRoot/client.ini" -e "UPDATE $database.users SET is_network_admin=1 WHERE username='qainstall';"
+    $response = Request-Installer '/install/' @{ confirm_update = '1'; installer_token = $tokenMatch.Groups[1].Value }
+    Check-Installer 'Administrator can explicitly run an authorized update' ($response.status -eq 200 -and $response.body.Contains('Your community has been updated'))
+    Check-Installer 'Confirmed update actually executes its cleanup' ((Sentinel-Count) -eq '0')
+    $response = Request-Installer '/install/'
+    Check-Installer 'A completed update requires a new confirmation' ($response.status -eq 200 -and $response.body.Contains('name="installer_token"'))
+    $response = Request-Installer '/install/old/index.php'
+    Check-Installer 'Obsolete installer remains disabled for administrators' ($response.status -eq 403)
     [IO.File]::WriteAllText("$stateRoot/installer-tests/latest.json", (@{ root = $testRoot; database = $database; checks = $checks.ToArray() } | ConvertTo-Json -Depth 3), $encoding)
     Write-Output "PASS: $($checks.Count) installation checks; isolated evidence at $testRoot"
 } finally {
