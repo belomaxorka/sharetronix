@@ -209,8 +209,8 @@
 				
 				if( $res ){
 					$activity_id = explode('_', $res);
-					$activity_id = intval($activity_id[0]);
 					$activity_type = $activity_id[1]; //delete private post
+					$activity_id = intval($activity_id[0]);
 				
 					$obj = $db2->query( 'SELECT * FROM '.( $activity_type=='private'? 'posts_pr' : 'posts' ).' WHERE id="'. $activity_id .'" LIMIT 1' );
 					$obj = $db2->fetch_object($obj);

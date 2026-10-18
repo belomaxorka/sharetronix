@@ -10,6 +10,7 @@ Release history for Sharetronix, with the latest changes first.
 - Declared existing runtime properties in core, rendering, activity, and notification classes to avoid PHP 8.2+ dynamic-property diagnostics while preserving public state and serialized references.
 - Kept all-error reporting enabled without referencing the deprecated `E_STRICT` constant; cron regressions now inspect both process output and private PHP logs on PHP 7.2/8.4.
 - Used an empty string when clearing persistent-login cookies, preserving logout and invalid-cookie rejection without PHP null-argument deprecations.
+- Preserved the saved post type before converting its ID to an integer in activity responses, selecting the correct public/private table without array-offset warnings.
 - Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
 - Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
 - Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
