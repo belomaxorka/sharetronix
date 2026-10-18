@@ -45,9 +45,9 @@
 					$changetheme_warn	= TRUE;
 				}
 			}
-			if( !$ok && !empty($hdr_custom_logo) && !empty($C->THEMEOBJ->logo_height) ) {
+			if( !$ok && !empty($hdr_custom_logo) ) {
 				$fn	= 'logo_'.time().rand(100000,999999).'.png';
-				$ok	= networkbranding_logo_resize($C->STORAGE_DIR.$hdr_custom_logo, $C->STORAGE_DIR.'attachments/'.$this->network->id.'/'.$fn, intval($C->THEMEOBJ->logo_height));
+				$ok	= networkbranding_logo_resize($C->STORAGE_DIR.$hdr_custom_logo, $C->STORAGE_DIR.'attachments/'.$this->network->id.'/'.$fn, AdminThemes::getLogoHeight($C->THEME));
 				if( $ok ) {
 					$db2->query('REPLACE INTO settings SET word="HDR_CUSTOM_LOGO", value="'.$db2->e($fn).'" ');
 					$db2->query('REPLACE INTO settings SET word="HDR_CUSTOM_LOGO_'.$db2->e($C->THEME).'", value="'.$db2->e($fn).'" ');

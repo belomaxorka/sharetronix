@@ -204,6 +204,11 @@
 	* Offered attachment downloads under the name they were uploaded with again, as 2.x did. Since
 	  3.0.1 they were saved under the random stored name (for example 1729341234123456.pdf). Names
 	  that are not plain ASCII, such as Cyrillic ones, are sent in the RFC 6266 filename* form.
+	* Took the header logo height from the active theme. Administration > Branding resized an
+	  uploaded logo to a fixed 80 pixels, and the default theme's manifest asked for 34 (a 2.x
+	  value) although the 3.x layout reserves 80, so switching back to it shrank the logo. Both now
+	  use the theme's logo_height, or 80 when the theme sets none; switching to such a theme used
+	  to drop the custom logo. Logos resized before keep their size until they are uploaded again.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

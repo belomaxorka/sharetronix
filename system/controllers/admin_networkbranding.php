@@ -20,7 +20,7 @@
 	$hdr_custom_logo	= empty($C->HDR_CUSTOM_LOGO) ? '' : ('attachments/'.$this->network->id.'/'.$C->HDR_CUSTOM_LOGO);
 	$hdr_show_favicon	= $C->HDR_SHOW_FAVICON;
 	$hdr_custom_favicon	= empty($C->HDR_CUSTOM_FAVICON) ? '' : ('attachments/'.$this->network->id.'/'.$C->HDR_CUSTOM_FAVICON);
-	$C->LOGO_HEIGHT = 80;
+	$C->LOGO_HEIGHT = AdminThemes::getLogoHeight($C->THEME);
 	
 	$submit	= FALSE;
 	$error	= FALSE;

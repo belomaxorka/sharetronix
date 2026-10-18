@@ -50,6 +50,17 @@
 			return array_keys($themes);
 		}
 		
+		public static function getLogoHeight( $theme )
+		{
+			// Header logo height of an installed theme (logo_height in its manifest), or 80, the
+			// height .system-logo reserves in static/css/framework.css, when the theme sets none.
+			$themes = AdminThemes::getInstalledThemes();
+			if( isset($themes[$theme]->logo_height) && intval($themes[$theme]->logo_height) > 0 ) {
+				return intval($themes[$theme]->logo_height);
+			}
+			return 80;
+		}
+		
 		public static function getAppstoreThemes($params)
 		{
 			global $C, $user, $page;
