@@ -135,10 +135,16 @@
 		$mail->IsHTML(FALSE); 
 		
 		try{
-			$mail->Send();
+			if( ! $mail->Send() ) {
+				$err = $mail->ErrorInfo;
+			}
 		}
 		catch ( phpmailerException $e ){
 			$err = $e->getMessage();
+		}
+		if( $err !== FALSE ) {
+			error_log('Sharetronix mail error: '.$err.' | Recipient domain: '.substr(strrchr($email, '@'), 1).' | Subject: '.$subject);
+			return FALSE;
 		}
 		
 		return TRUE;
@@ -252,9 +258,15 @@
 		$mail->IsHTML(TRUE);
 		
 		try{
-			$mail->Send();
+			if( ! $mail->Send() ) {
+				$err = $mail->ErrorInfo;
+			}
 		}catch ( phpmailerException $e){
 			$err = $e->getMessage();
+		}
+		if( $err !== FALSE ) {
+			error_log('Sharetronix mail error: '.$err.' | Recipient domain: '.substr(strrchr($email, '@'), 1).' | Subject: '.$subject);
+			return FALSE;
 		}
 		
 		return TRUE;

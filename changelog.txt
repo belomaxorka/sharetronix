@@ -269,6 +269,12 @@
 	  session instead of JSON. The editor now handles the answer with its own callback; before, it
 	  reused the group check callback, which would have sent the request a second time without a
 	  group.
+	* Logged failed e-mail deliveries. do_send_mail() and do_send_mail_html() ignored the result of
+	  PHPMailer, whose mail() call suppresses PHP warnings, and always returned TRUE, so signup and
+	  password recovery mails, e-mail changes, invitations and notifications could fail without any
+	  trace. A failed delivery now writes one line to the PHP error log with the mailer error, the
+	  recipient's domain and the subject, and both functions return FALSE. Pages still show their
+	  usual confirmation.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
