@@ -9,7 +9,7 @@ This repository maintains Sharetronix **3.6.2**. It keeps the platform running o
 ## Requirements
 
 - Apache HTTP Server with `mod_rewrite`, and `.htaccess` overrides allowed for the application directory.
-- PHP 7.2 or 8.4 with the `mysqli` and `gd` extensions, `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`.
+- PHP 7.2 or 8.4 with the `mbstring`, `mysqli`, and `gd` extensions, `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`.
 - MySQL 5.7.
 
 Installation, updates, and the core application flows have been tested with:
@@ -56,9 +56,10 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 ## Upgrading
 
 1. Back up the database, `system/conf_main.php`, and `storage/`, and make sure the backup can be restored.
-2. Replace the application files with the new version. Keep `system/conf_main.php`, `storage/`, and any themes, plugins, or languages you installed.
-3. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
-4. Clear `system/cache/` and `system/cache_html/`, or wait until cached data expires (one hour by default) and the daily cron job clears the cached page HTML.
+2. Make sure PHP loads the `mbstring` extension. Sharetronix 3.6.3 no longer ships a replacement for it: without the extension, pages, the updater, and the cron worker stop with a message that it is missing.
+3. Replace the application files with the new version. Keep `system/conf_main.php`, `storage/`, and any themes, plugins, or languages you installed.
+4. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
+5. Clear `system/cache/` and `system/cache_html/`, or wait until cached data expires (one hour by default) and the daily cron job clears the cached page HTML.
 
 The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM` to `'apc'` or `'mysqlheap'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'redis'` remain available.
 

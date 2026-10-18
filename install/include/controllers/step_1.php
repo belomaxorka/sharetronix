@@ -34,6 +34,7 @@
 				'php_curl_or_urlfopen'	=> 'PHP: cURL is needed, or else "allow_url_fopen" directive should be On',
 				'php_short_open_tag_on'	=> 'PHP: "short_open_tag" directive should be On',
 				'php_gd'				=> 'PHP: gd extension required',
+				'php_mbstring'			=> 'PHP: mbstring extension required',
 		);
 		
 		$D->check	= array (
@@ -43,6 +44,7 @@
 				'php_curl_or_urlfopen'	=> FALSE,
 				'php_short_open_tag_on'	=> FALSE,
 				'php_gd'				=> FALSE,
+				'php_mbstring'			=> FALSE,
 		);
 		
 		
@@ -63,6 +65,10 @@
 		
 		if( function_exists('gd_info') ) {
 			$D->check['php_gd']	= TRUE;
+		}
+		
+		if( extension_loaded('mbstring') ) {
+			$D->check['php_mbstring']	= TRUE;
 		}
 		
 		if( function_exists('curl_init') ) {

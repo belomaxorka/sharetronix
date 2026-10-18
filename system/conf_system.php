@@ -142,8 +142,11 @@
 	ini_set( 'zlib.output_compression_level',	7	);
 	ini_set( 'max_execution_time',                  20	);
 	
-	if( ! function_exists('mb_internal_encoding') ) {
-		require_once( $C->INCPATH.'helpers/func_mbstring.php' );
+	if( ! extension_loaded('mbstring') ) {
+		header('HTTP/1.1 500 Internal Server Error');
+		header('Content-Type: text/plain; charset=utf-8');
+		echo "Sharetronix requires the PHP mbstring extension, which is not loaded. Enable it in the PHP configuration and restart the web server or PHP-FPM.\n";
+		exit(1);
 	}
 	mb_internal_encoding('UTF-8');
 	
