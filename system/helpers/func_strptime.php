@@ -33,57 +33,60 @@
 * @param       String          $format
 * @return      Array           Parsed date
 */
-	function strptime($date, $format) 
+	if( ! function_exists('strptime') )
 	{
-		if( !($date = strptime_strToDate($date, $format)) ) return false;
-		
-		$dateTime = array(
-		'tm_sec'        => 0,
-		'tm_min'        => 0,
-		'tm_hour'       => 0,
-		'tm_mday'       => 1,
-		'tm_mon'        => 1,
-		'tm_year'       => date('Y')
-		); 
-		
-		foreach($date as $key => $val) 
+		function strptime($date, $format) 
 		{
-			switch($key) 
+			if( !($date = strptime_strToDate($date, $format)) ) return false;
+			
+			$dateTime = array(
+			'tm_sec'        => 0,
+			'tm_min'        => 0,
+			'tm_hour'       => 0,
+			'tm_mday'       => 1,
+			'tm_mon'        => 1,
+			'tm_year'       => date('Y')
+			); 
+			
+			foreach($date as $key => $val) 
 			{
-				case 'd':
-				case 'e':
-					$dateTime['tm_mday'] = intval($val);
-					break;
+				switch($key) 
+				{
+					case 'd':
+					case 'e':
+						$dateTime['tm_mday'] = intval($val);
+						break;
 
-				case 'm':
-					$dateTime['tm_mon'] = intval($val);
-					break;
-				
-				case 'Y':
-					$dateTime['tm_year'] = intval($val);
-					break;
-				
-				case 'y':
-					$dateTime['tm_year'] = intval($val) + 2000;
-					break;
-				
-				case 'H':
-				case 'I':
-					$dateTime['tm_hour'] = intval($val);
-					break;
-				
-				case 'M':
-					$dateTime['tm_min'] = intval($val);
-					break;
-				
-				case 'S':
-					$dateTime['tm_sec'] = intval($val);
-					break;
+					case 'm':
+						$dateTime['tm_mon'] = intval($val);
+						break;
+					
+					case 'Y':
+						$dateTime['tm_year'] = intval($val);
+						break;
+					
+					case 'y':
+						$dateTime['tm_year'] = intval($val) + 2000;
+						break;
+					
+					case 'H':
+					case 'I':
+						$dateTime['tm_hour'] = intval($val);
+						break;
+					
+					case 'M':
+						$dateTime['tm_min'] = intval($val);
+						break;
+					
+					case 'S':
+						$dateTime['tm_sec'] = intval($val);
+						break;
+				}
 			}
+			$dateTime['timestamp'] = mktime($dateTime['tm_hour'], $dateTime['tm_min'], $dateTime['tm_sec'], $dateTime['tm_mon'], $dateTime['tm_mday'], $dateTime['tm_year']);
+			
+			return $dateTime;
 		}
-		$dateTime['timestamp'] = mktime($dateTime['tm_hour'], $dateTime['tm_min'], $dateTime['tm_sec'], $dateTime['tm_mon'], $dateTime['tm_mday'], $dateTime['tm_year']);
-		
-		return $dateTime;
 	}
 	function strptime_strToDate($date, $format) 
 	{
