@@ -18,6 +18,7 @@ Release history for Sharetronix, with the latest changes first.
 - Declared the feed polling cursor used by background activity checks, removing a PHP 8.4 warning observed in the browser.
 - Restored administrator plugin/language controller initialization on PHP 8 while preserving legacy initializer calls and reference arguments.
 - Restored plugin-installer option, adapter, validation-message, and singleton initialization on PHP 8 without changing their legacy method entry points.
+- Added modern constructors to the bundled XML-RPC library while retaining its legacy initializers and request-serialization behavior.
 - Retained login sessions on non-default ports while preserving URL authorities and existing session names for ordinary domains.
 - Registered the existing class-loading behavior through SPL to prevent autoload deprecations from corrupting headers and compressed responses.
 - Stopped installer execution immediately after the successful completion redirect, avoiding reads from the destroyed installer session.
