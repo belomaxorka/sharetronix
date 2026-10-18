@@ -213,6 +213,9 @@
 	  static/js/ and static/css/) in pages. Every entry was added as a script or stylesheet, so
 	  pages also linked subfolders such as js/mobile/ of the 3.x theme packages, notes and hidden
 	  files.
+	* Shortened long link text in posts and comments as it is displayed. The text was measured and
+	  cut in its HTML-escaped form, so &amp; counted as five characters and a cut could fall inside
+	  an entity, leaving fragments such as "&amp" or "p;b=2" in the post.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

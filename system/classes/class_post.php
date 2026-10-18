@@ -612,9 +612,13 @@
 				$after	.= $matches[1];
 				$url	= preg_replace('/([\.,\?]|&#33;)$/', '', $url);
 			}
-			$txt	= $url;
+			// The URL comes HTML-escaped: measure and shorten it as displayed, not inside an entity.
+			$txt	= htmlspecialchars_decode($url, ENT_QUOTES);
 			if( mb_strlen($txt) > 60 ) {
-				$txt	= mb_substr($txt, 0, 45).'...'.mb_substr($txt, -10);
+				$txt	= htmlspecialchars(mb_substr($txt, 0, 45)).'...'.htmlspecialchars(mb_substr($txt, -10));
+			}
+			else {
+				$txt	= $url;
 			}
 			return $before.'<a href="'.$url.'" title="'.$url.'" target="_blank" rel="nofollow">'.$txt.'</a>'.$after;
 		}
