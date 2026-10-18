@@ -7,6 +7,12 @@
 		$user 		= & $GLOBALS['user'];
 		$pm 		= & $GLOBALS['plugins_manager'];
 		
+		if( ! $user->is_logged ) {
+			// Guests have no account menu; like the desktop header, offer them the sign-in page.
+			$menu = array( 	array('url' => 'home', 		'css_class' => 'profile', 		'title' => $page->lang('hdr_nav_signin') ));
+			$tpl->layout->setVar( 'menu_content_placeholder', $tpl->designer->createInfoBlock(' ', $tpl->designer->createMenu('feed-navigation', $menu)) );
+			return;
+		}
 		
 		$user_info = '
 			<a href="'.userlink($user->info->username).'" class="menu-avatar" style="background-image:url('.$C->STORAGE_URL.'avatars/'.$user->info->avatar.');">

@@ -151,6 +151,10 @@
 	  certificate verification for this request to the server itself, so self-signed certificates
 	  work, uses cURL when it is available, and when the server cannot reach its own address it
 	  shows a warning and lets the installation continue instead of failing.
+	* Showed guests a sign-in entry in the mobile menu instead of the account menu. For a visitor
+	  who is not signed in, the menu read the username, name, avatar and position of a missing
+	  account, logging seven warnings on every mobile page, and offered profile, dashboard and
+	  "Sign out" links; like the desktop header, it now offers the mobile sign-in page.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
