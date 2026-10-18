@@ -10,14 +10,6 @@
 		'mysqlheap'		=> FALSE,
 		'filesystem'	=> TRUE,
 	);
-	$tmp	= my_mysql_connect($s['MYSQL_HOST'], $s['MYSQL_USER'], $s['MYSQL_PASS']);
-	if( $tmp ) {
-		$tmp	= my_mysql_get_server_info($tmp);
-		$tmp	= str_replace('.','',substr($tmp, 0, 5));
-		if( intval($tmp) >= 503 ) {
-			$options['mysqlheap']	= TRUE;
-		}
-	}
 	
 	$is_upgrade	= isset($OLDC->CACHE_MECHANISM, $OLDC->CACHE_KEYS_PREFIX, $OLDC->CACHE_MEMCACHE_HOST, $OLDC->CACHE_MEMCACHE_PORT);
 	if( $is_upgrade ) {

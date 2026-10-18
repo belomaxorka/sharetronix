@@ -136,8 +136,16 @@
 	  failed with a fatal error on sign-in, /cron, and the cron worker. APCu memory is also not
 	  shared between the command-line cron worker and the web server, so the worker's marker never
 	  reached /cron and the HTTP fallback kept running next to a real cron job. Configurations that
-	  still set $C->CACHE_MECHANISM = 'apc' now use the file cache in system/cache/; 'memcached' and
-	  'mysqlheap' remain available.
+	  still set $C->CACHE_MECHANISM = 'apc' now use the file cache in system/cache/.
+	* Removed the MySQL heap cache driver ('mysqlheap'). Its MEMORY table stores every entry as a
+	  fixed 64 KB row, so with the default 16 MB max_heap_table_size only about 255 entries fit;
+	  once the table was full, every request that cached something failed with "The table 'cache'
+	  is full" (HTTP 500 on PHP 8.1+, an empty page on PHP 7) until entries expired, which happened
+	  after opening a few profiles on a test site. It also lost values containing a backslash or
+	  longer than 21810 characters, and sent more queries to MySQL than running without a cache.
+	  Configurations that still set $C->CACHE_MECHANISM = 'mysqlheap' now use the file cache in
+	  system/cache/; 'memcached' and 'redis' remain available. The unused cache table is left in
+	  place.
 
 Sharetronix 3.6.2
 	* Bug fixes

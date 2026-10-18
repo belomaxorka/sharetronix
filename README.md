@@ -47,7 +47,7 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 
 ## Cache
 
-`$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, `redis`, or `mysqlheap`. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the extension the file cache is used; while the Redis server is unreachable, pages are served without the cache.
+`$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, or `redis`. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the extension the file cache is used; while the Redis server is unreachable, pages are served without the cache.
 
 ## Upgrading
 
@@ -56,7 +56,7 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 3. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
 4. Clear `system/cache/` and `system/cache_html/`, or wait until cached data expires (one hour by default) and the daily cron job clears the cached page HTML.
 
-The APC cache driver has been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM = 'apc'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'mysqlheap'` remain available.
+The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM` to `'apc'` or `'mysqlheap'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'redis'` remain available.
 
 ## Known limitations
 
