@@ -174,13 +174,13 @@
 		
 		$content	= '<div style="line-height:1.3; padding:5px;">';
 		if( $p->post_user->id == 0 && $p->post_group ) {
-			$content	.= '<img src="'.$C->IMG_URL.'/avatars/thumbs2/'.$p->post_group->avatar.'" width="16" height="16" alt="" border="0" /> <strong>'.$p->post_group->title.'</strong>';
+			$content	.= '<img src="'.$C->STORAGE_URL.'avatars/thumbs2/'.$p->post_group->avatar.'" width="16" height="16" alt="" border="0" /> <strong>'.$p->post_group->title.'</strong>';
 		}
 		else {
-			$content	.= '<img src="'.$C->IMG_URL.'/avatars/thumbs2/'.$p->post_user->avatar.'" width="16" height="16" alt="" border="0" /> <strong>'.$p->post_user->username.'</strong>';
+			$content	.= '<img src="'.$C->STORAGE_URL.'avatars/thumbs2/'.$p->post_user->avatar.'" width="16" height="16" alt="" border="0" /> <strong>'.$p->post_user->username.'</strong>';
 		}
 		if( $p->post_type == 'private' ) {
-			$content	.= '<img src="'.$C->IMG_URL.'/avatars/thumbs2/'.$p->post_to_user->avatar.'" width="16" height="16" alt="" border="0" /> <strong>'.$p->post_to_user->username.'</strong>';
+			$content	.= '<img src="'.$C->STORAGE_URL.'avatars/thumbs2/'.$p->post_to_user->avatar.'" width="16" height="16" alt="" border="0" /> <strong>'.$p->post_to_user->username.'</strong>';
 		}
 		$content	.= ':<br />'.$p->parse_text().'<br />';
 		if( isset($p->post_attached['link']) ) {
