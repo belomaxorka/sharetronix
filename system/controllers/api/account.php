@@ -179,7 +179,7 @@
 		}
 		if(isset($_POST['url'])){
 			if($check = $this->db2->fetch_field('SELECT 1 FROM users_details WHERE user_id="'.intval($this->db2->e($user->id)).'" LIMIT 1')){
-				$res = $this->db2->query('UPDATE users_details SET website="'.$this->db2->e(urldecode($_POST['url'])).'" WHERE user_id="'.intval($id).'" LIMIT 1');
+				$res = $this->db2->query('UPDATE users_details SET website="'.$this->db2->e(urldecode($_POST['url'])).'" WHERE user_id="'.intval($user->id).'" LIMIT 1');
 				
 				if(!$this->db2->affected_rows($res)){
 					if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 304 Not Modified');

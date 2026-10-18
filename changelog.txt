@@ -163,6 +163,9 @@
 	* Answered 404 for the account API resources create, destroy, exists, show, incoming and
 	  outgoing, which were listed as available but never implemented in 3.x and answered an empty
 	  200.
+	* Saved a changed website through the account API (update_profile url) when the user already
+	  had one. The update addressed an undefined variable, so it changed no row, answered 304 and
+	  logged a notice or warning; only the very first website was ever stored.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
