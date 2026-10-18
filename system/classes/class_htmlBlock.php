@@ -10,7 +10,7 @@
 		public  $delimiter;
 		public  $block_type;
 		
-		public function __construct( $block_name, $plugin = FALSE, & $layout )
+		public function __construct( $block_name, $plugin, & $layout )
 		{
 			global $C, $D;
 				
