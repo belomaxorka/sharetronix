@@ -166,6 +166,9 @@
 	* Saved a changed website through the account API (update_profile url) when the user already
 	  had one. The update addressed an undefined variable, so it changed no row, answered 304 and
 	  logged a notice or warning; only the very first website was ever stored.
+	* Answered account API profile updates (update_profile) with the updated profile. The cached
+	  user was refreshed only after the answer had been built from it, so clients received the
+	  values from before the change.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

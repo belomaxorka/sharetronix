@@ -199,6 +199,7 @@
 		}
 		
 		if($a_rows){
+			$this->network->get_user_by_id($user->id, TRUE);
 			$twitter_data = new TwitterData($api_session->format, $api_session->callback, $user->id);
 			$answer = $twitter_data->data_header();
 	
@@ -213,7 +214,6 @@
 			$answer .= $twitter_data->data_bottom();	
 			
 			echo $answer;
-			$this->network->get_user_by_id($user->id, TRUE);
 			exit;
 		}else{
 			if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 304 Not Modified');
