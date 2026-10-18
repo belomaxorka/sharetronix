@@ -33,8 +33,12 @@
 			}
 				
 			$moderator = new group($g);
+			if( !$user->is_logged || ( !$user->info->is_network_admin && !$moderator->isGroupAdmin() ) ){
+				echo 'ERROR:'.$page->lang('global_ajax_post_error2');
+				return;
+			}
 			$moderator->deleteAdmin($users_id);
-				
+
 			echo $page->lang('global_ajax_post_ok');
 			return;
 				
