@@ -2,8 +2,8 @@
 	
 	$d	= opendir( $C->TMP_DIR );
 	
-	while( $fl = readdir($d) ) {
-		if( $fl=='.' || $fl=='..' ) {
+	while( FALSE !== ($fl = readdir($d)) ) {
+		if( $fl=='.' || $fl=='..' || $fl=='.gitkeep' ) {
 			continue;
 		}
 		$tm	= fileatime( $C->TMP_DIR.$fl );
@@ -12,4 +12,5 @@
 		}
 	}
 	
+	closedir($d);
 ?>

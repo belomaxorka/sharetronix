@@ -12,7 +12,7 @@ Use Windows, Git, and PowerShell 7 with the following existing Open Server modul
 | `PHP-7.2` | PHP 7.2.34 NTS, MSVC15 x64, build 2025-09-21 |
 | `MySQL-5.7` | MySQL Community Server 5.7.44, Win64 |
 | `Mailpit` | Mailpit 1.29.3, windows/amd64 |
-| `PHP-8.4` (optional failure probe) | PHP 8.4.19 NTS x64 |
+| `PHP-8.4` (optional compatibility probe) | PHP 8.4.19 NTS x64 |
 
 Startup checks these version pins. Use `-RuntimeRoot 'D:\path\to\modules'` if the same modules are installed elsewhere. Changing a runtime pin requires another recorded verification run.
 
@@ -41,7 +41,7 @@ All services bind to loopback. Startup refuses occupied ports. Apache uses `mod_
 2. Enter database host `127.0.0.1:33062`. Use `user`, `password`, and `database` from `.local/credentials.json` for the other database fields.
 3. Use `adminUser` and `adminPassword` from that file for the administrator. Use a synthetic address such as `admin@localhost.test`. The username `admin` is reserved by the application.
 4. Finish installation. The script's site copy receives `system/conf_main.php`; the repository's source configuration is not changed.
-5. Apply the local configuration workaround and restart:
+5. Disable outbound RPC pings in the local configuration and restart:
 
 ```powershell
 .\scripts\dev.ps1 Configure
@@ -49,9 +49,9 @@ All services bind to loopback. Startup refuses occupied ports. Apache uses `mod_
 .\scripts\dev.ps1 Start
 ```
 
-`Configure` sets `DOMAIN` to `localhost` while keeping the port in `SITE_URL`, and disables outbound RPC pings. This works around the installer/session defect described in the test report. On subsequent starts this local configuration is reapplied, and Apache denies `/install/` with HTTP 403. Installation is not automatically locked by the application itself.
+`Configure` disables outbound RPC pings without rewriting the installer-generated `DOMAIN` or `SITE_URL`. Session names retain a safe port suffix, while cookie domain attributes contain only a hostname; no manual domain workaround is required. After installation the application itself denies updater access to guests and ordinary users with HTTP 403. An active administrator must sign in and submit the update confirmation with its session-bound token before update processing can run. Back up first; the obsolete `/install/old/` wizard is disabled, and updates use `/install/`. No blanket Apache installer block is required.
 
-PHP loads GD, cURL, Fileinfo, Mbstring, MySQLi, and OpenSSL, with the standard XML/DOM, JSON, session, and other built-in modules available in this distribution. Short tags are enabled; output buffering is 4096 bytes. `E_ALL` and logging remain enabled. Browser display of PHP errors is off because legacy diagnostic output corrupts compressed responses. The installer and cron worker can override that display setting; inspect logs even if a page or command appears successful.
+PHP loads GD, cURL, Fileinfo, Mbstring, MySQLi, and OpenSSL, with the standard XML/DOM, JSON, session, and other built-in modules available in this distribution. Short tags are enabled; output buffering is 4096 bytes. `E_ALL` and logging remain enabled, with browser display off by default. The loader regression also verifies clean compressed HTML with displayed diagnostics enabled. The installer and cron worker can override the display setting; inspect logs even if a page or command appears successful.
 
 MySQL uses `utf8` / `utf8_unicode_ci` and an empty SQL mode to characterize legacy behavior. Strict SQL modes, `utf8mb4`, and newer database releases need separate compatibility work. The application uses filesystem caching. Installer writable paths include `system`, its cache/tmp/language directories, `storage`, `themes`, `apps`, and the copied `.htaccess`.
 
@@ -68,7 +68,7 @@ The fixture script creates `qausera` and `qauserb` with random passwords in `.lo
 
 The HTTP smoke script checks 15 authentication, session, profile-access, and administration boundaries with independent sessions. Results are written to `.local/http-smoke-results.json`. Use [TESTING.md](TESTING.md) for browser scenarios such as posting, groups, privacy, and uploads.
 
-Email from the Windows PHP `mail()` function is delivered to the dedicated Mailpit instance. No SMTP relay is configured. Use synthetic addresses only. RPC pings are disabled; other retired external integrations have not been comprehensively stubbed. Do not enable a recurring cron task yet: the initial worker check exposed a broken temporary-directory setting and an unconditional legacy version-check request. The original worker instructions are in `system/cronjobs/readme.txt`; findings are in the test report.
+Email from the Windows PHP `mail()` function is delivered to the dedicated Mailpit instance. No SMTP relay is configured. Use synthetic addresses only. RPC pings are disabled; other retired external integrations have not been comprehensively stubbed. The cron version check has been removed. The full worker, immediate repeat, plugin scheduling, and private temporary-file cleanup have regression coverage on a disposable installer database; the HTTP fallback is also checked after installation. No recurring operating-system task is registered. Use the commands in [TESTING.md](TESTING.md) for verification. The original worker instructions are in `system/cronjobs/readme.txt`; findings and fixes are in the test reports.
 
 ## Stop, synchronize, and reset
 
@@ -112,4 +112,4 @@ The initial run verified all 48 table checksums, 23 storage files, and the confi
 
 Logs are in `.local/logs/`; configuration, sessions, dumps, and captured email also remain under `.local`. Do not add these files to Git or paste unsanitized diagnostics into reports. Public test reports should contain synthetic examples, relative source paths, and summarized evidence.
 
-To reproduce the modern-PHP failure separately, stop the stack, run `scripts/dev.ps1 Start -PhpVersion 8.4`, and request `/`. The tested source returns HTTP 500. Stop it and start with the default PHP 7.2 again for the diagnostic baseline. This probe does not establish PHP 8.4 support.
+To probe modern PHP separately, stop the stack, run `scripts/dev.ps1 Start -PhpVersion 8.4`, and request `/`. After the focused syntax fixes, the homepage and 15 HTTP smoke checks passed, but PHP 8.4 deprecations and unverified flows remain; see the follow-up fix report. Stop it and start with the default PHP 7.2 again for the diagnostic baseline. This probe does not establish complete PHP 8.4 support.

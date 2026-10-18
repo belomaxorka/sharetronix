@@ -53,6 +53,7 @@
 	$C->STORAGE_DIR			= $C->INCPATH.'../storage/';
 	$C->STORAGE_TMP_URL		= $C->STORAGE_URL.'tmp/';
 	$C->STORAGE_TMP_DIR		= $C->STORAGE_DIR.'tmp/';
+	$C->TMP_DIR			= $C->INCPATH.'tmp/';
 	$C->STATIC_IMG_URL		= $C->SITE_URL.'static/images/';
 	
 	$C->STATIC_URL                  = $C->OUTSIDE_SITE_URL.'static/';

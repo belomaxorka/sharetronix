@@ -33,6 +33,46 @@ Replace `index.php` with the changed path, including templates containing PHP. E
 
 During the compatibility inventory, lint all PHP sources and templates on the target runtime and retain the complete failure list. Once a test harness and CI are added, document their exact commands here.
 
+## Focused regressions
+
+With the Windows local stack running, use its PHP configuration for the focused checks:
+
+```powershell
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\session.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\autoload.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\temp-cleanup.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -n tests\token-cleanup.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\token-expiry.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -n tests\php-offsets.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -c .local\php.ini tests\daily-database.php
+& C:\OSPanel\modules\PHP-7.2\php.exe -n tests\daily-cache-cleanup.php
+.\tests\php-syntax.ps1
+.\tests\php-syntax.ps1 -PhpExecutable C:\OSPanel\modules\PHP-7.2\php.exe
+.\tests\response-output.ps1
+.\tests\installer.ps1
+.\tests\before-after.ps1
+.\tests\cron-worker.ps1
+.\scripts\smoke-local.ps1
+```
+
+The installer test uses an additional loopback listener on port 8093 and a newly created database on the dedicated local MySQL instance. Its 57 checks follow the actual wizard, check the final redirect, log in, exercise update authorization without a web-server installer block, and check HTTP cron. The same fixture also exercises posts, comments, likes, edit/delete ownership, profiles, follows, groups, private-content visibility, search, and logout through HTTP forms/services with database assertions. These are HTTP integration checks, not browser JavaScript/UI coverage. Disposable databases and evidence are retained locally; the main test installation is not reset.
+
+To compare committed application revisions with the current test suite:
+
+```powershell
+.\tests\installer.ps1 -SourceRef 0a34c63 -ObserveBaseline
+.\tests\installer.ps1 -SourceRef HEAD
+.\tests\before-after.ps1 -AfterRef HEAD
+```
+
+`ObserveBaseline` explicitly expects the historical installer notices, lost session, and guest updater execution on that old revision. It applies the documented hostname workaround only to the disposable baseline fixture so that the same 28 application-flow checks can run before and after. It does not mark the old installation as healthy and does not replace the latest fixed fixture used by cron checks. The fixed revision must pass without that workaround.
+
+The focused comparison exports immutable source snapshots and runs the same nine PHP cases against old and new code. Expected old failures must match their diagnostic, while the new revision must pass; the legacy PHP 7.2 string-offset behavior must pass on both. The token SQL case uses the parent of its fix after the external version request was removed, avoiding the retired network endpoint. See the [fix report](test-runs/2026-10-18-fixes.md) and [pre-merge comparison](test-runs/2026-10-18-merge-verification.md).
+
+The daily-database and complete cron-worker regressions require a completed installer-test fixture. They use that disposable database. The worker check makes all eight intervals due, installs a synthetic plugin in the fixture, checks job completion and running flags, and immediately repeats the worker to verify that jobs are not duplicated before their next run.
+
+`tests/cron-worker.ps1 -SourceRef <commit>` exports that revision's worker files into the same disposable fixture. For the interval-completion regression, `0151072` must fail with four running flags and a skipped short-interval plugin; `HEAD` must pass. Restore the fixed source by running the fixed revision afterward. Do not execute the complete original worker against retired integrations.
+
 ## Application scenarios
 
 Start with an administrator, ordinary users A and B, and a guest. Include a public group, a private group that B cannot access, public posts, and private content. Repeat applicable scenarios through the web UI and direct URLs/API endpoints so visibility is checked on the server.

@@ -1,4 +1,7 @@
 <?php
+	header('HTTP/1.1 403 Forbidden');
+	header('Content-Type: text/plain; charset=utf-8');
+	exit('Use the current /install/ entry point for installation and authorized updates.');
 	
 	define( 'SITE_TITLE',	'Sharetronix' );
 	define( 'VERSION',	'3.6.2' );

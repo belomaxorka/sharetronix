@@ -26,7 +26,7 @@ try {
     $response = Request-Local '/admin/general' $guest
     Check-Local 'Guest cannot open administration directly' ((Response-Path $response) -eq '/signin')
     $response = Request-Local '/install/' $guest
-    Check-Local 'Completed installer is blocked by the local web server' ($response.StatusCode -eq 403)
+    Check-Local 'Guest cannot run the completed installer' ($response.StatusCode -eq 403)
     $response = Request-Local '/signin' $guest @{ email = 'qausera'; password = 'invalid-local-password' }
     Check-Local 'Invalid credentials are rejected' ((Response-Path $response) -eq '/signin' -and $response.Content.Contains('Invalid e-mail or password'))
 

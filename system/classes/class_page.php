@@ -402,7 +402,7 @@
 				$abs	= TRUE;
 			}
 			if( ! $abs ) {
-				if( $loc{0} != '/' ) {
+				if( $loc[0] != '/' ) {
 					$loc	= $C->SITE_URL.$loc;
 				}
 			}

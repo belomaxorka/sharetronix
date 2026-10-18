@@ -36,8 +36,7 @@ function Configure-Site {
     $configPath = Join-Path $siteRoot 'system/conf_main.php'
     if (-not (Test-Path -LiteralPath $configPath)) { throw 'Complete installation before running Configure.' }
     $config = [System.IO.File]::ReadAllText($configPath)
-    # Local-only workarounds: DOMAIN is a hostname, SITE_URL retains the port.
-    $config = [regex]::Replace($config, '(\$C->DOMAIN\s*=\s*)''[^'']*'';', '$1''localhost'';')
+    # Keep retired RPC pings disabled in the disposable local installation.
     $config = [regex]::Replace($config, '(\$C->RPC_PINGS_ON\s*=\s*)TRUE;', '$1FALSE;')
     Write-LocalFile $configPath $config
 }
@@ -94,7 +93,7 @@ if ($Action -eq 'Status') {
     exit
 }
 if ($Action -eq 'Sync') { Sync-Site; Write-Output 'Tracked application files copied to .local/site; installation data retained.'; exit }
-if ($Action -eq 'Configure') { Configure-Site; Write-Output 'Local domain configured and outbound RPC pings disabled.'; exit }
+if ($Action -eq 'Configure') { Configure-Site; Write-Output 'Outbound RPC pings disabled for the local installation.'; exit }
 
 $apacheRoot = Join-Path $RuntimeRoot 'Apache'
 $phpRoot = Join-Path $RuntimeRoot "PHP-$PhpVersion"
@@ -126,11 +125,6 @@ if (Test-Path -LiteralPath "$siteRoot/system/conf_main.php") { Configure-Site }
 $phpExtensions = @('curl', 'fileinfo', 'mbstring', 'mysqli', 'openssl')
 $phpExtensions += $(if ($PhpVersion -eq '7.2') { 'gd2' } else { 'gd' })
 $extensionLines = ($phpExtensions | ForEach-Object { "extension=php_$_.dll" }) -join "`n"
-$installerAccess = if (Test-Path -LiteralPath "$siteRoot/system/conf_main.php") {
-    '<LocationMatch "^/install(?:/|$)">
-    Require all denied
-</LocationMatch>'
-} else { '' }
 Write-LocalFile "$stateRoot/php.ini" @"
 extension_dir="$(UnixPath $phpRoot)/ext"
 $extensionLines
@@ -198,7 +192,6 @@ ProxyFCGIBackendType GENERIC
 <FilesMatch "^\.ht">
     Require all denied
 </FilesMatch>
-$installerAccess
 "@
 $credentialsFile = Join-Path $stateRoot 'credentials.json'
 if (-not (Test-Path -LiteralPath $credentialsFile)) {
