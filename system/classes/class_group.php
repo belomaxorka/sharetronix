@@ -305,6 +305,7 @@
 			switch($type){
 				case 'public':
 					$this->db2->query('UPDATE groups SET is_public=1 WHERE id="'.$this->group->id.'" LIMIT 1');
+					$this->network->get_private_groups_ids(TRUE);
 					break;
 				case 'private':
 					$this->db2->query('UPDATE groups SET is_public=0 WHERE id="'.$this->group->id.'" LIMIT 1');

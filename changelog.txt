@@ -122,6 +122,9 @@
 	* Passed integers to rand() when the HTTP cron reschedules jobs stuck for more than six hours.
 	  rand(0.5, 1.5) already behaved as rand(0, 1), but logged two "Implicit conversion from float"
 	  deprecations per job on PHP 8.1+.
+	* Refreshed the cached list of private groups when a group is made public. Only the change to
+	  private refreshed it, so posts of a group that had just become public stayed hidden from
+	  feeds and search for non-members until the cache expired (one hour by default).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
