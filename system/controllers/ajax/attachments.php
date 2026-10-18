@@ -209,7 +209,6 @@
 			}
 		
 			$att[$link_type] = $attach_data;
-				var_dump($sess['TEMP_ACTIVITY_POSTS_ATTACHMENTS']); exit;
 			echo 'OK';
 			return;
 		

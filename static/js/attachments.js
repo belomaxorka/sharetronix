@@ -487,12 +487,21 @@ var Attachments = function () {
     				}
     			}
         	
-    		Services.invoke(args, checkGroupSuccess, checkGroupFail, $('.attachment-group-field-container'));
+    		Services.invoke(args, setGroupSuccess, checkGroupFail, $('.attachment-group-field-container'));
         	
         	$('.attachment-button.group').css('background-image', 'url(/static/images/icon-close.png)').text(result.title);
     	}
     }
     
+    function setGroupSuccess(result){
+    	// The group was checked and shown already; only a rejected request undoes it.
+    	if(result.status == 'ERROR'){
+    		STX.showMessage(result.message, "error");
+    		$('.attachment-button.group').css('background-image', 'url(/static/images/icon-add.png)');
+    		$('.attachment-button.group').text('Group');
+    	}
+    }
+
     function checkGroupFail(el){
     	$(el).css('color', 'red');
     }

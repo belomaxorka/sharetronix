@@ -264,6 +264,11 @@
 	  turned on the display of all PHP errors for every administrator who opened it, regardless of
 	  debug mode, and declared a global function p(), which made the page fail if a plugin or theme
 	  declared a function with that name.
+	* Removed a leftover var_dump() from the service that attaches a group to a new post
+	  (services/attachments/setgroup). It answered with a dump of all attachment drafts of the
+	  session instead of JSON. The editor now handles the answer with its own callback; before, it
+	  reused the group check callback, which would have sent the request a second time without a
+	  group.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
