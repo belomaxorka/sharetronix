@@ -219,6 +219,10 @@
 	* Kept the Leave item of the group settings menu as a script link (href="#"). The menu prefixed
 	  it with http:// and opened it in a new window like an off-site link, so opening it in a new
 	  tab, or without JavaScript, led to the invalid address http://#.
+	* Named per-user HTML cache files (getCachedHTML() and setCachedHTML() with a user id) without
+	  ":" (current_user_<id>-about_user_<id>). Windows does not allow ":" in file names, so these
+	  entries were never stored there. setCachedHTML() also returns FALSE when the cache file cannot
+	  be written instead of always reporting success.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -462,7 +462,7 @@
 		global $C, $page;
 		$user = & $GLOBALS['user'];
 		
-		$cache_filename = $C->INCPATH.'cache_html/'.$name.($page->is_mobile? '-mobile-' : '').( $user_id? '-current_user:'.$user->id.'-about_user:'.$user_id : '' ).'.cached.php';
+		$cache_filename = $C->INCPATH.'cache_html/'.$name.($page->is_mobile? '-mobile-' : '').( $user_id? '-current_user_'.$user->id.'-about_user_'.$user_id : '' ).'.cached.php';
 		if( file_exists( $cache_filename ) ){
 			return file_get_contents( $cache_filename );
 		}
@@ -482,15 +482,13 @@
 		if( empty($name) || empty($value) || ($user_id && !is_numeric($user_id)) ){
 			return FALSE;
 		}
-		$cache_filename = $C->INCPATH.'cache_html/'.$name.($page->is_mobile? '-mobile-' : '').( $user_id? '-current_user:'.$user->id.'-about_user:'.$user_id : '' ).'.cached.php';
+		$cache_filename = $C->INCPATH.'cache_html/'.$name.($page->is_mobile? '-mobile-' : '').( $user_id? '-current_user_'.$user->id.'-about_user_'.$user_id : '' ).'.cached.php';
 
 		if( file_exists( $cache_filename ) ){
 			unlink( $cache_filename );
 		}
 			
-		file_put_contents($cache_filename, $value);
-			
-		return TRUE;
+		return FALSE !== file_put_contents($cache_filename, $value);
 	}
 	
 	function invalidateCachedHTML()
