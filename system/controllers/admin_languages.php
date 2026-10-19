@@ -58,83 +58,16 @@
 		public function index(){
 			global $C, $D;
 			
-			if(!isset($C->STX_KEY) || !isset($C->STX_USERNAME) || !isset($C->STX_PASSWORD))
-			{
-				header('Location: ' . $C->SITE_URL . "admin/plugins/tab:enterStxKey");
-				die();
-			}
-			
-			$D->error = FALSE;
-			$languages = array();
-			
-			try{
-				$languages = Langpack::getSupportedLanguages();
-			}catch( Exception $e ){
-				$D->error = $e->getMessage();
-				$languages = array();
-				$D->designer = pageDesignerFactory::select();
-			}
-			
-			if( count($languages) > 0 ){
-				$langs = array();
-				foreach($languages as $l) {
-					$lang = $l->toArray();
-					$lang['installed'] = $l->isInstalled();
-					$lang['upgradable'] = $l->isUpgradable();
-					$langs[] = $lang;
-				}
-				
-				$D->languages = $langs;
+			// A language pack is a folder in system/languages/; the default language is chosen in the
+			// general settings. The marketplace that installed packs from here no longer exists.
+			require_once( $C->INCPATH.'helpers/func_languages.php' );
+			$D->languages = array();
+			foreach( get_available_languages(TRUE) as $key => $lang ){
+				$D->languages[] = array('langkey' => $key, 'lang_name' => trim($lang->name), 'default' => $key == $C->LANGUAGE);
 			}
 			
 			$this->tpl->layout->useBlock('languages/viewall');
 			$this->tpl->layout->block->save( 'main_content' );
-		}
-		
-		
-		public function installLangpack(){
-			
-			$langkey =  ( isset($this->params->langkey) == true) ? $this->params->langkey : false;
-			if($langkey == false) 
-				die($this->page('admin_langs_unsupported'));
-	
-			$lang = new Langpack($langkey);
-			$lang->install();
-			
-			global $C;
-			header("Location: " . $C->SITE_URL . "admin/languages/");
-			die();
-			
-		}
-		
-		
-		public function updateLangpack(){
-			$langkey =  ( isset($this->params->langkey) == true) ? $this->params->langkey : false;
-			if($langkey == false)
-				die($this->page('admin_langs_unsupported'));
-			
-			$lang = new Langpack($langkey);
-			$lang->upgrade();
-			
-			global $C;
-			header("Location: " . $C->SITE_URL . "admin/languages/");
-			die();
-		}
-		
-		
-		public function uninstallLangpack(){
-			
-			$langkey =  ( isset($this->params->langkey) == true) ? $this->params->langkey : false;
-			if($langkey == false)
-				die($this->page('admin_langs_unsupported'));
-			
-			$lang = new Langpack($langkey);
-			$lang->remove();
-			
-			global $C;
-			header("Location: " . $C->SITE_URL . "admin/languages/");
-			die();
-					
 		}
 		
 	}

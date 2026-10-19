@@ -73,6 +73,8 @@ A plugin is a folder in `apps/` with a `manifest.json`, whose `plugin_name` is t
 
 A plugin that cannot be loaded, for example because its code does not run on the server's PHP version or its folder is missing, is skipped and reported in the PHP error log; the Plugins page shows it as not loaded.
 
+A language pack is a folder in `system/languages/` with a `language.php`. Copy it there; **Administration → Languages** lists the installed packs, and the general settings choose the default language.
+
 ## Upgrading
 
 The updater updates Sharetronix 3.0 and later. Releases 1.x and 2.x used a different database layout and upload folders, which it cannot convert.
@@ -90,7 +92,7 @@ The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system
 ## Known limitations
 
 - Sign-in through Twitter and Facebook and other integrations with retired third-party services are untested and may not work.
-- Installing languages and the "Get New" tab of the themes page rely on the retired Sharetronix marketplace ([#8](https://github.com/belomaxorka/sharetronix/issues/8)).
+- The "Get New" tab of the themes page relies on the retired Sharetronix marketplace ([#8](https://github.com/belomaxorka/sharetronix/issues/8)).
 - On PHP 8.1 and later, dates use English month and day names regardless of the language pack ([#9](https://github.com/belomaxorka/sharetronix/issues/9)).
 
 Other known defects are tracked in [GitHub issues](https://github.com/belomaxorka/sharetronix/issues).

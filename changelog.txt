@@ -59,6 +59,9 @@
 	  directory with everything in it; a page on another site could make a signed-in administrator
 	  follow them. They are now forms with a token and accept only the name of a plugin folder in
 	  apps/.
+	* With marketplace credentials saved, every page of the administration sent them to the
+	  marketplace over plain HTTP (the password as an unsalted md5) to count language updates. The
+	  administration no longer contacts the marketplace for languages.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -441,6 +444,9 @@
 	  enables and uninstalls them; it no longer depends on the retired Sharetronix marketplace and
 	  no longer asks for marketplace credentials. Installing and uninstalling show what the plugin's
 	  installer.php will change and ask for confirmation.
+	* The Languages page of the administration lists the language packs in system/languages/ and
+	  marks the default language; it no longer depends on the retired Sharetronix marketplace. A
+	  language pack is installed by copying its folder.
 
 	Removed:
 	* Removed the obsolete root README.txt.

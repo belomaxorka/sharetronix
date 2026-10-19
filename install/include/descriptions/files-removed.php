@@ -89,6 +89,7 @@
 			'install/old/index.php',
 			'install/old/license.txt',
 			'system/classes/class_cache_apc.php',
+			'system/classes/class_Langpack.php',
 			'system/classes/class_cache_mysqlheap.php',
 			'system/classes/class_notification.php',
 			'system/controllers/api/oauth/access_token.php',

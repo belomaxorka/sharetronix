@@ -8,12 +8,6 @@
 		$pm 	= & $GLOBALS['plugins_manager'];
 	
 		$tab = isset($page->request[1])? $page->request[1] : '';
-		
-		try {
-			$lang_updates = Langpack::getNumUpgradableLangs();
-		} catch ( Exception $e ) {
-			$lang_updates = 0;
-		}
 	
 		$menu = array( 	array('url' => 'admin/general', 		'css_class' => (($tab === 'general')? ' selected' : ''), 		'title' => $page->lang('admmenu_general') ),
 						array('url' => 'admin/networkbranding', 'css_class' => (($tab === 'networkbranding')? ' selected' : ''),'title' => $page->lang('admmenu_networkbranding') ),
@@ -24,7 +18,7 @@
 						//array('url' => 'admin/editusers', 		'css_class' => (($tab === 'editusers')? ' selected' : ''), 		'title' => $page->lang('admmenu_editusers') ),
 						array('url' => 'admin/suspendusers',	'css_class' => (($tab === 'suspendusers')? ' selected' : ''), 	'title' => $page->lang('admmenu_suspendusers') ),
 						array('url' => 'admin/plugins', 'css_class' => (($tab === 'plugins')? ' selected' : ''), 'title' => $page->lang('admmenu_apps') ),
-						array('url' => 'admin/languages', 'css_class' => (($tab === 'languages')? ' selected' : ''), 'title' => $page->lang('admmenu_languages'), 'tab_state' => $lang_updates ),
+						array('url' => 'admin/languages', 'css_class' => (($tab === 'languages')? ' selected' : ''), 'title' => $page->lang('admmenu_languages') ),
 						array('url' => 'admin/groupcategories', 'css_class' => (($tab === 'groupcategories')? ' selected' : ''), 'title' => $page->lang('admmenu_group_categories') ),
 		);
 		$tpl->layout->setVar( 'left_content_placeholder', $tpl->designer->createInfoBlock($page->lang('adm_menu_title'), $tpl->designer->createMenu('feed-navigation', $menu, 'administration_left_menu')) );
