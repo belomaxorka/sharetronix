@@ -80,6 +80,12 @@
 			if( $res ) {
 				// read back with unserialize(), so only the owner may write or read it
 				@chmod($tmp, 0600);
+				if( function_exists('posix_geteuid') && 0 === posix_geteuid() ) {
+					// The cron worker may run as root: hand the entry to the owner of the folder (the
+					// web server user), which could not read a file of root's with this mode.
+					@chown($tmp, fileowner($this->path));
+					@chgrp($tmp, filegroup($this->path));
+				}
 				$res	= @rename($tmp, $file);
 				if( ! $res && $this->remove_file($file) ) {
 					// Windows does not replace a file that another process holds open.

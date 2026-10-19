@@ -53,7 +53,7 @@ By default, pages viewed in a browser trigger the periodic jobs with a backgroun
 * * * * * /path/to/php /path/to/sharetronix/system/cronjobs/worker.php
 ```
 
-Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [system/cronjobs/readme.txt](system/cronjobs/readme.txt).
+Run the worker as the web-server user (for example in `crontab -u www-data -e`) or as root, not as another account: it writes cache entries into `system/cache/` that the web server must read, and deletes old files in `system/cache_html/` and `system/tmp/`. Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [system/cronjobs/readme.txt](system/cronjobs/readme.txt).
 
 ## Cache
 

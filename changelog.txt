@@ -652,6 +652,10 @@
 	  in system/cache/ for good, and entries that were not writable for the cleanup user were
 	  skipped even where the folder allowed deleting them. Expired entries of every prefix are now
 	  removed.
+	* When the cron worker ran as root, the file cache entries it wrote belonged to root with mode
+	  0600, so the web server could not read them; among them the flag that tells /cron that the
+	  worker runs, so a request to /cron ran the jobs as well. Entries written by root now belong to
+	  the owner and group of the cache folder.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
