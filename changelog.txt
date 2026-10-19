@@ -676,6 +676,11 @@
 	* A member could not save a search that another member had already saved: the check for an
 	  existing saved search looked at the searches of all members. It now looks only at the member's
 	  own searches.
+	* A $C->DB_MYEXT that is empty, as in the template install/include/conf_main_empty.php from
+	  which a configuration may be written by hand, or set to 'mysql' made every page and the
+	  updater fail with HTTP 500 ("Call to undefined function mysql_connect()"), because PHP 7 and
+	  later no longer have the mysql extension. The application now uses mysqli unless the old
+	  extension is requested and loaded.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

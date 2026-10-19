@@ -41,7 +41,10 @@
 			}
 			$this->debug_info	= & $GLOBALS['MYSQL_DEBUG_INFO'];
 			$this->ext	= 'mysql';
-			if( isset($GLOBALS['C']) && isset($GLOBALS['C']->DB_MYEXT) && $GLOBALS['C']->DB_MYEXT=='mysqli' && function_exists('mysqli_connect') ) {
+			// mysqli unless the old mysql extension is asked for and loaded: PHP 7 and later do not have it, and
+			// a $C->DB_MYEXT that is empty (conf_main_empty.php) or 'mysql' made every page and the updater fail.
+			$myext	= isset($GLOBALS['C']) && isset($GLOBALS['C']->DB_MYEXT) ? $GLOBALS['C']->DB_MYEXT : '';
+			if( ($myext!='mysql' || !function_exists('mysql_connect')) && function_exists('mysqli_connect') ) {
 				$this->ext	= 'mysqli';
 				// PHP 8.1+ throws mysqli exceptions by default; this class checks the return values.
 				mysqli_report(MYSQLI_REPORT_OFF);
