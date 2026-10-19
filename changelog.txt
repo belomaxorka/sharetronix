@@ -50,6 +50,10 @@
 	* After the update had been confirmed, the following updater forms were accepted without a token
 	  for 30 minutes, so another site could submit the update step on behalf of a signed-in
 	  administrator. Every form of an update now carries the confirmation token.
+	* Pages and services of a plugin answered as soon as its directory existed in apps/, also when
+	  the plugin was not installed or had been uninstalled: any signed-in user could open its pages
+	  (for example the maintenance settings page) and any visitor could call its services. Only
+	  installed plugins answer now.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

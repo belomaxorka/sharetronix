@@ -37,7 +37,8 @@
 				$this->ajax_file_path = $C->INCPATH.'controllers/ajax/'. $this->ajax_file_name .'.php'; 
 				if( !file_exists( $this->ajax_file_path ) ){
 					$this->ajax_file_path = $C->PLUGINS_DIR.$this->ajax_file_name.'/system/controllers/ajax/'.$this->ajax_file_action.'.php';
-					if( !file_exists( $this->ajax_file_path ) ){
+					// Only installed (loaded) plugins answer; a copied or uninstalled directory does not.
+					if( !in_array($this->ajax_file_name, $GLOBALS['plugins_manager']->getInstalledPluginNames(), TRUE) || !file_exists( $this->ajax_file_path ) ){
 						$this->error =  TRUE;
 					}
 				}

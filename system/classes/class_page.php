@@ -111,7 +111,8 @@
 			
 				$plugin_name 	= $tmp[1];
 				
-				if( is_dir($C->PLUGINS_DIR.$plugin_name.'/system/controllers/') ){
+				// Only installed (loaded) plugins answer; a copied or uninstalled directory does not.
+				if( in_array($plugin_name, $GLOBALS['plugins_manager']->getInstalledPluginNames(), TRUE) && is_dir($C->PLUGINS_DIR.$plugin_name.'/system/controllers/') ){
 				
 					$this->controllers	= $C->PLUGINS_DIR.$plugin_name.'/system/controllers/';
 				
