@@ -6,6 +6,13 @@
 	$D->errtype = FALSE;
 	$perms	= array();
 	
+	// Nothing to do for a database of this version or a newer one.
+	if( version_compare($_SESSION['INSTALL_DATA']['OLD_VERSION'], $C->VERSION, '>=') ){
+		$D->uptodate = TRUE;
+		loadTemplate('update');
+		return;
+	}
+	
 	//check directories
 	$D->files = get_directories_for_update( $_SESSION['INSTALL_DATA']['OLD_VERSION'] );
 	if( $D->files === FALSE ){

@@ -1,4 +1,10 @@
-<?php if($D->errtype === 1){ ?>
+<?php if( !empty($D->uptodate) ){
+		if( version_compare($_SESSION['INSTALL_DATA']['OLD_VERSION'], $C->VERSION, '>') ){
+			echo $D->designer->errorMessage('Newer version installed', 'The database belongs to Sharetronix '.htmlspecialchars($_SESSION['INSTALL_DATA']['OLD_VERSION']).', which is newer than these files ('.$C->VERSION.'). Install the matching files or restore a backup.');
+		}else{
+			echo $D->designer->okMessage('Up to date', 'Your community already runs version '.$C->VERSION.'. There is nothing to update. <br /><br /> <a href="'.($_SESSION['INSTALL_DATA']['SITE_URL']).'"> Proceed to home page</a>' );
+		}
+	}elseif($D->errtype === 1){ ?>
 	<div class="greygrad" style="margin-top: 5px;">
 		<div class="greygrad2">
 			<div class="greygrad3" style="padding-top:0px;">

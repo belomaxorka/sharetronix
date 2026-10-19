@@ -353,6 +353,12 @@
 	* The updater compared versions as text, so a later 3.6.10 or 3.10.0 release would have skipped
 	  its own database changes or repeated older ones ("3.10.0" sorted before "3.6.3"). It now
 	  compares version numbers.
+	* After a successful update, /install/ offered the same update again and repeated its database
+	  changes, which failed on updates from 3.0.x and 3.1.x, because it read the installed version
+	  from conf_main.php, which no update changes. It now reads the version that every update
+	  records in the database, reports when the community is already up to date, refuses a database
+	  that is newer than the files instead of overwriting its version, and after a failed update
+	  starts again at the first step instead of running the update by itself on the next visit.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

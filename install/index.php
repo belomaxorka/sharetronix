@@ -29,7 +29,9 @@
 	
 	$D->designer = new pageDesigner();
 
-	if( !isset($_SESSION['INSTALL_DATA']['IS_UPDATE']) ){
+	// An update reads the installed version again on every request: a failed update may have
+	// applied part of its changes.
+	if( !isset($_SESSION['INSTALL_DATA']['IS_UPDATE']) || $_SESSION['INSTALL_DATA']['IS_UPDATE'] ){
 		$old_version	= get_old_version();
 		if( $old_version ){
 			$_SESSION['INSTALL_DATA']['IS_UPDATE'] = $old_version?	TRUE : FALSE;
@@ -49,6 +51,9 @@
 
 	if( $controller_name=='update' ) {
 		unset($_SESSION['INSTALL_UPDATE_ALLOWED']);
+		// If the update stops with an error, the next visit starts again at step 1 instead of
+		// running the update by itself.
+		$_SESSION['INSTALL_STEP'] = 1;
 	}
 	loadController( $controller_name  );
 	if( $controller_name=='update' ) {

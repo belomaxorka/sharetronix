@@ -67,6 +67,13 @@
 				$_SESSION['INSTALL_DATA']['SITE_URL'] = $C->SITE_URL;
 				
 				$db = new mysqlExt($C->DB_HOST, $C->DB_USER, $C->DB_PASS, $C->DB_NAME);
+				
+				// Every update records the new version in the settings table; conf_main.php keeps the
+				// version of the first installation.
+				$db_version = $db->fetch_field('SELECT value FROM settings WHERE word="VERSION" LIMIT 1');
+				if( $db_version ){
+					$tmp_version = $db_version;
+				}
 			}
 			
 			$C = new stdClass;
