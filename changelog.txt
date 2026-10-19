@@ -403,6 +403,8 @@
 	  whole site down. The manifest is now checked before anything is installed.
 	* A plugin's event handler could run twice for one event when two requests filled the plugins
 	  event cache at the same time. Each handler now runs once per event.
+	* checkPluginCompatability() compared Sharetronix versions as text, so a marketplace item made
+	  for 3.6.10 or 3.10.0 counted as compatible with 3.6.3. It now uses version_compare().
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

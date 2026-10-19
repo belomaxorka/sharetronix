@@ -651,7 +651,7 @@
 		$compatible = FALSE;
 		
 		foreach($designer_for_ver as $ver){
-			if( $ver->name <= $C->VERSION ){
+			if( version_compare($ver->name, $C->VERSION, '<=') ){
 				$compatible = TRUE; 
 				break;
 			}
