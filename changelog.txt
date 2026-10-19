@@ -766,6 +766,9 @@
 	  is not affected; the 4.0.0 update deletes the two files.
 	* Dropped the MEMORY table cache, which only the removed mysqlheap cache driver used. The
 	  installer no longer creates it, and the 4.0.0 update drops it.
+	* Removed static/templates/system/blocks/email/signinforg_txt.php and signinforg_html.php, the
+	  old copies of the password recovery e-mail that nothing uses since the e-mail is made from
+	  static/templates/email/; the updater deletes them.
 
 Sharetronix 3.6.2
 	* Bug fixes
