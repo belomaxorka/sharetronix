@@ -712,6 +712,12 @@
 	  member who is not an administrator or not suspended, and the administrators list dropped the
 	  row until the page was reloaded. The answer to a successful activation now says that the user
 	  is activated.
+	* The services answer a text parameter sent as an array (users_id[]=..., users_name[]=...,
+	  text[]=..., comments_text[]=..., activities_text[]=..., token[]=...) with an error instead of
+	  a PHP error: on PHP 8 the string functions of these services fail with a TypeError (HTTP 500
+	  for the sender; users/autocomplete is open to visitors), and administration/removeadmin and
+	  activateuser acted on user 1, the first administrator, because the integer value of an array
+	  is 1, which also got past the check against removing oneself.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

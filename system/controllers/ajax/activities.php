@@ -149,8 +149,8 @@
 				return;
 			}
 			
-			$activity_text 	= isset($_POST[ 'activities_text' ])? $_POST[ 'activities_text' ] : '';
-			$activities_token 	= isset($_POST[ 'token' ])? $_POST[ 'token' ] : '';
+			$activity_text 	= isset($_POST[ 'activities_text' ]) && is_string($_POST[ 'activities_text' ])? $_POST[ 'activities_text' ] : '';
+			$activities_token 	= isset($_POST[ 'token' ]) && is_string($_POST[ 'token' ])? $_POST[ 'token' ] : '';
 			
 			if( !empty($activity_text) && !empty($activities_token) ){
 				
@@ -175,7 +175,7 @@
 				}
 				
 				if( isset($_POST[ 'activities_type' ]) && $_POST[ 'activities_type' ] == 'profile' ){
-					if(isset($_POST[ 'activities_username' ]) && strpos($activity_text, '@'.$_POST[ 'activities_username' ]) === false ){
+					if(isset($_POST[ 'activities_username' ]) && is_string($_POST[ 'activities_username' ]) && strpos($activity_text, '@'.$_POST[ 'activities_username' ]) === false ){
 						$activity_text = '@'.$_POST[ 'activities_username' ].' '.$activity_text;
 					}
 				}

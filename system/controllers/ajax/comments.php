@@ -48,7 +48,7 @@
 			
 			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['comments_text']) )
 			{
-				$msg	= isset($_POST['comments_text']) ? trim($_POST['comments_text']) : '';
+				$msg	= isset($_POST['comments_text']) && is_string($_POST['comments_text']) ? trim($_POST['comments_text']) : '';
 				if( empty($msg) ) {
 					echo 'ERROR:'.$page->lang('global_ajax_post_error12');
 					return;

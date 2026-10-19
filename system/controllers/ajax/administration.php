@@ -12,7 +12,7 @@
 		
 		
 		case 'removemoderator':
-			$users_id 	= isset($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
+			$users_id 	= isset($_POST[ 'users_id' ]) && is_string($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
 			if( empty($users_id) ){
 				echo 'ERROR:'.$page->lang('global_ajax_post_error2');
 				return;
@@ -45,7 +45,7 @@
 			break;
 
 		case 'removeadmin':
-			$users_id 	= isset($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
+			$users_id 	= isset($_POST[ 'users_id' ]) && is_string($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
 
 			if( empty($users_id) ){
 				echo 'ERROR:'.$page->lang('global_ajax_post_error2');
@@ -65,7 +65,7 @@
 			break;
 		
 		case 'activateuser':
-			$users_id 	= isset($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
+			$users_id 	= isset($_POST[ 'users_id' ]) && is_string($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
 		
 			if( empty($users_id) ){
 				echo 'ERROR:'.$page->lang('global_ajax_post_error3');

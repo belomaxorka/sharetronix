@@ -69,7 +69,7 @@
 			break;
 		
 		case 'autocomplete':
-			$name		= isset($_POST['users_name']) ? trim($_POST['users_name']) : '';
+			$name		= isset($_POST['users_name']) && is_string($_POST['users_name']) ? trim($_POST['users_name']) : '';
 			if( empty($name) ) {
 				echo 'ERROR';
 				return;
@@ -102,7 +102,7 @@
 			if( !$this->user->is_logged ){
 				return;
 			}
-			$users_id		= isset($_POST['users_id']) ? trim($_POST['users_id']) : '';
+			$users_id		= isset($_POST['users_id']) && is_string($_POST['users_id']) ? trim($_POST['users_id']) : '';
 			if( empty($users_id) ) {
 				echo 'ERROR';
 				return;
@@ -169,8 +169,8 @@
 					return;
 				}
 				
-				$prv_user_id = isset($_POST[ 'users_id' ])? $_POST[ 'users_id' ] : '';
-				$prv_text = isset($_POST[ 'text' ])? trim($_POST[ 'text' ]) : '';
+				$prv_user_id = isset($_POST[ 'users_id' ]) && is_string($_POST[ 'users_id' ])? $_POST[ 'users_id' ] : '';
+				$prv_text = isset($_POST[ 'text' ]) && is_string($_POST[ 'text' ])? trim($_POST[ 'text' ]) : '';
 								
 				if( !empty($prv_text) && !empty($prv_user_id) ){
 					
