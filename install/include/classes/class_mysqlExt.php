@@ -26,9 +26,19 @@
 			return $this->connection;
 		}
 		
-		public function get_server_info() 
+		public function get_server_version()
 		{
-			return $this->ext=='mysqli' ? @mysqli_get_server_info($this->connection) : @mysql_get_server_info($this->connection);
+			// The version as a number, 50744 for 5.7.44 or 110806 for MariaDB 11.8.6. The text form cannot
+			// be compared as is: MariaDB 10.x prefixes it with "5.5.5-" for older clients, and only some
+			// PHP versions remove that prefix.
+			if( $this->ext=='mysqli' ) {
+				return intval(@mysqli_get_server_version($this->connection));
+			}
+			$info	= preg_replace('/^5\.5\.5-/', '', @mysql_get_server_info($this->connection));
+			if( ! preg_match('/^(\d+)\.(\d+)\.(\d+)/', $info, $m) ) {
+				return 0;
+			}
+			return $m[1]*10000 + $m[2]*100 + $m[3];
 		}
 		
 		// Runs one statement of the updater. An update that stopped inside an entry, before the entry

@@ -29,7 +29,7 @@
 	
 	$db_tables['cache'] = "CREATE TABLE `cache` (
 			  `key` varchar(32) NOT NULL,
-			  `data` varchar(".(intval($_SESSION['INSTALL_DATA']['MYSQL_SERVER_VERSION'])>=503? 21810 : 255 ).") NOT NULL,
+			  `data` varchar(".(intval($_SESSION['INSTALL_DATA']['MYSQL_SERVER_VERSION'])>=50003? 21810 : 255 ).") NOT NULL,
 			  `expire` int(10) unsigned NOT NULL,
 			  PRIMARY KEY  (`key`)
 			) ENGINE=MEMORY DEFAULT CHARSET=utf8;";

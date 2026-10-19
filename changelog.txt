@@ -458,6 +458,13 @@
 	* On PHP 8.5, uploading an avatar or a network logo and creating attachment previews logged that
 	  imagedestroy() is deprecated. The images are now freed with unset(), which works on every PHP
 	  version.
+	* Fixed the installer's database version check, which rejected MariaDB. Step 2 took the first
+	  five characters of the version text, removed the dots and required at least 500, so MariaDB
+	  11.x (11.8.6 became 118) and, on PHP 8, MariaDB 10.0 to 10.9 (10.6.25 became 106) stopped with
+	  "Your MySQL server doesn't meet sharetronix requirenments". MariaDB 10.x passed on PHP 7 only
+	  by accident, through the "5.5.5-" prefix of its version text, which PHP 8 removes. The
+	  installer now compares the numeric version the server reports, which also decides the size of
+	  the cache table's data column.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

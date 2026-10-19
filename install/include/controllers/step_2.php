@@ -48,12 +48,11 @@
 		}
 		
 		if( !$D->error ){
-			$tmp =  (isset($conn->server_info) && !empty($conn->server_info))? $conn->server_info : $db->get_server_info();
-			$tmp	= str_replace('.','',substr($tmp, 0, 5));
-			$tmp	= intval($tmp);
+			$tmp	= $db->get_server_version();
 			$s['MYSQL_SERVER_VERSION'] = $tmp;
 			
-			if( $tmp < 500 ) {
+			// Every MariaDB release is newer than MySQL 5.0 by this measure (MariaDB 5.1 and later).
+			if( $tmp < 50000 ) {
 				$D->error	= TRUE;
 				$D->errmsg	= 'Your MySQL server doesn\'t meet sharetronix requirenments, version 5.0 or higher required.';
 			}
