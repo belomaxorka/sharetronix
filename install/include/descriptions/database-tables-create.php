@@ -27,13 +27,6 @@
 			  KEY `consumer_key` (`consumer_key`(333))
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 	
-	$db_tables['cache'] = "CREATE TABLE `cache` (
-			  `key` varchar(32) NOT NULL,
-			  `data` varchar(".(intval($_SESSION['INSTALL_DATA']['MYSQL_SERVER_VERSION'])>=50003? 21810 : 255 ).") NOT NULL,
-			  `expire` int(10) unsigned NOT NULL,
-			  PRIMARY KEY  (`key`)
-			) ENGINE=MEMORY DEFAULT CHARSET=utf8;";
-	
 	$db_tables['crons'] = "CREATE TABLE `crons` (
 			  `cron` varchar(10) collate utf8_unicode_ci NOT NULL,
 			  `last_run` int(10) unsigned NOT NULL,

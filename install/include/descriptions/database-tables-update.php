@@ -70,6 +70,9 @@
 					// plugins_installed kept the marketplace id of each plugin the marketplace installed.
 					"DROP TABLE IF EXISTS `plugins_installed`",
 					"DELETE FROM `plugins_tables` WHERE `table`='plugins_installed' AND `owner`='system'",
+					// The MEMORY table cache belonged to the mysqlheap cache driver, which 3.6.3 removed.
+					"DROP TABLE IF EXISTS `cache`",
+					"DELETE FROM `plugins_tables` WHERE `table`='cache' AND `owner`='system'",
 					// Settings that the installer creates since 3.5 and older installations never got; the
 					// administration pages and the list of online users read them.
 					"INSERT IGNORE INTO `settings` (`word`, `value`) VALUES ('ADMIN_STEALTH_MODE', '0'), ('NAME_INDENTIFICATOR', '1')",

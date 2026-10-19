@@ -734,6 +734,8 @@
 	  installations, and the old Twitter sign-in library class_twitterAuth.php. Nothing used them,
 	  and the bit.ly API v3 and Twitter API v1 they called no longer exist. Sign-in through Twitter
 	  is not affected; the 3.6.3 update deletes the two files.
+	* Dropped the MEMORY table cache, which only the removed mysqlheap cache driver used. The
+	  installer no longer creates it, and the 3.6.3 update drops it.
 
 Sharetronix 3.6.2
 	* Bug fixes

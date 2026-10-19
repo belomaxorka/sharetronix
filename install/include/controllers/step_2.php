@@ -57,7 +57,6 @@
 		
 		if( !$D->error ){
 			$tmp	= $db->get_server_version();
-			$s['MYSQL_SERVER_VERSION'] = $tmp;
 			
 			// Every MariaDB release is newer than MySQL 5.0 by this measure (MariaDB 5.1 and later).
 			if( $tmp < 50000 ) {
