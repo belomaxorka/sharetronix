@@ -577,6 +577,8 @@
 	  $C->MARKETPLACE_URL, the helpers checkPluginCompatability() and get_tmp_dir(), the styles and
 	  images of the marketplace pages, and their language strings. The 3.6.3 update deletes the
 	  images.
+	* Removed the plugins_installed table, which kept the marketplace id of each plugin the
+	  marketplace installed. New installations no longer create it, and the 3.6.3 update drops it.
 
 Sharetronix 3.6.2
 	* Bug fixes

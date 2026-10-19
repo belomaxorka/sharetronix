@@ -155,13 +155,6 @@
 			INDEX USING BTREE (  `plugin_name` ,  `event_name` )
 			) ENGINE = MEMORY CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
 
-	$db_tables['plugins_installed'] = "CREATE TABLE IF NOT EXISTS `plugins_installed` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`name` varchar(50) NOT NULL,
-				`marketplace_id` int(11) NOT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-
 	$db_tables['plugins_tables'] = "CREATE TABLE IF NOT EXISTS `plugins_tables` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`table` varchar(255) NOT NULL,

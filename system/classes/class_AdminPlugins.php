@@ -150,7 +150,6 @@
 				}
 			}
 			$this->db->query('DELETE FROM plugins WHERE name="'.$this->db->e($name).'"');
-			$this->db->query('DELETE FROM plugins_installed WHERE name="'.$this->db->e($name).'"');
 			$this->changed();
 			$this->redirect('uninstalled:ok');
 		}
