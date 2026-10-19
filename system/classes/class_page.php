@@ -298,9 +298,10 @@
 				$filename = $GLOBALS['C']->INCPATH.'../static/templates/' . $filename. '.php';
 			} else {
 				$source = ( $this->is_mobile == false )  ? "system" : "mobile";
-				$filename	= ($this->tpl_name=='default')
-								? $GLOBALS['C']->INCPATH.'../static/templates/'.$source.'/blocks/'.$filename.'.php'
-								: $GLOBALS['C']->INCPATH.'../themes/'.$this->tpl_name.'/templates/'.$source.'/blocks/'.$filename.'.php';
+				$default_block	= $GLOBALS['C']->INCPATH.'../static/templates/'.$source.'/blocks/'.$filename.'.php';
+				$theme_block	= $GLOBALS['C']->INCPATH.'../themes/'.$this->tpl_name.'/templates/'.$source.'/blocks/'.$filename.'.php';
+				// Like layouts and HTML blocks, a theme without this block uses the default one.
+				$filename	= ($this->tpl_name!='default' && file_exists($theme_block)) ? $theme_block : $default_block;
 			}
 			
 			if( $output_content ) {

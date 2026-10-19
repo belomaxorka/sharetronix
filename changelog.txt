@@ -342,6 +342,11 @@
 	  memcache PHP extension is loaded. Every request that used the cache failed with a "Class
 	  Memcache not found" fatal error, so for example nobody could sign in; Redis already fell back
 	  this way.
+	* Fixed password recovery with any theme other than the default one. The recovery e-mail is
+	  built from blocks that the page loaded only from the active theme's folder, and themes do not
+	  ship them, so requesting a recovery link failed with HTTP 500 and no mail was sent; the debug
+	  console failed the same way. Like layouts and other blocks, a block the theme does not provide
+	  is now taken from static/templates/, and a theme can still override it.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
