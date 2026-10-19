@@ -470,8 +470,6 @@
 						$q = array_intersect($q,$z);					
 					}
 					if( count($q) > 0 ) { 
-						$q	= implode(', ', $q);
-						
 						switch($this->api_id)
 						{
 							case 2: $fancy_table = 'post_userbox_feeds';
@@ -480,16 +478,23 @@
 								break;
 							default: $fancy_table = 'post_userbox';
 						}
-						$db2->query('INSERT INTO '.$fancy_table.' (user_id, post_id) VALUES '.$q);
+						// In parts: one statement for every follower of a popular author would exceed
+						// max_allowed_packet (4 MB by default on MySQL 5.7, about 170 000 followers).
+						foreach( array_chunk($q, 5000) as $tmpq ) {
+							$db2->query('INSERT INTO '.$fancy_table.' (user_id, post_id) VALUES '.implode(', ', $tmpq));
+						}
 					}
 					if( count($q2) > 0 ) {
 						$tmpu	= array();
 						foreach($q2 as $tmptmp) {
-							$tmpu[$tmptmp[0]][$tmptmp[1]]	= 1;
+							$tmpu[$tmptmp[1]][$tmptmp[0]]	= '("'.intval($tmptmp[0]).'", "'.$db2->e($tmptmp[1]).'", 1, 1)';
 						}
-						foreach($tmpu as $tmpuid=>$tmptabs) {
-							foreach($tmptabs as $tmptab=>$tmpnum) {
-								$this->network->set_dashboard_tabstate($tmpuid, $tmptab, $tmpnum);
+						// The same as set_dashboard_tabstate($user_id, $tab, 1) for each reader, in a few statements
+						// instead of two queries per reader: one more new post, counted from 0 when the tab was
+						// cleared (state 0) and at most 100, which the tab shows as "99+".
+						foreach($tmpu as $tmptab=>$tmpvalues) {
+							foreach( array_chunk($tmpvalues, 5000) as $tmpq ) {
+								$db2->query('INSERT INTO users_dashboard_tabs (user_id, tab, state, newposts) VALUES '.implode(', ', $tmpq).' ON DUPLICATE KEY UPDATE newposts=IF(state=0, 0, LEAST(newposts, 99))+1, state=1');
 							}
 						}
 					}

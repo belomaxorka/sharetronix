@@ -557,6 +557,13 @@
 	  database password with a quote or a trailing backslash left the file with a PHP syntax error,
 	  so the whole site answered HTTP 500 right after the installation, and a password containing $1
 	  was stored changed. The values are now escaped for PHP.
+	* Posting took seconds for members with many followers and could run into the time limits of the
+	  web server: every new post updated the new-posts counter of each follower's dashboard tab with
+	  two queries per follower (111 000 statements and 15 s for an author with 55 000 followers on a
+	  test site with 100 000 members). The counters are now updated in groups of 5000 with the same
+	  results, and the post is added to the followers' feeds in parts, which also keeps each
+	  statement below max_allowed_packet (4 MB by default on MySQL 5.7) for authors with more than
+	  about 170 000 followers.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
