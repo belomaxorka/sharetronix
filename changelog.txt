@@ -579,6 +579,11 @@
 	  notifications page of a site with 1 000 000 notifications, up to 0.8 s for the likes of one
 	  post). New installations create indexes for these queries, and the update to 4.0.0 adds them;
 	  on a large site the update takes longer, as each of the three tables is copied once.
+	* The feed of a profile read the posts table from the newest post backwards until it had found a
+	  page of the member's posts and the posts mentioning the member: every view of a member who
+	  seldom posts read all posts (4 s on a site with 1 000 000 posts, also with the cache). It now
+	  finds them through their indexes; a post that mentions several members is no longer listed
+	  once for each of them.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
