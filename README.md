@@ -86,6 +86,12 @@ Privacy: with an external service, the sign-up, password recovery, and contact p
 
 Themes that override the blocks `registration`, `user-signup-email`, or `user-forgotten-pass-step1` keep working. The CAPTCHA markup (the image with its link, or the service's widget) is in `{%captcha_image%}`; show the `captcha_word` input only when `$D->captcha_widget` is false (`$D->use_google_recaptcha` is kept as its old name). The image is served by `/captcha?namespace=signup`, `forgotten_pass`, or `contacts`.
 
+## Spam checks
+
+Before it creates an account, the sign-up checks the visitor's e-mail address and IP address with [StopForumSpam](https://www.stopforumspam.com/), a shared list of addresses reported for forum and blog spam, and refuses the sign-up if either is listed. The check has timeouts of 3 seconds to connect and 5 seconds in total. If the service cannot be reached or answers with an error, or PHP has no cURL extension, the sign-up goes on without the check and a line starting with `Sharetronix spam check:` is logged.
+
+With `$C->HONEYPOT_ACCESS_KEY` set to an access key of [Project Honey Pot](https://www.projecthoneypot.org/), the sign-up also looks the visitor's IPv4 address up in its http:BL list through DNS and refuses every listed address except search engines.
+
 ## Debugging
 
 Debug mode is enabled for client IP addresses listed in `system/conf_main.php`:

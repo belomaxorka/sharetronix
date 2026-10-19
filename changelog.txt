@@ -507,6 +507,10 @@
 	  visitor up in http:BL through DNS, as the service requires, and refuses visitors listed as
 	  suspicious, harvesters or comment spammers but not search engines. It used to send the DNS
 	  name as an HTTP request, so its result did not depend on the list.
+	* Without the cURL extension, which the requirements allow when allow_url_fopen is on, the last
+	  sign-up step stopped with a fatal error at the StopForumSpam check, so nobody could sign up.
+	  The check is now skipped there. When the check is skipped or StopForumSpam cannot be reached
+	  or answers with an error, a line starting with "Sharetronix spam check:" is logged.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

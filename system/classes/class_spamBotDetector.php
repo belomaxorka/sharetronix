@@ -18,23 +18,39 @@
 			if( ! $this->if_data_is_valid($email) ){
 				return false;
 			}
+			if( ! function_exists('curl_init') ){
+				$this->stopforumspam_failed('the cURL extension is not loaded');
+				return false;
+			}
 			
 			// Short time limits keep the sign-up well under max_execution_time; a service that cannot
 			// be reached does not stop the sign-up.
 			$curl = new curlCall($this->stopforumspam_url.'?ip='.rawurlencode($ip).'&email='.rawurlencode($email).'&json');
 			$curl->setTimeouts(3, 5);
-			$curl_result = $curl->getData();
-			$curl_result = is_string($curl_result) ? json_decode($curl_result) : NULL;
+			$curl_body = $curl->getData();
+			$curl_result = is_string($curl_body) ? json_decode($curl_body) : NULL;
 				
-			if( isset($curl_result->success) && $curl_result->success === 1 ){
-				if( isset($curl_result->email->appears) && $curl_result->email->appears ){
-					$this->error	= TRUE;
-				}elseif( isset($curl_result->ip->appears) && $curl_result->ip->appears ){
-					$this->error	= TRUE;
+			if( ! isset($curl_result->success) || $curl_result->success !== 1 ){
+				$reason = $curl_body === FALSE ? $curl->getError() : 'HTTP '.$curl->getStatus();
+				if( isset($curl_result->error) && is_string($curl_result->error) ){
+					$reason .= ', '.$curl_result->error;
 				}
-			}	
+				$this->stopforumspam_failed($reason);
+				return $this->error;
+			}
+			
+			if( isset($curl_result->email->appears) && $curl_result->email->appears ){
+				$this->error	= TRUE;
+			}elseif( isset($curl_result->ip->appears) && $curl_result->ip->appears ){
+				$this->error	= TRUE;
+			}
 			
 			return $this->error;
+		}
+		
+		private function stopforumspam_failed( $reason )
+		{
+			error_log('Sharetronix spam check: StopForumSpam check failed ('.trim(preg_replace('/\s+/', ' ', $reason)).'); the sign-up went on without it.');
 		}
 		
 		public function checkProjectHoneyPot( $ip )
