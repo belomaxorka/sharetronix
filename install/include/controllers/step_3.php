@@ -16,7 +16,7 @@
 	foreach($D->files as $i=>$fl) {
 		$curr_error	= FALSE;
 		if( !is_readable($path.$fl) || !is_writable($path.$fl) ) {
-			@chmod($path.$fl, 0777);
+			make_writable_for_owner($path.$fl);
 			@clearstatcache();
 			if( !is_readable($path.$fl) || !is_writable($path.$fl) ) {
 				$D->error	= TRUE;

@@ -122,6 +122,17 @@
 		return $failed;
 	}
 	
+	function make_writable_for_owner($path)
+	{
+		// The web server can change the mode only of what it owns, so it needs read and write
+		// permission for the owner; the group and other permissions stay as they are.
+		$perms	= @fileperms($path);
+		if( $perms === FALSE ) {
+			return;
+		}
+		@chmod($path, ($perms & 07777) | (is_dir($path) ? 0700 : 0600));
+	}
+	
 	function loopback_request($url)
 	{
 		// Fetches one of the installer's own test files from this server. Returns the response

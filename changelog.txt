@@ -62,6 +62,10 @@
 	* With marketplace credentials saved, every page of the administration sent them to the
 	  marketplace over plain HTTP (the password as an unsalted md5) to count language updates. The
 	  administration no longer contacts the marketplace for languages.
+	* The installer left the root .htaccess file writable by every user of the server (mode 0777)
+	  and changed the permissions of files and folders one level above the installation directory.
+	  When the web server could not write to a folder it needs, the installer and the updater made
+	  the folder writable by everyone; they now add read and write permission for its owner only.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

@@ -51,7 +51,6 @@
 			$D->error	= TRUE;
 			$D->errmsg	= '{Can\'t write your ./.htaccess file, please check it\'s permissions}';
 		}
-		@chmod($filename, 0777);
 	
 
 		if( ! $D->error ) {
@@ -119,18 +118,6 @@
 		}
 
 		if( ! $D->error ) {
-			@chmod( $C->INCPATH.'../../.htaccess', 0664 );
-			@chmod( $C->INCPATH.'../../system/conf_main.php', 0755 );
-			@chmod( $C->INCPATH.'../../system/cache', 0777 );
-			@chmod( $C->INCPATH.'../../i/avatars', 0777 );
-			@chmod( $C->INCPATH.'../../i/avatars/thumbs1', 0777 );
-			@chmod( $C->INCPATH.'../../i/avatars/thumbs2', 0777 );
-			@chmod( $C->INCPATH.'../../i/avatars/thumbs3', 0777 );
-			@chmod( $C->INCPATH.'../../i/avatars/thumbs4', 0777 );
-			@chmod( $C->INCPATH.'../../i/avatars/thumbs5', 0777 );
-			@chmod( $C->INCPATH.'../../i/attachments', 0777 );
-			@chmod( $C->INCPATH.'../../i/tmp', 0777 );
-			@chmod( $C->INCPATH.'../../system', 0755 );
 			$url	= $s['SITE_URL'];
 			$url	= rtrim($url,'/').'?installed=ok';
 			session_unset();
