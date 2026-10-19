@@ -64,6 +64,9 @@
 					// are used by nothing; at most they keep old tokens and their secrets in plain text.
 					"DROP TABLE IF EXISTS `oauth_access_token`, `oauth_request_token`, `oauth_log`",
 					"DELETE FROM `plugins_tables` WHERE `table` IN ('oauth_access_token', 'oauth_request_token', 'oauth_log') AND `owner`='system'",
+					// The marketplace client of the plugins, languages and themes pages is gone. The credentials it
+					// saved, the password as an unsalted md5, are read by nothing.
+					"DELETE FROM `settings` WHERE `word` IN ('STX_KEY', 'STX_USERNAME', 'STX_PASSWORD')",
 					// Settings that the installer creates since 3.5 and older installations never got; the
 					// administration pages and the list of online users read them.
 					"INSERT IGNORE INTO `settings` (`word`, `value`) VALUES ('ADMIN_STEALTH_MODE', '0'), ('NAME_INDENTIFICATOR', '1')",

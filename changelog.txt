@@ -70,6 +70,9 @@
 	  without a token, that carried a path on the server. A crafted link opened by a signed-in
 	  administrator could delete any folder the web server can write to that holds a theme manifest,
 	  such as themes/default. The tab is removed.
+	* Installations that had used the plugins or languages page of 3.0 to 3.6.2 kept the marketplace
+	  credentials it saved in the settings table, the password as an unsalted md5. The 3.6.3 update
+	  deletes them; nothing reads them any more.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
