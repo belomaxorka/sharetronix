@@ -482,6 +482,11 @@
 	  replying goes to the sender.
 	* The feed of all posts (rss/all:posts) had the title " - <site>". It is now "All posts -
 	  <site>".
+	* Sign-up no longer answers HTTP 500 after the account has been created when gravatar.com is
+	  slow. It downloaded the Gravatar of the new address within the same request, first with copy()
+	  and no time limit, then again with cURL, so the 20-second request limit could run out; every
+	  sign-up also waited about 3 seconds for it. New accounts now start with the default picture,
+	  and sign-up no longer contacts gravatar.com.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -233,21 +233,8 @@
 				$db1->query('DELETE FROM unconfirmed_registrations WHERE email="'.$db1->e($email).'" ');
 				$this->user->login($email, md5($password), FALSE);
 					
-				$gravatar_url	= 'http://www.gravatar.com/avatar/'.md5($email).'?s='.$C->AVATAR_SIZE.'&d=404';
-				$gravatar_local	= $C->TMP_DIR.'grvtr'.time().rand(0,9999).'.jpg';
-				if( @my_copy($gravatar_url, $gravatar_local) ) {
-					list($w, $h, $tp) = @getimagesize($gravatar_local);
-					if( $w && $h && $tp && $w==$C->AVATAR_SIZE && $h>=$C->AVATAR_SIZE && ($tp==IMAGETYPE_JPEG || $tp==IMAGETYPE_GIF || $tp==IMAGETYPE_PNG) ) {
-						$fn	= time().rand(100000,999999).'.png';
-						$res	= copy_avatar($gravatar_local, $fn);
-						if( $res ) {
-							$db2->query('UPDATE users SET avatar="'.$db2->escape($fn).'" WHERE id="'.$user_id.'" LIMIT 1');
-							$this->network->get_user_by_id($user_id, TRUE);
-						}
-					}
-					rm($gravatar_local);
-				}
-			
+				// New accounts start with the default picture; settings/avatar can take it from Gravatar.
+				
 				$invited_from	= array();
 				$r	= $db2->query('SELECT DISTINCT user_id FROM users_invitations WHERE recp_email="'.$db2->e($email).'" LIMIT 1');
 				if( $db2->num_rows($r) > 0 ) {
