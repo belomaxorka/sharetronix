@@ -10,19 +10,21 @@ This repository maintains Sharetronix **3.6.2**. It keeps the platform running o
 
 - Apache HTTP Server with `mod_rewrite`, and `.htaccess` overrides allowed for the application directory.
 - PHP 7.2 or 8.4 with the `mbstring`, `mysqli`, and `gd` extensions (GD with FreeType support, for the CAPTCHA image), `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`. An external CAPTCHA service needs the cURL extension.
-- MySQL 5.7 or MariaDB 10.4 or later. MySQL 8.0 and later are not supported yet: `GROUPS` is a reserved word there, so the queries on the `groups` table fail, and sign-up, groups, and the background jobs do not work.
+- MySQL 5.7, 8.0, or 8.4, or MariaDB 10.4 or later.
 
 The application turns off the strict SQL modes, `ONLY_FULL_GROUP_BY`, `ANSI_QUOTES`, and `NO_BACKSLASH_ESCAPES` for its own database connections, so the server's `sql_mode` can stay at its default.
+
+MySQL 8.0 and 8.4 create database accounts with the `caching_sha2_password` plugin by default. PHP 8.4 and 8.5 connect to such accounts, also without TLS. The database driver of PHP 7.2 does not support that plugin, and the installer then reports "Cannot connect - please check host, username and password." With PHP 7.2, create the database user with `mysql_native_password`, for example `CREATE USER 'sharetronix'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';` (or change an existing user with `ALTER USER`). MySQL 8.4 does not load that plugin by default: add `mysql_native_password=ON` to the `[mysqld]` section of the server configuration and restart the server first.
 
 Installation, updates, and the core application flows have been tested with:
 
 | Component | Versions |
 | --- | --- |
-| PHP | 7.2.34 and 8.4.19 (FastCGI) |
+| PHP | 7.2.34, 8.4.19, and 8.5.4 (FastCGI) |
 | Web server | Apache 2.4.66 |
-| Database | MySQL 5.7.44; MariaDB 10.4.34, 10.5.29, 10.6.25, 10.11.15, 11.4.10, and 11.8.6 |
+| Database | MySQL 5.7.44, 8.0.45, and 8.4.8; MariaDB 10.4.34, 10.5.29, 10.6.25, 10.11.15, 11.4.10, and 11.8.6 |
 
-All listed MariaDB releases were tested with PHP 8.4, and MariaDB 10.11 and 11.8 also with PHP 7.2. PHP 8.5 is the next target. CI already checks syntax on it, but it has not been tested at runtime. Other PHP versions may work but are untested.
+All listed database releases were tested with PHP 8.4; MySQL 5.7 and 8.4 and MariaDB 10.11 and 11.8 also with PHP 7.2. MySQL 8.0 and 8.4 were tested with `mysql_native_password` accounts, and MySQL 8.4 with PHP 8.4 also with a `caching_sha2_password` account. PHP 8.5 is the next target: installation and the core flows pass on it with MySQL 8.4 and MariaDB 11.8, but it is not supported yet. Other PHP versions may work but are untested.
 
 ## Installation
 
