@@ -470,7 +470,7 @@
 			
 			$search_key = md5($search_url);
 			
-			$r = $this->db2->query('SELECT 1 FROM searches WHERE search_key="'. $search_key .'" LIMIT 1');
+			$r = $this->db2->query('SELECT 1 FROM searches WHERE user_id="'. (int) $this->id .'" AND search_key="'. $search_key .'" LIMIT 1');
 			if( $o = $this->db2->fetch_object($r) ) {
 				return false;
 			}

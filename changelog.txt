@@ -673,6 +673,9 @@
 	  was stored and linked as "नमस", and the tag search did not find the post. Group titles in
 	  these scripts were refused. Tags and group titles now keep the marks; tags stored by older
 	  versions keep their cut form.
+	* A member could not save a search that another member had already saved: the check for an
+	  existing saved search looked at the searches of all members. It now looks only at the member's
+	  own searches.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
