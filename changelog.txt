@@ -685,6 +685,8 @@
 	  the update to 4.0.0 dropped tables, deleted settings and rewrote display names before it
 	  stopped at the utf8mb4 conversion, leaving the old version number with a partly updated
 	  database. The update now checks the collation first and changes nothing on such servers.
+	* The lists of followers, followed members and groups of a member and of the members of a group
+	  logged a "Creation of dynamic property" deprecation for every view on PHP 8.2 and later.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

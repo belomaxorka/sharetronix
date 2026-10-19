@@ -8,6 +8,10 @@
 		public  $tab;
 		public  $subtab;
 		public  $newer_post_id;
+		// Paging of the user lists (activityUser, activityGroup), read by the user and group pages.
+		public  $num_results;
+		public  $num_pages;
+		public  $pg;
 		protected $db2;
 		protected $tpl;
 		protected $onlygroup;
