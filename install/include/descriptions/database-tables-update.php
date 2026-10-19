@@ -76,6 +76,13 @@
 					// Settings that the installer creates since 3.5 and older installations never got; the
 					// administration pages and the list of online users read them.
 					"INSERT IGNORE INTO `settings` (`word`, `value`) VALUES ('ADMIN_STEALTH_MODE', '0'), ('NAME_INDENTIFICATOR', '1')",
+					// Indexes for the queries that read every row of these tables on each page view: the likes of
+					// every post and comment shown, the likes tab, the notifications page, the list of online users.
+					// A key that already exists is skipped (mysqlExt::update_query()), so the step can run again.
+					"ALTER TABLE `post_likes` ADD KEY `post_id` (`post_id`)",
+					"ALTER TABLE `post_likes` ADD KEY `user_id` (`user_id`)",
+					"ALTER TABLE `notifications` ADD KEY `to_user_id` (`to_user_id`,`id`)",
+					"ALTER TABLE `users` ADD KEY `lastclick_date` (`lastclick_date`)",
 					// Text in utf8mb4, so that emoji are kept: converts the tables of the core and the plugins
 					// and switches the connections in conf_main.php (func_database.php).
 					array('function' => 'convert_database_to_utf8mb4'),

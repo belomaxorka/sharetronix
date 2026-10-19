@@ -130,7 +130,8 @@
 			`from_user_id` VARCHAR( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL ,
 			`notif_object_type` VARCHAR( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
 			`notif_object_id` INT( 10 ) UNSIGNED NOT NULL,
-			`date` INT( 10 ) UNSIGNED NOT NULL
+			`date` INT( 10 ) UNSIGNED NOT NULL,
+			KEY `to_user_id` (`to_user_id`,`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;";
 
 	$db_tables['plugins'] = "CREATE TABLE IF NOT EXISTS  `plugins` (
@@ -437,7 +438,8 @@
 			  KEY `num_followers` (`num_followers`),
 			  KEY `facebook_uid` (`facebook_uid`),
 			  KEY `twitter_uid` (`twitter_uid`),
-			  KEY `pass_reset_IDX` (`pass_reset_key`,`pass_reset_valid`)
+			  KEY `pass_reset_IDX` (`pass_reset_key`,`pass_reset_valid`),
+			  KEY `lastclick_date` (`lastclick_date`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;";
 
 	$db_tables['users_dashboard_tabs'] = "CREATE TABLE `users_dashboard_tabs` (
@@ -527,6 +529,8 @@
 			`post_id` int(11) NOT NULL,
 			`comment_id` int(11) NOT NULL DEFAULT  '0',
 			`date` int(11) NOT NULL,
-			PRIMARY KEY (`id`)
+			PRIMARY KEY (`id`),
+			KEY `post_id` (`post_id`),
+			KEY `user_id` (`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;";
 	

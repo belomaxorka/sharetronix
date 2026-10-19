@@ -574,6 +574,11 @@
 	  site with 800 000 likes a post with 1 000 comments took almost two minutes to open, and posts
 	  with a few thousand comments failed. The likes of a post are now read once per request, from
 	  the cache, which every like, unlike and deletion refreshes.
+	* The likes of a post or of a member, the notifications page and the list of online members read
+	  the whole post_likes, notifications or users table on every request (2.7 s for the
+	  notifications page of a site with 1 000 000 notifications, up to 0.8 s for the likes of one
+	  post). New installations create indexes for these queries, and the update to 4.0.0 adds them;
+	  on a large site the update takes longer, as each of the three tables is copied once.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
