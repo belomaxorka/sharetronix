@@ -140,6 +140,8 @@
 			}
 		}
 		$this->network->load_network_settings($db2);
+		// the cached page header (system/cache_html) holds the favicon link
+		invalidateCachedHTML();
 	}
 	
 	$tpl = new template( array('page_title' => $this->lang('admpgtitle_networkbranding', array('#SITE_TITLE#'=>$C->SITE_TITLE)), 'header_page_layout'=>'sc') );
