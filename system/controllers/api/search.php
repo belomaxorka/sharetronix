@@ -32,7 +32,7 @@
 	$api_session->not_in_groups		= '';
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
-	$api_session->oauth_error 		= '';
+	$api_session->auth_error 		= '';
 		
 	if($_SERVER['REQUEST_METHOD'] != 'GET')
 	{
@@ -67,7 +67,7 @@
 	{
 		$this->db2->query('SELECT id FROM users WHERE (email="'.$this->db2->e($auth[0]).'" OR username="'.$this->db2->e($auth[0]).'") AND password="'.md5($auth[1]).'" AND active=1 LIMIT 1');
 		if( !$obj = $this->db2->fetch_object() ) {
-			$api_session->oauth_error = 'Invalid Authorization header.';
+			$api_session->auth_error = 'Invalid Authorization header.';
 		}else{
 			$u = $this->network->get_user_by_id($obj->id);
 			if($u){
@@ -87,7 +87,7 @@
 	
 	if(!$api_session->bauth_status){
 		if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-			else echo generate_error($api_session->format, 'OAuth otorization problem:'.$api_session->oauth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
+			else echo generate_error($api_session->format, 'Authorization problem: '.$api_session->auth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
 		exit;
 	}
 	

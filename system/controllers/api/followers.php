@@ -33,13 +33,13 @@
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('ids');
-	$api_session->oauth_error 		= '';
+	$api_session->auth_error 		= '';
 	
 	if( $auth = check_if_basic_auth() ) 
 	{
    		$this->db2->query('SELECT id FROM users WHERE (email="'.$this->db2->e($auth[0]).'" OR username="'.$this->db2->e($auth[0]).'") AND password="'.md5($auth[1]).'" AND active=1 LIMIT 1');
 		if( !$obj = $this->db2->fetch_object() ) {
-			$api_session->oauth_error = 'Invalid Authorization header.';
+			$api_session->auth_error = 'Invalid Authorization header.';
 		}else{
 			$u = $this->network->get_user_by_id($obj->id);
 			if($u){

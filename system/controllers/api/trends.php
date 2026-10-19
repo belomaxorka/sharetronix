@@ -33,7 +33,7 @@
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('top10', 'current', 'daily', 'weekly', 'location', 'available');
-	$api_session->oauth_error 		= '';
+	$api_session->auth_error 		= '';
 			
 	if($_SERVER['REQUEST_METHOD'] != 'GET')
 	{

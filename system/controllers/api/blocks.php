@@ -20,7 +20,7 @@
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('create', 'destroy', 'exists', 'blocking');
-	$api_session->oauth_error 		= '';
+	$api_session->auth_error 		= '';
 
 	if(!is_valid_data_format($api_session->format, TRUE))
 	{		

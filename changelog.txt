@@ -261,6 +261,10 @@
 	  Without mbstring, pages, the updater and the cron worker now stop at startup with a message
 	  that names the extension, and step 1 of the installer lists "PHP: mbstring extension
 	  required". Enable mbstring before upgrading.
+	* Named authentication failures of the API "Authorization problem" (the 401 answers that
+	  suppress_response_codes turns into an error body) instead of "OAuth otorization problem" or
+	  "OAuth otorization error": the API supports Basic authentication only. The status codes are
+	  unchanged.
 
 	Removed:
 	* Removed the obsolete root README.txt.

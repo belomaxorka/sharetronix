@@ -34,13 +34,13 @@
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('show', 'lookup', 'search', 'suggestion', 'groups', 'profile_image');
-	$api_session->oauth_error 		= '';
+	$api_session->auth_error 		= '';
 
 	if( $auth = check_if_basic_auth() ) 
 	{
    		$this->db2->query('SELECT id FROM users WHERE (email="'.$this->db2->e($auth[0]).'" OR username="'.$this->db2->e($auth[0]).'") AND password="'.md5($auth[1]).'" AND active=1 LIMIT 1');
 		if( !$obj = $this->db2->fetch_object() ) {
-			$api_session->oauth_error = 'Invalid Authorization header.';
+			$api_session->auth_error = 'Invalid Authorization header.';
 		}else{
 			$u = $this->network->get_user_by_id($obj->id);
 			if($u){
@@ -128,7 +128,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem:'.$api_session->oauth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem: '.$api_session->auth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
@@ -220,7 +220,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem:'.$api_session->oauth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem: '.$api_session->auth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 
@@ -317,7 +317,7 @@
 		}elseif(!$api_session->bauth_status)
 		{
 			if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem:'.$api_session->oauth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem: '.$api_session->auth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		if($api_session->bauth_status) $id = $user->id;

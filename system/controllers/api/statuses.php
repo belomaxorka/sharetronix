@@ -38,7 +38,7 @@
 	$api_session->available_resources 	= array('public_timeline', 'user_timeline', 'mentions', 'update', 'destroy', 'friends', 'followers', 'friends_timeline', 'home_timeline', 
 	'show', 'group_update', 'commented', 'private_mentions', 'private_destroy', 'private_comments', 'comments', 'replies', 'retweeted_by_me', 'retweeted_to_me',
 	'retweets_of_me', 'retweet', 'retweets');
-	$api_session->oauth_error 		= '';
+	$api_session->auth_error 		= '';
 
 	
 	if( $auth = check_if_basic_auth() ) 
@@ -46,7 +46,7 @@
    		$this->db2->query('SELECT id FROM users WHERE (email="'.$this->db2->e($auth[0]).'" OR username="'.$this->db2->e($auth[0]).'") AND password="'.md5($auth[1]).'" AND active=1 LIMIT 1');
    		
 		if( !$obj = $this->db2->fetch_object() ) {
-			$api_session->oauth_error = 'Invalid Authorization header.';
+			$api_session->auth_error = 'Invalid Authorization header.';
 		}else{
 			$u = $this->network->get_user_by_id($obj->id);
 			
@@ -235,7 +235,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
@@ -319,7 +319,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem:'.$api_session->oauth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem: '.$api_session->auth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
@@ -516,7 +516,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}elseif(!isset($api_session->resource_option) || !is_numeric($api_session->resource_option)){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 403 Forbidden');
@@ -643,7 +643,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 
@@ -792,7 +792,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
@@ -859,7 +859,7 @@
 			exit;
 		}elseif(!$api_session->bauth_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
-				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
+				else echo generate_error($api_session->format, 'Authorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 	
