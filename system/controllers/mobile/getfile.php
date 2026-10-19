@@ -20,6 +20,11 @@
 		if( $p->error ) {
 			exit;
 		}
+		// The rule of the post page (view.php): the posts of a member who protects them, outside groups, only
+		// for the members this member follows and for the network administrators.
+		if( $m[1]=='public' && !$p->post_group && $p->post_user->is_posts_protected && $p->post_user->id!=$this->user->id && !$this->user->info->is_network_admin && !$this->user->if_user_follows_me($p->post_user->id) ) {
+			exit;
+		}
 		$tmp	= $p->post_attached;
 		if( ! isset($tmp['file']) ) {
 			exit;

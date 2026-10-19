@@ -101,6 +101,9 @@
 	  services/activities/getall with activities_type=user showed them to everybody, guests
 	  included, although the profile page itself hid them. The feed now applies the same filter as
 	  the other feeds.
+	* File attachments of posts of members who protect their posts were sent to any signed-in member
+	  who knew the numbers of the post and the file. The download now applies the rule of the post
+	  page.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
