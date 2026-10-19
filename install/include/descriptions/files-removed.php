@@ -112,6 +112,8 @@
 			'system/helpers/func_captcha.php',
 			'system/helpers/func_mbstring.php',
 			'system/helpers/func_recaptchalib.php',
+			'system/libraries/class_bitly.php',
+			'system/libraries/class_twitterAuth.php',
 			'system/libraries/securimage/AHGBold.ttf',
 			'system/libraries/securimage/LICENSE.txt',
 			'system/libraries/securimage/README.FONT.txt',

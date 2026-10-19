@@ -77,10 +77,6 @@
 		$C->TWITTER_CONSUMER_KEY	= '';
 		$C->TWITTER_CONSUMER_SECRET	= '';
 		
-		// Bit.ly Integration - used for sharing posts to twitter
-		$C->BITLY_LOGIN			= '';
-		$C->BITLY_API_KEY			= '';
-		
 		// For inviting Yahoo contacts. Check out the README.txt file
 		$C->YAHOO_CONSUMER_KEY		= '';
 		$C->YAHOO_CONSUMER_SECRET	= '';

@@ -95,8 +95,6 @@
 				$config	= config_replace_variable( $config,	'$C->FACEBOOK_API_KEY',			''	 );
 				$config	= config_replace_variable( $config,	'$C->FACEBOOK_API_ID',			''	 );
 				$config	= config_replace_variable( $config,	'$C->FACEBOOK_API_SECRET',		''	 );
-				$config	= config_replace_variable( $config,	'$C->BITLY_LOGIN',				''	 );
-				$config	= config_replace_variable( $config,	'$C->BITLY_API_KEY',			''	 );
 				$config	= config_replace_variable( $config,	'$C->TWITTER_CONSUMER_KEY',		''	 );
 				$config	= config_replace_variable( $config,	'$C->TWITTER_CONSUMER_SECRET',	''	 );
 				$config	= config_replace_variable( $config,	'$C->YAHOO_CONSUMER_KEY',		''	 );

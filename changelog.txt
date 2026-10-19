@@ -633,6 +633,10 @@
 	  images.
 	* Removed the plugins_installed table, which kept the marketplace id of each plugin the
 	  marketplace installed. New installations no longer create it, and the 3.6.3 update drops it.
+	* Removed the bit.ly library, its $C->BITLY_LOGIN and $C->BITLY_API_KEY settings in new
+	  installations, and the old Twitter sign-in library class_twitterAuth.php. Nothing used them,
+	  and the bit.ly API v3 and Twitter API v1 they called no longer exist. Sign-in through Twitter
+	  is not affected; the 3.6.3 update deletes the two files.
 
 Sharetronix 3.6.2
 	* Bug fixes
