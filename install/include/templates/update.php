@@ -33,6 +33,9 @@
 		echo $D->designer->errorMessage('Error', $D->errmsg);
  	}else{
 		echo $D->designer->okMessage('Done', 'Your community has been updated to the latest version('.$C->VERSION.') <br /><br /> <a href="'.($_SESSION['INSTALL_DATA']['SITE_URL']).'"> Proceed to home page</a>' );
+		if( !empty($D->not_removed) ){
+			echo $D->designer->errorMessage('Delete old files', 'These files of an older version could not be deleted. Delete them by hand, because some of them would still run:<br /><br />'.implode('<br />', array_map('htmlspecialchars', $D->not_removed)));
+		}
 	}
  	
 ?>

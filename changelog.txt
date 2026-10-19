@@ -374,6 +374,10 @@
 	  it is shared by the cron worker and the web server. It requires the phpredis extension;
 	  without it the file cache is used, and an unreachable server makes requests run without the
 	  cache instead of failing. New installations list the Redis settings in system/conf_main.php.
+	* The updater now deletes the files that newer releases no longer ship (listed in
+	  install/include/descriptions/files-removed.php), so that left-over code cannot keep running
+	  after an update; for example, the OAuth cron job of 3.6.2 stopped the 6-hour cron jobs once
+	  the OAuth tables were dropped. Files it cannot delete are listed on the result page.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party

@@ -59,4 +59,11 @@
 		}
 	}
 	
+	// Code that newer releases removed must not stay behind: a left-over cron job, for example,
+	// would keep running against tables that the update dropped.
+	$D->not_removed = array();
+	if( !$D->error ){
+		$D->not_removed = remove_obsolete_files( get_removed_files_for_update($_SESSION['INSTALL_DATA']['OLD_VERSION']) );
+	}
+	
 	loadTemplate('update');

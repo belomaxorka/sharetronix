@@ -95,6 +95,33 @@
 		return (string) implode('', array_fill(0, strlen($pass)-1, '*') );
 	}
 	
+	function remove_obsolete_files($files)
+	{
+		// Deletes files (and, for entries ending in /, empty directories) that a newer release no
+		// longer ships. Returns the existing entries that could not be deleted.
+		global $C;
+		
+		$root	= rtrim(str_replace('\\', '/', realpath($C->INCPATH.'../')), '/').'/';
+		$failed	= array();
+		foreach( $files as $file ) {
+			if( $file === '' || $file[0] === '/' || strpos($file, '..') !== FALSE || strpos($file, 'storage/') === 0 ) {
+				continue;
+			}
+			$path	= $root.rtrim($file, '/');
+			if( substr($file, -1) === '/' ) {
+				if( is_dir($path) && count(scandir($path)) == 2 && !@rmdir($path) ) {
+					$failed[]	= $file;
+				}
+			}
+			elseif( is_file($path) && !@unlink($path) ) {
+				$failed[]	= $file;
+			}
+		}
+		@clearstatcache();
+		
+		return $failed;
+	}
+	
 	function loopback_request($url)
 	{
 		// Fetches one of the installer's own test files from this server. Returns the response

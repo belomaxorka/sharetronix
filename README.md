@@ -73,7 +73,7 @@ The updater updates Sharetronix 3.0 and later. Releases 1.x and 2.x used a diffe
 
 1. Back up the database, `system/conf_main.php`, and `storage/`, and make sure the backup can be restored.
 2. Make sure PHP loads the `mbstring` extension. Sharetronix 3.6.3 no longer ships a replacement for it: without the extension, pages, the updater, and the cron worker stop with a message that it is missing.
-3. Replace the application files with the new version: delete the old files instead of copying the new ones over them, but keep `system/conf_main.php`, `storage/`, and any themes, plugins, or languages you installed. Files that a release removes must not stay behind; for example, a left-over `system/cronjobs/php_6h/7-clean_request_tokens.php` from 3.6.2 stops the cron worker once the 3.6.3 updater has dropped the OAuth tables.
+3. Replace the application files with the new version: delete the old files instead of copying the new ones over them, but keep `system/conf_main.php`, `storage/`, and any themes, plugins, or languages you installed. Files that a release removes must not stay behind; for example, a left-over `system/cronjobs/php_6h/7-clean_request_tokens.php` from 3.6.2 stops the cron worker once the 3.6.3 updater has dropped the OAuth tables. The updater deletes the files that newer releases no longer ship and lists any file it cannot delete; delete those by hand.
 4. Sign in as an administrator, open `/install/`, and confirm the update. The updater applies the database changes for the new version.
 5. Clear `system/cache/` and `system/cache_html/`, or wait until cached data expires (one hour by default) and the daily cron job clears the cached page HTML.
 
