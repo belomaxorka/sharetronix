@@ -101,8 +101,6 @@
 				$config	= config_replace_variable( $config,	'$C->TWITTER_CONSUMER_SECRET',	''	 );
 				$config	= config_replace_variable( $config,	'$C->YAHOO_CONSUMER_KEY',		''	 );
 				$config	= config_replace_variable( $config,	'$C->YAHOO_CONSUMER_SECRET',	''	 );
-				$config	= config_replace_variable( $config,	'$C->GOOGLE_CAPTCHA_PRIVATE_KEY',	''	 );
-				$config	= config_replace_variable( $config,	'$C->GOOGLE_CAPTCHA_PUBLIC_KEY',	''	 );
 				$config	= config_replace_variable( $config,	'$C->CRONJOB_IS_INSTALLED',			'FALSE', FALSE );
 				$config	= config_replace_variable( $config,	'$C->INSTALLED',			'TRUE', FALSE );
 				$config	= config_replace_variable( $config,	'$C->VERSION',			$C->VERSION );

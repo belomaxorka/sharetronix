@@ -31,6 +31,24 @@
 			return curl_exec($this->_ch);
 		}
 		
+		public function setTimeouts( $connect, $total )
+		{
+			curl_setopt($this->_ch, CURLOPT_CONNECTTIMEOUT, $connect);
+			curl_setopt($this->_ch, CURLOPT_TIMEOUT, $total);
+		}
+		
+		// HTTP status of the last response, 0 when there was none.
+		public function getStatus()
+		{
+			return (int) curl_getinfo($this->_ch, CURLINFO_HTTP_CODE);
+		}
+		
+		// cURL error message of the last request, '' when it succeeded.
+		public function getError()
+		{
+			return curl_error($this->_ch);
+		}
+		
 		public function sslSupport( $ssl_support = TRUE )
 		{
 			curl_setopt($this->_ch, CURLOPT_SSL_VERIFYPEER, $ssl_support);
@@ -42,11 +60,7 @@
 			$fields_count = count($fields);
 			
 			if( !$as_array ){
-				$fields_data = '';
-				foreach($fields as $key=>$value) { 
-					$fields_data .= $key.'='.$value.'&'; 
-				}
-				rtrim($fields_data, '&');
+				$fields_data = http_build_query($fields, '', '&');
 			}else{
 				$fields_data = $fields;
 			}

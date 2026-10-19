@@ -27,6 +27,7 @@
 		'cntf_err_subject'	=> 'Please choose subject.',
 		'cntf_err_message'	=> 'Please enter your message.',
 		'cntf_err_captcha'	=> 'Invalid verification code, please try again.',
+		'captcha_err_unavailable'	=> 'The verification service is not available. Please try again later.',
 		'cntf_ok_ttl'	=> 'Message was sent',
 		'cntf_ok_txt'	=> 'We will respond to you as soon as possible.',
 		

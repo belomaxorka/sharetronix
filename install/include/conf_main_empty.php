@@ -85,9 +85,13 @@
 		$C->YAHOO_CONSUMER_KEY		= '';
 		$C->YAHOO_CONSUMER_SECRET	= '';
 		
-		// For Google reCaptcha. Check out the README.txt file
-		$C->GOOGLE_CAPTCHA_PUBLIC_KEY  = '';
-		$C->GOOGLE_CAPTCHA_PRIVATE_KEY = '';
+		// CAPTCHA of the sign-up, password recovery and contact forms: 'image' (built in) or an
+		// external service: 'recaptcha2', 'recaptcha3', 'turnstile', 'hcaptcha', 'yandex'. A service
+		// needs its site key and secret key; reCAPTCHA v3 also uses the minimum score. See README.md.
+		$C->CAPTCHA_PROVIDER		= 'image';
+		$C->CAPTCHA_SITE_KEY		= '';
+		$C->CAPTCHA_SECRET_KEY		= '';
+		$C->CAPTCHA_MIN_SCORE		= 0.5;
 	//
 	
 	// IF YOUR SERVER SUPPORTS CRONJOBS, READ THE FILE ./system/cronjobs/readme.txt 

@@ -94,6 +94,7 @@
 		'signup_err_passwddiff'		=> 'Passwords don\'t match.',
 		'signup_err_system'		=> 'System Error. Please try again later ot contact us for help.',
 		'signup_err_captcha'		=> 'Invalid verification code, please try again.',
+		'captcha_err_unavailable'	=> 'The verification service is not available. Please try again later.',
 		'signup_err_terms'		=> 'To complete the registration you must accept the Terms of use.',
 		
 		'signup_step1_ok_ttl'		=> 'Check your mailbox to confirm your e-mail address',

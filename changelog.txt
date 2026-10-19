@@ -446,6 +446,16 @@
 	  install/include/descriptions/files-removed.php), so that left-over code cannot keep running
 	  after an update; for example, the OAuth cron job of 3.6.2 stopped the 6-hour cron jobs once
 	  the OAuth tables were dropped. Files it cannot delete are listed on the result page.
+	* Sign-up, password recovery and the contact form can use an external CAPTCHA service instead of
+	  the built-in image: Google reCAPTCHA v2 or v3, Cloudflare Turnstile, hCaptcha or Yandex
+	  SmartCaptcha. Set $C->CAPTCHA_PROVIDER to 'recaptcha2', 'recaptcha3', 'turnstile', 'hcaptcha'
+	  or 'yandex' together with $C->CAPTCHA_SITE_KEY and $C->CAPTCHA_SECRET_KEY in
+	  system/conf_main.php; reCAPTCHA v3 also uses $C->CAPTCHA_MIN_SCORE (default 0.5). Without both
+	  keys, or with an unknown name, the built-in image is used and a line is logged when a form is
+	  sent. When the service cannot be reached or rejects the keys, the form is not accepted, the
+	  visitor is asked to try again later, and a line starting with "Sharetronix captcha:" is
+	  logged. The visitor's IP address is not sent to the service. New installations get these
+	  settings in system/conf_main.php; existing configurations do not need them.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party
@@ -494,6 +504,8 @@
 	  whether the captcha_word field is needed ($D->use_google_recaptcha keeps working as its old
 	  name), and {%captcha_key%} is empty. Blocks of older themes keep working; the /captcha and
 	  /captcha?namespace=forgotten_pass addresses are unchanged.
+	* curlCall::addPostData() with $as_array set to FALSE now URL-encodes the values and no longer
+	  leaves a trailing "&"; curlCall also gained setTimeouts(), getStatus() and getError().
 
 	Removed:
 	* Removed the obsolete root README.txt.
