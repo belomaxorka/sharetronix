@@ -190,6 +190,12 @@
 			return $this->escape($str);
 		}
 		
+		// A database or table name for a query: in backticks, with every backtick in it doubled.
+		// Names such as stx_my-site or the reserved word groups do not work without them.
+		public function quote_name($name) {
+			return '`'.str_replace('`', '``', $name).'`';
+		}
+		
 		protected function fatal_error($query) {
 			$this->fatal_error	= TRUE;
 			if( $this->connection ) {

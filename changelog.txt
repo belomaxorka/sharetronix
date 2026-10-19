@@ -492,6 +492,10 @@
 	  background tasks that read private groups failed with "You have an error in your SQL syntax"
 	  (HTTP 500), because the queries named the groups table without backticks. The table keeps its
 	  name; every query now puts it in backticks.
+	* A database name with a hyphen, such as my-site, stopped the installer at step 2 with "You have
+	  an error in your SQL syntax", and the daily database optimization task failed the same way; on
+	  MySQL 8.0 and later that task also stopped at the groups table. The installer and the task now
+	  put database and table names in backticks.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

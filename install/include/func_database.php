@@ -9,7 +9,7 @@
 			return FALSE;
 		}
 		
-		$res = $db->query('SHOW TABLES FROM '.$s['MYSQL_DBNAME']);
+		$res = $db->query('SHOW TABLES FROM '.$db->quote_name($s['MYSQL_DBNAME']));
 		while( $tbl = $db->fetch_array($res) ){ 
 			$db->query("DROP TABLE IF EXISTS `".$tbl[0] . "`;");
 		}
@@ -53,7 +53,7 @@
 		}
 		
 		$res = $db->query("TRUNCATE TABLE `plugins_tables`");
-		$res = $db->query('SHOW TABLES FROM '.$s['MYSQL_DBNAME']);
+		$res = $db->query('SHOW TABLES FROM '.$db->quote_name($s['MYSQL_DBNAME']));
 		while($tbl = $db->fetch_array($res)){
 			$db->query("INSERT INTO `plugins_tables` (`table`, `owner`) VALUES ('".$tbl[0] ."', 'system')");
 		}

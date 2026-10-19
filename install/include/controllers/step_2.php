@@ -40,7 +40,7 @@
 		}
 		
 		if( !$D->error ) {
-			$tbl	= $db->query('SHOW TABLES FROM '.$D->MYSQL_DBNAME);
+			$tbl	= $db->query('SHOW TABLES FROM '.$db->quote_name($D->MYSQL_DBNAME));
 			if( $tbl && $db->num_rows($tbl)>0 ) {
 				$D->error	= TRUE;
 				$D->errmsg	= 'Database must be empty - this one contains one or more tables.';
