@@ -539,6 +539,12 @@
 	  the mobile sign-in form instead of the page they point to. They now open the new mobile pages,
 	  and e-mails requested in the mobile version link to the normal address ($C->OUTSIDE_SITE_URL)
 	  instead of the /m/ or m. one.
+	* The plugin installer could not add some columns that a plugin's installer.php asked for:
+	  add_field() wrote "NOT NULL DEFAULT NULL" for a NOT NULL column without a default and "DEFAULT
+	  ''" for a number column with an empty default, which MySQL and MariaDB refuse in every SQL
+	  mode ("Invalid default value"), and a default with a quote broke the statement. The plugin was
+	  then reported as installed without those columns. Such a column now gets no default, an empty
+	  default of a number column becomes 0, and text defaults are quoted.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

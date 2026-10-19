@@ -50,6 +50,7 @@ class DatabaseReal implements DatabaseInterface {
 		$limit = false;
 		$default = "DEFAULT NULL";
 		$type = $field_type;
+		$has_default = false;
 		
 		foreach($options as $opt) {
 			switch (get_class($opt)){
@@ -58,11 +59,13 @@ class DatabaseReal implements DatabaseInterface {
 					break;
 				case "FieldOptionDefault":
 					$val = $opt->getValue();
-					$default = "DEFAULT ";
-					if((int)$val !== 0) {
-						$default .= $val;
+					$has_default = true;
+					if(in_array($field_type, array(ColumnType::INTEGER, ColumnType::BOOLEAN, ColumnType::FLOAT, ColumnType::DECIMAL))) {
+						// MySQL refuses a default such as '' for a number column (error 1067, in every SQL mode)
+						// and stores '' as 0 when it is inserted.
+						$default = "DEFAULT " . (is_numeric($val) ? $val : 0);
 					}  else {
-						$default .= "'" . $val . "'";
+						$default = "DEFAULT " . $this->db->link->quote($val);
 					}
 					break;
 				case "FieldOptionNull":
@@ -73,6 +76,11 @@ class DatabaseReal implements DatabaseInterface {
 				default:
 					throw new Exception("Unsupported field option");
 			}
+		}
+		
+		// NOT NULL without a default: "NOT NULL DEFAULT NULL" is invalid, so the column gets no default.
+		if($null != "NULL" && !$has_default) {
+			$default = "";
 		}
 		
 		if($limit == false) {
