@@ -83,6 +83,11 @@
 	* The contact form uses the shared image CAPTCHA of sign-up and password recovery. Its own
 	  CAPTCHA showed one fixed GIF image per character, so a script could read the code from the
 	  file hashes, and a key and word that passed once stayed valid for the rest of the session.
+	* Avatars, logos, favicons, attachment images and copied files were made writable by every
+	  account on the server (mode 0777), and so were the entries of the file cache, which the
+	  application reads back with unserialize(); on a server shared with other accounts they could
+	  be replaced. Files now get mode 0644 and cache entries 0600. The installer no longer makes the
+	  attachment folder writable by everyone.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

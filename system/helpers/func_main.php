@@ -70,7 +70,7 @@
 	{
 		$res	= @copy($source, $dest);
 		if( $res ) {
-			chmod($dest, 0777);
+			chmod($dest, 0644);
 			return TRUE;
 		}
 		if( function_exists('curl_init') && preg_match('/^(http|https|ftp)\:\/\//u', $source) ) {
@@ -101,7 +101,7 @@
 			if( $failed ) {
 				return FALSE;
 			}
-			chmod($dest, 0777);
+			chmod($dest, 0644);
 			return TRUE;
 		}
 		return FALSE;
@@ -619,7 +619,7 @@
 			rm(${'fn'.$prefix[$thumbs]});
 			return FALSE;
 		}
-		chmod( ${'fn'.$prefix[$thumbs]}, 0777 );		
+		chmod( ${'fn'.$prefix[$thumbs]}, 0644 );		
 		return TRUE;
 	}
 	

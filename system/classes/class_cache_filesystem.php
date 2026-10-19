@@ -26,8 +26,11 @@
 		
 		private function remove_file($file)
 		{
-			if( file_exists($file) && is_writable($file) ) {
-				unlink($file);
+			// Deleting needs write access to the folder, not to the file, which may belong to another
+			// user: the command-line cron worker and the web server can run as different users.
+			if( file_exists($file) ) {
+				@unlink($file);
+				clearstatcache(TRUE, $file);
 			}
 			return !file_exists($file);
 		}
@@ -70,7 +73,8 @@
 			$this->remove_file($file);
 			$data	= (time()+$ttl)."\n".serialize($data);
 			$res	= file_put_contents($file, $data);
-			chmod($file, 0777);
+			// read back with unserialize(), so only the owner may write or read it
+			chmod($file, 0600);
 			if( $this->debug_mode ) {
 				$time	= microtime(TRUE)-$time;
 				$this->debug_info->time	+= $time;

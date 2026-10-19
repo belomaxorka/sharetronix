@@ -71,7 +71,7 @@
 		if( ! file_exists($destination) ) {
 			return FALSE;
 		}
-		chmod( $destination, 0777 );
+		chmod( $destination, 0644 );
 		return TRUE;
 	}
 	
@@ -219,12 +219,12 @@
 			rm($fn0, $fn1, $fn2, $fn3, $fn4, $fn5);
 			return FALSE;
 		}
-		chmod( $fn0, 0777 );
-		chmod( $fn1, 0777 );
-		chmod( $fn2, 0777 );
-		chmod( $fn3, 0777 );
-		chmod( $fn4, 0777 );
-		chmod( $fn5, 0777 );
+		chmod( $fn0, 0644 );
+		chmod( $fn1, 0644 );
+		chmod( $fn2, 0644 );
+		chmod( $fn3, 0644 );
+		chmod( $fn4, 0644 );
+		chmod( $fn5, 0644 );
 		
 		return TRUE;
 	}
@@ -238,7 +238,7 @@
 			if( ! $res ) {
 				return FALSE;
 			}
-			chmod($tmp, 0777);
+			chmod($tmp, 0644);
 			$input	= $tmp;
 		}
 		list($w, $h, $tp)	= getimagesize($input);
@@ -403,7 +403,7 @@
 			if( ! $res ) {
 				return FALSE;
 			}
-			chmod($tmp, 0777);
+			chmod($tmp, 0644);
 			$source	= $tmp;
 		}
 		if( ! file_exists($source) ) {
@@ -465,7 +465,7 @@
 				return FALSE;
 			}
 		}
-		chmod( $destination, 0777 );
+		chmod( $destination, 0644 );
 		return TRUE;
 	}
 	

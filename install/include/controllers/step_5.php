@@ -22,7 +22,7 @@
 	if( ! file_exists( $C->INCPATH.'../storage/attachments/1/' ) ) {
 		@mkdir( $C->INCPATH.'../storage/attachments/1/' );
 	}
-	@chmod( $C->INCPATH.'../storage/attachments/1/', 0777 );
+	make_writable_for_owner( $C->INCPATH.'../storage/attachments/1/' );
 	
 	$s['SITE_URL']	= rtrim($s['SITE_URL'],'/').'/';
 	

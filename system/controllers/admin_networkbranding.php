@@ -126,7 +126,7 @@
 								$errmsg	= $this->lang('admbrnd_frm_err_ficn_cantcopy');
 							}
 							else {
-								chmod($path.$fn, 0777);
+								chmod($path.$fn, 0644);
 								if( !empty($C->HDR_CUSTOM_FAVICON) ) {
 									rm( $path.$C->HDR_CUSTOM_FAVICON );
 								}

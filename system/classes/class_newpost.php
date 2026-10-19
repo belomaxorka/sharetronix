@@ -253,7 +253,7 @@
 				if( ! $res ) {
 					return FALSE;
 				}
-				chmod($tmp, 0666);
+				chmod($tmp, 0644);
 				$input	= $tmp;
 			}
 			list($w, $h, $tp)	= @getimagesize($input);
@@ -637,7 +637,7 @@
 							continue;
 						}
 						rename($C->STORAGE_TMP_DIR.$v, $dir.$v);
-						chmod($dir.$v, 0777);
+						chmod($dir.$v, 0644);
 					}
 					unset($at->in_tmpdir);
 				}else{
@@ -653,7 +653,7 @@
 								continue;
 							}
 							rename($C->STORAGE_TMP_DIR.$v, $dir.$v);
-							chmod($dir.$v, 0777);
+							chmod($dir.$v, 0644);
 						}
 						unset($att->in_tmpdir);
 					}
@@ -664,7 +664,7 @@
 				foreach ($this->attached['link'] as $key => $value){
 					if(isset($value->image) && file_exists($C->STORAGE_TMP_DIR.$value->image)){
 						@rename($C->STORAGE_TMP_DIR.$value->image, $dir.$value->image);
-						@chmod($dir.$value->image, 0777);
+						@chmod($dir.$value->image, 0644);
 					}
 				}
 			}
