@@ -40,7 +40,8 @@
 			$tmp = NULL;
 			if( count($plugins) ){
 				foreach( $plugins as $p ){ 
-					if($p == $not_found){
+					// plugins_cache can still name a plugin that is no longer installed or was not loaded
+					if($p == $not_found || !isset($this->_installedPlugins[$p]) || !is_object($this->_installedPlugins[$p])){
 						continue;
 					}
 					
@@ -59,8 +60,29 @@
 			global $C;
 			
 			foreach($this->_installedPlugins as $plugin){
-				require $C->PLUGINS_DIR.$plugin.'/plugin.php';
-				$this->_installedPlugins[$plugin] = new $plugin();
+				// A plugin that cannot be loaded (missing files, code that does not compile on this PHP
+				// version, no class of its name) is skipped and logged instead of stopping every page,
+				// including the administration pages that could remove it.
+				$file = $C->PLUGINS_DIR.$plugin.'/plugin.php';
+				$error = '';
+				if( !preg_match('/^[a-z0-9_]+$/i', $plugin) ){
+					$error = 'invalid plugin name';
+				}elseif( !is_file($file) ){
+					$error = 'plugin.php not found';
+				}else{
+					try {
+						require $file;
+						if( class_exists($plugin, FALSE) ){
+							$this->_installedPlugins[$plugin] = new $plugin();
+							continue;
+						}
+						$error = 'plugin.php has no class '.$plugin;
+					} catch( Throwable $e ) {
+						$error = get_class($e).': '.$e->getMessage().' in '.$e->getFile().':'.$e->getLine();
+					}
+				}
+				unset($this->_installedPlugins[$plugin]);
+				error_log('Sharetronix plugin '.$plugin.' is not loaded: '.$error);
 			}
 		}
 		

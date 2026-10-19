@@ -368,6 +368,11 @@
 	  settings, and after an update every page with the list of online users logged an
 	  undefined-property warning. The 3.6.3 update adds the missing settings with their default
 	  values.
+	* A plugin that could not be loaded took every page down with HTTP 500, including the
+	  administration pages that could remove it: a plugin whose directory was missing, one whose
+	  code does not compile on the running PHP version (the 3.0.1 plugin pdate on PHP 8), a plugins
+	  row with an invalid name, or a plugin removed from the database while the event cache still
+	  named it. Such a plugin is now skipped and the reason is written to the PHP error log.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
