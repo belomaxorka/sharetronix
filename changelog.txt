@@ -681,6 +681,10 @@
 	  updater fail with HTTP 500 ("Call to undefined function mysql_connect()"), because PHP 7 and
 	  later no longer have the mysql extension. The application now uses mysqli unless the old
 	  extension is requested and loaded.
+	* On a database server without the utf8mb4_unicode_520_ci collation (MySQL 5.5, MariaDB 5.5),
+	  the update to 4.0.0 dropped tables, deleted settings and rewrote display names before it
+	  stopped at the utf8mb4 conversion, leaving the old version number with a partly updated
+	  database. The update now checks the collation first and changes nothing on such servers.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -134,6 +134,21 @@
 		return TRUE;
 	}
 	
+	// The first step of the 4.0.0 update: a server without mysql::UTF8MB4_COLLATION (MySQL 5.5, MariaDB
+	// 5.5) stops the update here, before the steps that drop tables and change rows, which an update stopped
+	// at the conversion would leave done while the installed version stays the old one.
+	function require_utf8mb4_collation()
+	{
+		global $db, $D;
+		
+		$coll	= mysql::UTF8MB4_COLLATION;
+		if( ! $db->fetch_field("SHOW COLLATION LIKE '".$coll."'") ) {
+			$D->update_error	= 'The database server does not support the utf8mb4 character set with the '.$coll.' collation. Sharetronix needs MySQL 5.7 or later or MariaDB 10.4 or later.';
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
 	// The 4.0.0 update stores text as utf8mb4, so that emoji are kept: converts the tables of the core
 	// and of the installed plugins to utf8mb4 with mysql::UTF8MB4_COLLATION, then sets $C->DB_CHARSET
 	// in conf_main.php, which switches the connections to utf8mb4. Converted tables are skipped, so
@@ -144,11 +159,10 @@
 	{
 		global $db, $C, $D;
 		
-		$coll	= mysql::UTF8MB4_COLLATION;
-		if( ! $db->fetch_field("SHOW COLLATION LIKE '".$coll."'") ) {
-			$D->update_error	= 'The database server does not support the utf8mb4 character set with the '.$coll.' collation. Sharetronix needs MySQL 5.7 or later or MariaDB 10.4 or later.';
+		if( ! require_utf8mb4_collation() ) {
 			return FALSE;
 		}
+		$coll	= mysql::UTF8MB4_COLLATION;
 		// Each table is copied once; large tables take a while.
 		@set_time_limit(0);
 		

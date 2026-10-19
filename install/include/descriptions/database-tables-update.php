@@ -56,6 +56,9 @@
 	$db_updates['4.0.0'] = array(
 			'tables' => array(),
 			'queries'=>array(
+					// A server without the utf8mb4 collation of the conversion below stops the update before
+					// anything is changed (func_database.php).
+					array('function' => 'require_utf8mb4_collation'),
 					// Display names are stored HTML-escaped; self-registration used to store them raw.
 					// Escaped rows never contain a raw <, > or ", and a bare & outside an entity is raw
 					// as well, so the statement only touches raw rows and can be repeated safely.
