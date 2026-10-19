@@ -47,7 +47,7 @@
 				mysqli_report(MYSQLI_REPORT_OFF);
 			}
 			// $C->DB_CHARSET is 'utf8mb4' once the tables use it (new installations, or after the
-			// 3.6.3 update); a utf8mb4 connection to utf8 tables would fail on text with emoji.
+			// 4.0.0 update); a utf8mb4 connection to utf8 tables would fail on text with emoji.
 			$this->charset	= isset($GLOBALS['C']->DB_CHARSET) && $GLOBALS['C']->DB_CHARSET=='utf8mb4' ? 'utf8mb4' : 'utf8';
 			$this->disconnect_on_descruct	= TRUE;
 		}

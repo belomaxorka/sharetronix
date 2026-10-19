@@ -134,7 +134,7 @@
 		return TRUE;
 	}
 	
-	// The 3.6.3 update stores text as utf8mb4, so that emoji are kept: converts the tables of the core
+	// The 4.0.0 update stores text as utf8mb4, so that emoji are kept: converts the tables of the core
 	// and of the installed plugins to utf8mb4 with mysql::UTF8MB4_COLLATION, then sets $C->DB_CHARSET
 	// in conf_main.php, which switches the connections to utf8mb4. Converted tables are skipped, so
 	// an interrupted update continues where it stopped; tables of other applications in the same

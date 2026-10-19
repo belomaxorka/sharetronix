@@ -1,7 +1,7 @@
 <?php
 
 	$C->SITE_TITLE 	= 'Sharetronix';
-	$C->VERSION 	= '3.6.3';
+	$C->VERSION 	= '4.0.0';
 	$C->INCPATH		= dirname(__FILE__).'/../../system/'; //for the functions/classes in sharetronix OSS
 	$C->INCLUDEPATH	= dirname(__FILE__).'/../include/'; //for the installer
 	$C->MAX_STEPS	= 5;

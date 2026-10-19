@@ -66,7 +66,7 @@
 			'system/libraries/securimage/audio/noise/',
 	);
 	
-	$files_removed['3.6.3'] = array(
+	$files_removed['4.0.0'] = array(
 			'install/old/.htaccess',
 			'install/old/etc/modrewritetest/.htaccess',
 			'install/old/etc/modrewritetest/test1.txt',
