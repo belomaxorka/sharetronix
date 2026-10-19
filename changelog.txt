@@ -438,6 +438,9 @@
 	  failing handler is now skipped and reported in the PHP error log, and the request goes on.
 	* A plugin's tab of the member list (members/tab:<name>) failed with a database error on every
 	  visit. It now runs the plugin's query, ordered as its onPageSetQueryOrder handler says.
+	* With two plugins that add list tabs, a plugin that answered FALSE for the tabs that are not
+	  its own hid the tab of a plugin loaded before it. A FALSE answer is now ignored like an empty
+	  one.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

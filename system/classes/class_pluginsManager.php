@@ -57,7 +57,8 @@
 						error_log('Sharetronix plugin '.$p.' failed in '.$method.': '.get_class($e).': '.$e->getMessage().' in '.$e->getFile().':'.$e->getLine());
 						continue;
 					}
-					if( $tmp !== NULL ){
+					// NULL and FALSE mean "not mine"; they must not replace the answer of another plugin.
+					if( $tmp !== NULL && $tmp !== FALSE ){
 						$this->_event_result[$method] = $tmp;
 					}
 				}
