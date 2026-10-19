@@ -9,14 +9,10 @@
 	$this->load_langfile('outside/signup.php');
 	
 	//require_once( $C->INCPATH.'helpers/func_images.php' );
-	require_once( $C->INCPATH.'helpers/func_captcha.php' );
-	require_once( $C->INCPATH.'helpers/func_recaptchalib.php');
-	require_once( $C->INCPATH.'libraries/securimage/securimage.php');
 	
 	$page_title	= $this->lang('signinforg_page_title', array('#SITE_TITLE#'=>$C->SITE_TITLE));
 	
-	$securi = new Securimage();
-	$securi->setNamespace('forgotten_pass');
+	$captcha = new captcha('forgotten_pass');
 	
 	$have_key	= FALSE;
 	
@@ -63,17 +59,6 @@
 		$errmsg	= '';
 		$email	= '';
 		
-		if( !isset($C->GOOGLE_CAPTCHA_PRIVATE_KEY, $C->GOOGLE_CAPTCHA_PUBLIC_KEY) || $C->GOOGLE_CAPTCHA_PRIVATE_KEY == '' || $C->GOOGLE_CAPTCHA_PUBLIC_KEY == '' ){
-			$captcha_key	= '';
-			$captcha_word	= '';
-			$captcha_html	= '';
-			$D->use_google_recaptcha = FALSE;
-		}else{
-			$captcha_html	=	recaptcha_get_html($C->GOOGLE_CAPTCHA_PUBLIC_KEY);
-			$captcha_key	=	$C->GOOGLE_CAPTCHA_PUBLIC_KEY;
-			$D->use_google_recaptcha = TRUE;
-		}
-		
 		if( isset($_POST['email']) ) {
 			$submit	= TRUE;
 			
@@ -101,21 +86,10 @@
 				}
 			}
 			
-			if( !$error ) {
-				if( isset($C->GOOGLE_CAPTCHA_PRIVATE_KEY, $C->GOOGLE_CAPTCHA_PUBLIC_KEY) && ($C->GOOGLE_CAPTCHA_PRIVATE_KEY == '' || $C->GOOGLE_CAPTCHA_PUBLIC_KEY == '') ){
-					if( $securi->check($_POST['captcha_word']) == false ) {
-						$error	= TRUE;
-						$errmsg	= 'signup_err_captcha';
-						$wrong_captcha = TRUE;
-					}
-				}else{
-					$check = recaptcha_check_answer ( $C->GOOGLE_CAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],$_POST["recaptcha_response_field"]);
-					if (!$check->is_valid){
-						$error	= TRUE;
-						$errmsg	= 'signup_err_captcha';
-						$wrong_captcha = TRUE;
-					}
-				}
+			if( !$error && !$captcha->verify() ) {
+				$error	= TRUE;
+				$errtxt	= $captcha->get_error_message('signup_err_captcha');
+				$wrong_captcha = TRUE;
 			}
 			
 			if( ! $error ) {
@@ -140,7 +114,7 @@
 	$show_step1_form = TRUE;
 	
 	if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('signinforg_err'), $this->lang($errmsg) ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('signinforg_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
 	}else if( $submit && !$error ){
 		if( $have_key ){
 			$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('signinforg_alldone_ttl'), $this->lang('signinforg_alldone_txt') ) );
@@ -155,8 +129,7 @@
 		if( $show_step1_form ){
 			$tpl->layout->useBlock('user-forgotten-pass-step1');
 			$tpl->layout->block->setVar('user_forgotten_email_value', isset($email)? htmlspecialchars($email) : '');
-			$tpl->layout->block->setVar('captcha_image', $captcha_html);
-			$tpl->layout->block->setVar('captcha_key', $captcha_key);
+			$captcha->set_template_vars($tpl->layout->block);
 				
 			$tpl->layout->block->setVar('autofocus','');
 			if(isset($wrong_captcha)){

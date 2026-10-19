@@ -77,6 +77,9 @@
 	  over plain HTTP to check for updates, and the page showed the answer as HTML. That host no
 	  longer exists; whoever answered in its place, or anyone on the network path, could put HTML
 	  and scripts into the administration panel. The check is removed.
+	* Sign-up and password recovery remove the CAPTCHA code after every check, so a wrong answer no
+	  longer leaves the same code open to further guesses; codes have five characters instead of
+	  three.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -418,6 +421,11 @@
 	  for 3.6.10 or 3.10.0 counted as compatible with 3.6.3. It now uses version_compare().
 	* On PHP 8.5, link previews, remote images and the spam check logged that curl_close() is
 	  deprecated. The function is now called only on PHP 7, where it still frees the handle.
+	* Sign-up and password recovery no longer stop with "To use reCAPTCHA you must get an API key"
+	  when system/conf_main.php has no $C->GOOGLE_CAPTCHA_* settings, as on sites upgraded from
+	  1.5.4: the form showed the image CAPTCHA, but the check used reCAPTCHA.
+	* A CAPTCHA answer sent as an array no longer causes HTTP 500 on PHP 8, and /captcha answers 404
+	  for namespaces other than those of the core forms instead of storing them in the session.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
@@ -468,6 +476,17 @@
 	* The Languages page of the administration lists the language packs in system/languages/ and
 	  marks the default language; it no longer depends on the retired Sharetronix marketplace. A
 	  language pack is installed by copying its folder.
+	* Sign-up and password recovery use a built-in image CAPTCHA based on Gregwar Captcha 1.3.0
+	  instead of Securimage 3.5.4 and reCAPTCHA v1. Securimage is no longer maintained and, on PHP
+	  8.4 and 8.5 with deprecations logged, wrote about 20,000 lines to the PHP log for every image.
+	  Google shut reCAPTCHA v1 down in 2018, so with $C->GOOGLE_CAPTCHA_* keys set nobody could sign
+	  up or recover a password; these keys are now ignored. The image comes with a link that shows
+	  another one.
+	* In the theme blocks registration, user-signup-email and user-forgotten-pass-step1,
+	  {%captcha_image%} now holds the CAPTCHA image with its refresh link, $D->captcha_widget tells
+	  whether the captcha_word field is needed ($D->use_google_recaptcha keeps working as its old
+	  name), and {%captcha_key%} is empty. Blocks of older themes keep working; the /captcha and
+	  /captcha?namespace=forgotten_pass addresses are unchanged.
 
 	Removed:
 	* Removed the obsolete root README.txt.

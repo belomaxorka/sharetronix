@@ -129,6 +129,7 @@
 		'signup_step2_form_password2'	=> 'Password again:',
 		'signup_step2_form_samepass'	=> 'Your password from your existing #SITE_TITLE# account.',
 		'signup_step2_form_captcha'	=> 'Image code:',
+		'captcha_refresh'		=> 'Show another image',
 		'signup_step2_form_terms'	=> 'I accept the #SITE_TITLE# #A1#Terms of Use#A2#.',
 		'signup_step2_form_submit'	=> 'Continue',
 		'signup_step2_error'		=> 'Error',

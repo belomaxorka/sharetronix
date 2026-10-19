@@ -18,10 +18,7 @@
 	
 	require_once( $C->INCPATH.'helpers/func_signup.php' );
 	//require_once( $C->INCPATH.'helpers/func_images.php' );
-	require_once( $C->INCPATH.'helpers/func_captcha.php' );
 	require_once( $C->INCPATH.'helpers/func_api.php' );
-	require_once( $C->INCPATH.'helpers/func_recaptchalib.php');
-	require_once( $C->INCPATH.'libraries/securimage/securimage.php');
 
 	$terms_of_use	= FALSE;
 	if( isset($C->TERMSPAGE_ENABLED,$C->TERMSPAGE_CONTENT) && $C->TERMSPAGE_ENABLED==1 && !empty($C->TERMSPAGE_CONTENT) ) {
@@ -37,8 +34,7 @@
 	$is_email_confirmed = $C->USERS_EMAIL_CONFIRMATION? isEmailConfirmed($reg_id, $reg_key) : FALSE;
 	$place_facebook_get_data_tab = FALSE;
 
-	$securi = new Securimage();
-	$securi->setNamespace('signup');
+	$captcha = new captcha('signup');
 	
 	if( check_if_use_facebook( $is_email_confirmed ) ){
 		$place_facebook_get_data_tab = TRUE;
@@ -61,16 +57,6 @@
 	$accept_terms	= isset($_POST['accept_terms'])&&$_POST['accept_terms']==1;
 	// spam checkar
 	$is_spamer      = empty($_POST['realname']) ? false : true;
-	
-	if( !isset($C->GOOGLE_CAPTCHA_PRIVATE_KEY, $C->GOOGLE_CAPTCHA_PUBLIC_KEY) || $C->GOOGLE_CAPTCHA_PRIVATE_KEY == '' || $C->GOOGLE_CAPTCHA_PUBLIC_KEY == '' ){
-		$D->use_google_recaptcha = FALSE;
-		$captcha_html	= '';
-		$captcha_key 	= '';
-	}else{
-		$captcha_html	=	recaptcha_get_html($C->GOOGLE_CAPTCHA_PUBLIC_KEY);
-		$captcha_key	=	$C->GOOGLE_CAPTCHA_PUBLIC_KEY;
-		$D->use_google_recaptcha = TRUE;
-	}
 	
 	if( isset($_POST['submit']) )
 	{
@@ -97,21 +83,10 @@
 				}
 			}
 			
-			if( !$error ) {
-				if( isset($C->GOOGLE_CAPTCHA_PRIVATE_KEY, $C->GOOGLE_CAPTCHA_PUBLIC_KEY) && ($C->GOOGLE_CAPTCHA_PRIVATE_KEY == '' || $C->GOOGLE_CAPTCHA_PUBLIC_KEY == '') ){
-					if( $securi->check($_POST['captcha_word']) == false ) {
-						$error	= TRUE;
-						$errmsg	= $this->lang('signup_err_captcha');
-						$wrong_captcha = TRUE;
-					}
-				}else{
-					$check = recaptcha_check_answer ( $C->GOOGLE_CAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],$_POST["recaptcha_response_field"]);
-					if (!$check->is_valid){
-						$error	= TRUE;
-						$errmsg	= $this->lang('signup_err_captcha');
-						$wrong_captcha = TRUE;
-					}
-				}
+			if( !$error && !$captcha->verify() ) {
+				$error	= TRUE;
+				$errmsg	= $captcha->get_error_message('signup_err_captcha');
+				$wrong_captcha = TRUE;
 			}
 			
 			if( ! $error ) {
@@ -216,21 +191,10 @@
 				$password2	= '';
 			}
 			
-			if( !$error ) {
-				if( isset($C->GOOGLE_CAPTCHA_PRIVATE_KEY, $C->GOOGLE_CAPTCHA_PUBLIC_KEY) && ($C->GOOGLE_CAPTCHA_PRIVATE_KEY == '' || $C->GOOGLE_CAPTCHA_PUBLIC_KEY == '') ){
-					if( $securi->check($_POST['captcha_word']) == false ) {
-						$error	= TRUE;
-						$errmsg	= $this->lang('signup_err_captcha');
-						$wrong_captcha = TRUE;
-					}
-				}else{
-					$check = recaptcha_check_answer ( $C->GOOGLE_CAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],$_POST["recaptcha_response_field"]);
-					if (!$check->is_valid){
-						$error	= TRUE;
-						$errmsg	= $this->lang('signup_err_captcha');
-						$wrong_captcha = TRUE;
-					}
-				}
+			if( !$error && !$captcha->verify() ) {
+				$error	= TRUE;
+				$errmsg	= $captcha->get_error_message('signup_err_captcha');
+				$wrong_captcha = TRUE;
 			}
 			
 			//terms of user checks
@@ -330,8 +294,7 @@
 		}else{			
 			$tpl->layout->useBlock('user-signup-email');
 			$tpl->layout->block->setVar('user_signup_email_value', $email);
-			$tpl->layout->block->setVar('captcha_image', $captcha_html);
-			$tpl->layout->block->setVar('captcha_key', $captcha_key);
+			$captcha->set_template_vars($tpl->layout->block);
 				
 			$tpl->layout->block->setVar('autofocus','');
 			if(isset($wrong_captcha)){
@@ -375,8 +338,7 @@
 			$tpl->layout->block->setVar('registration_password', 	(!empty($password)? $password : '') );
 			$tpl->layout->block->setVar('registration_password2', 	(!empty($password2)? $password2 : '') );
 			$tpl->layout->block->setVar('registration_username', 	(!empty($username)? $username : '') );
-			$tpl->layout->block->setVar('captcha_image', $captcha_html);
-			$tpl->layout->block->setVar('captcha_key', $captcha_key);
+			$captcha->set_template_vars($tpl->layout->block);
 			
 			$tpl->layout->block->setVar('autofocus','');
 			if(isset($wrong_captcha)){

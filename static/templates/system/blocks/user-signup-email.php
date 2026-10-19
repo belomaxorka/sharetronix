@@ -11,21 +11,15 @@
 	<input type="text" value="{%user_signup_email_value%}" name="email" id="email" data-status="focus"/>
 	<div class="clear"></div>
 		
+	<?php if(!$D->captcha_widget): ?>
 	<label for="captcha_word"><?= $this->page->lang('signup_step2_form_captcha') ?></label>
-	
-	<?php if(!$D->use_google_recaptcha): ?>
 	<div class="captcha-fields">
-		<input type="text" id="captcha_word" name="captcha_word" {%autofocus%} />
-		<input type="hidden" value="{%captcha_key%}" name="captcha_key">
+		<input type="text" id="captcha_word" name="captcha_word" autocomplete="off" dir="ltr" {%autofocus%} />
 	</div>
 	<?php endif; ?>
 	
 	<div class="captcha-image">
-	<?php if($D->use_google_recaptcha): ?>
 		{%captcha_image%}
-	<?php else: ?>
-		<img id="captcha" src="<?= $C->SITE_URL ?>captcha" alt="Captcha" />
-	<?php endif; ?>
 	</div>
 	
 	<div class="registration-buttons">
