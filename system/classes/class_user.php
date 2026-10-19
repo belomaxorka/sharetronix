@@ -277,7 +277,7 @@
 			
 			if( $how == TRUE ) {
 				$this->db2->query('INSERT INTO groups_followed SET user_id="'.$this->id.'", group_id="'.$group_id.'", date="'.time().'", group_from_postid="'.$this->network->get_last_post_id().'" ');
-				$this->db2->query('UPDATE groups SET num_followers=num_followers+1 WHERE id="'.$group_id.'" LIMIT 1');
+				$this->db2->query('UPDATE `groups` SET num_followers=num_followers+1 WHERE id="'.$group_id.'" LIMIT 1');
 				
 				$notif = new notifier();
 				$notif->set_group_id($group_id);
@@ -291,7 +291,7 @@
 				}
 				$this->db2->query('DELETE FROM groups_admins WHERE user_id="'.$this->id.'" AND group_id="'.$group_id.'" ');
 				$this->db2->query('DELETE FROM groups_followed WHERE user_id="'.$this->id.'" AND group_id="'.$group_id.'" ');
-				$this->db2->query('UPDATE groups SET num_followers=num_followers-1 WHERE id="'.$group_id.'" LIMIT 1');
+				$this->db2->query('UPDATE `groups` SET num_followers=num_followers-1 WHERE id="'.$group_id.'" LIMIT 1');
 				$not_in_users	= array_keys($this->network->get_user_follows($this->id, FALSE, 'hefollows')->follow_users);
 				$not_in_users	= count($not_in_users)==0 ? '' : 'AND user_id NOT IN('.implode(', ', $not_in_users).')';
 				$this->db2->query('DELETE FROM post_userbox WHERE user_id="'.$this->id.'" AND post_id IN(SELECT id FROM posts WHERE group_id="'.$group_id.'" AND user_id<>"'.$this->id.'" '.$not_in_users.' )');
@@ -375,7 +375,7 @@
 				return $private_groups_ids;
 			}
 				
-			$r	= $this->db2->query('SELECT group_id FROM `groups_followed`,`groups` WHERE groups.id=groups_followed.group_id AND groups.is_public=0 AND groups_followed.user_id="'.$this->id.'"
+			$r	= $this->db2->query('SELECT group_id FROM `groups_followed`,`groups` WHERE `groups`.id=groups_followed.group_id AND `groups`.is_public=0 AND groups_followed.user_id="'.$this->id.'"
 			UNION SELECT group_id FROM `groups_private_members` WHERE user_id="'.$this->id.'"', FALSE);
 			while($obj = $this->db2->fetch_object($r)) {
 				$private_groups_ids[]	= $obj->group_id;

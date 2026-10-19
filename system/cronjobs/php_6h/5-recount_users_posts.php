@@ -18,7 +18,7 @@
 	}
 	
 	$groups_to_check = array();
-	$db2->query('SELECT id FROM groups WHERE num_posts>1000 LIMIT 10');
+	$db2->query('SELECT id FROM `groups` WHERE num_posts>1000 LIMIT 10');
 	while($obj = $db2->fetch_object()) {
 		$groups_to_check[]	= $obj->id;
 	}
@@ -26,7 +26,7 @@
 	foreach($groups_to_check as $grp){
 		$db2->query('SELECT COUNT(*) AS nm FROM posts WHERE group_id="'.$grp.'" GROUP BY group_id');
 		if($tmp = $db2->fetch_object()) {
-			$db2->query('UPDATE groups SET num_posts="'.$tmp->nm.'" WHERE id="'.$grp.'" LIMIT 1');
+			$db2->query('UPDATE `groups` SET num_posts="'.$tmp->nm.'" WHERE id="'.$grp.'" LIMIT 1');
 		}	
 	}
 

@@ -155,7 +155,7 @@
 			$from	= ($pg - 1) * $C->PAGING_NUM_GROUPS;
 			
 			$this->filter->setPrefix('g');
-			$res = $this->db2->query('SELECT g.* FROM groups g, groups_followed gf WHERE g.id=gf.group_id AND gf.user_id="'. intval($this->target_user->id) .'" '.$this->filter->groups().' LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS);
+			$res = $this->db2->query('SELECT g.* FROM `groups` g, groups_followed gf WHERE g.id=gf.group_id AND gf.user_id="'. intval($this->target_user->id) .'" '.$this->filter->groups().' LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS);
 			
 			$float = 'left-container';
 			while($obj = $this->db2->fetch_object($res)) {

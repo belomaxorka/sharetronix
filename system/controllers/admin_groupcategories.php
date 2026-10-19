@@ -65,7 +65,7 @@
 		$delete_category_id = (int) $this->param('delete');
 		
 		$db2->query('DELETE FROM groups_categories WHERE id='.$delete_category_id.' LIMIT 1');
-		$db2->query('UPDATE groups SET category_id = 0 WHERE category_id='.$delete_category_id);
+		$db2->query('UPDATE `groups` SET category_id = 0 WHERE category_id='.$delete_category_id);
 		
 		$this->redirect($C->SITE_URL.'/admin/groupcategories/msg:saved');
 	}

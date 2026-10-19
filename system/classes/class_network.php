@@ -291,7 +291,7 @@
 				return $return_id ? $gid : $this->get_group_by_id($gid);
 			}
 			$gid	= FALSE;
-			$r	= $this->db2->query('SELECT id FROM groups WHERE groupname="'.$this->db2->escape($gname).'" OR title="'.$this->db2->escape($gname).'" LIMIT 1', FALSE);
+			$r	= $this->db2->query('SELECT id FROM `groups` WHERE groupname="'.$this->db2->escape($gname).'" OR title="'.$this->db2->escape($gname).'" LIMIT 1', FALSE);
 			if( $o = $this->db2->fetch_object($r) ) {
 				$gid	= intval($o->id);
 				$this->cache->set($cachekey, $gid, $GLOBALS['C']->CACHE_EXPIRE);
@@ -322,7 +322,7 @@
 				$loaded[$cachekey] = $data;
 				return $data;
 			}	
-			$r	= $this->db2->query('SELECT * FROM groups WHERE id="'.$gid.'" LIMIT 1', FALSE);
+			$r	= $this->db2->query('SELECT * FROM `groups` WHERE id="'.$gid.'" LIMIT 1', FALSE);
 			
 			if($o = $this->db2->fetch_object($r)) {
 				
@@ -574,7 +574,7 @@
 				return $private_groups_ids;
 			}
 			$private_groups_ids = array();
-			$r	= $this->db2->query('SELECT id FROM groups WHERE is_public=0', FALSE);
+			$r	= $this->db2->query('SELECT id FROM `groups` WHERE is_public=0', FALSE);
 			while($obj = $this->db2->fetch_object($r)) {
 				$private_groups_ids[]	= $obj->id;
 			}

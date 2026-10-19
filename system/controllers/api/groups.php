@@ -84,8 +84,8 @@
 
 		if(is_numeric($api_session->resource_option)) $group_id = intval($api_session->resource_option);
 		else{
-			$res = $this->db2->query('SELECT id FROM groups WHERE groupname="'.$this->db2->e(urldecode($api_session->resource_option)).'" LIMIT 1');
-			if(!$group_id = $this->db2->fetch_field('SELECT id FROM groups WHERE groupname="'.$this->db2->e(urldecode($api_session->resource_option)).'" LIMIT 1')){
+			$res = $this->db2->query('SELECT id FROM `groups` WHERE groupname="'.$this->db2->e(urldecode($api_session->resource_option)).'" LIMIT 1');
+			if(!$group_id = $this->db2->fetch_field('SELECT id FROM `groups` WHERE groupname="'.$this->db2->e(urldecode($api_session->resource_option)).'" LIMIT 1')){
 				if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 					else echo generate_error($api_session->format, 'Invalid group name.', $_SERVER['REQUEST_URI'], $api_session->callback);
 				exit;
@@ -137,7 +137,7 @@
 
 		if(isset($api_session->resource_option) && is_numeric($api_session->resource_option)) $gid = intval($api_session->resource_option);
 		elseif(isset($api_session->resource_option)){
-			if(!$gid = $this->db2->fetch_field('SELECT id FROM groups WHERE groupname="'.$this->db2->e($api_session->resource_option).'" AND is_public LIMIT 1')){
+			if(!$gid = $this->db2->fetch_field('SELECT id FROM `groups` WHERE groupname="'.$this->db2->e($api_session->resource_option).'" AND is_public LIMIT 1')){
 				if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 304 Not Modified');
 					else echo generate_error($api_session->format, 'No results found.', $_SERVER['REQUEST_URI'], $api_session->callback);
 				exit;
@@ -149,7 +149,7 @@
 			exit;
 		}
 		
-		$res = $this->db2->query('SELECT groups_followed.user_id FROM groups_followed, groups, users WHERE groups_followed.user_id=users.id AND groups_followed.group_id=groups.id AND groups_followed.group_id="'.intval($this->db2->e($gid)).'"');
+		$res = $this->db2->query('SELECT groups_followed.user_id FROM groups_followed, `groups`, users WHERE groups_followed.user_id=users.id AND groups_followed.group_id=`groups`.id AND groups_followed.group_id="'.intval($this->db2->e($gid)).'"');
 		$num_rows = $this->db2->num_rows($res);
 		
 		if($num_rows > 0)
@@ -191,7 +191,7 @@
 			exit;
 		}
 
-		$res = $this->db2->query('SELECT id, groupname FROM groups WHERE is_public=1');
+		$res = $this->db2->query('SELECT id, groupname FROM `groups` WHERE is_public=1');
 		$num_rows = $this->db2->num_rows($res);
 		
 		$twitter_data = new TwitterData($api_session->format, $api_session->callback, -1, TRUE);
@@ -251,7 +251,7 @@
 			$errmsg	= 'Invalid group\'s name characters';
 		}
 		else {
-			$this->db2->query('SELECT id FROM groups WHERE (groupname="'.$this->db2->e($form_title).'" OR title="'.$this->db2->e($form_title).'") LIMIT 1');
+			$this->db2->query('SELECT id FROM `groups` WHERE (groupname="'.$this->db2->e($form_title).'" OR title="'.$this->db2->e($form_title).'") LIMIT 1');
 			if( $this->db2->num_rows() > 0 ) {
 				$error	= TRUE;
 				$errmsg	= 'Provide different group name.';
@@ -264,7 +264,7 @@
 				$errmsg	= 'Invalid group name.';
 			}
 			else {
-				if( $res =  $this->db2->fetch_field('SELECT id FROM groups WHERE (groupname="'.$this->db2->e($form_groupname).'" OR title="'.$this->db2->e($form_groupname).'") LIMIT 1')) {
+				if( $res =  $this->db2->fetch_field('SELECT id FROM `groups` WHERE (groupname="'.$this->db2->e($form_groupname).'" OR title="'.$this->db2->e($form_groupname).'") LIMIT 1')) {
 					$error	= TRUE;
 					$errmsg	= 'Provide different group name.';
 				}
@@ -290,7 +290,7 @@
 		}
 	
 		if( ! $error ) {
-			$this->db2->query('INSERT INTO groups SET groupname="'.$this->db2->e($form_groupname).'", title="'.$this->db2->e($form_title).'", about_me="'.$this->db2->e($form_description).'", is_public="'.($form_type=='public'?1:0).'"');
+			$this->db2->query('INSERT INTO `groups` SET groupname="'.$this->db2->e($form_groupname).'", title="'.$this->db2->e($form_title).'", about_me="'.$this->db2->e($form_description).'", is_public="'.($form_type=='public'?1:0).'"');
 			
 			$g = $this->network->get_group_by_id(intval($this->db2->insert_id()));
 			
@@ -301,7 +301,7 @@
 
 			$ok = $user->follow_group($g->id);	
 			
-			$res = $this->db2->query('SELECT groupname AS gn, group_id AS gi FROM groups, groups_admins WHERE user_id ='.intval($user->id).' ORDER BY groups_admins.id DESC LIMIT 1');
+			$res = $this->db2->query('SELECT groupname AS gn, group_id AS gi FROM `groups`, groups_admins WHERE user_id ='.intval($user->id).' ORDER BY groups_admins.id DESC LIMIT 1');
 			$obj = $this->db2->fetch_object($res);
 			
 			$twitter_data = new TwitterData($api_session->format, $api_session->callback, $user->id);
@@ -383,8 +383,8 @@
 		{
 			$this->network->get_user_follows($uid, TRUE);
 		}
-		$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM groups WHERE id="'.intval($api_session->resource_option).'" LIMIT 1');
-		$this->db2->query('DELETE FROM groups WHERE id="'.intval($api_session->resource_option).'" LIMIT 1');
+		$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM `groups` WHERE id="'.intval($api_session->resource_option).'" LIMIT 1');
+		$this->db2->query('DELETE FROM `groups` WHERE id="'.intval($api_session->resource_option).'" LIMIT 1');
 
 		$res = $this->db2->query('SELECT id, groupname, title FROM groups_deleted WHERE id='.intval($api_session->resource_option).' LIMIT 1');
 		$gr = $this->db2->fetch_object($res);	

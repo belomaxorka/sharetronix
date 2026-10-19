@@ -168,8 +168,8 @@
 			foreach($f as $uid) {
 				$this->network->get_user_follows($uid, TRUE);
 			}
-			$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM groups WHERE id="'.$this->group->id.'" LIMIT 1');
-			$this->db2->query('DELETE FROM groups WHERE id="'.$this->group->id.'" LIMIT 1');
+			$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM `groups` WHERE id="'.$this->group->id.'" LIMIT 1');
+			$this->db2->query('DELETE FROM `groups` WHERE id="'.$this->group->id.'" LIMIT 1');
 			$this->network->get_group_by_id($this->group->id, TRUE);
 			$this->network->get_group_by_name($this->group->groupname, TRUE);
 			$av	= $this->group->avatar;
@@ -279,7 +279,7 @@
 						$avtr = '';
 					}
 					
-					$this->db2->query('UPDATE groups SET avatar="'.$this->db2->e($avtr).'" WHERE id="'.$this->group->id.'" LIMIT 1');
+					$this->db2->query('UPDATE `groups` SET avatar="'.$this->db2->e($avtr).'" WHERE id="'.$this->group->id.'" LIMIT 1');
 				}
 				
 			}else if( !$add_new ){
@@ -291,7 +291,7 @@
 					rm( $C->STORAGE_DIR.'avatars/thumbs3/'.$old );
 					rm( $C->STORAGE_DIR.'avatars/thumbs4/'.$old );
 					rm( $C->STORAGE_DIR.'avatars/thumbs5/'.$old );
-					$this->db2->query('UPDATE groups SET avatar="" WHERE id="'.$this->group->id.'" LIMIT 1');
+					$this->db2->query('UPDATE `groups` SET avatar="" WHERE id="'.$this->group->id.'" LIMIT 1');
 				}
 			}
 			
@@ -304,11 +304,11 @@
 		{
 			switch($type){
 				case 'public':
-					$this->db2->query('UPDATE groups SET is_public=1 WHERE id="'.$this->group->id.'" LIMIT 1');
+					$this->db2->query('UPDATE `groups` SET is_public=1 WHERE id="'.$this->group->id.'" LIMIT 1');
 					$this->network->get_private_groups_ids(TRUE);
 					break;
 				case 'private':
-					$this->db2->query('UPDATE groups SET is_public=0 WHERE id="'.$this->group->id.'" LIMIT 1');
+					$this->db2->query('UPDATE `groups` SET is_public=0 WHERE id="'.$this->group->id.'" LIMIT 1');
 					
 					$tmp1	= array_keys($this->network->get_group_members($this->group->id));
 					$tmp2	= $this->network->get_group_invited_members($this->group->id);
@@ -334,7 +334,7 @@
 			$errmsg = '';
 			
 			$description	= mb_substr($description, 0, $C->POST_MAX_SYMBOLS);
-			$this->db2->query('UPDATE groups SET about_me="'.$this->db2->e($description).'" WHERE id="'.$this->group->id.'" LIMIT 1');
+			$this->db2->query('UPDATE `groups` SET about_me="'.$this->db2->e($description).'" WHERE id="'.$this->group->id.'" LIMIT 1');
 			
 			return $errmsg;
 		}
@@ -352,12 +352,12 @@
 				$error	= 'group_setterr_title_chars';
 			}
 			elseif( $title != $this->group->title ) {
-				$this->db2->query('SELECT id FROM groups WHERE (groupname="'.$this->db2->e($title).'" OR title="'.$this->db2->e($title).'") AND id<>"'.$this->group->id.'" LIMIT 1');
+				$this->db2->query('SELECT id FROM `groups` WHERE (groupname="'.$this->db2->e($title).'" OR title="'.$this->db2->e($title).'") AND id<>"'.$this->group->id.'" LIMIT 1');
 				if( $this->db2->num_rows() > 0 ) {
 					$error	= 'group_setterr_title_exists';
 				}
 				else {
-					$this->db2->query('UPDATE groups SET title="'.$this->db2->e($title).'" WHERE id="'.$this->group->id.'" LIMIT 1');
+					$this->db2->query('UPDATE `groups` SET title="'.$this->db2->e($title).'" WHERE id="'.$this->group->id.'" LIMIT 1');
 				}
 			}
 
@@ -377,7 +377,7 @@
 				$error	= 'group_setterr_name_chars';
 			}
 			elseif( $name != $this->group->groupname ) {
-				$this->db2->query('SELECT id FROM groups WHERE (groupname="'.$this->db2->e($name).'" OR title="'.$this->db2->e($name).'") AND id<>"'.$this->group->id.'" LIMIT 1');
+				$this->db2->query('SELECT id FROM `groups` WHERE (groupname="'.$this->db2->e($name).'" OR title="'.$this->db2->e($name).'") AND id<>"'.$this->group->id.'" LIMIT 1');
 				if( $this->db2->num_rows() > 0 ) {
 					$error	= 'group_setterr_name_exists';
 				}
@@ -390,7 +390,7 @@
 						$error	= 'group_setterr_name_existss';
 					}
 					else {
-						$this->db2->query('UPDATE groups SET groupname="'.$this->db2->e($name).'" WHERE id="'.$this->group->id.'" LIMIT 1');
+						$this->db2->query('UPDATE `groups` SET groupname="'.$this->db2->e($name).'" WHERE id="'.$this->group->id.'" LIMIT 1');
 						$this->network->get_group_by_name($this->group->groupname, TRUE);
 					}
 				}
@@ -421,7 +421,7 @@
 				$error = TRUE;
 			}
 			else {
-				$this->db2->query('SELECT id FROM groups WHERE (groupname="'.$this->db2->e($group_name).'" OR title="'.$this->db2->e($group_name).'") LIMIT 1');
+				$this->db2->query('SELECT id FROM `groups` WHERE (groupname="'.$this->db2->e($group_name).'" OR title="'.$this->db2->e($group_name).'") LIMIT 1');
 				if( $this->db2->num_rows() > 0 ) {
 					$errmsg	= 'group_setterr_title_exists';
 					$error = TRUE;
@@ -437,7 +437,7 @@
 					$error	= TRUE;
 					$errmsg	= 'group_setterr_name_chars';
 				}else {
-					$this->db2->query('SELECT id FROM groups WHERE (groupname="'.$this->db2->e($group_alias).'" OR title="'.$this->db2->e($group_alias).'") LIMIT 1');
+					$this->db2->query('SELECT id FROM `groups` WHERE (groupname="'.$this->db2->e($group_alias).'" OR title="'.$this->db2->e($group_alias).'") LIMIT 1');
 					if( $this->db2->num_rows() > 0 ) {
 						$error	= TRUE;
 						$errmsg	= 'group_setterr_name_exists';
@@ -470,7 +470,7 @@
 			}
 			
 			if( ! $error ) {
-				$this->db2->query('INSERT INTO groups SET groupname="'.$this->db2->e($group_alias).'", title="'.$this->db2->e($group_name).'", about_me="'.$this->db2->e($group_description).'", is_public="'.($group_type=='public'?1:0).'", category_id="'.(int) $group_category.'"');
+				$this->db2->query('INSERT INTO `groups` SET groupname="'.$this->db2->e($group_alias).'", title="'.$this->db2->e($group_name).'", about_me="'.$this->db2->e($group_description).'", is_public="'.($group_type=='public'?1:0).'", category_id="'.(int) $group_category.'"');
 					
 				$g	= $this->network->get_group_by_id( intval($this->db2->insert_id()) );
 					
@@ -579,7 +579,7 @@
 				return 'newcat_invalid';
 			}
 			
-			$this->db2->query('UPDATE groups SET category_id = '. (int) $category_id.' WHERE id='.(int) $this->group->id);
+			$this->db2->query('UPDATE `groups` SET category_id = '. (int) $category_id.' WHERE id='.(int) $this->group->id);
 			
 			return '';
 		}

@@ -162,7 +162,7 @@
 				}
 			}
 			if( !$error ) {
-				$db2->query('SELECT id FROM groups WHERE groupname="'.$db2->e($username).'" LIMIT 1');
+				$db2->query('SELECT id FROM `groups` WHERE groupname="'.$db2->e($username).'" LIMIT 1');
 				if($obj = $db2->fetch_object()) {
 					$error	= TRUE;
 					$errmsg	= $this->lang('signup_err_usernm_exists');

@@ -504,7 +504,7 @@
 						$notif->onPostMention();
 					}
 					if( $this->group ) {
-						$db2->query('UPDATE groups SET num_posts=num_posts+1 WHERE id="'.$db_group_id.'" LIMIT 1');
+						$db2->query('UPDATE `groups` SET num_posts=num_posts+1 WHERE id="'.$db_group_id.'" LIMIT 1');
 						$this->network->get_group_by_id($db_group_id, TRUE);
 					}
 					if( $this->user->id > 0 ) {

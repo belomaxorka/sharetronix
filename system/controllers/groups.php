@@ -73,27 +73,27 @@
 	switch( $tab ){
 
 		case 'all' :
-			$num_results	= $db2->fetch_field('SELECT COUNT(*) FROM groups g WHERE 1 '.$not_in_groups.$chosen_category);
+			$num_results	= $db2->fetch_field('SELECT COUNT(*) FROM `groups` g WHERE 1 '.$not_in_groups.$chosen_category);
 			$num_pages	= ceil($num_results / $C->PAGING_NUM_GROUPS);
 			$pg	= $this->param('pg') ? intval($this->param('pg')) : 1;
 			$pg	= min($pg, $num_pages);
 			$pg	= max($pg, 1);
 			$from	=  ($this->user->is_logged)? (($pg - 1) * $C->PAGING_NUM_GROUPS) : 0;
 	
-			$res = $db2->query('SELECT * FROM groups g WHERE 1 '.$not_in_groups.$chosen_category.' ORDER BY '.$sql_orderby[$orderby].' LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS);
+			$res = $db2->query('SELECT * FROM `groups` g WHERE 1 '.$not_in_groups.$chosen_category.' ORDER BY '.$sql_orderby[$orderby].' LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS);
 			
 			$pg = ($this->user->is_logged)? $pg : 1;
 			
 			break;
 		case 'my' :
-			$num_results	= $db2->fetch_field('SELECT COUNT(*) AS u FROM groups_followed AS gf, groups g WHERE gf.group_id=g.id AND user_id="'.$this->user->id.'"'.$chosen_category);
+			$num_results	= $db2->fetch_field('SELECT COUNT(*) AS u FROM groups_followed AS gf, `groups` g WHERE gf.group_id=g.id AND user_id="'.$this->user->id.'"'.$chosen_category);
 			$num_pages	= ceil($num_results / $C->PAGING_NUM_GROUPS);
 			$pg	= $this->param('pg') ? intval($this->param('pg')) : 1;
 			$pg	= min($pg, $num_pages);
 			$pg	= max($pg, 1);
 			$from	= ($pg - 1) * $C->PAGING_NUM_GROUPS;
 			
-			$res = $db2->query('SELECT g.* FROM groups g, groups_followed gf WHERE gf.group_id=g.id AND user_id="'.$this->user->id.'" '.$chosen_category.' ORDER BY g.id DESC LIMIT '.$from.', '.$C->PAGING_NUM_USERS);	
+			$res = $db2->query('SELECT g.* FROM `groups` g, groups_followed gf WHERE gf.group_id=g.id AND user_id="'.$this->user->id.'" '.$chosen_category.' ORDER BY g.id DESC LIMIT '.$from.', '.$C->PAGING_NUM_USERS);	
 			
 			break;
 	}

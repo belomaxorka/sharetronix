@@ -154,14 +154,14 @@
 			}
 			
 			$paging_url		= $C->SITE_URL.'search/tab:groups/s:'.$string.'/pg:';
-			$num_results	= $this->db2->fetch_field('SELECT COUNT(*) FROM groups WHERE groupname LIKE "%'.$string.'%" OR title LIKE "%'.$string.'%" '.$this->filter->groups('groups'));
+			$num_results	= $this->db2->fetch_field('SELECT COUNT(*) FROM `groups` WHERE groupname LIKE "%'.$string.'%" OR title LIKE "%'.$string.'%" '.$this->filter->groups('groups'));
 			$num_pages		= ceil($num_results / $C->PAGING_NUM_GROUPS);
 			$pg				= $result_page ? intval($result_page) : 1;
 			$pg				= min($pg, $num_pages);
 			$pg				= max($pg, 1);
 			$from			= ($pg - 1) * $C->PAGING_NUM_GROUPS;
 			
-			$res = $this->db2->query('SELECT * FROM groups WHERE groupname LIKE "%'.$string.'%" OR title LIKE "%'.$string.'%" '.$this->filter->groups('groups').'  ORDER BY groupname ASC LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS);
+			$res = $this->db2->query('SELECT * FROM `groups` WHERE groupname LIKE "%'.$string.'%" OR title LIKE "%'.$string.'%" '.$this->filter->groups('groups').'  ORDER BY groupname ASC LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS);
 			
 			if( $this->db2->num_rows( $res ) > 0 ){
 				while($obj = $this->db2->fetch_object($res)) {

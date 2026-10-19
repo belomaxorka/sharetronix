@@ -128,7 +128,7 @@
 				$this->db2->query('UPDATE users SET num_followers=num_followers-1 WHERE id="'.$tmp->whom.'" ');
 			}
 				
-			$res	= $this->db2->query('SELECT gf.group_id FROM groups_followed AS gf LEFT JOIN groups AS g ON gf.group_id = g.id WHERE g.num_followers <=1 and gf.user_id = "'.$user_id.'"');
+			$res	= $this->db2->query('SELECT gf.group_id FROM groups_followed AS gf LEFT JOIN `groups` AS g ON gf.group_id = g.id WHERE g.num_followers <=1 and gf.user_id = "'.$user_id.'"');
 			while($tmp = $this->db2->fetch_object($res)) {
 				$g = $network->get_group_by_id($tmp->group_id);
 				$group = new group($g);
@@ -138,7 +138,7 @@
 			$res	= $this->db2->query('SELECT id, group_id FROM groups_followed WHERE user_id="'.$user_id.'" ');
 			while($tmp = $this->db2->fetch_object($res)) {
 				$this->db2->query('DELETE FROM groups_followed WHERE id="'.$tmp->id.'" ');
-				$this->db2->query('UPDATE groups SET num_followers=num_followers-1 WHERE id="'.$tmp->group_id.'" ');
+				$this->db2->query('UPDATE `groups` SET num_followers=num_followers-1 WHERE id="'.$tmp->group_id.'" ');
 			}
 				
 			$res	= $this->db2->query('SELECT * FROM posts WHERE user_id="'.$user_id.'" ');

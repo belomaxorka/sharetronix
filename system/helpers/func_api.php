@@ -250,7 +250,7 @@
 		
 		$not_in_groups	= array();
 		
-		$r	= $db2->query('SELECT id FROM groups WHERE is_public=0');
+		$r	= $db2->query('SELECT id FROM `groups` WHERE is_public=0');
 		while($obj = $db2->fetch_object($r)) {
 			$g	= $network->get_group_by_id($obj->id);
 			if( ! $g ) {

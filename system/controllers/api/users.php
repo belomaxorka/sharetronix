@@ -341,7 +341,7 @@
 			exit;
 		}
 			 
-		$q = 'SELECT groups.groupname AS gn, groups_followed.group_id AS gi FROM groups_followed, groups, users WHERE groups_followed.user_id=users.id AND groups_followed.group_id=groups.id AND groups.is_public AND groups_followed.user_id='.intval($id).' GROUP BY groups.id';
+		$q = 'SELECT `groups`.groupname AS gn, groups_followed.group_id AS gi FROM groups_followed, `groups`, users WHERE groups_followed.user_id=users.id AND groups_followed.group_id=`groups`.id AND `groups`.is_public AND groups_followed.user_id='.intval($id).' GROUP BY `groups`.id';
 		
 		$res = $this->db2->query($q);
 		$num_rows = $this->db2->num_rows($res);

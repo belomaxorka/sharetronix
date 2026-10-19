@@ -487,6 +487,11 @@
 	  and no time limit, then again with cURL, so the 20-second request limit could run out; every
 	  sign-up also waited about 3 seconds for it. New accounts now start with the default picture,
 	  and sign-up no longer contacts gravatar.com.
+	* On MySQL 8.0.2 and later, where GROUPS is a reserved word, sign-up, creating, joining and
+	  listing groups, posting in a group, group pages, the page of an unknown user name and the
+	  background tasks that read private groups failed with "You have an error in your SQL syntax"
+	  (HTTP 500), because the queries named the groups table without backticks. The table keeps its
+	  name; every query now puts it in backticks.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
