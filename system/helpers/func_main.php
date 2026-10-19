@@ -107,7 +107,7 @@
 		return FALSE;
 	}
 	
-	function do_send_mail($email, $subject, $message, $from=FALSE)
+	function do_send_mail($email, $subject, $message, $from=FALSE, $reply_to=FALSE, $reply_to_name='')
 	{
 		global $C;
 		if( ! $from ) {
@@ -119,6 +119,11 @@
 		
 		$mail = new PHPMailer();
 		$mail->Subject = $subject;
+		// Replies go to $reply_to (the sender of the contact form) instead of the From address, which
+		// stays the site's own so that the receiving server accepts the message.
+		if( $reply_to ) {
+			$mail->AddReplyTo($reply_to, $reply_to_name);
+		}
 		$mail->SetFrom( $from );                         
 		
 		if( isset($C->SENDMAIL_PATH) && !empty($C->SENDMAIL_PATH) ){

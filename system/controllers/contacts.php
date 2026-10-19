@@ -55,7 +55,7 @@
 			$recipient	= $C->SYSTEM_EMAIL;
 			$subject	= $C->OUTSIDE_SITE_TITLE.' - '.$this->lang('cnt_frm_sbj');
 			
-			do_send_mail($recipient, $subject, $message);
+			do_send_mail($recipient, $subject, $sender."\n\n".$message, FALSE, $email, $fullname);
 			
 			$fullname	= '';
 			$email		= '';

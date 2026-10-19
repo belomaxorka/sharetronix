@@ -15,6 +15,7 @@
 		'cnt_frm_sbj_partnr'	=> 'Business suggestion or partnership opportunity',
 		'cnt_frm_sbj_bugs'	=> 'Report a bug',
 		'cnt_frm_sbj_other'	=> 'Other',
+		'cnt_frm_sbj'		=> 'Message from the contact form',
 		'cnt_frm_message'		=> 'Your message:',
 		'cnt_frm_captcha'		=> 'Image code:',
 		'captcha_refresh'	=> 'Show another image',
