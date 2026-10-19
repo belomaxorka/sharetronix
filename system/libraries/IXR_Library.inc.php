@@ -155,16 +155,18 @@ class IXR_Message {
         // Set XML parser to take the case of tags in to account
         xml_parser_set_option($this->_parser, XML_OPTION_CASE_FOLDING, false);
         // Set XML parser callback functions
-        xml_set_object($this->_parser, $this);
-        xml_set_element_handler($this->_parser, 'tag_open', 'tag_close');
-        xml_set_character_data_handler($this->_parser, 'cdata');
+        xml_set_element_handler($this->_parser, array($this, 'tag_open'), array($this, 'tag_close'));
+        xml_set_character_data_handler($this->_parser, array($this, 'cdata'));
         if (!xml_parse($this->_parser, $this->message)) {
             /* die(sprintf('XML error: %s at line %d',
                 xml_error_string(xml_get_error_code($this->_parser)),
                 xml_get_current_line_number($this->_parser))); */
             return false;
         }
-        xml_parser_free($this->_parser);
+        if (PHP_VERSION_ID < 80000) {
+            // A no-op since PHP 8.0, deprecated as of 8.5.
+            xml_parser_free($this->_parser);
+        }
         // Grab the error messages, if any
         if ($this->messageType == 'fault') {
             $this->faultCode = $this->params[0]['faultCode'];
@@ -173,7 +175,7 @@ class IXR_Message {
         return true;
     }
     function tag_open($parser, $tag, $attr) {
-        $this->currentTag = $tag;
+        $this->_currentTag = $tag;
         switch($tag) {
             case 'methodCall':
             case 'methodResponse':
@@ -204,7 +206,7 @@ class IXR_Message {
                 $valueFlag = true;
                 break;
             case 'double':
-                $value = (double)trim($this->_currentTagContents);
+                $value = (float)trim($this->_currentTagContents);
                 $this->_currentTagContents = '';
                 $valueFlag = true;
                 break;
@@ -228,7 +230,7 @@ class IXR_Message {
                 }
                 break;
             case 'boolean':
-                $value = (boolean)trim($this->_currentTagContents);
+                $value = (bool)trim($this->_currentTagContents);
                 $this->_currentTagContents = '';
                 $valueFlag = true;
                 break;
@@ -485,6 +487,8 @@ class IXR_Client {
     var $debug = false;
     // Storage place for an error message
     var $error = false;
+    // Time limit in seconds that callers may set (declared for PHP 8.2 and later)
+    var $timeout = false;
     function __construct($server, $path = false, $port = 80) {
         $this->IXR_Client($server, $path, $port);
     }

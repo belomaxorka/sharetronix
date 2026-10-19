@@ -519,6 +519,12 @@
 	* The sign-up refusal for an address reported as a spam source was the untranslatable English
 	  text "SPAM bot detected". It is now the language string signup_err_spam, which also tells the
 	  visitor whom to contact; language packs without the string still show the old text.
+	* Every update ping that a public post sends with $C->RPC_PINGS_ON (on by default after
+	  installation) logged up to five deprecation notices on PHP 8.4 and eight on PHP 8.5 from the
+	  bundled IXR XML-RPC library: dynamic properties, xml_set_object() and handler names given as
+	  strings, xml_parser_free(), and the (double) and (boolean) casts. The library is patched to
+	  use method callables, declared properties, and the canonical casts; it parses answers as
+	  before.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
