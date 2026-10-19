@@ -47,6 +47,9 @@
 	  console window as HTML, and the window runs with the site's origin, so a crafted link (for
 	  example a search term containing markup) could run script with the session of a developer
 	  whose address is in $C->DEBUG_USERS and who had the console enabled.
+	* After the update had been confirmed, the following updater forms were accepted without a token
+	  for 30 minutes, so another site could submit the update step on behalf of a signed-in
+	  administrator. Every form of an update now carries the confirmation token.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

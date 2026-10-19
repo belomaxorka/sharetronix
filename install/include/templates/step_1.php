@@ -48,6 +48,7 @@
 	<?php if(!$D->error || $D->errtype == 'license'): ?>
 	
 		<form method="post" action="">
+			<?php if( isset($GLOBALS['csrf']) ): ?><input type="hidden" name="installer_token" value="<?= htmlspecialchars($GLOBALS['csrf']->get_value(), ENT_QUOTES, 'UTF-8') ?>" /><?php endif; ?>
 			<br />
 			<div class="registration-buttons">
 				<button type="submit" name="submit" value="Install" class="btn blue"><span>Start <?= $_SESSION['INSTALL_DATA']['IS_UPDATE']? 'Update' : 'Installation' ?></span></button>

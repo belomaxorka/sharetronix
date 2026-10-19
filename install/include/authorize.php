@@ -56,6 +56,11 @@
 				exit;
 			}
 		}
+		elseif( $_SERVER['REQUEST_METHOD']=='POST' && (!isset($_POST['installer_token']) || !is_string($_POST['installer_token']) || !$csrf->check_if_valid($_POST['installer_token'])) ) {
+			// The confirmation lasts 30 minutes; each form of the update carries the token as well.
+			header('HTTP/1.1 403 Forbidden');
+			exit('Invalid or expired updater confirmation.');
+		}
 		session_write_close();
 		chdir($installer_directory);
 	}
