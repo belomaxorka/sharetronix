@@ -115,6 +115,13 @@
 	* PHP files under static/ (templates of the application) could be requested directly and ran
 	  under PHP-FPM, where the RemoveHandler of static/.htaccess has no effect. Direct requests for
 	  scripts there are now denied, as in storage/.
+	* Installations that use the same memcached or Redis server shared their cache entries when
+	  their $C->CACHE_KEYS_PREFIX was the same, for example empty in a conf_main.php written by hand
+	  or copied with the configuration to a second site with its own database: a member of one site
+	  was shown and treated as the member with the same number on the other site, administrator
+	  rights included, and private groups admitted the members of the other site's group with the
+	  same number. The keys now also contain the database host and name. All memcached and Redis
+	  entries are created again once after the update.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

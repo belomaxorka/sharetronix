@@ -18,7 +18,9 @@
 			$this->redis_port	= !empty($C->CACHE_REDIS_PORT) ? intval($C->CACHE_REDIS_PORT) : 6379;
 			$this->redis_pass	= isset($C->CACHE_REDIS_PASS) ? strval($C->CACHE_REDIS_PASS) : '';
 			$this->redis_db	= isset($C->CACHE_REDIS_DB) ? intval($C->CACHE_REDIS_DB) : 0;
-			$this->keys_prefix	= $C->CACHE_KEYS_PREFIX.'|'.$C->VERSION.'|';
+			// The prefix alone may be empty or copied with conf_main.php to another installation that uses the
+			// same server: the database (host and name) keeps the keys of different installations apart.
+			$this->keys_prefix	= $C->CACHE_KEYS_PREFIX.'|'.$C->VERSION.'|'.substr(md5($C->DB_HOST.'|'.$C->DB_NAME), 0, 8).'|';
 			$this->rd	= NULL;
 			$this->debug_mode	= $C->DEBUG_MODE==TRUE;
 			$this->debug_info	= (object) array (
