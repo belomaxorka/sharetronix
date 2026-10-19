@@ -85,8 +85,10 @@
 				case 'tags':
 					$string	= preg_replace('/^\#/', '', $string);
 					$this->filter->setPrefix('p');
-					$this->query = 'SELECT *, "public" AS `type`, p.id AS pid FROM post_tags t LEFT JOIN posts p ON p.id=t.post_id WHERE t.tag_name="'.$string.'" GROUP BY t.post_id '.$this->filter->all();
-					$this->query_order =  ' ORDER BY t.id DESC ';
+					// GROUP BY belongs after the conditions that the filter and the paging append to the query;
+					// in front of them it grouped the rows by those conditions and returned at most two posts.
+					$this->query = 'SELECT *, "public" AS `type`, p.id AS pid FROM post_tags t LEFT JOIN posts p ON p.id=t.post_id WHERE t.tag_name="'.$string.'" '.$this->filter->all();
+					$this->query_order =  ' GROUP BY t.post_id ORDER BY t.id DESC ';
 					break;
 			}
 			

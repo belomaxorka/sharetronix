@@ -661,6 +661,10 @@
 	  administration and the images, styles and scripts of themes that keep them in their folder did
 	  not load. The directive is commented out, as in storage/ and static/, and direct requests for
 	  scripts there are denied instead.
+	* The tag search showed at most two posts to members (all of them only to network
+	  administrators) on every site with a private group or a member who protects their posts, and
+	  its further pages repeated or skipped posts for everybody: the visibility filter and the
+	  paging condition were appended after GROUP BY and grouped the rows by these conditions.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
