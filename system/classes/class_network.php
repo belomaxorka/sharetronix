@@ -503,6 +503,40 @@
 			return $obj;
 		}
 		
+		// One rule (a column of users_notif_rules) for many members at once, as get_user_notif_rules() gives
+		// it for each of them, for the notifications to all followers of a member: one call per follower
+		// cost up to three queries each, so that a member with 50 000 followers waited half a minute after
+		// following somebody. Members without rules get the default rules stored, as there.
+		public function get_users_notif_rule($user_ids, $rule)
+		{
+			$ids	= array_unique(array_map('intval', $user_ids));
+			$result	= array();
+			if( count($ids) == 0 ) {
+				return $result;
+			}
+			$rule	= preg_replace('/[^a-z0-9_]/', '', $rule);
+			foreach( array_chunk($ids, 5000) as $part ) {
+				$r	= $this->db2->query('SELECT user_id, `'.$rule.'` AS rule_value FROM users_notif_rules WHERE user_id IN('.implode(', ', $part).')', FALSE);
+				while( $obj = $this->db2->fetch_object($r) ) {
+					$result[intval($obj->user_id)]	= $obj->rule_value;
+				}
+			}
+			$missing	= array_diff($ids, array_keys($result));
+			if( count($missing) > 0 ) {
+				require_once( $GLOBALS['C']->INCPATH.'helpers/func_signup.php' );
+				$defaults	= get_user_default_notification_rules();
+				$values	= array();
+				foreach( $missing as $uid ) {
+					$values[]	= '("'.$uid.'", "'.implode('", "', $defaults).'")';
+					$result[$uid]	= isset($defaults[$rule]) ? $defaults[$rule] : 0;
+				}
+				foreach( array_chunk($values, 5000) as $part ) {
+					$this->db2->query('INSERT IGNORE INTO users_notif_rules (`user_id`, `'.implode('`, `', array_keys($defaults)).'`) VALUES '.implode(', ', $part), FALSE);
+				}
+			}
+			return $result;
+		}
+		
 		public function get_posts_api($id, $force_refresh=FALSE)
 		{
 			$id	= intval($id);

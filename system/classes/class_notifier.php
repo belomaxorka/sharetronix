@@ -107,12 +107,13 @@
 			
 			$this->unhide_notif_obj(); //unhide the object, we need it for the second notification
 			$followers	= array_keys($this->network->get_user_follows($this->user->id, FALSE, 'hisfollowers')->followers); 
+			$rules	= $this->network->get_users_notif_rule($followers, 'ntf_me_if_u_follows_u2');
 			
 			foreach($followers as $uid){
 				if( $uid == $whom_id ){ 
 					continue; 
 				}
-				$n	= intval( $this->network->get_user_notif_rules($uid)->ntf_me_if_u_follows_u2 ); 
+				$n	= intval( $rules[$uid] ); 
 				$this->_notifPusher('ntf_me_if_u_follows_u2', $uid, $n);
 			}
 			
@@ -219,8 +220,9 @@
 			}
 			
 			$followers	= array_keys($this->network->get_user_follows($this->user->id, FALSE, 'hisfollowers')->followers); 
+			$rules	= $this->network->get_users_notif_rule($followers, 'ntf_me_if_u_edt_profl');
 			foreach($followers as $uid) {
-				$n	= intval( $this->network->get_user_notif_rules($uid)->ntf_me_if_u_edt_profl );
+				$n	= intval( $rules[$uid] );
 				$this->_notifPusher('ntf_me_if_u_edt_profl', $uid, $n);
 			}
 			
@@ -240,8 +242,9 @@
 			}
 		
 			$followers	= array_keys($this->network->get_user_follows($this->user->id, FALSE, 'hisfollowers')->followers);
+			$rules	= $this->network->get_users_notif_rule($followers, 'ntf_me_if_u_edt_pictr');
 			foreach($followers as $uid) {
-				$n	= intval( $this->network->get_user_notif_rules($uid)->ntf_me_if_u_edt_pictr );
+				$n	= intval( $rules[$uid] );
 				$this->_notifPusher('ntf_me_if_u_edt_pictr', $uid, $n);
 			}
 			
@@ -261,8 +264,9 @@
 			}
 			
 			$followers	= array_keys($this->network->get_user_follows($this->user->id, FALSE, 'hisfollowers')->followers);
+			$rules	= $this->network->get_users_notif_rule($followers, 'ntf_me_if_u_creates_grp');
 			foreach($followers as $uid) {
-				$n	= intval( $this->network->get_user_notif_rules($uid)->ntf_me_if_u_creates_grp );
+				$n	= intval( $rules[$uid] );
 				$this->_notifPusher('ntf_me_if_u_creates_grp', $uid, $n);
 			}
 			
@@ -284,13 +288,14 @@
 			
 			$priv_members = $is_private? $this->network->get_group_invited_members($group_id) : array();
 			$followers	= array_keys($this->network->get_user_follows($this->user->id, FALSE, 'hisfollowers')->followers);
+			$rules	= $this->network->get_users_notif_rule($followers, 'ntf_me_if_u_joins_grp');
 			foreach($followers as $uid) {
 				$uid	= intval($uid);
 				if( $is_private && !in_array($uid, $priv_members) ) {
 					continue;
 				}
 				
-				$n	= intval( $this->network->get_user_notif_rules($uid)->ntf_me_if_u_joins_grp );
+				$n	= intval( $rules[$uid] );
 				$this->_notifPusher('ntf_me_if_u_joins_grp', $uid, $n);
 			}
 			

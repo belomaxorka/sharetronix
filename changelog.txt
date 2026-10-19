@@ -564,6 +564,11 @@
 	  results, and the post is added to the followers' feeds in parts, which also keeps each
 	  statement below max_allowed_packet (4 MB by default on MySQL 5.7) for authors with more than
 	  about 170 000 followers.
+	* Following somebody, changing the profile or the picture, and creating or joining a group took
+	  seconds to minutes for members with many followers: the notification to each follower read
+	  that follower's notification settings separately, with up to three queries per follower
+	  (166 000 statements and 29 s when a member with 55 000 followers followed somebody on a test
+	  site with 100 000 members). The settings of all followers are now read at once.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

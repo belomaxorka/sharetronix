@@ -1,9 +1,9 @@
 <?php
 	
-	function set_user_default_notification_rules($user_id)
+	// The notification rules (users_notif_rules) of a member who has not changed them.
+	function get_user_default_notification_rules()
 	{
-		global $db2, $network;
-		$rules	= array (
+		return array (
 			// 0 - off, 1 - on
 			'ntf_them_if_i_follow_usr'	=> 1,
 			'ntf_them_if_i_comment'		=> 1,
@@ -27,6 +27,12 @@
 			'ntf_me_if_u_registers'		=> 0,
 			'ntf_me_on_post_like'		=> 0,
 		);
+	}
+	
+	function set_user_default_notification_rules($user_id)
+	{
+		global $db2, $network;
+		$rules	= get_user_default_notification_rules();
 		$in_sql	= array();
 		$in_sql[]	= '`user_id`="'.$user_id.'"';
 		foreach($rules as $k=>$v) {
