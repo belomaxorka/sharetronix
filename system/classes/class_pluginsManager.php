@@ -71,7 +71,10 @@
 					$error = 'plugin.php not found';
 				}else{
 					try {
-						require $file;
+						// HTTP /cron builds a second manager in the same request (LOADER.php, then worker.php).
+						if( !class_exists($plugin, FALSE) ){
+							require $file;
+						}
 						if( class_exists($plugin, FALSE) ){
 							$this->_installedPlugins[$plugin] = new $plugin();
 							continue;

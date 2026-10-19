@@ -373,6 +373,9 @@
 	  code does not compile on the running PHP version (the 3.0.1 plugin pdate on PHP 8), a plugins
 	  row with an invalid name, or a plugin removed from the database while the event cache still
 	  named it. Such a plugin is now skipped and the reason is written to the PHP error log.
+	* With any plugin installed, the public /cron page stopped with "Cannot declare class" and ran
+	  no background job, because it loaded the plugins a second time. Plugins are now loaded once
+	  per request.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
