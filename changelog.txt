@@ -110,6 +110,8 @@
 	* Saving a search put the search text into the SQL statement unescaped: a double quote in it
 	  ended the statement with an SQL error (HTTP 500), a backslash was lost, and any signed-in
 	  member's text could change the statement. The text is now escaped.
+	* The remember-me cookie, which signs a member in, could be read by scripts on the page. It is
+	  now sent with HttpOnly, like the session cookie.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

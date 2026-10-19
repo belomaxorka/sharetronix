@@ -125,7 +125,8 @@
 			$this->db2->query('UPDATE users SET lastlogin_date="'.time().'", lastlogin_ip="'.$ip.'", lastclick_date="'.time().'" WHERE id="'.$this->id.'" LIMIT 1');
 			if( TRUE == $rememberme ) {
 				$tmp	= $this->id.'_'.md5($this->info->username.'~~'.$this->info->password.'~~'.$_SERVER['HTTP_USER_AGENT']);
-				setcookie('rememberme', $tmp, time()+60*24*60*60, '/', cookie_domain());
+				// HttpOnly, like the session cookie: it signs the member in, and no script needs to read it.
+				setcookie('rememberme', $tmp, time()+60*24*60*60, '/', cookie_domain(), FALSE, TRUE);
 			}
 			
 			//$this->sess['total_pageviews']	= 0;
