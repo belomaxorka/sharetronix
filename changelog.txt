@@ -513,6 +513,12 @@
 	* $C->PLUGINS_DISABLED = TRUE in system/conf_main.php runs no plugin at all, for a plugin that
 	  breaks every page in a way that cannot be caught, such as running out of memory. The Plugins
 	  page says so and can still uninstall plugins.
+	* The picture settings page has a "Use My Gravatar" button that takes the member's picture from
+	  gravatar.com on request. It sends a SHA-256 hash of the member's address over HTTPS, tries a
+	  failed connection, a timeout or a server error once more, and waits at most about 11 seconds.
+	  When the address has no Gravatar or gravatar.com cannot be reached, the page says so and the
+	  current picture stays; a failed download is logged as a line starting with "Sharetronix
+	  avatar:".
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party

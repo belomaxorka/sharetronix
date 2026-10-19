@@ -149,6 +149,8 @@ The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system
 
 The bundled Securimage CAPTCHA, the reCAPTCHA v1 integration, and the image CAPTCHA of the contact form have been replaced by the built-in image described in [CAPTCHA](#captcha). The updater deletes `system/libraries/securimage/`, `system/helpers/func_recaptchalib.php`, and `system/helpers/func_captcha.php`; old images `storage/tmp/captcha_*.gif` of the contact form can be deleted by hand. Existing configurations need no change: without the new settings the image is used. `$C->GOOGLE_CAPTCHA_PUBLIC_KEY` and `$C->GOOGLE_CAPTCHA_PRIVATE_KEY` are ignored and can be removed; Google shut reCAPTCHA v1 down in 2018, so for reCAPTCHA create new v2 or v3 keys and set `$C->CAPTCHA_PROVIDER`. Plugins that called `generate_captcha()` or Securimage must use the `captcha` class instead.
 
+New accounts no longer take their picture from Gravatar during sign-up; they start with the default picture. Members can choose **Use My Gravatar** on the picture settings page (`/settings/avatar`), which downloads their Gravatar over HTTPS (cURL with a CA bundle, see [CAPTCHA](#captcha)) and sends a SHA-256 hash of their e-mail address to gravatar.com. Existing pictures are not changed.
+
 ## Known limitations
 
 - Sign-in through Twitter and Facebook and other integrations with retired third-party services are untested and may not work.

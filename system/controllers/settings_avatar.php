@@ -20,7 +20,9 @@
 	$error	= FALSE;
 	$errmsg	= '';
 	$send_notif	= FALSE;
-	if( isset($_FILES['profile_avatar']) && is_uploaded_file($_FILES['profile_avatar']['tmp_name']) ) {
+	$use_gravatar	= isset($_POST['use_gravatar']);
+	$gravatar_tmp	= FALSE;
+	if( $use_gravatar || (isset($_FILES['profile_avatar']) && is_uploaded_file($_FILES['profile_avatar']['tmp_name'])) ) {
 		$submit	= TRUE;
 		
 		$plugins_manager->onUserSettingsSubmit();
@@ -29,8 +31,22 @@
 			$errmsg = $plugins_manager->getEventCallErrorMessage();
 		}
 		
+		if( !$error && $use_gravatar ){
+			require_once( $C->INCPATH.'helpers/func_gravatar.php' );
+			$gravatar_tmp	= $C->TMP_DIR.'grvtr'.time().rand(0,9999).'.img';
+			$res	= download_gravatar($this->user->info->email, $gravatar_tmp);
+			if( $res == 'none' ) {
+				$error	= TRUE;
+				$errmsg	= $this->lang('st_avatar_err_nogravatar', array('#EMAIL#'=>htmlspecialchars($this->user->info->email)));
+			}
+			elseif( $res != 'ok' ) {
+				$error	= TRUE;
+				$errmsg	= $this->lang('st_avatar_err_gravatar');
+			}
+		}
+		
 		if( !$error ){
-			$f	= (object) $_FILES['profile_avatar'];
+			$f	= $use_gravatar ? (object) array('tmp_name' => $gravatar_tmp) : (object) $_FILES['profile_avatar'];
 			list($w, $h, $tp) = getimagesize($f->tmp_name);
 			if( $w==0 || $h==0 ) {
 				$error	= TRUE;
@@ -75,6 +91,9 @@
 				$this->user->info->avatar	= $avtr;
 			}
 			
+		}
+		if( $gravatar_tmp ) {
+			rm($gravatar_tmp);
 		}
 	}
 	elseif( $this->param('del') == 'current' ) {
@@ -124,7 +143,9 @@
 			$table->fileField( $this->lang('st_avatar_change_picture'), 'profile_avatar', '' ),
 			$table->textField( '', 'JPEG, GIF or PNG; 200x200px or larger.' ),
 			$table->textField( 'Remove Current', '<a href="'.$C->SITE_URL.'settings/avatar/del:current">'.$this->lang('st_avatar_upload_or_delete').'</a>' ),
-			$table->submitButton( 'sbm', $this->lang('st_avatar_uploadbtn') )
+			$table->submitButton( 'sbm', $this->lang('st_avatar_uploadbtn') ),
+			$table->textField( $this->lang('st_avatar_gravatar'), $this->lang('st_avatar_gravatar_info', array('#EMAIL#'=>htmlspecialchars($u->info->email))) ),
+			$table->submitButton( 'use_gravatar', $this->lang('st_avatar_gravatar_btn') )
 	);
 
 	$table->form_title = $this->lang('settings_avatar_ttl2');
