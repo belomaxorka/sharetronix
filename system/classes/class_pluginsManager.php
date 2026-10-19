@@ -106,6 +106,9 @@
 			while( $o = $this->_db2->fetch_object() ){
 				$data[] = $o->plugin_name;
 			}
+			// Two requests that fill the cache at the same time store the same rows twice; a handler
+			// must still run once per event.
+			$data = array_values(array_unique($data));
 			
 			if( count($data) === 1 && $data[0] === $not_found ){
 				$data = array();

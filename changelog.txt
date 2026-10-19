@@ -397,6 +397,8 @@
 	* Installing a plugin with an invalid manifest.json (such as the pdate plugin of the 3.0.1
 	  release) copied its files into apps/ itself, registered a plugin without a name and took the
 	  whole site down. The manifest is now checked before anything is installed.
+	* A plugin's event handler could run twice for one event when two requests filled the plugins
+	  event cache at the same time. Each handler now runs once per event.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
