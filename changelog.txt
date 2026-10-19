@@ -496,6 +496,10 @@
 	  an error in your SQL syntax", and the daily database optimization task failed the same way; on
 	  MySQL 8.0 and later that task also stopped at the groups table. The installer and the task now
 	  put database and table names in backticks.
+	* Link previews, pictures and attachments taken from a URL, and video thumbnails no longer wait
+	  up to a minute for a slow server: my_copy() tried copy() without a time limit
+	  (default_socket_timeout) before its cURL attempt, so the request could run past the 20-second
+	  limit and fail with HTTP 500. copy() now gives up after 5 seconds, like the cURL attempt.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -68,7 +68,14 @@
 	
 	function my_copy($source, $dest)
 	{
-		$res	= @copy($source, $dest);
+		// A remote file gets the time limit of the cURL attempt below; without it copy() waits up to
+		// default_socket_timeout (60 s) and the request can run past max_execution_time.
+		if( preg_match('/^(http|https)\:\/\//u', $source) ) {
+			$res	= @copy($source, $dest, stream_context_create(array('http' => array('timeout' => 5))));
+		}
+		else {
+			$res	= @copy($source, $dest);
+		}
 		if( $res ) {
 			chmod($dest, 0644);
 			return TRUE;
