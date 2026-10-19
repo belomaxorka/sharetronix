@@ -301,6 +301,13 @@
 	  they ended in fatal errors. An OAuth-signed API request is now answered like any request
 	  without credentials (401), and an /oauth/ address like any unknown address. Basic
 	  authentication is unchanged; "Sign in with Twitter" is a separate feature and stays.
+	* Dropped the database tables of the removed OAuth provider (oauth_access_token,
+	  oauth_request_token, oauth_log). New installations no longer create them, and the 3.6.3 update
+	  drops them from existing sites together with their plugins_tables rows. Nothing has used them
+	  since 3.0.1; on sites upgraded from 2.x they held old OAuth tokens and secrets in plain text.
+	  The drop cannot be undone, so take the usual backup first, and delete the old application
+	  files rather than copying the new ones over them: a left-over 3.6.2 cron job would fail on the
+	  dropped tables (see README, Upgrading).
 
 Sharetronix 3.6.2
 	* Bug fixes

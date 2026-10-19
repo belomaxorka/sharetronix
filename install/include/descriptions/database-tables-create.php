@@ -140,46 +140,6 @@
 			`date` INT( 10 ) UNSIGNED NOT NULL
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
-	$db_tables['oauth_access_token'] = "CREATE TABLE `oauth_access_token` (
-			  `id` int(10) unsigned NOT NULL auto_increment,
-			  `app_id` int(10) unsigned NOT NULL,
-			  `consumer_key` varchar(255) collate utf8_unicode_ci NOT NULL,
-			  `time_stamp` bigint(20) NOT NULL,
-			  `version` varchar(10) collate utf8_unicode_ci NOT NULL,
-			  `nonce` varchar(255) collate utf8_unicode_ci NOT NULL,
-			  `access_token` varchar(255) collate utf8_unicode_ci NOT NULL,
-			  `token_secret` varchar(255) collate utf8_unicode_ci NOT NULL,
-			  `user_id` int(11) NOT NULL,
-			  `user_verified` tinyint(1) NOT NULL,
-			  `rate_limits` int(5) NOT NULL,
-			  `rate_limits_date` int(5) NOT NULL,
-			  PRIMARY KEY  (`id`),
-			  KEY `consumer_key` (`consumer_key`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-
-	$db_tables['oauth_log'] = "CREATE TABLE `oauth_log` (
-			  `id` bigint(20) unsigned NOT NULL auto_increment,
-			  `app_id` int(10) unsigned NOT NULL,
-			  `user_id` int(10) unsigned NOT NULL,
-			  `date` int(10) unsigned NOT NULL,
-			  PRIMARY KEY  (`id`),
-			  KEY `app_id` (`app_id`,`user_id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-
-	$db_tables['oauth_request_token'] = "CREATE TABLE `oauth_request_token` (
-			  `id` int(10) unsigned NOT NULL auto_increment,
-			  `consumer_key` varchar(255) collate utf8_unicode_ci NOT NULL,
-			  `nonce` varchar(255) collate utf8_unicode_ci NOT NULL,
-			  `time_stamp` bigint(20) NOT NULL,
-			  `version` varchar(10) collate utf8_unicode_ci NOT NULL,
-			  `token_secret` varchar(100) collate utf8_unicode_ci NOT NULL,
-			  `request_token` varchar(100) collate utf8_unicode_ci NOT NULL,
-			  `verifier` varchar(100) collate utf8_unicode_ci NOT NULL,
-			  `user_id` bigint(20) NOT NULL,
-			  PRIMARY KEY  (`id`),
-			  KEY `request_token` (`request_token`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-
 	$db_tables['plugins'] = "CREATE TABLE IF NOT EXISTS  `plugins` (
 			`id` INT( 6 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 			`name` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,

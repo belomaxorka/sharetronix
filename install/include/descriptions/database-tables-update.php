@@ -184,6 +184,10 @@
 					// Escaped rows never contain a raw <, > or ", and a bare & outside an entity is raw
 					// as well, so the statement only touches raw rows and can be repeated safely.
 					"UPDATE `users` SET `fullname`=REPLACE(REPLACE(REPLACE(REPLACE(`fullname`, '&', '&amp;'), '<', '&lt;'), '>', '&gt;'), '\"', '&quot;') WHERE `fullname` REGEXP '[<>\"]' OR (`fullname` LIKE '%&%' AND `fullname` NOT REGEXP '&(amp|lt|gt|quot|#0?39);')",
+					// The OAuth 1.0 provider of 2.x is gone (its class since 3.0.1, the rest in 3.6.3). Its tables
+					// are used by nothing; at most they keep old tokens and their secrets in plain text.
+					"DROP TABLE IF EXISTS `oauth_access_token`, `oauth_request_token`, `oauth_log`",
+					"DELETE FROM `plugins_tables` WHERE `table` IN ('oauth_access_token', 'oauth_request_token', 'oauth_log') AND `owner`='system'",
 					// `settings`.`word` is unique and a failed query aborts the updater, so replace instead of insert.
 					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.3')"
 			)
