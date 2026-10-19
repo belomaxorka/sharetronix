@@ -107,6 +107,11 @@
 				if( $old != $def_language ) {
 					$db2->query('REPLACE INTO settings SET word="LANGUAGE", value="'.$db2->e($def_language).'" ');
 					$db2->query('UPDATE users SET language="'.$db2->e($def_language).'" ');
+					// signed-in members take the language from their cached user object
+					$r	= $db2->query('SELECT id FROM users WHERE lastclick_date>"'.(time()-intval(ini_get('session.gc_maxlifetime'))).'" ');
+					while($o = $db2->fetch_object($r)) {
+						$this->network->get_user_by_id($o->id, TRUE);
+					}
 					$this->network->get_user_by_id($this->user->id, TRUE);
 				}
 				
