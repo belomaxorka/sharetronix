@@ -441,6 +441,11 @@
 	* With two plugins that add list tabs, a plugin that answered FALSE for the tabs that are not
 	  its own hid the tab of a plugin loaded before it. A FALSE answer is now ignored like an empty
 	  one.
+	* An update that stopped half-way, for example on a time limit or a lost database connection,
+	  could not be started again: the changes it had already made failed with errors such as
+	  "Duplicate column name", and only restoring the backup helped. Changes that are already in the
+	  database are now skipped and reported in the PHP error log, so the update can simply be run
+	  again.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

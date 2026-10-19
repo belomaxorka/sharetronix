@@ -16,7 +16,7 @@
 			),
 			'queries'=>array(
 					"ALTER TABLE  `groups` ADD  `category_id` INT NOT NULL DEFAULT '0'",
-					"INSERT INTO `settings` (`word`, `value`) VALUES ('USERS_TO_CREATE_SUBCATEGORIES', '0')",
+					"INSERT IGNORE INTO `settings` (`word`, `value`) VALUES ('USERS_TO_CREATE_SUBCATEGORIES', '0')",
 					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.5.0')"
 			)
 	);

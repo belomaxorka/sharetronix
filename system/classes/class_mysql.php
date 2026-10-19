@@ -163,7 +163,7 @@
 			return $this->escape($str);
 		}
 		
-		private function fatal_error($query) {
+		protected function fatal_error($query) {
 			$this->fatal_error	= TRUE;
 			if( $this->connection ) {
 				$error	= $this->ext=='mysqli' ? mysqli_error($this->connection) : mysql_error($this->connection);

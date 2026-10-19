@@ -112,12 +112,12 @@
 			}
 			
 			foreach( $data['tables'] as $tblName => $tblDescription ){
-				$db->query($tblDescription);
+				$db->update_query($tblDescription);
 				insert_system_table($tblName);
 			}
 			
 			foreach( $data['queries'] as $tblInsert ){
-				$db->query($tblInsert);
+				$db->update_query($tblInsert);
 			}
 		}
 		
