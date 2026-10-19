@@ -573,6 +573,10 @@
 	  used them call the captcha class instead (new captcha('signup'), get_html(), verify()). Theme
 	  blocks that use {%captcha_image%}, the captcha_word field and /captcha keep working. Images
 	  storage/tmp/captcha_*.gif left by the old contact form can be deleted by hand.
+	* Removed what was left of the client of the retired Sharetronix marketplace:
+	  $C->MARKETPLACE_URL, the helpers checkPluginCompatability() and get_tmp_dir(), the styles and
+	  images of the marketplace pages, and their language strings. The 3.6.3 update deletes the
+	  images.
 
 Sharetronix 3.6.2
 	* Bug fixes

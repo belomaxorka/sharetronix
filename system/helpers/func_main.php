@@ -437,16 +437,6 @@
 	}
 	
 	
-	function get_tmp_dir()
-	{
-		$path = PROJPATH . "system" . DIRECTORY_SEPARATOR . "tmp";
-		if(is_dir($path) == false)
-		{
-			mkdir($path, 0777, true);
-		}
-		return $path;
-	}
-	
 	function get_user_id($username)
 	{
 		global $db2;
@@ -642,20 +632,5 @@
 		global $C;
 		
 		return (isset($C->NAME_INDENTIFICATOR) && $C->NAME_INDENTIFICATOR == 2 && !empty($obj->fullname))? htmlspecialchars($obj->fullname) : $obj->username;
-	}
-	
-	function checkPluginCompatability( $designer_for_ver )
-	{
-		global $C;
-		$compatible = FALSE;
-		
-		foreach($designer_for_ver as $ver){
-			if( version_compare($ver->name, $C->VERSION, '<=') ){
-				$compatible = TRUE; 
-				break;
-			}
-		}
-		
-		return $compatible;
 	}
 ?>

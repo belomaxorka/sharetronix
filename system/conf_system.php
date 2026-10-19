@@ -19,7 +19,6 @@
 	$C->INCPATH		= dirname(__FILE__).'/';
 	
 	$C->PROJPATH            = defined('PROJPATH')? PROJPATH : (dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' .DIRECTORY_SEPARATOR );
-	$C->MARKETPLACE_URL     = "http://developer.sharetronix.com/";
 	
 	if( ! file_exists($C->INCPATH . 'conf_main.php') ) {
             header("HTTP/1.1 301 Moved Permanently"); 

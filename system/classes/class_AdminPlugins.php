@@ -15,13 +15,11 @@
 		public function AdminPlugins($user, &$tpl, &$params)
 		{
 
-			global $db1, $D;
+			global $db1;
 			$this->db = &$db1;
 			$this->user = $user;
 			$this->tpl = &$tpl;
 			$this->params = &$params;
-
-			$D->items_type = 'plugins';
 		}
 
 
