@@ -1,4 +1,9 @@
 <p style="margin-bottom:15px;"><?= $this->page->lang('admin_plugins_intro') ?></p>
+<?php if( $D->plugins_disabled ): ?>
+	<div class="plugin-information-block" style="margin-bottom:15px;">
+		<p><?= $this->page->lang('admin_plugins_disabled_conf') ?></p>
+	</div>
+<?php endif; ?>
 
 <?php if( empty($D->plugins) ): ?>
 	<div class="plugin-information-block">

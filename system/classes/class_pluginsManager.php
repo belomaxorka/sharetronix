@@ -22,9 +22,13 @@
 			$this->_current_event = '';
 			$this->_current_event_error = FALSE;
 			
-			$this->_db2->query('SELECT name FROM plugins WHERE is_installed=1');
-			while( $plugin = $this->_db2->fetch_object() ){
-				$this->_installedPlugins[$plugin->name] = $plugin->name;
+			// $C->PLUGINS_DISABLED = TRUE in conf_main.php runs no plugin at all (events, pages, AJAX,
+			// assets, cron jobs), so that a plugin that breaks every page can still be uninstalled.
+			if( empty($GLOBALS['C']->PLUGINS_DISABLED) ){
+				$this->_db2->query('SELECT name FROM plugins WHERE is_installed=1');
+				while( $plugin = $this->_db2->fetch_object() ){
+					$this->_installedPlugins[$plugin->name] = $plugin->name;
+				}
 			}
 
 			$this->LOAD();

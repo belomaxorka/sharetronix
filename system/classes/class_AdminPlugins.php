@@ -95,6 +95,7 @@
 				$D->plugins[] = $p;
 			}
 			$D->token = $this->token()->get_value();
+			$D->plugins_disabled = !empty($C->PLUGINS_DISABLED);
 
 			$this->tpl->layout->useBlock('plugins/local');
 			$this->tpl->layout->block->save( 'main_content' );

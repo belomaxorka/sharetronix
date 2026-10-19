@@ -100,7 +100,7 @@ Failed database queries, failed e-mail deliveries, unreachable cache servers, fa
 
 A plugin is a folder in `apps/` with a `manifest.json`, whose `plugin_name` is the folder name, and a `plugin.php` that defines a class of that name. To add one, copy its folder to `apps/`, open **Administration → Plugins**, and install it. Installing first shows what the plugin's `installer.php` will change in the database, if it has one, and asks for confirmation. An installed plugin can be disabled and enabled again without losing its data. Uninstalling undoes its database changes and leaves its files in `apps/`; delete them by hand.
 
-A plugin that cannot be loaded, for example because its code does not run on the server's PHP version or its folder is missing, is skipped and reported in the PHP error log; the Plugins page shows it as not loaded.
+A plugin that cannot be loaded, for example because its code does not run on the server's PHP version or its folder is missing, is skipped and reported in the PHP error log; the Plugins page shows it as not loaded. So is an event handler that fails with an error. If a plugin still breaks every page, for example because it runs out of memory, add `$C->PLUGINS_DISABLED = TRUE;` to `system/conf_main.php`: no plugin runs, and the Plugins page can still uninstall it. Remove the line afterwards.
 
 A theme is a folder in `themes/` with a `manifest.json`. Copy it there and select it in **Administration → Themes**; to remove a theme, select another one and delete its folder.
 

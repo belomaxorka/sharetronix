@@ -501,6 +501,7 @@
 		'admin_plugins_enabled_msg'	=> 'The plugin was enabled',
 		'admin_plugins_disabled_msg'	=> 'The plugin was disabled',
 		'admin_plugins_expired'	=> 'The form has expired. Please try again.',
+		'admin_plugins_disabled_conf'	=> 'No plugin runs: system/conf_main.php sets $C->PLUGINS_DISABLED = TRUE. Plugins can still be uninstalled here; remove that line to run them again.',
 		'admin_themes_intro' => 'A theme is a folder in themes/ with a manifest.json. Copy the folder of a theme there and select it below; to remove a theme, select another one and delete its folder.',
 		'admin_themes_email_txt' => 'e-mail',
 		'admin_themes_more_txt' => '...more',

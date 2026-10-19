@@ -459,6 +459,9 @@
 	  visitor is asked to try again later, and a line starting with "Sharetronix captcha:" is
 	  logged. The visitor's IP address is not sent to the service. New installations get these
 	  settings in system/conf_main.php; existing configurations do not need them.
+	* $C->PLUGINS_DISABLED = TRUE in system/conf_main.php runs no plugin at all, for a plugin that
+	  breaks every page in a way that cannot be caught, such as running out of memory. The Plugins
+	  page says so and can still uninstall plugins.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party
