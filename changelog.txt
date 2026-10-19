@@ -291,6 +291,12 @@
 	  out, and the notifications page does not use it. A plugin that still refers to the class now
 	  gets a "class not found" error; since the class never produced any output, such calls can
 	  simply be removed.
+	* Removed the remains of the OAuth 1.0 API provider of 2.x, whose class 3.0.1 had already
+	  removed: the /oauth/ pages (request_token, authorize, authenticate, access_token), the OAuth
+	  branch of every API resource and the cron job that cleaned OAuth request tokens. Since 3.0.1
+	  they ended in fatal errors. An OAuth-signed API request is now answered like any request
+	  without credentials (401), and an /oauth/ address like any unknown address. Basic
+	  authentication is unchanged; "Sign in with Twitter" is a separate feature and stays.
 
 Sharetronix 3.6.2
 	* Bug fixes

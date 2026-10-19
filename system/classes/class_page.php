@@ -157,11 +157,8 @@
 				$this->request[]	= 'home';
 				return;
 			}
-			if( $request[0] == 'oauth' || $request[0] === '1' ) {
+			if( $request[0] === '1' ) {
 				$this->controllers	= $GLOBALS['C']->INCPATH.'controllers/api/';
-				if( $request[0] == 'oauth' ) {
-					$this->controllers	.= 'oauth/';
-				}
 				unset($request[0]);
 				foreach($request as &$v) {
 					if( preg_match('/\.(xml|json|rss|atom)$/iu', $v, $m) ) {

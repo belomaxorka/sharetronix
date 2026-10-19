@@ -17,7 +17,6 @@
 	$api_session->resource_option 	= isset($uri[1])? $uri[1]:false;
 	unset($uri);
 	
-	$api_session->oauth_status 		= false;
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('create', 'destroy', 'exists', 'blocking');

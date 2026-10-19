@@ -1,37 +1,4 @@
 <?php
-	function prepare_header()
-	{
-		if( !function_exists('apache_request_headers') ) {
-			return false;
-		}
-		$raw_header = apache_request_headers();
-
-		if(isset($raw_header['Authorization']) && preg_match('/OAuth/iu', $raw_header['Authorization']))
-		{
-			$raw_header = explode(',', $raw_header['Authorization']);
-
-			foreach($raw_header as $k=>$v)
-			{
-				$raw_header[$k] = preg_replace('/"/', '', $raw_header[$k]);	
-				$raw_header[$k] = explode('=', $raw_header[$k]);
-				$ready_header[strtolower(trim($raw_header[$k][0]))] = $raw_header[$k][1]; 
-			}
-			unset($raw_header);
-			
-			return $ready_header;
-		}else return false;
-	}
-	function prepare_request()
-	{
-		if($_SERVER['REQUEST_METHOD'] != 'GET' && $_SERVER['REQUEST_METHOD'] != 'POST' && $_SERVER['REQUEST_METHOD'] != 'DELETE'){
-			return false;
-		}
-		if(isset($_REQUEST['oauth_consumer_key'])){
-			return $_REQUEST;
-		}
-		
-		return false;
-	}	
 	function check_if_basic_auth()
 	{
 		if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) return array(trim($_SERVER['PHP_AUTH_USER']), trim($_SERVER['PHP_AUTH_PW']));

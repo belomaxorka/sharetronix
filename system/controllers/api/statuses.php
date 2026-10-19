@@ -1,6 +1,5 @@
 <?php
 	require_once( $C->INCPATH.'helpers/func_api.php' );
-	//require_once( $C->INCPATH.'classes/class_oauth.php' );
 	require_once( $C->INCPATH.'classes/class_twitterdata.php' );
 	
 	$api_session = new stdClass;
@@ -34,7 +33,6 @@
 	
 	$api_session->not_in_groups		= '';
 	$api_session->without_users 		= '';
-	$api_session->oauth_status 		= false;
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('public_timeline', 'user_timeline', 'mentions', 'update', 'destroy', 'friends', 'followers', 'friends_timeline', 'home_timeline', 
@@ -43,43 +41,7 @@
 	$api_session->oauth_error 		= '';
 
 	
-	if( ($auth = prepare_request()) || ($auth = prepare_header()) )
-	{
-		if(isset($auth['oauth_version']) && $auth['oauth_version'] != '1.0') $api_session->oauth_error = 'Not supported OAuth version';
-		elseif(isset($auth['oauth_consumer_key'], $auth['oauth_nonce'], $auth['oauth_token'],$auth['oauth_signature_method'], $auth['oauth_signature'], $auth['oauth_timestamp']))
-		{
-			$ares = ($api_session->resource_option)? ('/'.$api_session->resource_option):'';
-			$oauth_client = new OAuth($auth['oauth_consumer_key'], $auth['oauth_nonce'], $auth['oauth_token'], $auth['oauth_timestamp'], $auth['oauth_signature']);	
-			$oauth_client->set_variable('stage_url', $C->SITE_URL.'1/statuses/'.$api_session->resource.$ares.'.'.$api_session->format);
-			if(isset($auth['oauth_version'])) $oauth_client->set_variable('version', '1.0');
-			
-			if($oauth_client->is_valid_get_resource_request()){
-				if($auth['oauth_signature_method'] != 'HMAC-SHA1'){ 
-					$api_session->oauth_error = 'Unsupported signature method'; 
-				}elseif(!$oauth_client->decrypt_hmac_sha1()){ 
-					$api_session->oauth_error = 'Invalid signature'; 
-				}else{
-					//success
-					$id = $oauth_client->get_user_id(urldecode($auth['oauth_token']));
-					$u = $this->network->get_user_by_id($id);
-					if($u){
-						$api_session->oauth_status 		= true;
-						$user->is_logged 				= true;
-						$user->id 					= $id;
-						$user->info 				= new stdClass;
-						$user->info->id 				= $id;
-						$user->info->is_network_admin 	= $u->is_network_admin;
-						$user->info->is_posts_protected 	= $u->is_posts_protected;
-						$user->info->username 			= $u->username;
-						$user->info->fullname 			= $u->fullname;
-						$user->info->network_id 		= $u->network_id;
-					}
-					unset($id, $u);
-					//success
-				}
-			}$api_session->oauth_error =  $oauth_client->get_variable('error_msg');		
-		}else $api_session->oauth_error = 'Missing OAuth parameters';	
-	}elseif( $auth = check_if_basic_auth() ) 
+	if( $auth = check_if_basic_auth() ) 
 	{
    		$this->db2->query('SELECT id FROM users WHERE (email="'.$this->db2->e($auth[0]).'" OR username="'.$this->db2->e($auth[0]).'") AND password="'.md5($auth[1]).'" AND active=1 LIMIT 1');
    		
@@ -128,8 +90,7 @@
 		}
 		
 
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;	
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;	
 		
 		if(!$api_session->rate_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -197,8 +158,7 @@
 			exit;
 		}
 
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 
 		if(!$api_session->rate_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -273,14 +233,13 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 				else echo generate_error($api_session->format, 'This method requires a GET.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif(!$api_session->oauth_status && !$api_session->bauth_status){
+		}elseif(!$api_session->bauth_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
 				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 			
 		if(!$api_session->rate_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -358,21 +317,13 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 				else echo generate_error($api_session->format, 'This method requires a POST.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif(!$api_session->oauth_status && !$api_session->bauth_status){
+		}elseif(!$api_session->bauth_status){
 			if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
 				else echo generate_error($api_session->format, 'OAuth otorization problem:'.$api_session->oauth_error, $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
-		if($api_session->oauth_status){
-			$app_id = $oauth_client->get_value_in_consumer_key('app_id');
-			
-			if(!$oauth_client->check_access_type('rw')){
-				if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 403 Forbidden');
-					else echo generate_error($api_session->format, 'You have no permission for this action.', $_SERVER['REQUEST_URI'], $api_session->callback);
-				exit;
-			}	
-		}elseif($api_session->bauth_status){
+		if($api_session->bauth_status){
 			if(isset($_POST['source'])) $app_id = detect_app($_POST['source']);
 			else $app_id = detect_app(); 
 			
@@ -563,7 +514,7 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 				else echo generate_error('xml', 'This method requires a POST or a DELETE.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif(!$api_session->oauth_status && !$api_session->bauth_status){
+		}elseif(!$api_session->bauth_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
 				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
@@ -571,12 +522,6 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 403 Forbidden');
 				else echo generate_error($api_session->format, 'Incorrect status id.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif($api_session->oauth_status){
-			if(!$oauth_client->check_access_type('rw')){
-				if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 403 Forbidden');
-					else echo generate_error($api_session->format, 'You have no permission for this action.', $_SERVER['REQUEST_URI'], $api_session->callback);
-				exit;
-			}
 		}
 
 		$post_type = ($api_session->resource == 'destroy')? 'public':'private';
@@ -631,8 +576,7 @@
 			exit;
 		}
 		
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 		
 		if(!$api_session->rate_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -697,14 +641,13 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 				else echo generate_error($api_session->format, 'This method requires a POST or a GET.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif(!$api_session->oauth_status && !$api_session->bauth_status){
+		}elseif(!$api_session->bauth_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
 				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 		
 		if(!$api_session->rate_status){
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -801,8 +744,7 @@
 			exit;
 		}
 		
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 		
 		if(!$api_session->rate_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -848,14 +790,13 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 				else echo generate_error('xml', 'This method requires a GET.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif(!$api_session->oauth_status && !$api_session->bauth_status){
+		}elseif(!$api_session->bauth_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
 				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
 		}
 		
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 		
 		if(!$api_session->rate_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
@@ -916,7 +857,7 @@
 			if(!isset($_REQUEST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
 				else echo generate_error('xml', 'Invalid request method or requested data format.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
-		}elseif(!$api_session->oauth_status && !$api_session->bauth_status){
+		}elseif(!$api_session->bauth_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 401 Unauthorized');
 				else echo generate_error($api_session->format, 'OAuth otorization problem.', $_SERVER['REQUEST_URI'], $api_session->callback);
 			exit;
@@ -928,8 +869,7 @@
 			exit;	
 		}
 		
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 		
 		if(!$api_session->rate_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');

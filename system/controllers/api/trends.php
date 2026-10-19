@@ -1,6 +1,5 @@
 <?php
 	require_once( $C->INCPATH.'helpers/func_api.php' );
-	//require_once( $C->INCPATH.'classes/class_oauth.php' );
 	require_once( $C->INCPATH.'classes/class_twitterdata.php' );
 
 	$api_session = new stdClass;	
@@ -31,7 +30,6 @@
 	unset($uri);
 	
 	$api_session->not_in_groups		= '';
-	$api_session->oauth_status 		= false;
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('top10', 'current', 'daily', 'weekly', 'location', 'available');

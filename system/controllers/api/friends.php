@@ -1,7 +1,6 @@
 <?php
 
 	require_once( $C->INCPATH.'helpers/func_api.php' );
-	//require_once( $C->INCPATH.'classes/class_oauth.php' );
 	require_once( $C->INCPATH.'classes/class_twitterdata.php' );
 	
 	$api_session = new stdClass;
@@ -32,50 +31,12 @@
 	unset($uri);
 	
 	$api_session->not_in_groups		= '';
-	$api_session->oauth_status 		= false;
 	$api_session->rate_status 		= false;
 	$api_session->bauth_status 		= false;
 	$api_session->available_resources 	= array('ids');
 	$api_session->oauth_error 		= '';
 	
-	if( ($auth = prepare_request()) || ($auth = prepare_header()) )
-	{
-		if(isset($auth['oauth_version']) && $auth['oauth_version'] != '1.0') $api_session->oauth_error = 'Not supported OAuth version';
-		elseif(isset($auth['oauth_consumer_key'], $auth['oauth_nonce'], $auth['oauth_token'],$auth['oauth_signature_method'], $auth['oauth_signature'], $auth['oauth_timestamp']))
-		{
-			$ares = (isset($api_session->resource_option))? ('/'.$api_session->resource_option):'';
-			$resource = (isset($api_session->resource))? ('favorites/'.$api_session->resource.$ares):'favorites';
-
-			$oauth_client = new OAuth($auth['oauth_consumer_key'], $auth['oauth_nonce'], $auth['oauth_token'], $auth['oauth_timestamp'], $auth['oauth_signature']);
-				
-			$oauth_client->set_variable('stage_url', $C->SITE_URL.'1/'.$resource.'.'.$api_session->format);
-			if(isset($auth['oauth_version'])) $oauth_client->set_variable('version', '1.0');
-			
-			if($oauth_client->is_valid_get_resource_request())
-			{
-				if($auth['oauth_signature_method'] != 'HMAC-SHA1'){ $api_session->oauth_error = 'Unsupported signature method'; }
-				elseif(!$oauth_client->decrypt_hmac_sha1()){ $api_session->oauth_error = 'Invalid signature'; }	
-				else{
-					//success
-					$id = $oauth_client->get_user_id(urldecode($auth['oauth_token']));
-					$u = $this->network->get_user_by_id($id);
-					if($u){
-						$api_session->oauth_status 		= true;
-						$user->is_logged 				= true;
-						$user->id 					= $id;
-						$user->info 				= new stdClass;
-						$user->info->id 				= $id;
-						$user->info->is_network_admin 	= $u->is_network_admin;
-						$user->info->is_posts_protected 	= $u->is_posts_protected;
-						$user->info->username 			= $u->username;
-						$user->info->network_id 		= $u->network_id;
-					}
-					unset($id, $u);
-					//success
-				}
-			}$api_session->oauth_error =  $oauth_client->get_variable('error_msg');		
-		}else $api_session->oauth_error = 'Missing OAuth parameters';
-	}elseif( $auth = check_if_basic_auth() ) 
+	if( $auth = check_if_basic_auth() ) 
 	{
 		$this->db2->query('SELECT id FROM users WHERE (email="'.$this->db2->e($auth[0]).'" OR username="'.$this->db2->e($auth[0]).'") AND password="'.md5($auth[1]).'" AND active=1 LIMIT 1');
 		if( !$obj = $this->db2->fetch_object() ) {
@@ -122,8 +83,7 @@
 			exit;
 		}
 		
-		if($api_session->oauth_status && $oauth_client->check_rate_limits($user->id)) $api_session->rate_status = true;
-		elseif(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
+		if(check_rate_limits($_SERVER['REMOTE_ADDR'])) $api_session->rate_status = true;
 		
 		if(!$api_session->rate_status){
 			if(!isset($_GET['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
