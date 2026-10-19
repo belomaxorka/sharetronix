@@ -433,6 +433,9 @@
 	  CAPTCHA images removed every file there older than 10 minutes, including attachments that were
 	  uploaded but not yet posted. The form also no longer writes five images into the public
 	  storage/tmp/ and one session entry on every view.
+	* A plugin whose event handler failed with an error stopped the request: on an event of every
+	  page, such as onPageLoad, the whole site and the administration answered with HTTP 500. The
+	  failing handler is now skipped and reported in the PHP error log, and the request goes on.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

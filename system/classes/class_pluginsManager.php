@@ -45,7 +45,14 @@
 						continue;
 					}
 					
-					$tmp = $this->_installedPlugins[$p]->{$method}($args); 
+					// A handler that fails is skipped and logged, like a plugin that cannot be loaded; the
+					// event goes on as if that plugin did not handle it.
+					try {
+						$tmp = $this->_installedPlugins[$p]->{$method}($args);
+					} catch( Throwable $e ) {
+						error_log('Sharetronix plugin '.$p.' failed in '.$method.': '.get_class($e).': '.$e->getMessage().' in '.$e->getFile().':'.$e->getLine());
+						continue;
+					}
 					if( $tmp !== NULL ){
 						$this->_event_result[$method] = $tmp;
 					}
