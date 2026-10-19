@@ -553,6 +553,10 @@
 	  500 and a PHP fatal error ("Attempt to modify property on false"), because the services built
 	  the post for a user who was not signed in. They now answer with the usual error message;
 	  nothing was stored before either.
+	* The installer wrote the database settings into system/conf_main.php without escaping them: a
+	  database password with a quote or a trailing backslash left the file with a PHP syntax error,
+	  so the whole site answered HTTP 500 right after the installation, and a password containing $1
+	  was stored changed. The values are now escaped for PHP.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

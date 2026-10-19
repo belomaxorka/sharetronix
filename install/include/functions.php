@@ -26,9 +26,11 @@
 	{
 		$pattern	= '/('.preg_quote($variable).'\s*\=\s*)\'([^\\\']*)(\'\s*)/su';
 		if( $keep_quots ) {
-			return preg_replace($pattern, '${1}\''.$value.'\'${2}', $source);
+			// The value goes into a single-quoted PHP string, where only \ and ' are special.
+			$value	= '\''.addcslashes($value, '\\\'').'\'';
 		}
-		return preg_replace($pattern, '${1}'.$value.'${2}', $source);
+		// A callback, so that $1 or \1 in the value (a password, for example) is not a back-reference.
+		return preg_replace_callback($pattern, function($m) use ($value) { return $m[1].$value.$m[2]; }, $source);
 	}
 	
 	function get_old_version()
