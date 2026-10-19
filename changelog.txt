@@ -656,6 +656,11 @@
 	  0600, so the web server could not read them; among them the flag that tells /cron that the
 	  worker runs, so a request to /cron ran the jobs as well. Entries written by root now belong to
 	  the owner and group of the cache folder.
+	* Every file under themes/ answered HTTP 500 on servers that run PHP through FastCGI or PHP-FPM,
+	  because themes/.htaccess set php_flag, which only mod_php knows: the previews in the theme
+	  administration and the images, styles and scripts of themes that keep them in their folder did
+	  not load. The directive is commented out, as in storage/ and static/, and direct requests for
+	  scripts there are denied instead.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

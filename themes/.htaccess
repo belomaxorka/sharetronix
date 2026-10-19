@@ -24,7 +24,21 @@ FileETag INode MTime Size
 	</IfModule>
 </IfModule>
 
-php_flag engine off 
+#php_flag engine off 
 AddType text/plain .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi .htm .html
 RemoveHandler .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi .htm .html
 RemoveType .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi .htm .html
+
+# Deny direct execution of scripts regardless of handler: with PHP-FPM the handler of the virtual host runs
+# them in spite of RemoveHandler. The templates here are included by the application, never requested.
+<IfModule mod_authz_core.c>
+	<FilesMatch "\.(php[0-9]?|phps|pht|phtm|phtml|phar|pl|py|jsp|asp|aspx|shtml|sh|cgi)$">
+		Require all denied
+	</FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+	<FilesMatch "\.(php[0-9]?|phps|pht|phtm|phtml|phar|pl|py|jsp|asp|aspx|shtml|sh|cgi)$">
+		Order allow,deny
+		Deny from all
+	</FilesMatch>
+</IfModule>
