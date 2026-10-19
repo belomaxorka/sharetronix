@@ -742,6 +742,9 @@
 	  the look of the mobile sign-in page, which now links to sign-up and password recovery. In
 	  3.x phones were offered only the sign-in form: every other guest address showed it again, so
 	  nobody could join or reset a password from a phone.
+	* The installer's requirements page warns when the pdo_mysql extension is not loaded: the
+	  installation goes on, but plugins that have database tables cannot be installed until PHP
+	  loads it.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party

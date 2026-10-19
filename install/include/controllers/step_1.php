@@ -35,6 +35,7 @@
 				'php_short_open_tag_on'	=> 'PHP: "short_open_tag" directive should be On',
 				'php_gd'				=> 'PHP: gd extension required',
 				'php_mbstring'			=> 'PHP: mbstring extension required',
+				'php_pdo_mysql'			=> 'PHP: pdo_mysql extension needed to install plugins that have database tables',
 		);
 		
 		$D->check	= array (
@@ -45,6 +46,7 @@
 				'php_short_open_tag_on'	=> FALSE,
 				'php_gd'				=> FALSE,
 				'php_mbstring'			=> FALSE,
+				'php_pdo_mysql'			=> TRUE,
 		);
 		
 		
@@ -69,6 +71,11 @@
 		
 		if( extension_loaded('mbstring') ) {
 			$D->check['php_mbstring']	= TRUE;
+		}
+		
+		// A warning, not a requirement: only the installer of a plugin with database tables needs it.
+		if( !extension_loaded('pdo_mysql') ) {
+			$D->warnings['php_pdo_mysql']	= 'The pdo_mysql extension is not loaded. Plugins that have database tables cannot be installed until PHP loads it (see the requirements in README.md).';
 		}
 		
 		if( function_exists('curl_init') ) {
