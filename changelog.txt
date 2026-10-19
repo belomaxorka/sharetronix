@@ -769,6 +769,14 @@
 	* Removed static/templates/system/blocks/email/signinforg_txt.php and signinforg_html.php, the
 	  old copies of the password recovery e-mail that nothing uses since the e-mail is made from
 	  static/templates/email/; the updater deletes them.
+	* Removed sign-up and sign-in through Facebook and Twitter. The Facebook registration plugin
+	  they used no longer exists (facebook.com/plugins/registration answers 404), so the Facebook
+	  button led to a form that never loaded, and Twitter sign-in needs the paid X API v1.1 and ran
+	  with TLS certificate checks turned off. The buttons, system/libraries/twitter/,
+	  system/classes/class_twitter_module.php, the button images and styles, and the Facebook,
+	  Twitter and unused Yahoo settings of the configuration template are gone; the updater deletes
+	  the files. Members who signed up that way sign in with their password. The facebook_uid and
+	  twitter_uid columns stay.
 
 Sharetronix 3.6.2
 	* Bug fixes

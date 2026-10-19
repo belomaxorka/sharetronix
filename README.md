@@ -179,9 +179,11 @@ New accounts no longer take their picture from Gravatar during sign-up; they sta
 
 The StopForumSpam check at sign-up no longer refuses addresses whose reports are old (see [Spam checks](#spam-checks)). To refuse every address that has ever been reported, as 3.6.2 did for IP addresses, set `$C->STOPFORUMSPAM_MIN_CONFIDENCE = 0;` in `system/conf_main.php`.
 
+Sign-up and sign-in through Facebook and Twitter have been removed: Facebook shut down the registration plugin they relied on, and Twitter sign-in needs the paid X API. The updater deletes `system/libraries/twitter/`, `system/classes/class_twitter_module.php`, and the button images. Members who signed up that way set a password at sign-up and sign in with it like everyone else; password recovery works for them too. `$C->FACEBOOK_API_KEY`, `$C->FACEBOOK_API_ID`, `$C->FACEBOOK_API_SECRET`, `$C->TWITTER_CONSUMER_KEY`, `$C->TWITTER_CONSUMER_SECRET`, `$C->YAHOO_CONSUMER_KEY`, and `$C->YAHOO_CONSUMER_SECRET` in `system/conf_main.php` are ignored and can be removed. The `facebook_uid` and `twitter_uid` columns of the `users` table are kept.
+
 ## Known limitations
 
-- Sign-in through Twitter and Facebook and other integrations with retired third-party services are untested and may not work.
+- Video embedding (`system/conf_embed.php`) still uses Flash players, which current browsers no longer run, so embedded videos do not play; some of its services (Vine, MySpace video, Revver) have closed.
 - The mobile version has no settings, administration, search, or invitation pages; on a phone their addresses show the mobile home page. The browser's desktop-site mode reaches them.
 - On PHP 8.1 and later, dates use English month and day names regardless of the language pack ([#9](https://github.com/belomaxorka/sharetronix/issues/9)).
 

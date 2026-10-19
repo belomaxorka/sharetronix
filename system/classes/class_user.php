@@ -173,7 +173,6 @@
 			$this->id	= FALSE;
 			$this->info	= new stdClass;
 			$this->is_logged	= FALSE;
-			$_SESSION['TWITTER_CONNECTED']	= FALSE;
 		}
 		
 		public function follow($whom_id, $how=TRUE)
@@ -431,22 +430,6 @@
 			}
 			
 			return self::$_user_ident;
-		}
-		
-		public function get_user_by_twitter_uid($uid)
-		{
-			// Accounts without a linked Twitter id store an empty twitter_uid; never match those.
-			$uid	= is_scalar($uid)? trim((string) $uid) : '';
-			if( ! preg_match('/^[0-9]+$/', $uid) ) {
-				return FALSE;
-			}
-			$r	= $this->db2->query('SELECT * FROM users WHERE twitter_uid="'.$this->db2->e($uid).'" LIMIT 1', FALSE);
-				
-			if($o = $this->db2->fetch_object($r)) {
-				return $o;
-			}
-			
-			return FALSE;
 		}
 		
 		public function get_admin_users()

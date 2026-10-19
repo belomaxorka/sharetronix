@@ -28,18 +28,6 @@
 			<a href="<?= $C->SITE_URL ?>signin/forgotten"><?= $this->page->lang('signin_form_forgotten'); ?></a>
 			<a href="<?= $C->SITE_URL ?>signup"><?= $this->page->lang('signin_reg_title') . $this->page->lang('signin_reg_button'); ?></a>
 		</div>
-		
-		<?php if((!empty($C->FACEBOOK_API_ID) && (!empty($C->FACEBOOK_API_SECRET))) || (!empty($C->TWITTER_CONSUMER_SECRET) && (!empty($C->TWITTER_CONSUMER_KEY))) ): ?>
-		<div class="links">
-			<?php if(!empty($C->FACEBOOK_API_ID) && (!empty($C->FACEBOOK_API_SECRET))): ?>
-			<a href="<?= $C->SITE_URL ?>signup/using:facebook" class="facebook-button"></a>
-			<?php endif; ?>
-			
-			<?php if(!empty($C->TWITTER_CONSUMER_SECRET) && (!empty($C->TWITTER_CONSUMER_KEY))): ?>
-			<a href="<?= $C->SITE_URL ?>signup/using:twitter" class="twitter-button"></a>
-			<?php endif; ?>
-		</div>
-		<?php endif; ?>
 
 	</form>
 </div>

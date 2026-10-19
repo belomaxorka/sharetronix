@@ -32,22 +32,8 @@
 	$submit = FALSE;
 	$errmsg = '';
 	$is_email_confirmed = $C->USERS_EMAIL_CONFIRMATION? isEmailConfirmed($reg_id, $reg_key) : FALSE;
-	$place_facebook_get_data_tab = FALSE;
 
 	$captcha = new captcha('signup');
-	
-	if( check_if_use_facebook( $is_email_confirmed ) ){
-		$place_facebook_get_data_tab = TRUE;
-	}elseif( check_if_use_twitter( $is_email_confirmed ) ){
-		$twitter = new twitter_module();
-		
-		if (!$twitter->is_logged_in() || !isset($_REQUEST['oauth_verifier'])) {
-			$this->redirect($twitter->get_login_url());
-		} 
-	}
-	
-	check_if_facebook_called(); //check if Facebook has sent some data to us for registration
-	check_if_twitter_called(); //check if Twitter has sent some data to us for registration
 	
 	$email 		= isset($_POST['email'])?( strtolower(trim($_POST['email'])) ):'';
 	$fullname 	= isset($_POST['fullname'])?(htmlspecialchars(trim($_POST['fullname']))):'';
@@ -93,9 +79,8 @@
 				$reg_key	= md5(rand().time().rand());
 				$db1->query('REPLACE INTO unconfirmed_registrations SET email="'.$db1->e($email).'", confirm_key="'.$db1->e($reg_key).'", date="'.time().'" ');
 				$reg_id		= intval($db1->insert_id());
-				$using_reg_provider = ($this->param('using')? '/using:'.$this->param('using') : '');
 				// The address without the mobile prefix: a phone opens it as a mobile page anyway.
-				$activation_link	= $C->OUTSIDE_SITE_URL.'signup/regid:'.$reg_id.'/regkey:'.$reg_key.$using_reg_provider;
+				$activation_link	= $C->OUTSIDE_SITE_URL.'signup/regid:'.$reg_id.'/regkey:'.$reg_key;
 				$D->activation_link = $activation_link;
 				$subject	= $this->lang('signup_email_subject', array('#SITE_TITLE#'=>$C->SITE_TITLE));
 
@@ -230,10 +215,8 @@
 				$tmppass	= md5($password);
 				$lastlogin_ip = ip2long($_SERVER['REMOTE_ADDR']);
 				$lastlogin_date = time();
-				$is_fb_used = (isset($_POST['fb_user_id'])? 'facebook_uid="'.$db2->e($_POST['fb_user_id']).'", ' : '');
-				$is_tw_used = (isset($_POST['tw_user_id'])? 'twitter_uid="'.$db2->e($_POST['tw_user_id']).'", ' : '');
 				
-				$db2->query('INSERT INTO users SET '.$is_fb_used.$is_tw_used.' email="'.$db2->e($email).'", username="'.$db2->e($username).'", password="'.$db2->e($tmppass).'", fullname="'.$db2->e($fullname).'", language="'.$tmplang.'", timezone="'.$tmpzone.'", reg_date="'.$lastlogin_date.'", reg_ip="'.$lastlogin_ip.'", lastlogin_date="'.$lastlogin_date.'", lastlogin_ip="'.$lastlogin_ip.'", active=1');				
+				$db2->query('INSERT INTO users SET email="'.$db2->e($email).'", username="'.$db2->e($username).'", password="'.$db2->e($tmppass).'", fullname="'.$db2->e($fullname).'", language="'.$tmplang.'", timezone="'.$tmpzone.'", reg_date="'.$lastlogin_date.'", reg_ip="'.$lastlogin_ip.'", lastlogin_date="'.$lastlogin_date.'", lastlogin_ip="'.$lastlogin_ip.'", active=1');				
 				$user_id	= (int) $db2->insert_id();
 				$db1->query('DELETE FROM unconfirmed_registrations WHERE email="'.$db1->e($email).'" ');
 				$this->user->login($email, md5($password), FALSE);
@@ -308,46 +291,30 @@
 			$email = '';
 		}
 		
-		if( $place_facebook_get_data_tab ){
-			$tpl->layout->setVar('main_content_placeholder',
-				'
-				<div style="margin: 10px 0 10px 0;">
-				<div id="fb-root"></div>
-				<script src="https://connect.facebook.net/en_US/all.js#appId='.$C->FACEBOOK_API_ID.'&xfbml=1"></script>
+		$tpl->layout->useBlock('registration');
 		
-				<fb:registration
-				fields="name,email"
-						redirect-uri="'.$C->SITE_URL .'signup'.($reg_id? '/regid:'.$reg_id : '').($reg_key? '/regkey:'.$reg_key : '').'"
-						width="530">
-						</fb:registration>
-				</div>
-				');
-		}else{	
-			$tpl->layout->useBlock('registration');
-			
-			$tpl->layout->block->setVar('registration_fullname', 	(!empty($fullname)? $fullname : '') );
-			$tpl->layout->block->setVar('registration_email', 		(!empty($email)? $email : '') );
-			$tpl->layout->block->setVar('registration_password', 	(!empty($password)? $password : '') );
-			$tpl->layout->block->setVar('registration_password2', 	(!empty($password2)? $password2 : '') );
-			$tpl->layout->block->setVar('registration_username', 	(!empty($username)? $username : '') );
-			$captcha->set_template_vars($tpl->layout->block);
-			
-			$tpl->layout->block->setVar('autofocus','');
-			if(isset($wrong_captcha)){
-				$tpl->layout->block->setVar('autofocus','data-status="focus"');
-			}
-			
-			if( $terms_of_use ) {
-				$tpl->layout->block->setVar('registration_terms_of_use',
-							
-						'<div class="captcha-image">
-						<label for="accept_terms">'. $this->lang('signup_step2_form_terms',array('#SITE_TITLE#'=>$C->SITE_TITLE,'#A2#'=>'</a>','#A1#'=>'<a href="'.$C->SITE_URL.'terms" target="_blank">')) .'</label>
-									<input type="checkbox" id="accept_terms" name="accept_terms" value="1" ' .(($accept_terms)?"checked=\'checked\'":"") . ' />
-								</div>'
-				);
-			}
-			$tpl->layout->block->save( 'main_content');
+		$tpl->layout->block->setVar('registration_fullname', 	(!empty($fullname)? $fullname : '') );
+		$tpl->layout->block->setVar('registration_email', 		(!empty($email)? $email : '') );
+		$tpl->layout->block->setVar('registration_password', 	(!empty($password)? $password : '') );
+		$tpl->layout->block->setVar('registration_password2', 	(!empty($password2)? $password2 : '') );
+		$tpl->layout->block->setVar('registration_username', 	(!empty($username)? $username : '') );
+		$captcha->set_template_vars($tpl->layout->block);
+		
+		$tpl->layout->block->setVar('autofocus','');
+		if(isset($wrong_captcha)){
+			$tpl->layout->block->setVar('autofocus','data-status="focus"');
 		}
+		
+		if( $terms_of_use ) {
+			$tpl->layout->block->setVar('registration_terms_of_use',
+						
+					'<div class="captcha-image">
+					<label for="accept_terms">'. $this->lang('signup_step2_form_terms',array('#SITE_TITLE#'=>$C->SITE_TITLE,'#A2#'=>'</a>','#A1#'=>'<a href="'.$C->SITE_URL.'terms" target="_blank">')) .'</label>
+								<input type="checkbox" id="accept_terms" name="accept_terms" value="1" ' .(($accept_terms)?"checked=\'checked\'":"") . ' />
+							</div>'
+			);
+		}
+		$tpl->layout->block->save( 'main_content');
 		
 		
 		

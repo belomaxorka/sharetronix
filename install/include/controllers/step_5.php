@@ -93,13 +93,6 @@
 				$config	= config_replace_variable( $config,	'$C->USERS_ARE_SUBDOMAINS',		'FALSE', FALSE );
 				$config	= config_replace_variable( $config,	'$C->RPC_PINGS_ON',		'TRUE', FALSE );
 				$config	= config_replace_variable( $config,	'$C->RPC_PINGS_SERVERS',	'array(\'http://rpc.pingomatic.com\')', FALSE );
-				$config	= config_replace_variable( $config,	'$C->FACEBOOK_API_KEY',			''	 );
-				$config	= config_replace_variable( $config,	'$C->FACEBOOK_API_ID',			''	 );
-				$config	= config_replace_variable( $config,	'$C->FACEBOOK_API_SECRET',		''	 );
-				$config	= config_replace_variable( $config,	'$C->TWITTER_CONSUMER_KEY',		''	 );
-				$config	= config_replace_variable( $config,	'$C->TWITTER_CONSUMER_SECRET',	''	 );
-				$config	= config_replace_variable( $config,	'$C->YAHOO_CONSUMER_KEY',		''	 );
-				$config	= config_replace_variable( $config,	'$C->YAHOO_CONSUMER_SECRET',	''	 );
 				$config	= config_replace_variable( $config,	'$C->CRONJOB_IS_INSTALLED',			'FALSE', FALSE );
 				$config	= config_replace_variable( $config,	'$C->INSTALLED',			'TRUE', FALSE );
 				$config	= config_replace_variable( $config,	'$C->VERSION',			$C->VERSION );

@@ -67,21 +67,8 @@
 		$C->RPC_PINGS_SERVERS	= '';
 	// 
 	
-	// TWITTER & FACEBOOK CONNECT SETTINGS
+	// CAPTCHA SETTINGS
 	//
-		// To activate Facebook Connect, check out the README.txt file
-		$C->FACEBOOK_API_KEY		= '';
-		$C->FACEBOOK_API_ID		= '';
-		$C->FACEBOOK_API_SECRET		= '';
-		
-		// To activate Twitter OAuth login, check out the README.txt file
-		$C->TWITTER_CONSUMER_KEY	= '';
-		$C->TWITTER_CONSUMER_SECRET	= '';
-		
-		// For inviting Yahoo contacts. Check out the README.txt file
-		$C->YAHOO_CONSUMER_KEY		= '';
-		$C->YAHOO_CONSUMER_SECRET	= '';
-		
 		// CAPTCHA of the sign-up, password recovery and contact forms: 'image' (built in) or an
 		// external service: 'recaptcha2', 'recaptcha3', 'turnstile', 'hcaptcha', 'yandex'. A service
 		// needs its site key and secret key; reCAPTCHA v3 also uses the minimum score. See README.md.

@@ -1242,8 +1242,6 @@ position: absolute;
 .login-form .checkbox-links a {margin:0 0 0 10px;}
 .page-popup .content {padding:20px;}
 
-.login-form .facebook-button {background:url(../images/facebook-connect.gif) no-repeat; width: 107px; height: 25px; display: block; float: left;}
-.login-form .twitter-button {background:url(../images/twitter-connect.gif) no-repeat; width: 107px; height: 25px; display: block; float: right;}
 .login-form .login-box{float: left; margin-left: 20px;}
 
 .login-form .default label {width:auto;}
