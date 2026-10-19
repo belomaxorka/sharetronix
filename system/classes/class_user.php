@@ -302,6 +302,8 @@
 			$this->network->get_group_members($group_id, TRUE);
 			$this->network->get_user_follows($this->id, TRUE);
 			$this->network->get_user_follows($this->id, TRUE, 'hisgroups');
+			// leaving deletes the member's row in groups_admins
+			$this->network->user_admin_group_ids($this->id, TRUE);
 			
 			return TRUE;
 		}

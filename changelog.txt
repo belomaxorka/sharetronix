@@ -122,6 +122,10 @@
 	  rights included, and private groups admitted the members of the other site's group with the
 	  same number. The keys now also contain the database host and name. All memcached and Redis
 	  entries are created again once after the update.
+	* A member who left a group kept the administrator rights they had in it, such as deleting other
+	  members' posts there, until the cache expired, and so did the administrators of a deleted
+	  group; the creator of a new group got these rights only after the cache expired. The cached
+	  rights are now refreshed in these cases.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

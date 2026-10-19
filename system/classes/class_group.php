@@ -159,6 +159,11 @@
 				$p->delete_this_post(FALSE);
 			}
 			$f	= array_keys($this->network->get_group_members($this->group->id));
+			$admins	= array();
+			$r	= $this->db2->query('SELECT user_id FROM groups_admins WHERE group_id="'.$this->group->id.'" ');
+			while($obj = $this->db2->fetch_object($r)) {
+				$admins[]	= intval($obj->user_id);
+			}
 			$this->db2->query('DELETE FROM group_notifications WHERE to_group_id="'.$this->group->id.'" ');
 			$this->db2->query('DELETE FROM notifications WHERE in_group_id="'.$this->group->id.'" ');
 			$this->db2->query('DELETE FROM groups_followed WHERE group_id="'.$this->group->id.'" ');
@@ -167,6 +172,9 @@
 			//$this->db2->query('UPDATE groups_rssfeeds SET is_deleted=1 WHERE group_id="'.$this->group->id.'" ');
 			foreach($f as $uid) {
 				$this->network->get_user_follows($uid, TRUE);
+			}
+			foreach($admins as $uid) {
+				$this->network->user_admin_group_ids($uid, TRUE);
 			}
 			$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM `groups` WHERE id="'.$this->group->id.'" LIMIT 1');
 			$this->db2->query('DELETE FROM `groups` WHERE id="'.$this->group->id.'" LIMIT 1');
@@ -475,6 +483,7 @@
 				$g	= $this->network->get_group_by_id( intval($this->db2->insert_id()) );
 					
 				$this->db2->query('INSERT INTO groups_admins SET group_id="'.$g->id.'", user_id="'.$this->user->id.'" ');
+				$this->network->user_admin_group_ids($this->user->id, TRUE);
 				if( $g->is_private ) {
 					$this->db2->query('INSERT INTO groups_private_members SET group_id="'.$g->id.'", user_id="'.$this->user->id.'", invited_by="'.$this->user->id.'", invited_date="'.time().'" ');
 				}
