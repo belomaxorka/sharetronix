@@ -359,6 +359,8 @@
 	  records in the database, reports when the community is already up to date, refuses a database
 	  that is newer than the files instead of overwriting its version, and after a failed update
 	  starts again at the first step instead of running the update by itself on the next visit.
+	* Every updater run deleted the posts without an author that 2.x used for system messages, but
+	  left their comments behind. It no longer deletes posts.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
@@ -444,6 +446,11 @@
 	  database check in the installer's version detection that could never be true, since a
 	  constructor does not return the error codes it compared with (the updater's sign-in check
 	  already stops when the database is unreachable).
+	* Updating Sharetronix 1.x and 2.x. Their database layout and upload folders differ from 3.x,
+	  and the update steps for them were broken (an invalid statement, tables used before they
+	  existed, missing columns); a 2.2.1 database ended marked as updated but with an old post_likes
+	  table. The updater now accepts Sharetronix 3.0 and later and explains why it stops for older
+	  versions.
 
 Sharetronix 3.6.2
 	* Bug fixes

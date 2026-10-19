@@ -13,9 +13,16 @@
 		return;
 	}
 	
+	// Releases before 3.0 used another database layout and stored uploads elsewhere; this
+	// updater cannot convert them.
+	if( version_compare($_SESSION['INSTALL_DATA']['OLD_VERSION'], '3.0.0', '<') ){
+		$D->error = TRUE;
+		$D->errmsg = 'Sharetronix '.htmlspecialchars($_SESSION['INSTALL_DATA']['OLD_VERSION']).' cannot be updated with this release: the updater supports Sharetronix 3.0 and later.';
+	}
+	
 	//check directories
 	$D->files = get_directories_for_update( $_SESSION['INSTALL_DATA']['OLD_VERSION'] );
-	if( $D->files === FALSE ){
+	if( !$D->error && $D->files === FALSE ){
 		$D->error = TRUE;
 		$D->errmsg = 'Could not find table describing the files needed to be updated.';
 	}

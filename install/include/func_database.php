@@ -62,19 +62,6 @@
 		return TRUE;
 	}
 	
-	function delete_all_system_posts()
-	{
-		global $db;
-
-		$res = $db->query('SELECT id FROM `posts` WHERE user_id=0 AND api_id=0');
-		while( $obj = $db->fetch_object($res) ){
-			$db->query('DELETE FROM `post_userbox` WHERE post_id="'.$obj->id.'" LIMIT 1');
-			$db->query('DELETE FROM `posts` WHERE user_id=0 AND api_id=0 AND id="'.$obj->id.'" LIMIT 1');
-		}
-		
-		return TRUE;
-	}
-	
 	function insert_system_table( $tableName ){
 		global $db;
 		
@@ -114,11 +101,10 @@
 			return FALSE;
 		}
 		
-		if( version_compare($current_version, '1.5.4', '<') ){
+		// Releases before 3.0 used another database layout and upload folders.
+		if( version_compare($current_version, '3.0.0', '<') ){
 			return FALSE;
 		}
-		
-		delete_all_system_posts();
 		
 		foreach($db_updates as $version=>$data){
 			if( version_compare($version, $current_version, '<=') ){
@@ -133,10 +119,6 @@
 			foreach( $data['queries'] as $tblInsert ){
 				$db->query($tblInsert);
 			}
-		}
-		
-		if( version_compare($current_version, '3.0.0', '<') ){
-			insert_all_system_tables();
 		}
 		
 		return TRUE;
