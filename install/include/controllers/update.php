@@ -54,7 +54,7 @@
 		$res	= update_database( $_SESSION['INSTALL_DATA']['OLD_VERSION'] );
 		if( ! $res ) {
 			$D->error	= TRUE;
-			$D->errmsg	= '{Error occured while we tried to update your community database}';
+			$D->errmsg	= !empty($D->update_error) ? htmlspecialchars($D->update_error) : '{Error occured while we tried to update your community database}';
 			$D->errtype = 2;
 		}
 	}

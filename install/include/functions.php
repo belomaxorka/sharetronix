@@ -30,7 +30,32 @@
 			$value	= '\''.addcslashes($value, '\\\'').'\'';
 		}
 		// A callback, so that $1 or \1 in the value (a password, for example) is not a back-reference.
-		return preg_replace_callback($pattern, function($m) use ($value) { return $m[1].$value.$m[2]; }, $source);
+		// The old value is replaced, not kept after the new one (the empty template values hid that).
+		return preg_replace_callback($pattern, function($m) use ($value) { return $m[1].$value; }, $source);
+	}
+	
+	// Sets $variable to the string $value in a configuration file such as system/conf_main.php: changes
+	// the existing line, or adds one after $C->DB_MYEXT. Returns FALSE when the file cannot be read or
+	// written.
+	function config_set_variable($file, $variable, $value)
+	{
+		$source	= @file_get_contents($file);
+		if( $source === FALSE ) {
+			return FALSE;
+		}
+		if( preg_match('/'.preg_quote($variable, '/').'\s*\=/', $source) ) {
+			$result	= config_replace_variable($source, $variable, $value);
+		}
+		else {
+			$eol	= strpos($source, "\r\n") !== FALSE ? "\r\n" : "\n";
+			$line	= $variable.' = \''.addcslashes($value, '\\\'').'\';';
+			$result	= preg_replace_callback('/^([ \t]*)\$C->DB_MYEXT\s*=[^\r\n]*/m', function($m) use ($line, $eol) { return $m[0].$eol.$m[1].$line; }, $source, 1, $found);
+			if( ! $found ) {
+				$pos	= strrpos($result, '?>');
+				$result	= $pos === FALSE ? $result.$eol.$line.$eol : substr($result, 0, $pos).$line.$eol.substr($result, $pos);
+			}
+		}
+		return @file_put_contents($file, $result) !== FALSE;
 	}
 	
 	function get_old_version()

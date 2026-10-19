@@ -76,6 +76,9 @@
 					// Settings that the installer creates since 3.5 and older installations never got; the
 					// administration pages and the list of online users read them.
 					"INSERT IGNORE INTO `settings` (`word`, `value`) VALUES ('ADMIN_STEALTH_MODE', '0'), ('NAME_INDENTIFICATOR', '1')",
+					// Text in utf8mb4, so that emoji are kept: converts the tables of the core and the plugins
+					// and switches the connections in conf_main.php (func_database.php).
+					array('function' => 'convert_database_to_utf8mb4'),
 					// `settings`.`word` is unique and a failed query aborts the updater, so replace instead of insert.
 					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.3')"
 			)

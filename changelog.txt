@@ -671,6 +671,16 @@
 	  plugins_tables.table and the keys of applications.consumer_key and
 	  pubsubhubbub_subscriptions.feed_url index the first 250 characters; the columns keep their
 	  length.
+	* The 3.6.3 update converts an existing database to utf8mb4 with the collation
+	  utf8mb4_unicode_520_ci: the core tables, the tables registered by installed plugins and the
+	  database default; tables of other applications in the same database are left alone. Long keys
+	  get the same 250-character prefixes as in new installations, and the data itself does not
+	  change; text that older versions already lost (emoji stored as "?" by MariaDB, or cut off by
+	  MySQL) cannot be restored. Afterwards the update writes $C->DB_CHARSET = 'utf8mb4' to
+	  system/conf_main.php, which therefore must be writable during the update; the updater lists it
+	  otherwise. Converting copies each table once, so a large site needs some time; an interrupted
+	  update can be run again and skips the converted tables. A plugin table that cannot be
+	  converted keeps utf8 and is named on the result page.
 
 	Removed:
 	* Removed the obsolete root README.txt.

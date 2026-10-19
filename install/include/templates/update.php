@@ -36,6 +36,9 @@
 		if( !empty($D->not_removed) ){
 			echo $D->designer->errorMessage('Delete old files', 'These files of an older version could not be deleted. Delete them by hand, because some of them would still run:<br /><br />'.implode('<br />', array_map('htmlspecialchars', $D->not_removed)));
 		}
+		if( !empty($D->not_converted) ){
+			echo $D->designer->errorMessage('Plugin tables in utf8', 'These plugin tables could not be converted to utf8mb4 and keep the utf8 character set, so text with emoji may fail in them:<br /><br />'.implode('<br />', array_map('htmlspecialchars', $D->not_converted)));
+		}
 	}
  	
 ?>
