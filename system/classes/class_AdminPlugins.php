@@ -251,7 +251,12 @@
 					}
 				}
 			} catch( Throwable $e ) {
-				$result['errors'][] = htmlspecialchars(get_class($e).': '.$e->getMessage());
+				// A RuntimeException carries a message written for this page (the installer's database layer).
+				$result['errors'][] = htmlspecialchars(($e instanceof RuntimeException ? '' : get_class($e).': ').$e->getMessage());
+				// up() or down() stopped half-way: the database keeps what the earlier statements did.
+				if( isset($inst) && count($inst->executed()) ){
+					$result['errors'][] = 'The statements before it had already been carried out, and the database keeps their result; undo them by hand before trying again: '.htmlspecialchars(implode('; ', $inst->executed()));
+				}
 			}
 
 			return $result;

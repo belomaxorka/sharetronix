@@ -73,6 +73,12 @@ abstract class Installer {
 		
 	}
 	
+	// The statements that up() or down() carried out so far (install mode): the Plugins page names
+	// them when a later statement fails, since the database keeps their result.
+	final public function executed(){
+		return method_exists($this->db, 'getExecuted') ? $this->db->getExecuted() : array();
+	}
+	
 }
 
 if( function_exists("rcopy") == false || function_exists("rrmdir") == false ) {

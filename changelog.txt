@@ -691,6 +691,12 @@
 	  cached page header expired. Saving the branding now clears the cached page HTML.
 	* After the administrator changed the default language, members who were signed in kept the old
 	  language until their cached account data expired. Their cached data is now refreshed.
+	* Stopped the installation of a plugin when the database refuses a statement of its
+	  installer.php. The error and the statement were printed into the page and then ignored, so the
+	  plugin was registered as installed although the tables or columns that failed did not exist.
+	  The Plugins page now shows the error, names the statements that had already been carried out
+	  (the database keeps their result), and leaves the plugin uninstalled; the database connection
+	  of the installer reports errors as exceptions on PHP 7 as well.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

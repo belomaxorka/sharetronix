@@ -47,6 +47,8 @@ class ActiveRecord{
 		/* connect to db */
 		try {
 			$this->link = new PDO('mysql:host=' . $C->DB_HOST . ";dbname=" . $C->DB_NAME, $C->DB_USER, $C->DB_PASS);
+			// Errors as exceptions on every PHP version (the PHP 8 default); the installer catches them.
+			$this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			if(!class_exists('mysql')) {
 				require_once dirname(__FILE__) . '/../../../classes/class_mysql.php';
 			}
@@ -365,7 +367,8 @@ $this->limit = $limit_string;
 		$query = $this->link->query($sql);
  		
 		if(is_object($query)) {
- 			$data = $query->fetchAll(PDO::FETCH_ASSOC);
+ 			// Rows only from a statement that has a result set: fetchAll() on a CREATE, ALTER or INSERT is an error on PHP 7.
+ 			$data = $query->columnCount() ? $query->fetchAll(PDO::FETCH_ASSOC) : array();
  			$this->affectedRows = $query->rowCount();
 			return $data;
 		} else {

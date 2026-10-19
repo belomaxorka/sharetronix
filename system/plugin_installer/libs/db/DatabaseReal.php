@@ -8,6 +8,8 @@ class DatabaseReal implements DatabaseInterface {
 	
 	private $db;
 	protected $plugin_name;
+	// The statements that up() or down() carried out so far: named when a later one fails.
+	private $executed = array();
 	
 	public function __construct($plugin_name) {
 		$this->DatabaseReal($plugin_name);
@@ -115,16 +117,24 @@ class DatabaseReal implements DatabaseInterface {
 	
 
 	public function execute($sql) {
+		$this->db = ActiveRecord::getInstance();
 		try {
-			$this->db = ActiveRecord::getInstance();
 			$this->db->query($sql);
 		} catch (Exception $e) {
-			print "Exception: " . $e->getMessage() . PHP_EOL;
-			print $sql;
+			// Stops up() or down(): the Plugins page shows the message and leaves the plugin as it was
+			// (AdminPlugins::runInstaller()). Printing the error and going on registered plugins whose
+			// tables or columns were never created.
+			throw new RuntimeException('The database refused a statement of installer.php: ' . $e->getMessage() . ' Statement: ' . trim(preg_replace('/\s+/', ' ', $sql)));
 		}
+		$this->executed[] = trim(preg_replace('/\s+/', ' ', $sql));
 		//$sql = str_replace(PHP_EOL, "<br />", $sql);
 		//$sql = str_replace("\t", "&nbsp; &nbsp; &nbsp; &nbsp; ", $sql);
 		//print $sql;
+	}
+	
+	
+	public function getExecuted() {
+		return $this->executed;
 	}
 	
 	
