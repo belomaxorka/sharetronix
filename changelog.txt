@@ -92,6 +92,11 @@
 	  that mode the escaping function only doubles single quotes, while the queries put values in
 	  double quotes, so on a server configured with it a double quote in any input ended the string
 	  and changed the query.
+	* Posts of members who protect their posts (only the members they follow may read them) were
+	  shown to everybody in the "Everybody" tab of the dashboard, in the post and tag search and in
+	  the @-mentions tab, and through services/activities/getall even to guests: the filter compared
+	  the protected members with the posts' numbers instead of their authors. The post page and the
+	  profile hid them correctly.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

@@ -56,7 +56,8 @@
 				$filter = $this->network->get_post_protected_user_ids();
 			}
 			$tmp_id = $this->column_prefix. (($table == 'users')? 'id' : 'user_id');
-			$filter = count($filter)>0 ? (' AND ('.($table=='posts'? $this->column_prefix.'group_id>0 OR '.$this->column_prefix.'id' : $tmp_id).' NOT IN('.implode(', ', $filter).'))') : '';
+			// Posts outside groups: the authors in $filter, not the posts with these numbers.
+			$filter = count($filter)>0 ? (' AND ('.($table=='posts'? $this->column_prefix.'group_id>0 OR '.$this->column_prefix.'user_id' : $tmp_id).' NOT IN('.implode(', ', $filter).'))') : '';
 		
 			return $filter;
 		}
