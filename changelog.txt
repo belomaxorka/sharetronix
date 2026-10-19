@@ -654,6 +654,9 @@
 	  other messages, instead of the copies in static/templates/system/blocks/email/, which a mobile
 	  page could not use. Its text is unchanged; a theme's copies of signinforg_txt or
 	  signinforg_html are no longer used.
+	* When installer step 2 cannot connect to the database, it now also shows the reason the server
+	  or the PHP driver gave, for example "1045 Access denied for user ...", and for error 2054
+	  explains that PHP 7.2 cannot log in to the caching_sha2_password accounts of MySQL 8.
 
 	Removed:
 	* Removed the obsolete root README.txt.

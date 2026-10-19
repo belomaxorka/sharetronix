@@ -33,6 +33,14 @@
 			if( is_numeric($conn) && $conn === 1  ){
 				$D->error	= TRUE;
 				$D->errmsg	= 'Cannot connect - please check host, username and password.';
+				list($errno, $error)	= $db->get_connect_error();
+				if( $error ) {
+					$D->errmsg	.= '<br />The server answered: '.htmlspecialchars($errno.' '.$error, ENT_QUOTES, 'UTF-8');
+				}
+				if( $errno == 2054 ) {
+					// PHP 7.2 cannot log in to the caching_sha2_password accounts of MySQL 8.
+					$D->errmsg	.= '<br />This PHP version does not support the authentication method of this database user. Use PHP 8, or create the user with mysql_native_password (see the requirements in README.md).';
+				}
 			}elseif( is_numeric($conn) && $conn === 2  ){
 				$D->error	= TRUE;
 				$D->errmsg	= 'Database does not exist.';

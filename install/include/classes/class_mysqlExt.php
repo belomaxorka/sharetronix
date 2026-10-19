@@ -27,6 +27,15 @@
 			return $this->connection;
 		}
 		
+		// The error number and text of the last connect() that returned 1.
+		public function get_connect_error()
+		{
+			if( $this->ext=='mysqli' ) {
+				return array(mysqli_connect_errno(), mysqli_connect_error());
+			}
+			return array(@mysql_errno(), @mysql_error());
+		}
+		
 		public function get_server_version()
 		{
 			// The version as a number, 50744 for 5.7.44 or 110806 for MariaDB 11.8.6. The text form cannot
