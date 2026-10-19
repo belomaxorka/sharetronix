@@ -94,7 +94,8 @@
 				$db1->query('REPLACE INTO unconfirmed_registrations SET email="'.$db1->e($email).'", confirm_key="'.$db1->e($reg_key).'", date="'.time().'" ');
 				$reg_id		= intval($db1->insert_id());
 				$using_reg_provider = ($this->param('using')? '/using:'.$this->param('using') : '');
-				$activation_link	= $C->SITE_URL.'signup/regid:'.$reg_id.'/regkey:'.$reg_key.$using_reg_provider;
+				// The address without the mobile prefix: a phone opens it as a mobile page anyway.
+				$activation_link	= $C->OUTSIDE_SITE_URL.'signup/regid:'.$reg_id.'/regkey:'.$reg_key.$using_reg_provider;
 				$D->activation_link = $activation_link;
 				$subject	= $this->lang('signup_email_subject', array('#SITE_TITLE#'=>$C->SITE_TITLE));
 

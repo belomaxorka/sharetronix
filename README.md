@@ -102,6 +102,10 @@ With `$C->HONEYPOT_ACCESS_KEY` set to an access key of [Project Honey Pot](https
 
 Privacy: StopForumSpam receives the e-mail address and IP address of everyone who signs up, and Project Honey Pot the IP address; mention them in your privacy policy if that applies to you. The address checked is the one PHP receives as `REMOTE_ADDR`: behind a reverse proxy or CDN, configure the web server to pass on the visitor's address (for example with Apache `mod_remoteip` or the nginx `realip` module), or every visitor is checked with the proxy's address.
 
+## Mobile version
+
+Browsers whose User-Agent names a mobile device (most phones and Android tablets), the `m.` subdomain, and addresses under `/m/` get the mobile version. Without an account, visitors can sign in, sign up, recover a password, and use the contact form and the terms page there. These pages run the same code as the desktop ones, so the CAPTCHA and the spam checks apply. They look like the mobile sign-in page: the layouts `header-outside` and `footer-outside` and the blocks `login`, `registration`, `user-signup-email`, `user-forgotten-pass-step1`, and `user-forgotten-pass-step2` in `static/templates/mobile/`, which a theme can override in `templates/mobile/`. The links in the sign-up and password recovery e-mails use the normal address, which a phone opens in the mobile version.
+
 ## Debugging
 
 Debug mode is enabled for client IP addresses listed in `system/conf_main.php`:
@@ -174,6 +178,7 @@ The StopForumSpam check at sign-up no longer refuses addresses whose reports are
 ## Known limitations
 
 - Sign-in through Twitter and Facebook and other integrations with retired third-party services are untested and may not work.
+- The mobile version has no settings, administration, search, or invitation pages; on a phone their addresses show the mobile home page. The browser's desktop-site mode reaches them.
 - On PHP 8.1 and later, dates use English month and day names regardless of the language pack ([#9](https://github.com/belomaxorka/sharetronix/issues/9)).
 
 Other known defects are tracked in [GitHub issues](https://github.com/belomaxorka/sharetronix/issues).

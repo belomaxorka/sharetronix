@@ -18,6 +18,7 @@
 		public  $type;
 		public  $designer;
 		private $user_or_group_check;
+		private $mobile_outside;
 		
 		public function __construct( $params = array(), $default_load = TRUE )
 		{
@@ -44,14 +45,16 @@
 			$this->default_load = $default_load;	
 			$this->type 		= (!$this->page->is_mobile)? 'system' : 'mobile';
 			$this->user_or_group_check = in_array($this->page->request[0], array('user', 'group', 'groups', 'members', 'view', 'terms', 'contacts'));
+			// Mobile pages that are used without an account look like the mobile sign-in page.
+			$this->mobile_outside = $this->page->is_mobile && in_array($this->page->request[0], array('signup', 'signin', 'contacts', 'terms'));
 			
 			if( $this->default_load ){
 
 				$this->pm->onPageLoad();
 				
-				$this->useLayout( (!$this->page->is_mobile && !$this->user->is_logged && !$this->user_or_group_check)? 'header-outside' : 'header' );
+				$this->useLayout( ((!$this->page->is_mobile && !$this->user->is_logged && !$this->user_or_group_check) || $this->mobile_outside)? 'header-outside' : 'header' );
 				
-				$this->initRoutine(!$this->page->is_mobile? (($this->user->is_logged || $this->user_or_group_check)? 'DefaultHeader' : 'OutsideHeader') : 'MobileHeader');
+				$this->initRoutine(!$this->page->is_mobile? (($this->user->is_logged || $this->user_or_group_check)? 'DefaultHeader' : 'OutsideHeader') : ($this->mobile_outside? 'MobileOutsideHeader' : 'MobileHeader'));
 				foreach( $params as $k=>$v ){
 					$this->routine->setSpecific( '{%'. $k . '%}', $v );
 				}
@@ -93,9 +96,9 @@
 			
 			if( $this->default_load ){
 
-				$this->useLayout( (!$this->page->is_mobile && !$this->user->is_logged && !$this->user_or_group_check)? 'footer-outside' : 'footer' );
+				$this->useLayout( ((!$this->page->is_mobile && !$this->user->is_logged && !$this->user_or_group_check) || $this->mobile_outside)? 'footer-outside' : 'footer' );
 				
-				$this->initRoutine( (!$this->page->is_mobile && !$this->user->is_logged && !$this->user_or_group_check)? 'OutsideFooter' : 'DefaultFooter' );
+				$this->initRoutine( (!$this->page->is_mobile && !$this->user->is_logged && !$this->user_or_group_check)? 'OutsideFooter' : ($this->mobile_outside? 'MobileOutsideFooter' : 'DefaultFooter') );
 				$this->routine->load();	
 			}
 			

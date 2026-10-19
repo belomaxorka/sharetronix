@@ -535,6 +535,10 @@
 	  not have, and its text was not loaded. The page now shows "Invalid e-mail or password." (or
 	  that the account is suspended) above the form. Themes that override the mobile home block show
 	  it where they place {%home_login_message%}.
+	* Opened on a phone, the links in the sign-up confirmation and password recovery e-mails showed
+	  the mobile sign-in form instead of the page they point to. They now open the new mobile pages,
+	  and e-mails requested in the mobile version link to the normal address ($C->OUTSIDE_SITE_URL)
+	  instead of the /m/ or m. one.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
@@ -570,6 +574,11 @@
 	* $C->STOPFORUMSPAM_ENABLED = FALSE; in system/conf_main.php turns off the StopForumSpam check
 	  at sign-up, which sends the e-mail and IP address of every new member to stopforumspam.com.
 	  Without the setting the check stays on.
+	* The mobile version has sign-up (with and without e-mail confirmation), password recovery, the
+	  contact form and the terms page, with the CAPTCHA and the spam checks of the desktop pages, in
+	  the look of the mobile sign-in page, which now links to sign-up and password recovery. In
+	  3.x phones were offered only the sign-in form: every other guest address showed it again, so
+	  nobody could join or reset a password from a phone.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party
@@ -623,6 +632,10 @@
 	* The StopForumSpam check at sign-up sends the e-mail and IP address in a POST request, as
 	  StopForumSpam suggests, so the e-mail address no longer appears in the request URL, where
 	  proxies and server logs may record it.
+	* The password recovery e-mail is made from the templates in static/templates/email/, like the
+	  other messages, instead of the copies in static/templates/system/blocks/email/, which a mobile
+	  page could not use. Its text is unchanged; a theme's copies of signinforg_txt or
+	  signinforg_html are no longer used.
 
 	Removed:
 	* Removed the obsolete root README.txt.

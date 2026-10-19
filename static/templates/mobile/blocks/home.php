@@ -10,6 +10,11 @@
 	
 			<button type="submit" class="btn"><span><?= $this->page->lang('os_login_btn_txt') ?></span></button>
 			
+			<div class="links">
+				<a href="<?= $C->SITE_URL ?>signin/forgotten"><?= $this->page->lang('os_login_frg') ?></a>
+				<a href="<?= $C->SITE_URL ?>signup"><?= $this->page->lang('os_login_reg') ?></a>
+			</div>
+			
 			<div class="powered_by">
 			<!-- "Powered by Sharetronix" backlink -->
 				<!--

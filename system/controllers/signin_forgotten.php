@@ -99,11 +99,13 @@
 				$key		= md5('akey_'.$u->id.'_'.(rand().time().rand()));
 				$valid	= time() + 48*60*60;
 				$this->db2->query('UPDATE users SET pass_reset_key="'.$key.'", pass_reset_valid="'.$valid.'" WHERE id="'.$u->id.'" LIMIT 1');
-				$D->recover_link	= $C->SITE_URL.'signin/forgotten/key:'.$key;
+				// The address without the mobile prefix: a phone opens it as a mobile page anyway.
+				$D->recover_link	= $C->OUTSIDE_SITE_URL.'signin/forgotten/key:'.$key;
 				$this->load_langfile('email/signin.php');
 				$subject	= $this->lang('signinforg_email_subject', array('#SITE_TITLE#'=>$C->SITE_TITLE));
-				$msgtxt	= $this->load_single_block('email/signinforg_txt', FALSE);
-				$msghtml	= $this->load_single_block('email/signinforg_html', FALSE);
+				// The e-mail templates of static/templates/email/, like every other message.
+				$msgtxt	= $this->load_single_block('email/signinforg_txt', FALSE, TRUE);
+				$msghtml	= $this->load_single_block('email/signinforg_html', FALSE, TRUE);
 				do_send_mail_html($email, $subject, $msgtxt, $msghtml);
 			}
 		}

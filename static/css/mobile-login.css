@@ -38,7 +38,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 }
 
-#login-panel .btn {display:block; font-size:22px; font-weight:bold; color:#fff; text-align:left; border:1px solid #8ba456; border-radius:3px; 
+#login-panel .btn, #content-container .btn {display:block; font-size:22px; font-weight:bold; color:#fff; text-align:left; border:1px solid #8ba456; border-radius:3px; 
 
 
 background: #94bd53; /* Old browsers */
@@ -60,7 +60,7 @@ text-shadow:2px 2px 0px #628136;
 }
 
 
-#login-panel .btn span {display:block; background:url(../images/mobile/login-arrow.png) no-repeat right center; padding:0.5em 1em; }
+#login-panel .btn span, #content-container .btn span {display:block; background:url(../images/mobile/login-arrow.png) no-repeat right center; padding:0.5em 1em; }
 
 .powered_by {padding:20px 0 0; text-align:right; font-size:12px;}
 
@@ -68,3 +68,27 @@ text-shadow:2px 2px 0px #628136;
 .system-message strong {display:block; margin:0 0 0.2em;}
 .system-message.error {border-color:#d08a8a; background:#fbeaea; color:#7d1e1e;}
 .system-message.success {border-color:#8ba456; background:#eef5e3; color:#3d5a17;}
+
+.links {padding:1em 0 0;}
+.links a {display:block; padding:0.4em 0; font-size:15px;}
+
+
+/* pages used without an account: sign-up, password recovery, contacts, terms */
+#content-container {margin:0 20px 20px; padding:20px; background:rgba(255,255,255,0.8); border:1px solid #c2c2c2; border-radius:3px; font-size:15px;}
+#content-container h1.pagetitle, #content-container h3 {font-size:20px; margin:0 0 0.5em;}
+#content-container label {display:block; margin:0.8em 0 0;}
+#content-container label.checkbox, #content-container .captcha-image label {display:inline;}
+#content-container input[type="text"], #content-container input[type="email"], #content-container input[type="password"], #content-container textarea {display:block; width:100%; padding:0.5em; font-size:18px; margin:0.3em 0; border:1px solid #686868; border-radius:3px; box-shadow:3px 3px 3px #D9D9D9 inset; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box;}
+#content-container input[disabled] {background:#eee; color:#555;}
+#content-container textarea {height:8em;}
+#content-container table, #content-container tbody, #content-container tr, #content-container td {display:block;}
+#content-container .captcha-image {margin:0.8em 0;}
+#content-container .captcha-image img {max-width:100%; vertical-align:middle;}
+#content-container .captcha-refresh {display:inline-block; padding:0.5em 0;}
+#hmmm {position:absolute; top:-9000px;}
+#outside-footer {margin:0 20px 50px; color:#fff; text-shadow:1px 1px 2px #000;}
+#outside-footer a {color:#fff;}
+@media (min-width:680px) {
+	#content-container {width:600px; margin:0 auto 20px;}
+	#outside-footer {width:640px; margin:0 auto 50px;}
+}
