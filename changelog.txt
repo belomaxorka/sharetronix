@@ -633,6 +633,12 @@
 	  list takes 4 MB, more than memcached stores by default, so it was read from the database on
 	  every page. The cached list of protected members is used instead, only the protected members
 	  among the followers are looked up, and the feed reads only the list it needs.
+	* A memcached or Redis server that accepted connections but did not answer, for example when it
+	  was paused or overloaded, held every page for 60 to 90 seconds, and an unreachable memcached
+	  host added 4 seconds to every page; once all PHP workers were waiting, the site stopped
+	  answering. The drivers now wait at most one second, and after a failure the memcached driver
+	  skips the server for the rest of the request. An entry larger than the item size limit of
+	  memcached is logged as such instead of as a server failure.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

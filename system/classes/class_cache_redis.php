@@ -41,6 +41,11 @@
 			try {
 				$rd	= new Redis();
 				$res	= $rd->connect($this->redis_host, $this->redis_port, 1);
+				if( $res ) {
+					// A server that accepts the connection but does not answer would otherwise hold the
+					// request for default_socket_timeout (60 s) at every call.
+					$rd->setOption(Redis::OPT_READ_TIMEOUT, 1);
+				}
 				if( $res && $this->redis_pass != '' ) {
 					$error	= 'authentication failed';
 					$res	= $rd->auth($this->redis_pass);

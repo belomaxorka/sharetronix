@@ -10,6 +10,7 @@
 		private $debug_mode;
 		private $debug_info;
 		private $error_logged;
+		private $failed;
 		
 		public function __construct()
 		{
@@ -21,6 +22,7 @@
 			$this->keys_prefix	= $C->CACHE_KEYS_PREFIX.'|'.$C->VERSION.'|'.substr(md5($C->DB_HOST.'|'.$C->DB_NAME), 0, 8).'|';
 			$this->mc	= FALSE;
 			$this->error_logged	= FALSE;
+			$this->failed	= FALSE;
 			$this->debug_mode	= $C->DEBUG_MODE==TRUE;
 			$this->debug_info	= (object) array (
 				'queries'	=> array(),
@@ -35,6 +37,14 @@
 			if( FALSE == $this->mc ) {
 				$this->mc	= $this->ext=='memcached' ? new Memcached() : new Memcache();
 				$this->mc->addServer( $this->memcached_host, intval($this->memcached_port) );
+				if( $this->ext=='memcached' ) {
+					// A server that cannot be reached or does not answer must not hold up the page: wait
+					// one second at most (the library defaults are 4 s to connect and more for an answer).
+					$this->mc->setOption(Memcached::OPT_CONNECT_TIMEOUT, 1000);
+					$this->mc->setOption(Memcached::OPT_POLL_TIMEOUT, 1000);
+					$this->mc->setOption(Memcached::OPT_SEND_TIMEOUT, 1000000);
+					$this->mc->setOption(Memcached::OPT_RECV_TIMEOUT, 1000000);
+				}
 			}
 			if($this->debug_mode) {
 				$time	= microtime(TRUE)-$time;
@@ -51,6 +61,9 @@
 		
 		public function get($key)
 		{
+			if( $this->failed ) {
+				return FALSE;
+			}
 			if( FALSE == $this->mc ) {
 				if( FALSE == $this->connect() ) {
 					return FALSE;
@@ -78,6 +91,9 @@
 		
 		public function set($key, $data, $expire)
 		{
+			if( $this->failed ) {
+				return FALSE;
+			}
 			if( FALSE == $this->mc ) {
 				if( FALSE == $this->connect() ) {
 					return FALSE;
@@ -105,6 +121,9 @@
 		
 		public function del($key)
 		{
+			if( $this->failed ) {
+				return FALSE;
+			}
 			if( FALSE == $this->mc ) {
 				if( FALSE == $this->connect() ) {
 					return FALSE;
@@ -133,17 +152,32 @@
 		private function check_result($res)
 		{
 			// addServer() does not connect, so a failed call is the first sign of an unreachable server.
-			// The legacy memcache extension reports such failures as PHP notices itself.
-			if( FALSE !== $res || $this->error_logged || $this->ext != 'memcached' ) {
+			// The legacy memcache extension reports such failures as PHP notices itself and skips the
+			// server for its retry interval.
+			if( FALSE !== $res || $this->ext != 'memcached' ) {
 				return;
 			}
 			$code	= $this->mc->getResultCode();
-			if( $code == Memcached::RES_SUCCESS || $code == Memcached::RES_NOTFOUND ) {
+			if( $code == Memcached::RES_SUCCESS || $code == Memcached::RES_NOTFOUND || $code == Memcached::RES_NOTSTORED ) {
+				return;
+			}
+			$message	= trim(preg_replace('/\s+/', ' ', $this->mc->getResultMessage()));
+			$too_big	= $code == Memcached::RES_E2BIG;
+			if( ! $too_big ) {
+				// Unreachable or not answering: do not wait for it again in this request.
+				$this->failed	= TRUE;
+			}
+			if( $this->error_logged ) {
 				return;
 			}
 			$this->error_logged	= TRUE;
-			$message	= trim(preg_replace('/\s+/', ' ', $this->mc->getResultMessage()));
-			error_log('Sharetronix cache: memcached '.$this->memcached_host.':'.$this->memcached_port.' failed ('.$message.'); this request runs without the cache.');
+			if( $too_big ) {
+				// Larger than the item size limit of the server (1 MB by default): only this entry is not cached.
+				error_log('Sharetronix cache: memcached '.$this->memcached_host.':'.$this->memcached_port.' refused an entry ('.$message.'); it is computed again on every request.');
+			}
+			else {
+				error_log('Sharetronix cache: memcached '.$this->memcached_host.':'.$this->memcached_port.' failed ('.$message.'); this request runs without the cache.');
+			}
 			if( $this->debug_mode ) {
 				$this->debug_info->queries[]	= (object) array (
 					'action'	=> 'SERVER',
