@@ -15,7 +15,6 @@
 		'fly_login_rem'	=> 'Remember me',
 		'fly_login_forg'	=> 'Forgot your password?',
 			
-		'outside_register_with_fb_tw' => 'You should fill your email in the field below and confirm it before proceeding to ',
 	);
 	
 ?>

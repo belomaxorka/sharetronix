@@ -115,6 +115,7 @@
 			'system/controllers/api/oauth/request_token.php',
 			'system/cronjobs/php_6h/7-clean_request_tokens.php',
 			'system/helpers/func_captcha.php',
+			'system/helpers/func_externalprofiles.php',
 			'system/helpers/func_mbstring.php',
 			'system/helpers/func_recaptchalib.php',
 			'system/libraries/class_bitly.php',

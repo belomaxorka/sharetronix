@@ -777,6 +777,12 @@
 	  Twitter and unused Yahoo settings of the configuration template are gone; the updater deletes
 	  the files. Members who signed up that way sign in with their password. The facebook_uid and
 	  twitter_uid columns stay.
+	* Removed leftovers of the Facebook, Twitter and Yahoo features of Sharetronix 2.x that 3.x no
+	  longer has (Twitter feed import, posting to Twitter and Facebook, inviting Twitter, Facebook
+	  and Yahoo contacts, Facebook profile import, profile links to Facebook, Twitter, Flickr,
+	  FriendFeed, Delicious, Digg, MySpace and Orkut): 75 unused strings of the English language
+	  pack and system/helpers/func_externalprofiles.php, whose URL checks nothing called; the
+	  updater deletes the helper.
 
 Sharetronix 3.6.2
 	* Bug fixes

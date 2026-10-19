@@ -434,8 +434,6 @@
 		'admmenu_pd_make_req' => 'Check for add-ons',
 		'admmenu_pd_download_page' => 'Download Page',
 		
-		'admgen_twit_tag' => 'Community twitter tag: ',
-		'admgen_twit_tag_desc' => 'Write your twitter tag to post directly from twitter to your community. To do this you should first choose a tag for your community and every time you type this tag in your message at twitter the post will be posted automatically at this community  (ex. "I am heading to the office #mycommunity"). If you use this option choose an unique tag which will describe better your community.',
 		
 		'admmenu_system'			=> 'System settings',
 		'admpgtitle_system'		=> 'System settings - #SITE_TITLE#',

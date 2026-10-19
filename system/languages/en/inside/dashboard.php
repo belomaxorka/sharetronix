@@ -10,7 +10,6 @@
 		'dbrd_leftmenu_private'		=> 'Private Posts',
 		'dbrd_leftmenu_commented'	=> 'Commented',
 		'dbrd_leftmenu_feeds'		=> 'Rss Feeds',
-		'dbrd_leftmenu_tweets'		=> 'Twitter',
 		'dbrd_leftmenu_bookmarks'	=> 'Favorites',
 		'dbrd_leftmenu_reshares'	=> 'Reshares',
 		'dbrd_leftmenu_everybody'	=> 'Everybody',
@@ -22,7 +21,6 @@
 		'dbrd_poststitle_private'	=> 'Private Messages',
 		'dbrd_poststitle_commented'	=> 'Commented Posts',
 		'dbrd_poststitle_feeds'		=> 'External Feeds',
-		'dbrd_poststitle_tweets'		=> 'Twitter Activity',
 		'dbrd_poststitle_bookmarks'	=> 'Favorites',
 		'dbrd_poststitle_everybody'	=> 'Everybody in #COMPANY# network',
 		
@@ -105,8 +103,6 @@
 		'noposts_dtb_group_ttl_filter'		=> 'No posts',
 		'noposts_dtb_group_txt_filter'		=> 'There are no posts matching your search criteria.',
 		
-		'noposts_dtb_tweets_ttl'		=> 'No posts',
-		'noposts_dtb_tweets_txt'		=> 'There are no twitter feed posts for you yet.',
 		'noposts_dtb_feeds_ttl'			=> 'No posts',
 		'noposts_dtb_feeds_txt'			=> 'There are no feed posts for you yet.',
 		

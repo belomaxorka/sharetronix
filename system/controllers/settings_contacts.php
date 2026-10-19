@@ -10,8 +10,6 @@
 	$this->load_langfile('inside/global.php');
 	$this->load_langfile('inside/settings.php');
 	
-	require_once($C->INCPATH.'helpers/func_externalprofiles.php');
-	
 	$submit	= FALSE;
 	$error = FALSE;
 	$errmsg	= '';

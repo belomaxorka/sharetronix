@@ -30,7 +30,6 @@
 		'srch_posts_ptp_file'	=> 'Files',
 		'srch_posts_ptp_comments'	=> 'Comments',
 		'srch_posts_ptp_rss'	=> 'RSS Feeds',
-		'srch_posts_ptp_tweets'	=> 'Tweets',
 		'srch_posts_user'		=> 'By user',
 		'srch_posts_group'	=> 'In group',
 		'srch_posts_date'		=> 'Date',

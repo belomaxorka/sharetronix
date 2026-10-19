@@ -145,12 +145,9 @@
 		'os_signup_step3_selector_ttl'	=> 'Select members to follow',
 		'os_signup_step3_selector_txt'	=> 'Your account was successfully created. Now you can choose which network members to follow or you can continue to your #A1#Dashboard#A2# and choose friends to follow later.',
 		
-		'signup_fb_disconnect'		=> 'Disconnect from Facebook',
-		'signup_fb_differentuser'	=> 'Connect your Facebook profile to alreay existing account',
 		
 		'signup_invalid_email_domain' => 'Your e-mail domain is not allowed to be used.',
 			
-		'signup_before_twitter_facebook_warn' => 'Warning',
 	);
 	
 ?>

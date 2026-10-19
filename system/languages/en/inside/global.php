@@ -199,26 +199,13 @@
 		'post_profile_dm_protected'   => 'This member has protected his direct messages, he have to follow you in order to send him a direct message.',
 		'pf_msgerr_user2' => ' Or this user is with direct messages protection enabled.',
 		
-		'global_twit_not_finished1_ttl'  => 'Step 1',
-		'global_twit_not_finished1_msg'  => 'An error occured while trying to get request token from twitter, please try again later.',
-		'global_twit_not_finished2_ttl'  => 'Step 2',
-		'global_twit_not_finished2_msg'  => 'An error occured while trying to get access token from twitter, please try again later.',
-		'post_tweet_post'	=> 'Post this message on Twitter',
-		'post_tweet_post_confirm'	=> 'Are you shure you want to post this message on Twitter?',
-		'posttweetlink'	=> 'Tweet it',
-		'twitter_post_done'		=> 'Your post was posted successfully on Twitter.',
 		
 		'postresharelink_undo'	=> 'Unshare',
 		'unshare_confirm' => 'Are you shure you want to undo-reshare this post?', 
 		'unshare_done' => 'Your post was unshared successfully.', 
 		
-		'global_fb_not_finished1_ttl'  => 'Step 1',
-		'global_fb_not_finished1_msg'  => 'Not a valid access token from facebook, please try again later.',
 		
-		'post_fb_post_confirm'	=> 'Are you shure you want to post this message on Facebook?',
 		'postfblink'	=> 'FB status',
-		'facebook_post_done'		=> 'Your post was posted successfully on Facebook.',
-		'post_fb_post'	=> 'Post this message as your status at Facebook',
 		
 		'competitions_site_ttl' => '#SITE_TITLE# - Leaders',
 		'competitions_tab_users' => 'Users',

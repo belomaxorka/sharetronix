@@ -36,7 +36,6 @@
 		'settings_menu_delaccount'	=> 'Delete Account',
 		'settings_menu_conn'		=> 'App Connections',
 		
-		'settings_fbconnect'		=> 'Connect with your Facebook account to fill your profile information automatically.',
 		'settings_viewprofile_link'	=> 'view profile',
 		
 		'st_profile_name'				=> 'Name:',
@@ -111,14 +110,11 @@
 		'st_cnt_s2_icq'				=> 'ICQ:',
 		'st_cnt_s2_gtalk'				=> 'GTalk:',
 		'st_cnt_s2_msn'				=> 'MSN:',
-		'st_cnt_s2_yahoo'				=> 'Yahoo:',
 		'st_cnt_s2_aim'				=> 'AIM:',
 		'st_cnt_s2_jabber'			=> 'Jabber:',
 		'st_cnt_s3_linkedin'			=> 'LinkedIn:',
-		'st_cnt_s3_facebook'			=> 'Facebook:',
 		'st_cnt_s3_myspace'			=> 'MySpace:',
 		'st_cnt_s3_orcut'				=> 'Orkut:',
-		'st_cnt_s3_twitter'			=> 'Twitter:',
 		'st_cnt_s3_youtube'			=> 'YouTube:',
 		'st_cnt_s3_flickr'			=> 'Flickr:',
 		'st_cnt_s3_friendfeed'			=> 'FriendFeed:',
@@ -131,7 +127,6 @@
 		'st_cnt_error'				=> 'Error',
 		'st_cnt_error_website'			=> 'Invalid website address.',
 		'st_cnt_error_pemail'			=> 'Invalid e-mail address.',
-		'st_cnt_error_facebook'			=> 'Invalid Facebook profile url.',
 		'st_cnt_error_flickr'			=> 'Invalid Flickr profile url.',
 		'st_cnt_error_friendfeed'		=> 'Invalid FriendFeed profile url.',
 		'st_cnt_error_delicious'		=> 'Invalid Delicious profile url.',
@@ -139,7 +134,6 @@
 		'st_cnt_error_linkedin'			=> 'Invalid LinkedIn profile url.',
 		'st_cnt_error_myspace'			=> 'Invalid MySpace profile url.',
 		'st_cnt_error_orcut'			=> 'Invalid Orkut profile url.',
-		'st_cnt_error_twitter'			=> 'Invalid Twitter profile url.',
 		'st_cnt_error_youtube'			=> 'Invalid YouTube profile url.',
 		'st_cnt_error_mixx'			=> 'Invalid Mixx profile url.',
 		'st_cnt_error_edno23'			=> 'Invalid Edno23 profile url.',
@@ -266,13 +260,6 @@
 		'st_email_wrong_conf_id'	=> 'Invalid confirmation key.',
 		'st_email_wrong_time'		=> 'Confirmation time extended.',
 		
-		'st_twit_feed_title' 		=> 'My Twitter Feed',
-		'st_twit_feed_title2' 		=> 'Import My Twitter Feed',
-		'st_twit_feed_username' 	=> 'Username: ',
-		'st_twit_feed_username_hint' 	=> 'Fill the field above with the username you use in twitter.com.',
-		'st_twit_feed_import' 		=> 'Import My Feed',
-		'st_twit_feed_import_ok' 	=> 'Your Twitter Feed is imported.',
-		'st_twit_feed_import_remove' 	=> 'You can remove it from the list above.',
 		
 		'settings_email_note'		=> 'Your e-mail will be seen only by the members you follow',
 		
@@ -302,23 +289,9 @@
 										<br />8.Your previous posts will be visible in the activity feeds of your followers.',
 		'settings_privacy_learn_more'	=> 'Learn more about this option',	
 		
-		'settings_twit_opt_not_supported' => '<br /><br /><em style="color: red;">This option is not supported.</em>',
-		'settings_twit_opt_integrate' => '<br /><br /<em><a href="#SITE_URL#twitter-integrate">Integrate my twitter profile</a></em>',
-		'settings_twit_opt_integrated_ok' => 'You have integrated your twitter profile!',
-		'settings_twit_opt_integrated_err' => 'You haven\'t integrated your twitter profile yet.',
-		'settings_twit_opt_status' => 'Status',
 		'settings_menu_integr'	=> 'Integrations',
 		
-		'settings_fb_opt_not_supported' => '<br /><br /><em style="color: red;">Facebook integration is not supported.</em>',
-		'settings_fb_opt_integrate' => '<br /><br /<em><a href="#SITE_URL#facebook-integrate">Integrate my facebook profile</a></em>',
-		'settings_fb_opt_integrated_ok' => 'You have integrated your facebook profile!',
-		'settings_fb_opt_integrated_err' => 'You haven\'t integrated your facebook profile yet.',
-		'settings_fb_opt_status' => 'Status',
 		
-		'settings_fb_opt_intgr_ttl' => 'Facebook Integration',
-		'settings_twit_opt_intgr_ttl' => 'Twitter Integration',
-		'settings_fb_opt_intgr_remove' => 'Remove My Facebook Integration',
-		'settings_twit_opt_intgr_remove' => 'Remove My Twitter Integration',
 		
 		'os_st_ntf_me_on_post_like'	=> '...someone likes my post',
 		'os_st_ntf_me_on_comment_like'	=> '...someone likes my comment',
