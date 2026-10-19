@@ -569,6 +569,11 @@
 	  that follower's notification settings separately, with up to three queries per follower
 	  (166 000 statements and 29 s when a member with 55 000 followers followed somebody on a test
 	  site with 100 000 members). The settings of all followers are now read at once.
+	* Every comment shown to a signed-in member read the likes of its post from the database again,
+	  bypassing the cache, and each of these reads scanned the whole post_likes table: on a test
+	  site with 800 000 likes a post with 1 000 comments took almost two minutes to open, and posts
+	  with a few thousand comments failed. The likes of a post are now read once per request, from
+	  the cache, which every like, unlike and deletion refreshes.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

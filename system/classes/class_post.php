@@ -5,6 +5,8 @@
 		public $page;
 		public $post_likes;
 		public $post_likesnum;
+		// The likes as get_post_likes() last read them in this request (FALSE: not read yet).
+		private $likes_read	= FALSE;
 
 		private $network;
 		private $user;
@@ -786,9 +788,16 @@
 				return FALSE;
 			}
 		
+			// Read once per request: the comments of a page ask for the likes of their post one by one, and
+			// unserializing the cached likes of a post with thousands of them took milliseconds each time.
+			// Every change of the likes in this request refreshes them through this object ($force_refresh).
+			if( FALSE!==$this->likes_read && TRUE!=$force_refresh ) {
+				return $this->likes_read;
+			}
 			$cachekey	= 'n:'.$this->network->id.',post_likes:'.$this->post_type.':'.$this->post_id;
 			$data	= $this->cache->get($cachekey);
 			if( FALSE!==$data && TRUE!=$force_refresh ) {
+				$this->likes_read	= $data;
 				return $data;
 			}
 			$data	= array('post'=>array());
@@ -802,6 +811,7 @@
 		
 			}
 			$this->cache->set($cachekey, $data, $GLOBALS['C']->CACHE_EXPIRE);
+			$this->likes_read	= $data;
 			return $data;
 		}
 		

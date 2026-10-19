@@ -222,7 +222,9 @@
 		
 		public function is_comment_liked()
 		{
-			$this->post->post_likes	= $this->post->get_post_likes(TRUE);
+			// The likes of the post, read once per request (post::get_post_likes()). Reading them from the
+			// database here, for every comment shown, scanned the whole post_likes table each time.
+			$this->post->post_likes	= $this->post->get_post_likes();
 			
 			if( !$this->comment_id ){
 				return TRUE;
@@ -245,6 +247,8 @@
 			if( ! $this->user->is_logged ) {
 				return FALSE;
 			}
+			// The current likes from the database, so that a like is never added twice.
+			$this->post->get_post_likes(TRUE);
 			$b	= $this->is_comment_liked();
 			$u	= intval($this->user->id);
 			if( $b && !$state ) {
