@@ -42,7 +42,7 @@
 	}
 
 	if( $_SESSION['INSTALL_DATA']['IS_UPDATE'] ){
-		$controller_name = ($_SESSION['INSTALL_STEP'] == 1 && $_SESSION['INSTALL_DATA']['OLD_VERSION'] != $C->VERSION)? 'step_' . $_SESSION['INSTALL_STEP'] : 'update';
+		$controller_name = ($_SESSION['INSTALL_STEP'] == 1 && version_compare($_SESSION['INSTALL_DATA']['OLD_VERSION'], $C->VERSION, '<'))? 'step_' . $_SESSION['INSTALL_STEP'] : 'update';
 	}else{
 		$controller_name = 'step_' . $_SESSION['INSTALL_STEP'];
 	}

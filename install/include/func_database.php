@@ -114,14 +114,14 @@
 			return FALSE;
 		}
 		
-		if( $current_version < '1.5.4' ){
+		if( version_compare($current_version, '1.5.4', '<') ){
 			return FALSE;
 		}
 		
 		delete_all_system_posts();
 		
 		foreach($db_updates as $version=>$data){
-			if( $version <= $current_version ){
+			if( version_compare($version, $current_version, '<=') ){
 				continue;
 			}
 			
@@ -135,7 +135,7 @@
 			}
 		}
 		
-		if( $current_version < '3.0.0' ){
+		if( version_compare($current_version, '3.0.0', '<') ){
 			insert_all_system_tables();
 		}
 		

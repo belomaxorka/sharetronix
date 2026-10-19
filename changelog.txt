@@ -350,6 +350,9 @@
 	* Updates from 3.0.x, 3.1.x and 3.6.0 stopped with a database error before the 3.6.3 changes
 	  were applied, because each update step inserted the unique VERSION setting again. The steps
 	  now replace it.
+	* The updater compared versions as text, so a later 3.6.10 or 3.10.0 release would have skipped
+	  its own database changes or repeated older ones ("3.10.0" sorted before "3.6.3"). It now
+	  compares version numbers.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

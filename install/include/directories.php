@@ -26,7 +26,7 @@
 		$tmp = array();
 		
 		foreach( $folders as $version => $dirs ){ 
-			if( $version > $current_version ){
+			if( version_compare($version, $current_version, '>') ){
 				foreach( $dirs as $dir ){
 					$tmp[] = $dir;
 				}
