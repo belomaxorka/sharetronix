@@ -45,6 +45,11 @@ class ActiveRecord{
 		global $C;
 
 		/* connect to db */
+		if( !class_exists('PDO') || !in_array('mysql', PDO::getAvailableDrivers()) ) {
+			// The Plugins page shows this (AdminPlugins::runInstaller()); the page used to stop with
+			// "Error connecting database!" as soon as a plugin with an installer.php was looked at.
+			throw new RuntimeException('The plugin installer needs the pdo_mysql PHP extension (PDO with the MySQL driver), which is not loaded.');
+		}
 		try {
 			$this->link = new PDO('mysql:host=' . $C->DB_HOST . ";dbname=" . $C->DB_NAME, $C->DB_USER, $C->DB_PASS);
 			// Errors as exceptions on every PHP version (the PHP 8 default); the installer catches them.
@@ -63,10 +68,7 @@ class ActiveRecord{
 			}
 			$this->link->exec("SET lc_time_names = 'bg_BG'");
 		} catch(PDOException $e) {
-			 
-			print "Error connecting database!";
-			//print $e->getMessage();
-			die();
+			throw new RuntimeException('The plugin installer could not connect to the database: ' . $e->getMessage());
 		}
 
 		unset($this->user);

@@ -697,6 +697,11 @@
 	  The Plugins page now shows the error, names the statements that had already been carried out
 	  (the database keeps their result), and leaves the plugin uninstalled; the database connection
 	  of the installer reports errors as exceptions on PHP 7 as well.
+	* Reported a missing pdo_mysql extension on the Plugins page. Looking at the installation or
+	  removal of a plugin that has an installer.php stopped the whole page with the bare text "Error
+	  connecting database!" when PHP had no pdo_mysql (the extension only the plugin installer
+	  uses); the page now says which extension is missing, and a database connection failure of the
+	  installer is reported the same way.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
