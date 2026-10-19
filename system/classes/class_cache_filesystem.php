@@ -40,10 +40,11 @@
 			$file	= $this->find_filename($key);
 			$time	= microtime(TRUE);
 			$res	= FALSE;
-			if( file_exists($file) && is_readable($file) ) {
+			// Another request can replace or delete the entry at any moment; a vanished file is a miss.
+			$data	= is_readable($file) ? @file_get_contents($file) : FALSE;
+			if( FALSE !== $data ) {
 				// The expiry time ends at the first line break; the serialized value may contain more.
-				$data	= file_get_contents($file);
-				$pos	= FALSE===$data ? FALSE : strpos($data, "\n");
+				$pos	= strpos($data, "\n");
 				if( FALSE !== $pos ) {
 					if( intval(substr($data, 0, $pos)) >= time() ) {
 						$res	= unserialize(substr($data, $pos+1));
@@ -70,11 +71,22 @@
 		{
 			$file	= $this->find_filename($key);
 			$time	= microtime(TRUE);
-			$this->remove_file($file);
-			$data	= (time()+$ttl)."\n".serialize($data);
-			$res	= file_put_contents($file, $data);
-			// read back with unserialize(), so only the owner may write or read it
-			chmod($file, 0600);
+			// A temporary file replaces the entry in one step (rename), so that a concurrent request
+			// reads the old or the new value, never a partly written or mixed one.
+			$tmp	= $file.'.'.getmypid().'-'.mt_rand().'.tmp';
+			$res	= FALSE !== file_put_contents($tmp, (time()+$ttl)."\n".serialize($data));
+			if( $res ) {
+				// read back with unserialize(), so only the owner may write or read it
+				chmod($tmp, 0600);
+				$res	= @rename($tmp, $file);
+				if( ! $res && $this->remove_file($file) ) {
+					// Windows does not replace a file that another process holds open.
+					$res	= rename($tmp, $file);
+				}
+			}
+			if( ! $res ) {
+				@unlink($tmp);
+			}
 			if( $this->debug_mode ) {
 				$time	= microtime(TRUE)-$time;
 				$this->debug_info->time	+= $time;
@@ -133,6 +145,13 @@
 					continue;
 				}
 				$file	= $this->path.'/'.$filename;
+				if( preg_match('/^[0-9a-f]{32}-[0-9a-f]{32}\..+\.tmp$/', $filename) ) {
+					// left behind by an interrupted write
+					if( @filemtime($file) < time()-3600 ) {
+						@unlink($file);
+					}
+					continue;
+				}
 				// A request may delete an expired entry while this runs; a missing file is not an error.
 				$fp	= @fopen($file, 'r');
 				if( ! $fp ) {

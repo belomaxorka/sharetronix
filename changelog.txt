@@ -639,6 +639,11 @@
 	  answering. The drivers now wait at most one second, and after a failure the memcached driver
 	  skips the server for the rest of the request. An entry larger than the item size limit of
 	  memcached is logged as such instead of as a server failure.
+	* The file cache deleted an entry and then wrote the new value without a lock, so a request
+	  running at the same time could miss the entry or read it half written, which logged
+	  unserialize() notices and chmod() warnings and, in a stress test, returned values mixed from
+	  two writes. Entries are now written to a temporary file that replaces the entry in one step;
+	  the daily cleanup removes temporary files left by interrupted writes.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
