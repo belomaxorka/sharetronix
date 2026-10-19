@@ -446,6 +446,10 @@
 	  "Duplicate column name", and only restoring the backup helped. Changes that are already in the
 	  database are now skipped and reported in the PHP error log, so the update can simply be run
 	  again.
+	* On a MySQL server whose default character set is latin1, the stock setting of MySQL 5.7, the
+	  installer and the updater talked to the database in latin1: an administrator name with
+	  non-Latin letters was stored double-encoded, and the administrator could not sign in with it.
+	  Their connection now uses utf8 like the rest of the application.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

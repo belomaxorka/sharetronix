@@ -18,6 +18,10 @@
 			if(FALSE == $db) {
 				return 2;
 			}
+			// Like mysql::connect(): without it the connection uses the server's default character set,
+			// latin1 on a stock MySQL 5.7, and non-ASCII data such as the administrator name is stored
+			// double-encoded.
+			$this->ext=='mysqli' ? mysqli_query($this->connection, 'SET NAMES utf8') : mysql_query('SET NAMES utf8', $this->connection);
 			
 			return $this->connection;
 		}
