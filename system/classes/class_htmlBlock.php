@@ -12,6 +12,12 @@
 		private $layout;
 		public  $delimiter;
 		public  $block_type;
+		// Inner blocks saved one after another into the same part of this block, such as the comments of a
+		// post, wait here and go into $this->html with one replacement. A replacement for each of them copied
+		// the whole block every time: the time grew with the square of the number of comments, and a post
+		// with a few thousand of them ran out of the time limit (see addToPart()).
+		private $part_name	= FALSE;
+		private $part_html	= '';
 		
 		public function __construct( $block_name, $plugin, & $layout )
 		{
@@ -58,6 +64,7 @@
 			 	$this->saveInBlockPart( $layout_part, $remove_vars );
 			 	return;
 			 }*/	 
+			$this->flushPart();
 			$tmp = $this->assigned_vars; //added
 			
 			$this->usePluginVars();
@@ -109,10 +116,33 @@
 				$this->removeTemplateVars();
 			}
 			
-			$this->layout->block->html = str_replace( '{%'.$block_part.'%}', $this->html.'{%'.$block_part.'%}', $this->layout->block->html );
+			$this->layout->block->addToPart( $block_part, $this->html );
 			
 			$this->invalidateVars();//new thing 
 			
 			$this->layout->destroyBlock( $this->block_type );
+		}
+		
+		public function addToPart( $block_part, $html )
+		{
+			/*
+			 * Put html in front of the {%block_part%} placeholder of this block, as the replacement in
+			 * saveInBlockPart() did, but together with the html that follows for the same part.
+			 */
+			if( $this->part_name !== $block_part ) {
+				$this->flushPart();
+				$this->part_name	= $block_part;
+			}
+			$this->part_html	.= $html;
+		}
+		
+		private function flushPart()
+		{
+			if( $this->part_name === FALSE ) {
+				return;
+			}
+			$this->html	= str_replace( '{%'.$this->part_name.'%}', $this->part_html.'{%'.$this->part_name.'%}', $this->html );
+			$this->part_name	= FALSE;
+			$this->part_html	= '';
 		}
 	}

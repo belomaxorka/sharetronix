@@ -584,6 +584,10 @@
 	  seldom posts read all posts (4 s on a site with 1 000 000 posts, also with the cache). It now
 	  finds them through their indexes; a post that mentions several members is no longer listed
 	  once for each of them.
+	* Pages with many comments took time growing with the square of their number, because the page
+	  was copied once for every comment put into it: a post with 2 600 comments took 1.5 s, and one
+	  with 8 700 comments ran out of the time limit (HTTP 500). The comments are now put into the
+	  page at once.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
