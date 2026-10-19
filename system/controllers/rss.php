@@ -108,7 +108,9 @@
 			$D->he_follows_me = isset($this->network->get_user_follows($u->id, FALSE, 'hefollows')->follow_users[$this->user->id]);
 		
 			if(!$u->is_posts_protected || ($D->he_follows_me && $u->is_posts_protected) || ($this->user->is_logged && $this->user->info->is_network_admin)){
-				$q	= 'SELECT *, "public" AS `type` FROM posts WHERE user_id="'.$u->id.'" '.$not_in_groups.$without_users.' ORDER BY id DESC LIMIT '.$q_limit;
+				// The filters name the table p: without the alias every feed of a member failed (HTTP 500)
+				// as soon as the site had a private group or a member who protects their posts.
+				$q	= 'SELECT p.*, "public" AS `type` FROM posts p WHERE p.user_id="'.$u->id.'" '.$not_in_groups.$without_users.' ORDER BY p.id DESC LIMIT '.$q_limit;
 			}
 		}
 	}

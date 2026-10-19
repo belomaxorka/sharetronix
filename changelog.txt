@@ -665,6 +665,9 @@
 	  administrators) on every site with a private group or a member who protects their posts, and
 	  its further pages repeated or skipped posts for everybody: the visibility filter and the
 	  paging condition were appended after GROUP BY and grouped the rows by these conditions.
+	* The feed of a member (/rss/username:...) answered HTTP 500 on every site with a private group
+	  or a member who protects their posts, because its query left out the table alias that the
+	  filters use.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
