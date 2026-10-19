@@ -90,12 +90,6 @@
 			
 		}
 		
-		public function callEvent()
-		{
-			$event_to_call = 'onBefore'.$this->ajax_file_name.'Ajax';
-			$pm->$event_to_call();
-		}
-		
 		private function _isJson($string) 
 		{
 			return json_decode($string) !== NULL;
@@ -133,8 +127,6 @@
 			if( $this->error ){
 				return FALSE;
 			}
-			
-			//$this->callEvent();
 			
 			$ajax_action = $this->ajax_file_action;
 			$ajax_item = $this->ajax_file_item;

@@ -422,6 +422,11 @@
 	  The drop cannot be undone, so take the usual backup first, and delete the old application
 	  files rather than copying the new ones over them: a left-over 3.6.2 cron job would fail on the
 	  dropped tables (see README, Upgrading).
+	* Removed dead error-handling code: services::callEvent(), which used an undefined variable and
+	  was only called from a commented-out line, so calling it always ended in a fatal error; and a
+	  database check in the installer's version detection that could never be true, since a
+	  constructor does not return the error codes it compared with (the updater's sign-in check
+	  already stops when the database is unreachable).
 
 Sharetronix 3.6.2
 	* Bug fixes

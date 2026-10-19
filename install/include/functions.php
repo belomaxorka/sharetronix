@@ -67,9 +67,6 @@
 				$_SESSION['INSTALL_DATA']['SITE_URL'] = $C->SITE_URL;
 				
 				$db = new mysqlExt($C->DB_HOST, $C->DB_USER, $C->DB_PASS, $C->DB_NAME);
-				if( $db === 1 || $db === 2 ){
-					$error = TRUE;
-				}
 			}
 			
 			$C = new stdClass;
