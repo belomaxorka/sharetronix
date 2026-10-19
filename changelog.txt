@@ -500,6 +500,13 @@
 	  up to a minute for a slow server: my_copy() tried copy() without a time limit
 	  (default_socket_timeout) before its cURL attempt, so the request could run past the 20-second
 	  limit and fail with HTTP 500. copy() now gives up after 5 seconds, like the cURL attempt.
+	* The spam check at sign-up asks StopForumSpam over HTTPS with a 5-second limit instead of up to
+	  15 seconds, URL-encodes the IP and e-mail address, and now also refuses addresses that
+	  StopForumSpam lists; the old check looked at the wrong field and only ever refused listed IPs.
+	* With $C->HONEYPOT_ACCESS_KEY set, the sign-up check against Project Honey Pot looks the
+	  visitor up in http:BL through DNS, as the service requires, and refuses visitors listed as
+	  suspicious, harvesters or comment spammers but not search engines. It used to send the DNS
+	  name as an HTTP request, so its result did not depend on the list.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
