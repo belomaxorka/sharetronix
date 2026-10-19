@@ -105,5 +105,8 @@
 	//SPAMMER CHECKS
 	//go to https://www.projecthoneypot.org to get a access key
 	$C->HONEYPOT_ACCESS_KEY = '';
+	//the sign-up is refused when https://www.stopforumspam.com has reports of the e-mail address
+	//or IP address with at least this confidence (percent), see README.md
+	$C->STOPFORUMSPAM_MIN_CONFIDENCE = 10;
 	
 ?>

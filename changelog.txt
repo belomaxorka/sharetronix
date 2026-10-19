@@ -511,6 +511,11 @@
 	  sign-up step stopped with a fatal error at the StopForumSpam check, so nobody could sign up.
 	  The check is now skipped there. When the check is skipped or StopForumSpam cannot be reached
 	  or answers with an error, a line starting with "Sharetronix spam check:" is logged.
+	* The StopForumSpam check at sign-up refused every e-mail or IP address that had ever been
+	  reported, also when the only report was months old and the address had since been reused,
+	  which turned away visitors on shared and dynamic addresses. It now refuses an address only
+	  when StopForumSpam's confidence for it, which falls as the reports get older, reaches
+	  $C->STOPFORUMSPAM_MIN_CONFIDENCE (10 percent by default; 0 restores the old behavior).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

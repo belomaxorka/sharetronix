@@ -12,6 +12,8 @@
 		
 		public function checkDomainForum( $ip, $email )
 		{
+			global $C;
+			
 			if( ! $this->if_data_is_valid($ip) ){
 				return false;
 			}
@@ -39,10 +41,17 @@
 				return $this->error;
 			}
 			
-			if( isset($curl_result->email->appears) && $curl_result->email->appears ){
-				$this->error	= TRUE;
-			}elseif( isset($curl_result->ip->appears) && $curl_result->ip->appears ){
-				$this->error	= TRUE;
+			// A listing alone is weak evidence: addresses are shared and change hands, and reports stay
+			// listed for years. Its confidence, a percentage that falls quickly as the last report gets
+			// older, has to reach the minimum.
+			$min_confidence = isset($C->STOPFORUMSPAM_MIN_CONFIDENCE) && is_numeric($C->STOPFORUMSPAM_MIN_CONFIDENCE) ? (float) $C->STOPFORUMSPAM_MIN_CONFIDENCE : 10;
+			foreach( array('email', 'ip') as $field ){
+				if( isset($curl_result->$field->appears) && $curl_result->$field->appears ){
+					$confidence = isset($curl_result->$field->confidence) ? (float) $curl_result->$field->confidence : 100;
+					if( $confidence >= $min_confidence ){
+						$this->error	= TRUE;
+					}
+				}
 			}
 			
 			return $this->error;

@@ -88,7 +88,15 @@ Themes that override the blocks `registration`, `user-signup-email`, or `user-fo
 
 ## Spam checks
 
-Before it creates an account, the sign-up checks the visitor's e-mail address and IP address with [StopForumSpam](https://www.stopforumspam.com/), a shared list of addresses reported for forum and blog spam, and refuses the sign-up if either is listed. The check has timeouts of 3 seconds to connect and 5 seconds in total. If the service cannot be reached or answers with an error, or PHP has no cURL extension, the sign-up goes on without the check and a line starting with `Sharetronix spam check:` is logged.
+Before it creates an account, the sign-up checks the visitor's e-mail address and IP address with [StopForumSpam](https://www.stopforumspam.com/), a shared list of addresses reported for forum and blog spam, and refuses the sign-up if either has been reported with a confidence of at least `$C->STOPFORUMSPAM_MIN_CONFIDENCE` percent (default `10`):
+
+```php
+$C->STOPFORUMSPAM_MIN_CONFIDENCE = 10;
+```
+
+StopForumSpam calculates the confidence from the number of reports and the time since the last one. In October 2026 an address reported once in the past week scored 18, addresses last reported more than ten days ago scored less than 10 even with a dozen reports, and addresses reported dozens of times in the past days, or blacklisted, more than 90. A higher minimum refuses fewer visitors. `0` refuses every address that has ever been reported (Sharetronix 3.6.2 did so for IP addresses), which also turns away visitors who share or were later given an address that was once used for spam.
+
+The check has timeouts of 3 seconds to connect and 5 seconds in total. If the service cannot be reached or answers with an error, or PHP has no cURL extension, the sign-up goes on without the check and a line starting with `Sharetronix spam check:` is logged.
 
 With `$C->HONEYPOT_ACCESS_KEY` set to an access key of [Project Honey Pot](https://www.projecthoneypot.org/), the sign-up also looks the visitor's IPv4 address up in its http:BL list through DNS and refuses every listed address except search engines.
 
@@ -158,6 +166,8 @@ The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system
 The bundled Securimage CAPTCHA, the reCAPTCHA v1 integration, and the image CAPTCHA of the contact form have been replaced by the built-in image described in [CAPTCHA](#captcha). The updater deletes `system/libraries/securimage/`, `system/helpers/func_recaptchalib.php`, and `system/helpers/func_captcha.php`; old images `storage/tmp/captcha_*.gif` of the contact form can be deleted by hand. Existing configurations need no change: without the new settings the image is used. `$C->GOOGLE_CAPTCHA_PUBLIC_KEY` and `$C->GOOGLE_CAPTCHA_PRIVATE_KEY` are ignored and can be removed; Google shut reCAPTCHA v1 down in 2018, so for reCAPTCHA create new v2 or v3 keys and set `$C->CAPTCHA_PROVIDER`. Plugins that called `generate_captcha()` or Securimage must use the `captcha` class instead.
 
 New accounts no longer take their picture from Gravatar during sign-up; they start with the default picture. Members can choose **Use My Gravatar** on the picture settings page (`/settings/avatar`), which downloads their Gravatar over HTTPS (cURL with a CA bundle, see [CAPTCHA](#captcha)) and sends a SHA-256 hash of their e-mail address to gravatar.com. Existing pictures are not changed.
+
+The StopForumSpam check at sign-up no longer refuses addresses whose reports are old (see [Spam checks](#spam-checks)). To refuse every address that has ever been reported, as 3.6.2 did for IP addresses, set `$C->STOPFORUMSPAM_MIN_CONFIDENCE = 0;` in `system/conf_main.php`.
 
 ## Known limitations
 
