@@ -9,7 +9,7 @@ This repository maintains Sharetronix **3.6.2**. It keeps the platform running o
 ## Requirements
 
 - Apache HTTP Server with `mod_rewrite`, and `.htaccess` overrides allowed for the application directory.
-- PHP 7.2 or 8.4 with the `mbstring`, `mysqli`, and `gd` extensions, `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`.
+- PHP 7.2 or 8.4 with the `mbstring`, `mysqli`, and `gd` extensions (GD with FreeType support, for the CAPTCHA image), `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`. An external CAPTCHA service needs the cURL extension.
 - MySQL 5.7.
 
 Installation, updates, and the core application flows have been tested with:
@@ -53,6 +53,35 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 
 `$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, or `redis`. The memcached cache requires the `memcached` or `memcache` PHP extension. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the required extension the file cache is used. While the memcached or Redis server is unreachable, pages are served without the cache, and every such request logs one line about it.
 
+## CAPTCHA
+
+Sign-up, password recovery, and the contact form ask for a CAPTCHA. By default it is a built-in image, generated on the server with [Gregwar Captcha](https://github.com/Gregwar/Captcha) (`system/libraries/gregwar-captcha/`); it needs no account and sends nothing to other services. The code is valid for 15 minutes and for one check, right or wrong; the form has a link that shows another image.
+
+Instead of the image, `system/conf_main.php` can select an external service. Create a site key and a secret key for your domain in the service's console and set:
+
+```php
+$C->CAPTCHA_PROVIDER   = 'turnstile';
+$C->CAPTCHA_SITE_KEY   = '...';
+$C->CAPTCHA_SECRET_KEY = '...';
+```
+
+| `$C->CAPTCHA_PROVIDER` | Service |
+| --- | --- |
+| `'image'` | Built-in image (the default) |
+| `'recaptcha2'` | [Google reCAPTCHA](https://developers.google.com/recaptcha) v2, "I'm not a robot" checkbox |
+| `'recaptcha3'` | Google reCAPTCHA v3, no widget; accepts a score of at least `$C->CAPTCHA_MIN_SCORE` (default `0.5`) |
+| `'turnstile'` | [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) |
+| `'hcaptcha'` | [hCaptcha](https://docs.hcaptcha.com/) |
+| `'yandex'` | [Yandex SmartCaptcha](https://yandex.cloud/en/docs/smartcaptcha/) |
+
+Without both keys, or with an unknown name, the built-in image is used, and a line saying why is logged when a form is sent. The server checks every answer with the service over HTTPS (timeouts of 5 seconds to connect and 10 seconds in total). If the service cannot be reached, answers with an error, or rejects the keys, the form is not accepted, the visitor is asked to try again later, and a line starting with `Sharetronix captcha:` is logged. On Windows, PHP has no CA certificates for cURL unless `curl.cainfo` in `php.ini` points to a bundle such as [cacert.pem](https://curl.se/docs/caextract.html); without it every check fails with an SSL certificate error.
+
+Some services let visitors through on their own: according to Google, reCAPTCHA checks above the free monthly quota (10,000) answer `success`, and SmartCaptcha accepts every token while the Yandex Cloud billing account is not active.
+
+Privacy: with an external service, the sign-up, password recovery, and contact pages load the service's JavaScript, so the service receives the visitor's IP address, browser data, and its own cookies, and may process them outside your jurisdiction. Mention it in your privacy policy if that applies to you. Sharetronix itself does not send the visitor's IP address with the check.
+
+Themes that override the blocks `registration`, `user-signup-email`, or `user-forgotten-pass-step1` keep working. The CAPTCHA markup (the image with its link, or the service's widget) is in `{%captcha_image%}`; show the `captcha_word` input only when `$D->captcha_widget` is false (`$D->use_google_recaptcha` is kept as its old name). The image is served by `/captcha?namespace=signup`, `forgotten_pass`, or `contacts`.
+
 ## Debugging
 
 Debug mode is enabled for client IP addresses listed in `system/conf_main.php`:
@@ -65,7 +94,7 @@ Requests from these addresses display PHP errors of all levels and, when a datab
 
 With `$C->DEBUG_CONSOLE = TRUE;` pages in debug mode show a small **Debug** link at the bottom right. It opens a window with the page generation time, memory use, and every SQL query and cache call of the request.
 
-Failed database queries, failed e-mail deliveries, unreachable cache servers, and service answers that cannot be encoded are logged as lines starting with `Sharetronix`. Make sure `log_errors` is on and `error_log` points to a file you can read. The command-line cron worker also prints errors to its output.
+Failed database queries, failed e-mail deliveries, unreachable cache servers, failed CAPTCHA checks by an external service, and service answers that cannot be encoded are logged as lines starting with `Sharetronix`. Make sure `log_errors` is on and `error_log` points to a file you can read. The command-line cron worker also prints errors to its output.
 
 ## Plugins, themes, and languages
 
@@ -115,6 +144,8 @@ The updater updates Sharetronix 3.0 and later. Releases 1.x and 2.x used a diffe
 Outside debug mode, PHP errors are no longer displayed to visitors, even when `display_errors` is on in `php.ini`. To see them in the browser, add your address to `$C->DEBUG_USERS` (see [Debugging](#debugging)).
 
 The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system/conf_main.php` sets `$C->CACHE_MECHANISM` to `'apc'` or `'mysqlheap'`, the application now uses the file cache in `system/cache/`, which must stay writable; `'memcached'` and `'redis'` remain available.
+
+The bundled Securimage CAPTCHA, the reCAPTCHA v1 integration, and the image CAPTCHA of the contact form have been replaced by the built-in image described in [CAPTCHA](#captcha). The updater deletes `system/libraries/securimage/`, `system/helpers/func_recaptchalib.php`, and `system/helpers/func_captcha.php`; old images `storage/tmp/captcha_*.gif` of the contact form can be deleted by hand. Existing configurations need no change: without the new settings the image is used. `$C->GOOGLE_CAPTCHA_PUBLIC_KEY` and `$C->GOOGLE_CAPTCHA_PRIVATE_KEY` are ignored and can be removed; Google shut reCAPTCHA v1 down in 2018, so for reCAPTCHA create new v2 or v3 keys and set `$C->CAPTCHA_PROVIDER`. Plugins that called `generate_captcha()` or Securimage must use the `captcha` class instead.
 
 ## Known limitations
 
