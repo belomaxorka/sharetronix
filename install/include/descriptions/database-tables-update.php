@@ -121,7 +121,7 @@
 			),
 			'queries'=> array(
 					"INSERT INTO `languages` (`langkey`, `installed`, `version`) VALUES ( 'en', 1, 0)",
-					"INSERT INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.0.0')"
+					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.0.0')"
 			)
 	);
 	
@@ -141,7 +141,7 @@
 			'queries'=>array(
 					"ALTER TABLE  `groups` ADD  `category_id` INT NOT NULL DEFAULT '0'",
 					"INSERT INTO `settings` (`word`, `value`) VALUES ('USERS_TO_CREATE_SUBCATEGORIES', '0')",
-					"INSERT INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.5.0')"
+					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.5.0')"
 			)
 	);
 	
@@ -159,21 +159,21 @@
 	
 			),
 			'queries'=>array(
-					"INSERT INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.0')"
+					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.0')"
 			)
 	);
 	
 	$db_updates['3.6.1'] = array(
 			'tables' => array(),
 			'queries'=>array(
-					"INSERT INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.1')"
+					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.1')"
 			)
 	);
 	
 	$db_updates['3.6.2'] = array(
 			'tables' => array(),
 			'queries'=>array(
-					"INSERT INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.2')"
+					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.2')"
 			)
 	);
 

@@ -347,6 +347,9 @@
 	  ship them, so requesting a recovery link failed with HTTP 500 and no mail was sent; the debug
 	  console failed the same way. Like layouts and other blocks, a block the theme does not provide
 	  is now taken from static/templates/, and a theme can still override it.
+	* Updates from 3.0.x, 3.1.x and 3.6.0 stopped with a database error before the 3.6.3 changes
+	  were applied, because each update step inserted the unique VERSION setting again. The steps
+	  now replace it.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
