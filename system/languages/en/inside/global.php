@@ -179,6 +179,7 @@
 		'rss_usrposts'	=> 'Posts by #USERNAME#',
 		'rss_grpposts'	=> 'Posts in #GROUP#',
 		'rss_everybody'	=> 'All posts in #SITE_TITLE#',
+		'rss_allposts'	=> 'All posts',
 		
 		'msg_post_deleted_ttl'	=> 'Done',
 		'msg_post_deleted_txt'	=> 'Post was deleted.',

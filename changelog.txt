@@ -482,6 +482,8 @@
 	  without the name or e-mail address of the sender, so they could not be answered. The subject
 	  now names the contact form, the message starts with the sender's name and address, and
 	  replying goes to the sender.
+	* The feed of all posts (rss/all:posts) had the title " - <site>". It is now "All posts -
+	  <site>".
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
