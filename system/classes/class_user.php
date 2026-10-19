@@ -390,15 +390,20 @@
 			}
 			global $C;
 			
-			$post_protected_user_ids = array();
-				
-			$r	= $this->db2->query('SELECT id FROM users WHERE is_posts_protected=1', FALSE);
-			while($obj = $this->db2->fetch_object($r)) {
-				$post_protected_user_ids[]	= $obj->id;
+			// The cached list of the network (refreshed when a member changes the setting); reading the users
+			// table here scanned all of it for every filtered feed, search, and RSS request. Only the protected
+			// members among the followers matter: they are asked for directly instead of loading the follower
+			// list, which the cache holds by the hundred thousand for a popular member.
+			$post_protected_user_ids = $this->network->get_post_protected_user_ids($force_refresh);
+			if( count($post_protected_user_ids) == 0 ) {
+				return array();
 			}
 			
 			$my_followers = array();
-			$my_followers = array_keys($this->network->get_user_follows($this->id, FALSE, 'hisfollowers')->followers);
+			$r	= $this->db2->query('SELECT who FROM users_followed WHERE whom="'.intval($this->id).'" AND who IN('.implode(', ', array_map('intval', $post_protected_user_ids)).')', FALSE);
+			while($obj = $this->db2->fetch_object($r)) {
+				$my_followers[]	= $obj->who;
+			}
 			$my_followers[] = $this->id;
 	
 			$post_protected_user_ids = array_intersect($my_followers, $post_protected_user_ids);

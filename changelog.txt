@@ -588,6 +588,13 @@
 	  was copied once for every comment put into it: a post with 2 600 comments took 1.5 s, and one
 	  with 8 700 comments ran out of the time limit (HTTP 500). The comments are now put into the
 	  page at once.
+	* Every filtered feed, search and RSS request of a signed-in member read the whole users table
+	  to find the members who protect their posts and loaded the complete list of the member's
+	  followers to compare the two, and the feed of a member (/rss/username:...) loaded all follower
+	  and following lists of its author to check one entry. For a member with 200 000 followers that
+	  list takes 4 MB, more than memcached stores by default, so it was read from the database on
+	  every page. The cached list of protected members is used instead, only the protected members
+	  among the followers are looked up, and the feed reads only the list it needs.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

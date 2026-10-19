@@ -105,7 +105,7 @@
 			$without_users = array_diff( $this->network->get_post_protected_user_ids(), $this->user->get_my_post_protected_follower_ids() );
 			$without_users = count($without_users)>0 ? (' AND (p.group_id>0 OR p.user_id NOT IN('.implode(', ', $without_users).'))') : '';
 			
-			$D->he_follows_me = isset($this->network->get_user_follows($u->id)->follow_users[$this->user->id]);
+			$D->he_follows_me = isset($this->network->get_user_follows($u->id, FALSE, 'hefollows')->follow_users[$this->user->id]);
 		
 			if(!$u->is_posts_protected || ($D->he_follows_me && $u->is_posts_protected) || ($this->user->is_logged && $this->user->info->is_network_admin)){
 				$q	= 'SELECT *, "public" AS `type` FROM posts WHERE user_id="'.$u->id.'" '.$not_in_groups.$without_users.' ORDER BY id DESC LIMIT '.$q_limit;
