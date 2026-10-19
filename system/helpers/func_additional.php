@@ -102,7 +102,8 @@
 	
 	function checkCronjobDirectory( &$installed_plugins, $cornjob_name )
 	{
-		global $C;
+		// Plugin jobs see the same objects as the core jobs, which the worker includes globally.
+		global $C, $db1, $db2, $cache, $network, $user, $page, $pm;
 	
 		foreach( $installed_plugins as $plugin ){
 			$plugin_cronjobs_dir = $C->PLUGINS_DIR.$plugin.'/system/cronjobs'.$cornjob_name.'/';
