@@ -384,6 +384,8 @@
 	  like the core cron jobs do. They now get the same variables.
 	* When a plugin refused a follow, unfollow, group join or leave, or a comment, the answer showed
 	  a generic or empty error instead of the plugin's message. The plugin's message is shown now.
+	* Uninstalling a plugin dropped its tables but left them registered to the plugin in
+	  plugins_tables. The registration is now removed with the table.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

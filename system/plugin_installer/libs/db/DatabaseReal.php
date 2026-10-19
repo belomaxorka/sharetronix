@@ -39,6 +39,8 @@ class DatabaseReal implements DatabaseInterface {
 		
 		$sql = sprintf("DROP TABLE IF EXISTS %s", $table_name);
 		$this->execute($sql);
+		// The plugin no longer owns the table (create_table() registered it).
+		$this->execute(sprintf("DELETE FROM plugins_tables WHERE `table`=%s AND `owner`=%s", $this->db->link->quote($table_name), $this->db->link->quote($this->plugin_name)));
 	}
 	
 	
