@@ -451,6 +451,9 @@
 	  existed, missing columns); a 2.2.1 database ended marked as updated but with an old post_likes
 	  table. The updater now accepts Sharetronix 3.0 and later and explains why it stops for older
 	  versions.
+	* The installer of the 3.0 releases in install/old/, which converted 1.x and 2.x installations.
+	  It had already been disabled (it only answered 403) and is no longer needed now that the
+	  updater accepts only Sharetronix 3.0 and later.
 
 Sharetronix 3.6.2
 	* Bug fixes
