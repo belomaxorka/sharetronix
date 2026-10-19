@@ -322,6 +322,11 @@
 	* Reported service answers that cannot be encoded as JSON. When an answer contained invalid
 	  UTF-8, the services page sent an empty body with HTTP 200 and logged nothing; it now answers
 	  HTTP 500, so the page shows its error message, and logs the service name and the JSON error.
+	* Kept command-line cron runs out of debug mode. The cron worker set the client address to
+	  127.0.0.1 before the debug check, so a development configuration listing 127.0.0.1 in
+	  $C->DEBUG_USERS ran every cron job in debug mode: all query texts stayed in memory and failed
+	  queries printed their SQL to the cron output. The worker now sets the address after the check;
+	  jobs still see 127.0.0.1.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

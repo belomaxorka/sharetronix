@@ -3,11 +3,12 @@
 	chdir(dirname(__FILE__));
 	if( !isset($_SERVER['HTTP_HOST']) ) { $_SERVER['HTTP_HOST'] = '127.0.0.1'; }
 	if( !isset($_SERVER['REQUEST_URI']) ) { $_SERVER['REQUEST_URI'] = '/'; }
-	if( !isset($_SERVER['REMOTE_ADDR']) ) { $_SERVER['REMOTE_ADDR'] = '127.0.0.1'; }
 	
 	require_once('../helpers/func_main.php');
 	require_once('../helpers/func_additional.php');
 	require_once('../conf_system.php');
+	// Only now: a command-line run must not match an address listed in DEBUG_USERS.
+	if( !isset($_SERVER['REMOTE_ADDR']) ) { $_SERVER['REMOTE_ADDR'] = '127.0.0.1'; }
 	$_SERVER['HTTP_HOST']	= $C->OUTSIDE_DOMAIN;
 	$_SERVER['REQUEST_URI'] = $C->OUTSIDE_SITE_URL;
 	$C->DOMAIN			= $C->OUTSIDE_DOMAIN;
