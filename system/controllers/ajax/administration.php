@@ -53,7 +53,11 @@
 			}
 			
 			$admin = new communityAdministration();
-			$admin->removeAdministrator($users_id);
+			// FALSE: no right to do it, oneself, or not an active administrator; the list used to drop the row anyway
+			if( ! $admin->removeAdministrator($users_id) ){
+				echo 'ERROR:'.$page->lang('global_ajax_post_error2');
+				return;
+			}
 			
 			echo $page->lang('global_ajax_post_ok1');
 			return;
@@ -69,7 +73,11 @@
 			}
 				
 			$admin = new communityAdministration();
-			$admin->activateUser($users_id);
+			// FALSE: no right to do it, oneself, or not a suspended member
+			if( ! $admin->activateUser($users_id) ){
+				echo 'ERROR:'.$page->lang('global_ajax_post_error3');
+				return;
+			}
 				
 			echo $page->lang('global_ajax_post_ok2');
 			return;

@@ -286,7 +286,7 @@
 			
 		'global_ajax_post_ok' => 'Success! Moderator is removed',
 		'global_ajax_post_ok1' => 'Success! Administrator is removed',
-		'global_ajax_post_ok2' => 'Success! Administrator is removed',
+		'global_ajax_post_ok2' => 'Success! User is activated',
 			
 		'global_none' => 'None',
 		'global_postform_share_btn_txt' => 'Share',
