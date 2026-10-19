@@ -77,6 +77,31 @@ A theme is a folder in `themes/` with a `manifest.json`. Copy it there and selec
 
 A language pack is a folder in `system/languages/` with a `language.php`. Copy it there; **Administration → Languages** lists the installed packs, and the general settings choose the default language.
 
+### Writing a plugin
+
+This fork keeps the plugin interface of Sharetronix 3.x and does not extend it. A plugin folder `apps/<name>/` contains:
+
+- `manifest.json` with `plugin_name`, which must be the folder name (letters, digits, and `_`); the Plugins page also shows `version`, `author`, and `descr`.
+- `plugin.php` with `class <name> extends plugin`. A public method named after an event runs when the core fires the event and receives the event's arguments as one array (`$args[0]`, `$args[1]`). `$this->setVar('<placeholder>', $html)` adds HTML to a `{%placeholder%}` of the templates being rendered; `'replace'` as the third argument replaces its content. The base class also provides `$this->db2`, `$this->user`, `$this->network`, `$this->page`, `$this->cache`, `getCurrentController()`, `getCurrentTab()`, and `isMobileRegime()`.
+- Optionally `installer.php` with `class MyInstaller extends Installer`, whose `up()` and `down()` create and remove the plugin's tables and fields through the helpers in `system/plugin_installer/`. The Plugins page shows what they will change before it runs them.
+- Optionally `system/controllers/` for pages at `/plugin/<name>/...` (signed-in users only), `system/controllers/ajax/<action>.php` for `/services/<name>/<action>`, `system/cronjobs/php_<interval>/*.php` for jobs that run after the core jobs of that interval, and `static/js/*.js` and `static/css/*.css`, which the pages include.
+
+All of these work only while the plugin is installed and enabled. A handler of an event marked *veto* can stop the action with `$this->setVar('<event>_error', $message)`; the core then cancels it and shows the message where the page or the AJAX answer has room for one. A handler of the query events returns SQL, which the core runs as it is.
+
+| Event | When | Arguments |
+| --- | --- | --- |
+| `onPageLoad` | Every page built from templates | — |
+| `onPageSubmit` (veto) | Before the contacts, group settings, new group, group category, invitation, sign-in, or sign-up form is processed | — |
+| `onUserSettingsSubmit` (veto) | Before a user settings form is saved | — |
+| `onAdminSettingsSubmit` (veto) | Before an administration form is saved | — |
+| `onPostSave`, `onPostDelete` (veto) | Before a post is saved or deleted | The `newpost` or `post` object |
+| `onPostCommentSave`, `onPostCommentDelete` (veto) | Before a comment is saved or deleted | The `newpostcomment` or `postcomment` object |
+| `onUserFollow`, `onUserUnfollow` (veto) | Before the signed-in user follows or unfollows someone | The signed-in `user` object, then the other user |
+| `onGroupJoin`, `onGroupLeave` (veto) | Before the signed-in user joins or leaves a group | The group |
+| `onPostLoad`, `onPostCommentLoad` | A post or comment is rendered | The post or comment |
+| `onSingleUserLoad`, `onSingleGroupLoad` | A user or group is rendered in a list | The user or group |
+| `onPageSetQuery`, `onPageSetCountQuery`, `onPageSetQueryOrder` | A feed, the group list, or the member list is opened with a `tab:` the core does not know | — (return the query, the count query, or the `ORDER BY` clause) |
+
 ## Upgrading
 
 The updater updates Sharetronix 3.0 and later. Releases 1.x and 2.x used a different database layout and upload folders, which it cannot convert.
