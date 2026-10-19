@@ -87,7 +87,7 @@
 			}
 			if( $obj->posttags > 0 ) {
 				//if( preg_match_all('/\#([א-תÀ-ÿ一-龥а-яa-z0-9ա-ֆ\-_]{1,50})/iu', $this->comment_message, $matches, PREG_PATTERN_ORDER) ) {
-				if( preg_match_all('/\#([\pL0-9]{1,50})/iu', $this->comment_message, $matches, PREG_PATTERN_ORDER) ) {
+				if( preg_match_all('/\#([\pL\pM0-9]{1,50})/iu', $this->comment_message, $matches, PREG_PATTERN_ORDER) ) {
 					foreach($matches[1] as $tg) {
 						$this->comment_posttags[]	= trim($tg);
 					}

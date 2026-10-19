@@ -668,6 +668,11 @@
 	* The feed of a member (/rss/username:...) answered HTTP 500 on every site with a private group
 	  or a member who protects their posts, because its query left out the table alias that the
 	  filters use.
+	* Hashtags in scripts that use combining marks inside words (Devanagari, Bengali, Tamil, Thai
+	  and others, and accents typed as combining characters) were cut at the first mark: "#नमस्ते"
+	  was stored and linked as "नमस", and the tag search did not find the post. Group titles in
+	  these scripts were refused. Tags and group titles now keep the marks; tags stored by older
+	  versions keep their cut form.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

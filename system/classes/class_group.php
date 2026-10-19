@@ -356,7 +356,7 @@
 			if( mb_strlen($title)<3 || mb_strlen($title)>30 ) {
 				$error	= 'group_setterr_title_length';
 			}
-			elseif( preg_match('/[^\pL0-9\.\-\_\s$]/iu', $title) ) { 
+			elseif( preg_match('/[^\pL\pM0-9\.\-\_\s$]/iu', $title) ) { 
 				$error	= 'group_setterr_title_chars';
 			}
 			elseif( $title != $this->group->title ) {
@@ -424,7 +424,7 @@
 				$errmsg	= 'group_setterr_title_length';
 				$error = TRUE;
 			}
-			elseif( preg_match('/[^\pL0-9\.\-\_\s$]/iu', $group_name) ) {
+			elseif( preg_match('/[^\pL\pM0-9\.\-\_\s$]/iu', $group_name) ) {
 				$errmsg	= 'group_setterr_title_chars';
 				$error = TRUE;
 			}

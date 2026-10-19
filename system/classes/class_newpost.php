@@ -201,7 +201,7 @@
 			
 			$this->posttags	= array();
 			//if( preg_match_all('/\#([א-תÀ-ÿ一-龥а-яa-z0-9ա-ֆ\-_]{1,50})/iu', $message, $matches, PREG_PATTERN_ORDER) ) {
-			if( preg_match_all('/\#([\pL0-9]{1,50})/iu', $this->message, $matches, PREG_PATTERN_ORDER) ) {
+			if( preg_match_all('/\#([\pL\pM0-9]{1,50})/iu', $this->message, $matches, PREG_PATTERN_ORDER) ) {
 				foreach($matches[1] as $tg) {
 					$this->posttags[]	= mb_strtolower(trim($tg));
 				}
