@@ -487,7 +487,8 @@ class IXR_Client {
     var $debug = false;
     // Storage place for an error message
     var $error = false;
-    // Time limit in seconds that callers may set (declared for PHP 8.2 and later)
+    // Time limit in seconds for connecting and for each wait for the answer; false uses
+    // default_socket_timeout
     var $timeout = false;
     function __construct($server, $path = false, $port = 80) {
         $this->IXR_Client($server, $path, $port);
@@ -528,10 +529,17 @@ class IXR_Client {
         if ($this->debug) {
             echo '<pre>'.htmlspecialchars($request)."\n</pre>\n\n";
         }
-        $fp = @fsockopen($this->server, $this->port);
+        if ($this->timeout) {
+            $fp = @fsockopen($this->server, $this->port, $errno, $errstr, $this->timeout);
+        } else {
+            $fp = @fsockopen($this->server, $this->port);
+        }
         if (!$fp) {
             $this->error = new IXR_Error(-32300, 'transport error - could not open socket');
             return false;
+        }
+        if ($this->timeout) {
+            stream_set_timeout($fp, $this->timeout);
         }
         fputs($fp, $request);
         $contents = '';
@@ -539,6 +547,14 @@ class IXR_Client {
         $gettingHeaders = true;
         while (!feof($fp)) {
             $line = fgets($fp, 4096);
+            if ($line === false && $this->timeout) {
+                $meta = stream_get_meta_data($fp);
+                if ($meta['timed_out']) {
+                    fclose($fp);
+                    $this->error = new IXR_Error(-32300, 'transport error - no answer within the time limit');
+                    return false;
+                }
+            }
             if (!$gotFirstLine) {
                 // Check line for '200'
                 if (strstr($line, '200') === false) {

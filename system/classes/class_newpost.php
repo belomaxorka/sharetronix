@@ -518,7 +518,8 @@
 						$myBlogRSSFeedUrl	= $C->SITE_URL.'rss/username:'.$this->user->username;
 						foreach($C->RPC_PINGS_SERVERS as $server) {
 							$client	= new IXR_Client($server);
-							$client->timeout	= 0;
+							// The ping runs while the post is being saved; a slow or silent server must not hold it up.
+							$client->timeout	= 3;
 							$client->useragent	.= ' -- '.$C->SITE_TITLE;
 							$client->debug	= false;
 							$client->query( 'weblogUpdates.extendedPing', $myBlogName, $myBlogUrl, $myBlogUpdateUrl, $myBlogRSSFeedUrl );

@@ -525,6 +525,11 @@
 	  strings, xml_parser_free(), and the (double) and (boolean) casts. The library is patched to
 	  use method callables, declared properties, and the canonical casts; it parses answers as
 	  before.
+	* Publishing a public post waited for the answer of every update ping server
+	  ($C->RPC_PINGS_SERVERS) without a time limit: about 3 seconds with rpc.pingomatic.com, once
+	  19, and with a server that accepts the connection but does not answer the post request did not
+	  finish within 60 seconds. Each ping now gives up after 3 seconds of connecting or of waiting
+	  for the answer; the post is saved either way.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
