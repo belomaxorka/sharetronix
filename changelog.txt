@@ -548,6 +548,9 @@
 	  When the address has no Gravatar or gravatar.com cannot be reached, the page says so and the
 	  current picture stays; a failed download is logged as a line starting with "Sharetronix
 	  avatar:".
+	* $C->STOPFORUMSPAM_ENABLED = FALSE; in system/conf_main.php turns off the StopForumSpam check
+	  at sign-up, which sends the e-mail and IP address of every new member to stopforumspam.com.
+	  Without the setting the check stays on.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party

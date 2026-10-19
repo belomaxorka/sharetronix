@@ -20,6 +20,9 @@
 			if( ! $this->if_data_is_valid($email) ){
 				return false;
 			}
+			if( isset($C->STOPFORUMSPAM_ENABLED) && ! $C->STOPFORUMSPAM_ENABLED ){
+				return false;
+			}
 			if( ! function_exists('curl_init') ){
 				$this->stopforumspam_failed('the cURL extension is not loaded');
 				return false;

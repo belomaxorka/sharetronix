@@ -96,9 +96,11 @@ $C->STOPFORUMSPAM_MIN_CONFIDENCE = 10;
 
 StopForumSpam calculates the confidence from the number of reports and the time since the last one. In October 2026 an address reported once in the past week scored 18, addresses last reported more than ten days ago scored less than 10 even with a dozen reports, and addresses reported dozens of times in the past days, or blacklisted, more than 90. A higher minimum refuses fewer visitors. `0` refuses every address that has ever been reported (Sharetronix 3.6.2 did so for IP addresses), which also turns away visitors who share or were later given an address that was once used for spam.
 
-The check has timeouts of 3 seconds to connect and 5 seconds in total. If the service cannot be reached or answers with an error, or PHP has no cURL extension, the sign-up goes on without the check and a line starting with `Sharetronix spam check:` is logged.
+The check has timeouts of 3 seconds to connect and 5 seconds in total. If the service cannot be reached or answers with an error, or PHP has no cURL extension, the sign-up goes on without the check and a line starting with `Sharetronix spam check:` is logged. StopForumSpam's [terms](https://www.stopforumspam.com/legal) are written for non-commercial use and limit the number of queries per day; read them before you use the check on a commercial site. `$C->STOPFORUMSPAM_ENABLED = FALSE;` turns the check off.
 
 With `$C->HONEYPOT_ACCESS_KEY` set to an access key of [Project Honey Pot](https://www.projecthoneypot.org/), the sign-up also looks the visitor's IPv4 address up in its http:BL list through DNS and refuses every listed address except search engines.
+
+Privacy: StopForumSpam receives the e-mail address and IP address of everyone who signs up, and Project Honey Pot the IP address; mention them in your privacy policy if that applies to you. The address checked is the one PHP receives as `REMOTE_ADDR`: behind a reverse proxy or CDN, configure the web server to pass on the visitor's address (for example with Apache `mod_remoteip` or the nginx `realip` module), or every visitor is checked with the proxy's address.
 
 ## Debugging
 
