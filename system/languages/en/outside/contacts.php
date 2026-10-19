@@ -17,6 +17,7 @@
 		'cnt_frm_sbj_other'	=> 'Other',
 		'cnt_frm_message'		=> 'Your message:',
 		'cnt_frm_captcha'		=> 'Image code:',
+		'captcha_refresh'	=> 'Show another image',
 		'cnt_frm_sbm'		=> 'Send message',
 		
 		'cntf_error'		=> 'Error',

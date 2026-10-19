@@ -80,6 +80,9 @@
 	* Sign-up and password recovery remove the CAPTCHA code after every check, so a wrong answer no
 	  longer leaves the same code open to further guesses; codes have five characters instead of
 	  three.
+	* The contact form uses the shared image CAPTCHA of sign-up and password recovery. Its own
+	  CAPTCHA showed one fixed GIF image per character, so a script could read the code from the
+	  file hashes, and a key and word that passed once stayed valid for the rest of the session.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -426,6 +429,10 @@
 	  1.5.4: the form showed the image CAPTCHA, but the check used reCAPTCHA.
 	* A CAPTCHA answer sent as an array no longer causes HTTP 500 on PHP 8, and /captcha answers 404
 	  for namespaces other than those of the core forms instead of storing them in the session.
+	* Viewing the contact form no longer deletes other files from storage/tmp/: the cleanup of its
+	  CAPTCHA images removed every file there older than 10 minutes, including attachments that were
+	  uploaded but not yet posted. The form also no longer writes five images into the public
+	  storage/tmp/ and one session entry on every view.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

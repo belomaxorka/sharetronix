@@ -3,7 +3,7 @@
 	$this->load_langfile('inside/global.php');
 	$this->load_langfile('outside/contacts.php');
 	
-	require_once( $C->INCPATH.'helpers/func_captcha.php' );
+	$captcha	= new captcha('contacts');
 
 	$submit	= FALSE;
 	$error	= FALSE;
@@ -16,13 +16,6 @@
 		$fullname	= $this->user->info->fullname;
 		$email		= $this->user->info->email;
 	}
-	
-	$captcha_key	= '';
-	$captcha_word	= '';
-	$captcha_html	= '';
-	list($captcha_word, $captcha_html)	= generate_captcha(5);
-	$captcha_key	= md5($captcha_word.time().rand());
-	$_SESSION['captcha_'.$captcha_key]	= $captcha_word;
 	
 	if( isset($_POST['sbm']) ) {
 		
@@ -53,9 +46,9 @@
 			$error	= TRUE;
 			$errmsg	= $this->lang('cntf_err_message');
 		}
-		elseif( !isset($_POST['captcha_key'],$_POST['captcha_word']) || !isset($_SESSION['captcha_'.$_POST['captcha_key']]) || $_SESSION['captcha_'.$_POST['captcha_key']]!=strtolower($_POST['captcha_word']) ) {
+		elseif( ! $captcha->verify() ) {
 			$error	= TRUE;
-			$errmsg	= $this->lang('cntf_err_captcha');
+			$errmsg	= $captcha->get_error_message('cntf_err_captcha');
 		}
 		else {
 			$sender	= $fullname.' <'.$email.'>';
@@ -86,15 +79,14 @@
 					$table->inputField( $this->lang('cnt_frm_fullname'), 'fullname', (isset($fullname)? $fullname : '') ),
 					$table->inputField( $this->lang('cnt_frm_email'), 'email', (isset($email)? $email : '') ),
 					$table->textArea( $this->lang('cnt_frm_message'), 'message', (isset($message)? $message : '') ),
-					$table->textField( $this->lang('cnt_frm_captcha'), $captcha_html ),
-					$table->inputField( '', 'captcha_word', ''),
-					$table->hiddenField('captcha_key', $captcha_key ),
-					$table->submitButton( 'sbm', $this->lang('cnt_frm_sbm') )
+					$table->textField( $captcha->is_widget() ? '' : $this->lang('cnt_frm_captcha'), $captcha->get_html() ),
 				);
+	if( ! $captcha->is_widget() ) {
+		$rows[]	= $table->inputField( '', 'captcha_word', '');
+	}
+	$rows[]	= $table->submitButton( 'sbm', $this->lang('cnt_frm_sbm') );
 	$tpl->layout->setVar('main_content', $table->createTableInput( $rows ) );
 	
 	$tpl->display();
-	
-	cleanup_captcha_files();
 	
 ?>
