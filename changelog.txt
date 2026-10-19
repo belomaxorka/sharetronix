@@ -567,6 +567,12 @@
 	  themes page, which now says so. The 3.6.3 update deletes the files of the tab.
 	* Removed the update check of the general settings page and its option; the service it asked no
 	  longer exists.
+	* Removed the bundled Securimage 3.5.4 library (system/libraries/securimage/), the reCAPTCHA v1
+	  helper system/helpers/func_recaptchalib.php, and system/helpers/func_captcha.php with
+	  generate_captcha() and cleanup_captcha_files(); the updater deletes these files. Plugins that
+	  used them call the captcha class instead (new captcha('signup'), get_html(), verify()). Theme
+	  blocks that use {%captcha_image%}, the captcha_word field and /captcha keep working. Images
+	  storage/tmp/captcha_*.gif left by the old contact form can be deleted by hand.
 
 Sharetronix 3.6.2
 	* Bug fixes
