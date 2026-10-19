@@ -9,7 +9,7 @@ This repository maintains Sharetronix **3.6.2**. It keeps the platform running o
 ## Requirements
 
 - Apache HTTP Server with `mod_rewrite`, and `.htaccess` overrides allowed for the application directory.
-- PHP 7.2 or 8.4 with the `mbstring`, `mysqli`, and `gd` extensions (GD with FreeType support, for the CAPTCHA image), `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`. An external CAPTCHA service needs the cURL extension, and installing a plugin that has database tables needs the `pdo_mysql` extension.
+- PHP 7.2, 8.4, or 8.5 with the `mbstring`, `mysqli`, and `gd` extensions (GD with FreeType support, for the CAPTCHA image), `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`. An external CAPTCHA service needs the cURL extension, and installing a plugin that has database tables needs the `pdo_mysql` extension.
 - MySQL 5.7, 8.0, or 8.4, or MariaDB 10.4 or later.
 
 The application turns off the strict SQL modes, `ONLY_FULL_GROUP_BY`, `ANSI_QUOTES`, and `NO_BACKSLASH_ESCAPES` for its own database connections, so the server's `sql_mode` can stay at its default.
@@ -26,7 +26,7 @@ Installation, updates, and the core application flows have been tested with:
 | Web server | Apache 2.4.66 |
 | Database | MySQL 5.7.44, 8.0.45, and 8.4.8; MariaDB 10.4.34, 10.5.29, 10.6.25, 10.11.15, 11.4.10, and 11.8.6 |
 
-All listed database releases were tested with PHP 8.4; MySQL 5.7 and 8.4 and MariaDB 10.11 and 11.8 also with PHP 7.2. MySQL 8.0 and 8.4 were tested with `mysql_native_password` accounts, and MySQL 8.4 with PHP 8.4 also with a `caching_sha2_password` account. PHP 8.5 is the next target: installation and the core flows pass on it with MySQL 8.4 and MariaDB 11.8, but it is not supported yet. Other PHP versions may work but are untested.
+All listed database releases were tested with PHP 8.4; MySQL 5.7 and 8.4 and MariaDB 10.11 and 11.8 also with PHP 7.2, and MySQL 8.4 and MariaDB 11.8 also with PHP 8.5, including the update and the command-line cron worker. MySQL 8.0 and 8.4 were tested with `mysql_native_password` accounts, and MySQL 8.4 with PHP 8.4 also with a `caching_sha2_password` account. Other PHP versions may work but are untested.
 
 ## Installation
 
