@@ -20,9 +20,9 @@ class TableOwner {
 			INSERT INTO plugins_tables (
 				`table`, `owner`
 			) VALUES (
-				'$table', '$owner'
+				" . $db->link->quote($table) . ", " . $db->link->quote($owner) . "
 			) ON DUPLICATE KEY 
-				UPDATE owner = '$owner'
+				UPDATE owner = " . $db->link->quote($owner) . "
 		";
 		$db->query($sql);
 	}

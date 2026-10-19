@@ -21,7 +21,7 @@ class DatabaseValidate implements DatabaseInterface {
 	}
 	
 	public function create_table($table_name) {
-		$sql = "SHOW TABLES LIKE '$table_name'";
+		$sql = "SHOW TABLES LIKE " . $this->db->link->quote($table_name);
 		$res = $this->db->query($sql);
 		if(!empty($res) && count($res) > 0) {
 			$this->messages[] = new ValidationError("Table with name " . $table_name . " already exists" );

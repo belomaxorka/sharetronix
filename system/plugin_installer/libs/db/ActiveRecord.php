@@ -175,7 +175,7 @@ class ActiveRecord{
 			if($res == true || $strip == true){
 				$where_string .= " $w ";
 			} else {
-				$where_string .= " '$w' ";
+				$where_string .= " " . $this->link->quote($w) . " ";
 			}
 			
 			$where_string .= " AND";
@@ -234,7 +234,7 @@ class ActiveRecord{
 		    if($res == true || $strip == true){
 		    $where_string .= " $w ";
 						} else {
-							$where_string .= " '$w' ";
+							$where_string .= " " . $this->link->quote($w) . " ";
 						}
 						$where_string .= " AND";
 						}

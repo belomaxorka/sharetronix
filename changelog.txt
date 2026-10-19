@@ -702,6 +702,10 @@
 	  connecting database!" when PHP had no pdo_mysql (the extension only the plugin installer
 	  uses); the page now says which extension is missing, and a database connection failure of the
 	  installer is reported the same way.
+	* Quoted the values that the plugin installer's database layer puts into SQL (the conditions of
+	  ActiveRecord::where() and having(), the table and plugin names of the plugins_tables registry,
+	  the table name checked before a table is created). A table or plugin name, or a value, with a
+	  quote in it broke the statement.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
