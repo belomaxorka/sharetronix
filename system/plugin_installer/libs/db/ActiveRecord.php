@@ -48,6 +48,16 @@ class ActiveRecord{
 		try {
 			$this->link = new PDO('mysql:host=' . $C->DB_HOST . ";dbname=" . $C->DB_NAME, $C->DB_USER, $C->DB_PASS);
 			$this->link->exec('SET NAMES utf8');
+			// The SQL modes of the application's connections (mysql::set_sql_mode()): installers, too,
+			// insert rows without a value for every NOT NULL column.
+			if(!class_exists('mysql')) {
+				require_once dirname(__FILE__) . '/../../../classes/class_mysql.php';
+			}
+			$res = $this->link->query('SELECT @@SESSION.sql_mode');
+			$mode = $res ? mysql::compatible_sql_mode($res->fetchColumn()) : false;
+			if($mode !== false) {
+				$this->link->exec("SET SESSION sql_mode='" . $mode . "'");
+			}
 			$this->link->exec("SET lc_time_names = 'bg_BG'");
 		} catch(PDOException $e) {
 			 

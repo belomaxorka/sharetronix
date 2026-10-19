@@ -21,7 +21,7 @@
 		// Values are put in double quotes and escaped with backslashes, so ANSI_QUOTES breaks every query
 		// and NO_BACKSLASH_ESCAPES leaves a double quote in a value unescaped. TRADITIONAL and ANSI would
 		// turn some of these modes on again.
-		protected $incompatible_sql_modes	= array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL', 'ONLY_FULL_GROUP_BY', 'ANSI_QUOTES', 'ANSI', 'NO_BACKSLASH_ESCAPES');
+		protected static $incompatible_sql_modes	= array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL', 'ONLY_FULL_GROUP_BY', 'ANSI_QUOTES', 'ANSI', 'NO_BACKSLASH_ESCAPES');
 		
 		public function __construct($host, $user, $pass, $db)
 		{
@@ -71,14 +71,22 @@
 			}
 			$row	= $this->ext=='mysqli' ? mysqli_fetch_row($res) : mysql_fetch_row($res);
 			$this->ext=='mysqli' ? mysqli_free_result($res) : mysql_free_result($res);
-			$modes	= $row[0]==='' ? array() : explode(',', $row[0]);
-			$keep	= array_diff($modes, $this->incompatible_sql_modes);
-			if( count($keep) == count($modes) ) {
+			$keep	= self::compatible_sql_mode($row[0]);
+			if( $keep === FALSE ) {
 				return;
 			}
 			// Single quotes: double quotes would name an identifier while ANSI_QUOTES is still on.
-			$query	= "SET SESSION sql_mode='".implode(',', $keep)."'";
+			$query	= "SET SESSION sql_mode='".$keep."'";
 			$this->ext=='mysqli' ? mysqli_query($this->connection, $query) : mysql_query($query, $this->connection);
+		}
+		
+		// The modes of the sql_mode value $mode without the incompatible ones, or FALSE when $mode has
+		// none of them. The plugin installer's own PDO connection uses it as well.
+		public static function compatible_sql_mode($mode)
+		{
+			$modes	= $mode==='' ? array() : explode(',', $mode);
+			$keep	= array_diff($modes, self::$incompatible_sql_modes);
+			return count($keep) == count($modes) ? FALSE : implode(',', $keep);
 		}
 		
 		public function query($query, $remember_result=TRUE)

@@ -545,6 +545,10 @@
 	  mode ("Invalid default value"), and a default with a quote broke the statement. The plugin was
 	  then reported as installed without those columns. Such a column now gets no default, an empty
 	  default of a number column becomes 0, and text defaults are quoted.
+	* The plugin installer's own database connection kept the server's SQL modes, so on servers with
+	  strict mode (MySQL 5.7 and later, MariaDB 10.2.4 and later) an installer.php that inserted a
+	  row without a value for every NOT NULL column failed with "doesn't have a default value". It
+	  now turns off the same modes as the application's connections.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
