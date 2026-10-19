@@ -530,6 +530,11 @@
 	  19, and with a server that accepts the connection but does not answer the post request did not
 	  finish within 60 seconds. Each ping now gives up after 3 seconds of connecting or of waiting
 	  for the answer; the post is saved either way.
+	* A wrong e-mail address, username or password on the mobile sign-in page (/m/) showed the empty
+	  form again without any message: the message went to a placeholder that the page layout does
+	  not have, and its text was not loaded. The page now shows "Invalid e-mail or password." (or
+	  that the account is suspended) above the form. Themes that override the mobile home block show
+	  it where they place {%home_login_message%}.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

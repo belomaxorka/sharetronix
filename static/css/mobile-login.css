@@ -63,3 +63,8 @@ text-shadow:2px 2px 0px #628136;
 #login-panel .btn span {display:block; background:url(../images/mobile/login-arrow.png) no-repeat right center; padding:0.5em 1em; }
 
 .powered_by {padding:20px 0 0; text-align:right; font-size:12px;}
+
+.system-message {margin:0 0 1em; padding:0.6em 0.8em; font-size:15px; border:1px solid #c2c2c2; border-radius:3px; background:#fff;}
+.system-message strong {display:block; margin:0 0 0.2em;}
+.system-message.error {border-color:#d08a8a; background:#fbeaea; color:#7d1e1e;}
+.system-message.success {border-color:#8ba456; background:#eef5e3; color:#3d5a17;}

@@ -1,5 +1,6 @@
 <div id="login-panel" class="panel">
 	<div class="panel-container">
+		{%home_login_message%}
 		<form action="" method="post">
 			<label for="email"><?= $this->page->lang('os_login_email_username') ?></label>
 			<input type="text" id="email" name="email" data-status="focus">

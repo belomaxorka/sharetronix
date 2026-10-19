@@ -6,6 +6,7 @@
 	
 	$this->load_langfile('inside/global.php');
 	$this->load_langfile('outside/home.php');
+	$this->load_langfile('outside/signin.php');
 	
 	global $plugins_manager;
 	
@@ -67,11 +68,12 @@
 	
 	
 	$tpl->useLayout('page_layout_clean');
-	if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('global_error_msg_ttl'), $errmsg ) );
-	}
 	
 	$tpl->layout->useBlock('home');
+	// The clean layout has no message placeholder, so the block shows the message above the form.
+	if( $submit && $error ){
+		$tpl->layout->block->setVar('home_login_message', $tpl->designer->errorMessage($this->lang('global_error_msg_ttl'), $errmsg ) );
+	}
 	$tpl->layout->setVar( 'stx_footer_link_abc', 'Powered by <a href="http://sharetronix.com" target="_blank">Sharetronix</a>');
 	$tpl->layout->block->save( 'main_content');
 	
