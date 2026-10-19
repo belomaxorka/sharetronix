@@ -10,7 +10,9 @@ This repository maintains Sharetronix **3.6.2**. It keeps the platform running o
 
 - Apache HTTP Server with `mod_rewrite`, and `.htaccess` overrides allowed for the application directory.
 - PHP 7.2 or 8.4 with the `mbstring`, `mysqli`, and `gd` extensions (GD with FreeType support, for the CAPTCHA image), `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`. An external CAPTCHA service needs the cURL extension.
-- MySQL 5.7.
+- MySQL 5.7 or MariaDB 10.4 or later. MySQL 8.0 and later are not supported yet: `GROUPS` is a reserved word there, so the queries on the `groups` table fail, and sign-up, groups, and the background jobs do not work.
+
+The application turns off the strict SQL modes, `ONLY_FULL_GROUP_BY`, `ANSI_QUOTES`, and `NO_BACKSLASH_ESCAPES` for its own database connections, so the server's `sql_mode` can stay at its default.
 
 Installation, updates, and the core application flows have been tested with:
 
@@ -18,9 +20,9 @@ Installation, updates, and the core application flows have been tested with:
 | --- | --- |
 | PHP | 7.2.34 and 8.4.19 (FastCGI) |
 | Web server | Apache 2.4.66 |
-| Database | MySQL 5.7.44 |
+| Database | MySQL 5.7.44; MariaDB 10.4.34, 10.5.29, 10.6.25, 10.11.15, 11.4.10, and 11.8.6 |
 
-PHP 8.5 is the next target. CI already checks syntax on it, but it has not been tested at runtime. Other PHP versions, MariaDB, and newer MySQL releases may work but are untested.
+All listed MariaDB releases were tested with PHP 8.4, and MariaDB 10.11 and 11.8 also with PHP 7.2. PHP 8.5 is the next target. CI already checks syntax on it, but it has not been tested at runtime. Other PHP versions may work but are untested.
 
 ## Installation
 
@@ -31,7 +33,7 @@ PHP 8.5 is the next target. CI already checks syntax on it, but it has not been 
    ```
 
 2. Point an Apache virtual host at the checkout and enable `mod_rewrite`.
-3. Create an empty MySQL database and a user with full privileges on it.
+3. Create an empty MySQL or MariaDB database and a user with full privileges on it.
 4. Give the web-server user write access to `system/`, `storage/`, `themes/`, `apps/`, and `.htaccess`. The installer lists any path it cannot write to.
 5. Open `/install/` in a browser and follow the wizard. It checks the requirements, creates the database tables and the administrator account, and writes the configuration to `system/conf_main.php`.
 
