@@ -382,6 +382,8 @@
 	  per request.
 	* Cron jobs of plugins ran inside a function and could not use $db2, $db1, $network or $cache
 	  like the core cron jobs do. They now get the same variables.
+	* When a plugin refused a follow, unfollow, group join or leave, or a comment, the answer showed
+	  a generic or empty error instead of the plugin's message. The plugin's message is shown now.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
@@ -423,6 +425,8 @@
 	  as before; the command-line cron worker still prints them. Administrators who relied on the
 	  server's display_errors to see errors in the browser add their address to $C->DEBUG_USERS
 	  instead.
+	* The plugin events onUserFollow and onUserUnfollow also receive the user to follow or unfollow,
+	  as their second argument; the first argument is still the current user.
 
 	Removed:
 	* Removed the obsolete root README.txt.

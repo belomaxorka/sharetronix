@@ -24,7 +24,8 @@
 				return;
 			}
 			if( ! $user->follow_group($g->id, TRUE) ) {
-				echo 'ERROR';
+				$errmsg = $pm->getEventCallErrorMessage(); // a plugin refused
+				echo 'ERROR'.($errmsg ? ':'.$errmsg : '');
 				return;
 			}
 			if( $errmsg = $pm->getEventCallErrorMessage() ){
@@ -46,7 +47,8 @@
 				return;
 			}
 			if( ! $user->follow_group($g->id, FALSE) ) {
-				echo 'ERROR:'.$page->lang('global_ajax_post_error15');
+				$errmsg = $pm->getEventCallErrorMessage(); // a plugin refused
+				echo 'ERROR:'.($errmsg ? $errmsg : $page->lang('global_ajax_post_error15'));
 				return;
 			}
 			if( $errmsg = $pm->getEventCallErrorMessage() ){

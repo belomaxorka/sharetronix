@@ -199,12 +199,13 @@
 			}
 			
 			if( $how == TRUE ){
-				$plugins_manager->onUserFollow( $this );
+				// $args[0] stays the current user (as in 3.x); $args[1] is the user to follow
+				$plugins_manager->onUserFollow( $this, $whom );
 				if( !$plugins_manager->isValidEventCall() ){
 					return FALSE;
 				}
 			}else{
-				$plugins_manager->onUserUnfollow( $this );
+				$plugins_manager->onUserUnfollow( $this, $whom );
 				if( !$plugins_manager->isValidEventCall() ){
 					return FALSE;
 				}

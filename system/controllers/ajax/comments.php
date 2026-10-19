@@ -54,7 +54,12 @@
 				}
 
 				$c->set_message($msg);
-				if( FALSE !== ( $post_id = $c->save() ) ) {
+				$post_id = $c->save();
+				if( FALSE === $post_id && ($errmsg = $GLOBALS['plugins_manager']->getEventCallErrorMessage()) ) {
+					echo 'ERROR:'.$errmsg; // a plugin refused
+					return;
+				}
+				if( FALSE !== $post_id ) {
 					
 					$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $c->id );
 					if( $c->error ) {
