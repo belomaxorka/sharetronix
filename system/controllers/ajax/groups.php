@@ -91,7 +91,9 @@
 			}
 				
 			$w	= $db2->e($name);
-			$r	= $db2->query('SELECT id, groupname, title, avatar FROM `groups` WHERE (groupname LIKE "%'.$w.'%" OR title LIKE "%'.$w.'%") ORDER BY num_followers DESC, groupname ASC LIMIT 5');
+			// Private groups only for their members (and the network administrators), as in the group search.
+			$filter	= new postFilter();
+			$r	= $db2->query('SELECT id, groupname, title, avatar FROM `groups` WHERE (groupname LIKE "%'.$w.'%" OR title LIKE "%'.$w.'%") '.$filter->groups('groups').' ORDER BY num_followers DESC, groupname ASC LIMIT 5');
 			$n	= $db2->num_rows();
 			if( $n > 0 ){
 				$i = 0;
@@ -122,7 +124,8 @@
 			}
 		
 			$w	= $db2->e($name);
-			$r	= $db2->query('SELECT id, title FROM `groups` WHERE groupname ="'.$w.'" OR title="'.$w.'" LIMIT 1');
+			$filter	= new postFilter();
+			$r	= $db2->query('SELECT id, title FROM `groups` WHERE (groupname ="'.$w.'" OR title="'.$w.'") '.$filter->groups('groups').' LIMIT 1');
 			$n	= $db2->num_rows();
 			if( $n > 0 ){
 				$obj = $db2->fetch_object($r);
