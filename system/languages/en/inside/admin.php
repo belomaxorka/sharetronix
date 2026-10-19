@@ -508,6 +508,7 @@
 		'admin_themes_uninstalled_msg' => 'Theme was uninstalled successfully',
 		'admin_themes_tab_downloaded' => 'Downloaded',
 		'admin_themes_tab_getnew' => 'Get New',
+		'admin_themes_intro' => 'A theme is a folder in themes/ with a manifest.json. Copy the folder of a theme there and select it below; to remove a theme, select another one and delete its folder.',
 		'admin_themes_email_txt' => 'e-mail',
 		'admin_themes_more_txt' => '...more',
 			

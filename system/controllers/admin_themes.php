@@ -78,11 +78,6 @@
 	$tpl->initRoutine('AdminLeftMenu', array());
 	$tpl->routine->load();
 	
-	$menu = array( 	array('url' => 'admin/themes', 			'css_class' => 'active', 'title' => $this->lang('admin_themes_tab_downloaded') ),
-					array('url' => 'admin/themes/getnew', 	'css_class' => '', 		 'title' => $this->lang('admin_themes_tab_getnew') )
-	);
-	$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createMenu('tabs-navigation', $menu) );
-	
 	if( $changetheme_flag ) {
 		if( ! $changetheme_warn ) {
 			$tpl->designer->okMessage($this->lang('admbrnd_th_theme_ok1'), $this->lang('admbrnd_th_theme_ok2'));
@@ -92,7 +87,7 @@
 	}
 
 	$table = new tableCreator();
-	$table->form_description = '<h1>'.$this->lang('admbrnd_th_title').'</h1>';
+	$table->form_description = '<h1>'.$this->lang('admbrnd_th_title').'</h1><p>'.$this->lang('admin_themes_intro').'</p>';
 	$rows = array();
 	
 	foreach( $themes_selection as $theme_name => $theme_options ){

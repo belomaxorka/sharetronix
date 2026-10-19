@@ -66,6 +66,10 @@
 	  and changed the permissions of files and folders one level above the installation directory.
 	  When the web server could not write to a folder it needs, the installer and the updater made
 	  the folder writable by everyone; they now add read and write permission for its owner only.
+	* The "Get New" tab of the themes page confirmed the removal of a theme through a plain link,
+	  without a token, that carried a path on the server. A crafted link opened by a signed-in
+	  administrator could delete any folder the web server can write to that holds a theme manifest,
+	  such as themes/default. The tab is removed.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -511,6 +515,9 @@
 	* The installer of the 3.0 releases in install/old/, which converted 1.x and 2.x installations.
 	  It had already been disabled (it only answered 403) and is no longer needed now that the
 	  updater accepts only Sharetronix 3.0 and later.
+	* Removed the "Get New" tab of the themes page, which installed themes from the retired
+	  Sharetronix marketplace. To install a theme, copy its folder to themes/ and select it on the
+	  themes page, which now says so. The 3.6.3 update deletes the files of the tab.
 
 Sharetronix 3.6.2
 	* Bug fixes
