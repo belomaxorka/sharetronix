@@ -9,6 +9,7 @@
 		private $ext;
 		private $debug_mode;
 		private $debug_info;
+		private $error_logged;
 		
 		public function __construct()
 		{
@@ -17,6 +18,7 @@
 			$this->memcached_port	= $C->CACHE_MEMCACHE_PORT;
 			$this->keys_prefix	= $C->CACHE_KEYS_PREFIX.'|'.$C->VERSION.'|';
 			$this->mc	= FALSE;
+			$this->error_logged	= FALSE;
 			$this->debug_mode	= $C->DEBUG_MODE==TRUE;
 			$this->debug_info	= (object) array (
 				'queries'	=> array(),
@@ -64,9 +66,12 @@
 					'result'	=> FALSE===$res ? 'FALSE' : gettype($res),
 					'time'	=> number_format($time, 5, '.', ''),
 				);
+				$this->check_result($res);
 				return $res;
 			}
-			return $this->mc->get( $key );
+			$res	= $this->mc->get( $key );
+			$this->check_result($res);
+			return $res;
 		}
 		
 		public function set($key, $data, $expire)
@@ -88,9 +93,12 @@
 					'result'	=> $res ? 'TRUE' : 'FALSE',
 					'time'	=> number_format($time, 5, '.', ''),
 				);
+				$this->check_result($res);
 				return $res;
 			}
-			return $this->ext=='memcached' ? $this->mc->set( $key, $data, $expire ) : $this->mc->set( $key, $data, FALSE, $expire );
+			$res	= $this->ext=='memcached' ? $this->mc->set( $key, $data, $expire ) : $this->mc->set( $key, $data, FALSE, $expire );
+			$this->check_result($res);
+			return $res;
 		}
 		
 		public function del($key)
@@ -112,9 +120,36 @@
 					'result'	=> $res ? 'TRUE' : 'FALSE',
 					'time'	=> number_format($time, 5, '.', ''),
 				);
+				$this->check_result($res);
 				return $res;
 			}
-			return $this->mc->delete( $key, 0 );
+			$res	= $this->mc->delete( $key, 0 );
+			$this->check_result($res);
+			return $res;
+		}
+		
+		private function check_result($res)
+		{
+			// addServer() does not connect, so a failed call is the first sign of an unreachable server.
+			// The legacy memcache extension reports such failures as PHP notices itself.
+			if( FALSE !== $res || $this->error_logged || $this->ext != 'memcached' ) {
+				return;
+			}
+			$code	= $this->mc->getResultCode();
+			if( $code == Memcached::RES_SUCCESS || $code == Memcached::RES_NOTFOUND ) {
+				return;
+			}
+			$this->error_logged	= TRUE;
+			$message	= trim(preg_replace('/\s+/', ' ', $this->mc->getResultMessage()));
+			error_log('Sharetronix cache: memcached '.$this->memcached_host.':'.$this->memcached_port.' failed ('.$message.'); this request runs without the cache.');
+			if( $this->debug_mode ) {
+				$this->debug_info->queries[]	= (object) array (
+					'action'	=> 'SERVER',
+					'key'		=> $this->memcached_host.':'.$this->memcached_port,
+					'result'	=> 'FAILED: '.$message,
+					'time'	=> number_format(0, 5, '.', ''),
+				);
+			}
 		}
 		
 		public function get_debug_info()

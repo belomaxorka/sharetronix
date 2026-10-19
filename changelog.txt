@@ -332,6 +332,12 @@
 	  50,000 queries), so long requests could run out of memory. It still counts and times every
 	  query, but keeps the text of the first 1000 only; the debug console shows the full number and
 	  how many are listed.
+	* Logged unreachable memcached and Redis servers. Both drivers fall back to running without the
+	  cache, but did so silently: the memcached driver even recorded "CONNECT TRUE" in the debug
+	  console, because adding a server does not connect to it. A request that cannot use the cache
+	  server now logs one line with the server and the error, and the debug console shows the
+	  failure. The legacy memcache extension already reported such failures as PHP notices and is
+	  unchanged.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

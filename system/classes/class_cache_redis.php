@@ -35,13 +35,16 @@
 			}
 			$time	= microtime(TRUE);
 			$this->rd	= FALSE;
+			$error	= 'connection failed';
 			try {
 				$rd	= new Redis();
 				$res	= $rd->connect($this->redis_host, $this->redis_port, 1);
 				if( $res && $this->redis_pass != '' ) {
+					$error	= 'authentication failed';
 					$res	= $rd->auth($this->redis_pass);
 				}
 				if( $res && $this->redis_db > 0 ) {
+					$error	= 'database selection failed';
 					$res	= $rd->select($this->redis_db);
 				}
 				if( $res ) {
@@ -50,6 +53,10 @@
 			}
 			catch( Exception $e ) {
 				$this->rd	= FALSE;
+				$error	= $e->getMessage();
+			}
+			if( FALSE === $this->rd ) {
+				error_log('Sharetronix cache: Redis '.$this->redis_host.':'.$this->redis_port.' failed ('.trim(preg_replace('/\s+/', ' ', $error)).'); this request runs without the cache.');
 			}
 			if( $this->debug_mode ) {
 				$time	= microtime(TRUE)-$time;
@@ -83,6 +90,8 @@
 				}
 			}
 			catch( Exception $e ) {
+				// The connection broke; the rest of the request runs without the cache.
+				error_log('Sharetronix cache: Redis '.$this->redis_host.':'.$this->redis_port.' failed ('.trim(preg_replace('/\s+/', ' ', $e->getMessage())).'); this request runs without the cache.');
 				$this->rd	= FALSE;
 				$res	= FALSE;
 			}

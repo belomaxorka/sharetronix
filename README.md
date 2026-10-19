@@ -51,7 +51,7 @@ Then set `$C->CRONJOB_IS_INSTALLED = TRUE;` in `system/conf_main.php`. See [syst
 
 ## Cache
 
-`$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, or `redis`. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the extension the file cache is used; while the Redis server is unreachable, pages are served without the cache.
+`$C->CACHE_MECHANISM` in `system/conf_main.php` selects the cache: `filesystem` (the default, stored in `system/cache/`), `memcached`, or `redis`. Redis requires the [phpredis](https://github.com/phpredis/phpredis) extension and uses `$C->CACHE_REDIS_HOST`, `$C->CACHE_REDIS_PORT`, `$C->CACHE_REDIS_PASS`, and `$C->CACHE_REDIS_DB` (defaults: `127.0.0.1`, `6379`, no password, database 0). Without the extension the file cache is used. While the memcached or Redis server is unreachable, pages are served without the cache, and every such request logs one line about it.
 
 ## Debugging
 
@@ -65,7 +65,7 @@ Requests from these addresses display PHP errors of all levels and, when a datab
 
 With `$C->DEBUG_CONSOLE = TRUE;` pages in debug mode show a small **Debug** link at the bottom right. It opens a window with the page generation time, memory use, and every SQL query and cache call of the request.
 
-Failed database queries, failed e-mail deliveries, and service answers that cannot be encoded are logged as lines starting with `Sharetronix`. Make sure `log_errors` is on and `error_log` points to a file you can read. The command-line cron worker also prints errors to its output.
+Failed database queries, failed e-mail deliveries, unreachable cache servers, and service answers that cannot be encoded are logged as lines starting with `Sharetronix`. Make sure `log_errors` is on and `error_log` points to a file you can read. The command-line cron worker also prints errors to its output.
 
 ## Upgrading
 
