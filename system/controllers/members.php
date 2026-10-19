@@ -23,17 +23,22 @@
 	
 		if( is_string($tmp) ){
 			$num_results	= $db2->fetch_field($tmp);
-			$num_pages	= ceil($num_results / $C->PAGING_NUM_GROUPS);
+			$num_pages	= ceil($num_results / $C->PAGING_NUM_USERS);
 			$pg	= $this->param('pg') ? intval($this->param('pg')) : 1;
 			$pg	= min($pg, $num_pages);
 			$pg	= max($pg, 1);
-			$from	=  ($this->user->is_logged)? (($pg - 1) * $C->PAGING_NUM_GROUPS) : 0;
+			$from	=  ($this->user->is_logged)? (($pg - 1) * $C->PAGING_NUM_USERS) : 0;
 				
 			$pm->onPageSetQuery();
 			$tmp = $pm->getEventResult();
 	
 			if( is_string($tmp) ){
-				$res = $db2->query( $tmp .' ORDER BY '.$sql_orderby[$orderby].' LIMIT '.$from.', '.$C->PAGING_NUM_GROUPS );
+				// The plugin's query may use any tables, so the order is the one onPageSetQueryOrder
+				// returns, as on the activity pages, and none otherwise.
+				$query	= $tmp;
+				$pm->onPageSetQueryOrder();
+				$tmp	= $pm->getEventResult();
+				$res = $db2->query( $query.(is_string($tmp)? $tmp : '').' LIMIT '.$from.', '.$C->PAGING_NUM_USERS );
 			}
 		}
 	}

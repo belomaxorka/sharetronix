@@ -436,6 +436,8 @@
 	* A plugin whose event handler failed with an error stopped the request: on an event of every
 	  page, such as onPageLoad, the whole site and the administration answered with HTTP 500. The
 	  failing handler is now skipped and reported in the PHP error log, and the request goes on.
+	* A plugin's tab of the member list (members/tab:<name>) failed with a database error on every
+	  visit. It now runs the plugin's query, ordered as its onPageSetQueryOrder handler says.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
