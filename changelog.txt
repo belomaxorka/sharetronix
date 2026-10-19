@@ -126,6 +126,10 @@
 	  members' posts there, until the cache expired, and so did the administrators of a deleted
 	  group; the creator of a new group got these rights only after the cache expired. The cached
 	  rights are now refreshed in these cases.
+	* Every post written in the web interface left a copy of the post object in the member's
+	  session, together with the connection objects it refers to, which hold the database and cache
+	  server settings and passwords: the session grew with each post (to 80 KB after 30 posts) and
+	  kept these passwords. The copy is now removed once the post is saved.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

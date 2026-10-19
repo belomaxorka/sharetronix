@@ -226,6 +226,9 @@
 				$p->remove_post_cache();
 				
 				if( $res ){
+					// The next post has a new token. The stored object holds the connection objects and the
+					// settings, the database password included, and stayed in the session for every post.
+					unset($sess['TEMP_ACTIVITY_POSTS'][$activities_token], $sess['TEMP_ACTIVITY_POSTS_ATTACHMENTS'][$activities_token]);
 					$activity_id = explode('_', $res);
 					$activity_type = $activity_id[1]; //delete private post
 					$activity_id = intval($activity_id[0]);
