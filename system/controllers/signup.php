@@ -214,7 +214,11 @@
 				
 				if( $is_bot ){
 					$error	= TRUE;
-					$errmsg	= 'SPAM bot detected';
+					$errmsg	= $this->lang('signup_err_spam');
+					if( $errmsg === '' ){
+						// Language packs made for older versions do not have this string.
+						$errmsg	= 'SPAM bot detected';
+					}
 				}
 			}
 			

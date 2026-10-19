@@ -96,6 +96,7 @@
 		'signup_err_captcha'		=> 'Invalid verification code, please try again.',
 		'captcha_err_unavailable'	=> 'The verification service is not available. Please try again later.',
 		'signup_err_terms'		=> 'To complete the registration you must accept the Terms of use.',
+		'signup_err_spam'		=> 'Your IP address or e-mail address has recently been reported as a source of spam, so it cannot be used to sign up. If this is a mistake, please contact the site administrators.',
 		
 		'signup_step1_ok_ttl'		=> 'Check your mailbox to confirm your e-mail address',
 		'signup_step1_ok_txt_nocompany'	=> 'Company networks are private. You need to confirm your company e-mail address to join a network. We sent a confirmation link to #EMAIL#.',

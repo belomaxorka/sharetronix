@@ -516,6 +516,9 @@
 	  which turned away visitors on shared and dynamic addresses. It now refuses an address only
 	  when StopForumSpam's confidence for it, which falls as the reports get older, reaches
 	  $C->STOPFORUMSPAM_MIN_CONFIDENCE (10 percent by default; 0 restores the old behavior).
+	* The sign-up refusal for an address reported as a spam source was the untranslatable English
+	  text "SPAM bot detected". It is now the language string signup_err_spam, which also tells the
+	  visitor whom to contact; language packs without the string still show the old text.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
