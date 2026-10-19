@@ -130,6 +130,9 @@
 	  session, together with the connection objects it refers to, which hold the database and cache
 	  server settings and passwords: the session grew with each post (to 80 KB after 30 posts) and
 	  kept these passwords. The copy is now removed once the post is saved.
+	* Escaped the values shown on the installer's review page (step 5): the database host, database
+	  name and user, the administrator's name and e-mail address, the site address and the domain
+	  were printed into the page and into its script block as entered.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

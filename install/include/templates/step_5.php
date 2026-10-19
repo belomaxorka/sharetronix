@@ -1,7 +1,7 @@
-	<script type="text/javascript" src="<?= $_SESSION['INSTALL_DATA']['SITE_URL'] ?>static/js/jquery.js"></script>
-	<script type="text/javascript" src="<?= $_SESSION['INSTALL_DATA']['SITE_URL'] ?>static/js/plugins/jquery.colorbox.js"></script>
+	<script type="text/javascript" src="<?= htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_URL'], ENT_QUOTES, 'UTF-8') ?>static/js/jquery.js"></script>
+	<script type="text/javascript" src="<?= htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_URL'], ENT_QUOTES, 'UTF-8') ?>static/js/plugins/jquery.colorbox.js"></script>
 	<script type="text/javascript">
-		var siteurl = "<?= $_SESSION['INSTALL_DATA']['SITE_URL'] ?>install/";
+		var siteurl = <?= json_encode($_SESSION['INSTALL_DATA']['SITE_URL'].'install/', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 		
 		function unshadow_password( pass_type )
 		{	
@@ -25,7 +25,7 @@
 			$('#'+pass_field_id).text(shadowed_pass); 
 		}
 		function lightbox(){    
-		  $.fn.colorbox({iframe:false, href:"<?= $_SESSION['INSTALL_DATA']['SITE_URL'] ?>static/images/install/network_name.png"});
+		  $.fn.colorbox({iframe:false, href:<?= json_encode($_SESSION['INSTALL_DATA']['SITE_URL'].'static/images/install/network_name.png', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>});
 		}
 	</script>
 	
@@ -61,19 +61,19 @@
 				
 				<tr>
 					<td class="first_table_column">MySQL Host: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['MYSQL_HOST'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['MYSQL_HOST'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 				
 				<tr>
 					<td class="first_table_column">MySQL Database Name: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['MYSQL_DBNAME'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['MYSQL_DBNAME'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 				
 				<tr>
 					<td class="first_table_column">MySQL Username: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['MYSQL_USER'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['MYSQL_USER'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 				
@@ -85,7 +85,7 @@
 				
 				<tr>
 					<td class="first_table_column">Admin Username: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['ADMIN_USER'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['ADMIN_USER'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 				
@@ -97,19 +97,19 @@
 				
 				<tr>
 					<td class="first_table_column">Admin E-mail: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['ADMIN_EMAIL'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['ADMIN_EMAIL'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 				
 				<tr>
 					<td class="first_table_column">Your Site URL: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['SITE_URL'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_URL'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 				
 				<tr>
 					<td class="first_table_column">Your Domain: </td>
-					<td class="second_table_column"><?= $_SESSION['INSTALL_DATA']['DOMAIN'] ?></td>
+					<td class="second_table_column"><?= htmlspecialchars($_SESSION['INSTALL_DATA']['DOMAIN'], ENT_QUOTES, 'UTF-8') ?></td>
 					<td class="third_table_column"></td>
 				</tr>
 			</table>
@@ -117,7 +117,7 @@
 			<h1 class="pagetitle">Tips</h1>
 			
 			<a href="javascript: void(0);" onClick="lightbox();">
-				<img src="<?= $_SESSION['INSTALL_DATA']['SITE_URL'] ?>static/images/install/stx_admin_panel_thumb.png" />
+				<img src="<?= htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_URL'], ENT_QUOTES, 'UTF-8') ?>static/images/install/stx_admin_panel_thumb.png" />
 			</a>
 			<div class="right_tip_text">You can change your Network Name and Site Intro title in General Settings of your community administration panel. </div>
 			<div class="right_tip_text">You can change your Site URL and Domain after installation in the ./system/conf_main.php file</div>
