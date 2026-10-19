@@ -721,6 +721,10 @@
 	  for the sender; users/autocomplete is open to visitors), and administration/removeadmin and
 	  activateuser acted on user 1, the first administrator, because the integer value of an array
 	  is 1, which also got past the check against removing oneself.
+	* Gave the settings ADMIN_STEALTH_MODE and NAME_INDENTIFICATOR a default when the database has
+	  no row for them. A site updated from a release before 3.5 has none until the 4.0.0 update adds
+	  them, and every page of a signed-in administrator logged "Undefined property:
+	  stdClass::$ADMIN_STEALTH_MODE" while the new files ran on the old database.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

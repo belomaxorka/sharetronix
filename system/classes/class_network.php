@@ -51,6 +51,10 @@
 			if( ! isset($C->HDR_CUSTOM_LOGO) ) { $C->HDR_CUSTOM_LOGO = ''; }
 			if( ! isset($C->HDR_SHOW_FAVICON) ) { $C->HDR_SHOW_FAVICON = 1; }
 			if( ! isset($C->HDR_CUSTOM_FAVICON) ) { $C->HDR_CUSTOM_FAVICON = ''; }
+			// Written by the installer since 3.5 and added by the 4.0.0 update: a database updated from an
+			// older release has no such rows until the update has run.
+			if( ! isset($C->ADMIN_STEALTH_MODE) ) { $C->ADMIN_STEALTH_MODE = 0; }
+			if( ! isset($C->NAME_INDENTIFICATOR) ) { $C->NAME_INDENTIFICATOR = 1; }
 			
 			$current_language	= new stdClass;
 			include($C->INCPATH.'languages/'.$C->LANGUAGE.'/language.php');
