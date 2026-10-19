@@ -598,6 +598,9 @@
 	  /captcha?namespace=forgotten_pass addresses are unchanged.
 	* curlCall::addPostData() with $as_array set to FALSE now URL-encodes the values and no longer
 	  leaves a trailing "&"; curlCall also gained setTimeouts(), getStatus() and getError().
+	* The StopForumSpam check at sign-up sends the e-mail and IP address in a POST request, as
+	  StopForumSpam suggests, so the e-mail address no longer appears in the request URL, where
+	  proxies and server logs may record it.
 
 	Removed:
 	* Removed the obsolete root README.txt.

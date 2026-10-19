@@ -26,9 +26,10 @@
 			}
 			
 			// Short time limits keep the sign-up well under max_execution_time; a service that cannot
-			// be reached does not stop the sign-up.
-			$curl = new curlCall($this->stopforumspam_url.'?ip='.rawurlencode($ip).'&email='.rawurlencode($email).'&json');
+			// be reached does not stop the sign-up. A POST keeps the e-mail address out of the URL.
+			$curl = new curlCall($this->stopforumspam_url);
 			$curl->setTimeouts(3, 5);
+			$curl->addPostData(array('ip' => $ip, 'email' => $email, 'json' => ''), FALSE);
 			$curl_body = $curl->getData();
 			$curl_result = is_string($curl_body) ? json_decode($curl_body) : NULL;
 				
