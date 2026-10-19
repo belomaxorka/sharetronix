@@ -455,6 +455,9 @@
 	  installer and the updater talked to the database in latin1: an administrator name with
 	  non-Latin letters was stored double-encoded, and the administrator could not sign in with it.
 	  Their connection now uses utf8 like the rest of the application.
+	* On PHP 8.5, uploading an avatar or a network logo and creating attachment previews logged that
+	  imagedestroy() is deprecated. The images are now freed with unset(), which works on every PHP
+	  version.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -1,5 +1,8 @@
 <?php
 	
+	// The GD images below are freed with unset(): imagedestroy() has no effect since PHP 8.0 and is
+	// deprecated as of 8.5.
+	
 	function networkbranding_logo_resize($source, $destination, $height)
 	{
 		global $C;
@@ -46,8 +49,8 @@
 			 
 			$res	= imagecopyresampled($dstp, $srcp, 0, 0, 0, 0, $neww, $newh, $w, $h);
 			if( ! $res ) {
-				imagedestroy($srcp);
-				imagedestroy($dstp);
+				unset($srcp);
+				unset($dstp);
 				return FALSE;
 			}
 			$res	= FALSE;
@@ -62,8 +65,8 @@
 					$res	= imagepng($dstp, $destination);
 					break;
 			}
-			imagedestroy($srcp);
-			imagedestroy($dstp);
+			unset($srcp);
+			unset($dstp);
 			if( ! $res ) {
 				return FALSE;
 			}
@@ -166,15 +169,15 @@
 			$res5_tmp = imagecopyresampled($dstp5_tmp, $srcp, 0, 0,  $w>$h?round(($w-$h)/2):0, $w>$h?0:round(($h-$w)/2), $C->AVATAR_SIZE_MOBILE_WIDTH, $C->AVATAR_SIZE_MOBILE_WIDTH, min($w,$h), min($w,$h));
 			$res5	= imagecopyresampled($dstp5, $dstp5_tmp, 0, 0, 0, round($C->AVATAR_SIZE_MOBILE_HEIGHT * 2), $C->AVATAR_SIZE_MOBILE_WIDTH, $C->AVATAR_SIZE_MOBILE_HEIGHT, 420, 60);
 			
-			imagedestroy($srcp);
+			unset($srcp);
 			if( ! ($res0 && $res1 && $res2 && $res3 && $res4 && $res5 && $res5_tmp) ) {
-				imagedestroy($dstp0);
-				imagedestroy($dstp1);
-				imagedestroy($dstp2);
-				imagedestroy($dstp3);
-				imagedestroy($dstp4);
-				imagedestroy($dstp5);
-				imagedestroy($dstp5_tmp);
+				unset($dstp0);
+				unset($dstp1);
+				unset($dstp2);
+				unset($dstp3);
+				unset($dstp4);
+				unset($dstp5);
+				unset($dstp5_tmp);
 				
 				return FALSE;
 			}
@@ -207,12 +210,12 @@
 
 					break;
 			}
-			imagedestroy($dstp0);
-			imagedestroy($dstp1);
-			imagedestroy($dstp2);
-			imagedestroy($dstp3);
-			imagedestroy($dstp4);
-			imagedestroy($dstp5);
+			unset($dstp0);
+			unset($dstp1);
+			unset($dstp2);
+			unset($dstp3);
+			unset($dstp4);
+			unset($dstp5);
 			
 		}
 		if( !file_exists($fn0) || !file_exists($fn1) || !file_exists($fn2) || !file_exists($fn3) || !file_exists($fn4) || !file_exists($fn5) ) {
@@ -299,8 +302,8 @@
 			$dstp	= imagecreatetruecolor($neww, $newh);
 			$res	= imagecopyresampled($dstp, $srcp, 0, 0, 0, 0, $neww, $newh, $w, $h);
 			if( ! $res ) {
-				imagedestroy($srcp);
-				imagedestroy($dstp);
+				unset($srcp);
+				unset($dstp);
 				return FALSE;
 			}
 			$res	= FALSE;
@@ -315,8 +318,8 @@
 					$res	= imagepng($dstp, $C->STORAGE_TMP_DIR.$data->file_preview);
 					break;
 			}
-			imagedestroy($srcp);
-			imagedestroy($dstp);
+			unset($srcp);
+			unset($dstp);
 			if( ! $res ) {
 				return FALSE;
 			}
@@ -358,8 +361,8 @@
 			//$res	= imagecopyresampled($dstp, $srcp, 0, 0, $newx, $newy, $neww, $newh, min($w,$h), min($w,$h));
 			$res	= imagecopyresampled($dstp, $srcp, 0, 0, 0, 0, $neww, $newh, $w, $h);
 			if( ! $res ) {
-				imagedestroy($srcp);
-				imagedestroy($dstp);
+				unset($srcp);
+				unset($dstp);
 				return FALSE;
 			}
 			switch($tp) {
@@ -373,8 +376,8 @@
 					$res	= imagepng($dstp, $C->STORAGE_TMP_DIR.$data->file_thumbnail);
 					break;
 			}
-			imagedestroy($srcp);
-			imagedestroy($dstp);
+			unset($srcp);
+			unset($dstp);
 			if( ! $res ) {
 				return FALSE;
 			}
@@ -444,8 +447,8 @@
 			$dstp	= imagecreatetruecolor($size, $size);
 			$res	= imagecopyresampled($dstp, $srcp, 0, 0, $newx, $newy, $size, $size, min($w,$h), min($w,$h));
 			if( ! $res ) {
-				imagedestroy($srcp);
-				imagedestroy($dstp);
+				unset($srcp);
+				unset($dstp);
 				return FALSE;
 			}
 			switch($tp) {
@@ -459,8 +462,8 @@
 					$res	= imagepng($dstp, $destination);
 					break;
 			}
-			imagedestroy($srcp);
-			imagedestroy($dstp);
+			unset($srcp);
+			unset($dstp);
 			if( ! $res ) {
 				return FALSE;
 			}

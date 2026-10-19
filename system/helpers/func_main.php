@@ -591,11 +591,11 @@
 				$res5	= imagecopyresampled($dstp5, $dstp5_tmp, 0, 0, 0, round($C->AVATAR_SIZE_MOBILE_HEIGHT * 2), $C->AVATAR_SIZE_MOBILE_WIDTH, $C->AVATAR_SIZE_MOBILE_HEIGHT, 420, 60);					
 			}			
 				
-			imagedestroy($srcp);
+			unset($srcp);
 			if( ! (${'res'.$prefix[$thumbs]})) {
-				imagedestroy(${'dstp'.$prefix[$thumbs]});
+				unset(${'dstp'.$prefix[$thumbs]});
 				if($prefix[$thumbs] == 5){
-					imagedestroy($dstp5_tmp);
+					unset($dstp5_tmp);
 				}
 				return FALSE;
 			}
@@ -612,7 +612,7 @@
 					imagepng(${'dstp'.$prefix[$thumbs]}, ${'fn'.$prefix[$thumbs]});
 					break;
 			}
-			imagedestroy(${'dstp'.$prefix[$thumbs]});
+			unset(${'dstp'.$prefix[$thumbs]});
 			
 		}
 		if( !file_exists(${'fn'.$prefix[$thumbs]})) {
