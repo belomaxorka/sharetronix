@@ -22,14 +22,14 @@
 								$this->query = 'SELECT p.*, p.id AS pid, "public" AS `type`
 									FROM (SELECT id AS post_id FROM posts WHERE user_id="'.$this->target_user->id.'" UNION SELECT post_id FROM posts_mentioned WHERE user_id="'.$this->target_user->id.'") x
 									INNER JOIN posts p ON p.id = x.post_id
-									WHERE p.api_id<>2 AND p.api_id<>6 '. $this->filter->groups('group_id') .' ';
+									WHERE p.api_id<>2 AND p.api_id<>6 '. $this->filter->groups('group_id') .' '. $this->filter->users('posts') .' ';
 								$this->query_order = ' ORDER BY p.id DESC ';
 								break;
 				case 'all':	//default:
 					$this->query = 'SELECT p.*, p.id AS pid, "public" AS `type`
 									FROM (SELECT id AS post_id FROM posts WHERE user_id="'.$this->target_user->id.'" UNION SELECT post_id FROM posts_mentioned WHERE user_id="'.$this->target_user->id.'") x
 									INNER JOIN posts p ON p.id = x.post_id
-									WHERE p.api_id<>2 AND p.api_id<>6 '. $this->filter->groups('group_id') .' ';
+									WHERE p.api_id<>2 AND p.api_id<>6 '. $this->filter->groups('group_id') .' '. $this->filter->users('posts') .' ';
 					$this->query_order = ' ORDER BY p.id DESC ';
 					break;
 			}

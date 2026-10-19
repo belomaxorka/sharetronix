@@ -97,6 +97,10 @@
 	  the @-mentions tab, and through services/activities/getall even to guests: the filter compared
 	  the protected members with the posts' numbers instead of their authors. The post page and the
 	  profile hid them correctly.
+	* The feed of a profile did not hide the posts of members who protect their posts, so
+	  services/activities/getall with activities_type=user showed them to everybody, guests
+	  included, although the profile page itself hid them. The feed now applies the same filter as
+	  the other feeds.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
