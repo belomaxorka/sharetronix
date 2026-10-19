@@ -338,6 +338,10 @@
 	  server now logs one line with the server and the error, and the debug console shows the
 	  failure. The legacy memcache extension already reported such failures as PHP notices and is
 	  unchanged.
+	* Used the file cache when $C->CACHE_MECHANISM is 'memcached' but neither the memcached nor the
+	  memcache PHP extension is loaded. Every request that used the cache failed with a "Class
+	  Memcache not found" fatal error, so for example nobody could sign in; Redis already fell back
+	  this way.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

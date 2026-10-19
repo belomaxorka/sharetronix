@@ -5,7 +5,13 @@
 	switch($C->CACHE_MECHANISM)
 	{
 		case 'memcached':
-			class cache extends cache_memcached {}
+			if( class_exists('Memcached', FALSE) || class_exists('Memcache', FALSE) ) {
+				class cache extends cache_memcached {}
+			}
+			else {
+				// Without a memcached or memcache extension, use the file cache.
+				class cache extends cache_filesystem {}
+			}
 			break;
 			
 		case 'redis':
