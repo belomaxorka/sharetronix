@@ -361,6 +361,10 @@
 	  starts again at the first step instead of running the update by itself on the next visit.
 	* Every updater run deleted the posts without an author that 2.x used for system messages, but
 	  left their comments behind. It no longer deletes posts.
+	* Communities installed before 3.5 lacked the ADMIN_STEALTH_MODE and NAME_INDENTIFICATOR
+	  settings, and after an update every page with the list of online users logged an
+	  undefined-property warning. The 3.6.3 update adds the missing settings with their default
+	  values.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

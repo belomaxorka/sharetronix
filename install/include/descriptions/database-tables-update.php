@@ -64,6 +64,9 @@
 					// are used by nothing; at most they keep old tokens and their secrets in plain text.
 					"DROP TABLE IF EXISTS `oauth_access_token`, `oauth_request_token`, `oauth_log`",
 					"DELETE FROM `plugins_tables` WHERE `table` IN ('oauth_access_token', 'oauth_request_token', 'oauth_log') AND `owner`='system'",
+					// Settings that the installer creates since 3.5 and older installations never got; the
+					// administration pages and the list of online users read them.
+					"INSERT IGNORE INTO `settings` (`word`, `value`) VALUES ('ADMIN_STEALTH_MODE', '0'), ('NAME_INDENTIFICATOR', '1')",
 					// `settings`.`word` is unique and a failed query aborts the updater, so replace instead of insert.
 					"REPLACE INTO  `settings` (`word`, `value`) VALUES ('VERSION', '3.6.3')"
 			)
