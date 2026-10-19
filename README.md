@@ -67,6 +67,12 @@ With `$C->DEBUG_CONSOLE = TRUE;` pages in debug mode show a small **Debug** link
 
 Failed database queries, failed e-mail deliveries, unreachable cache servers, and service answers that cannot be encoded are logged as lines starting with `Sharetronix`. Make sure `log_errors` is on and `error_log` points to a file you can read. The command-line cron worker also prints errors to its output.
 
+## Plugins
+
+A plugin is a folder in `apps/` with a `manifest.json`, whose `plugin_name` is the folder name, and a `plugin.php` that defines a class of that name. To add one, copy its folder to `apps/`, open **Administration → Plugins**, and install it. Installing first shows what the plugin's `installer.php` will change in the database, if it has one, and asks for confirmation. An installed plugin can be disabled and enabled again without losing its data. Uninstalling undoes its database changes and leaves its files in `apps/`; delete them by hand.
+
+A plugin that cannot be loaded, for example because its code does not run on the server's PHP version or its folder is missing, is skipped and reported in the PHP error log; the Plugins page shows it as not loaded.
+
 ## Upgrading
 
 The updater updates Sharetronix 3.0 and later. Releases 1.x and 2.x used a different database layout and upload folders, which it cannot convert.
@@ -84,7 +90,7 @@ The APC and MySQL heap (`mysqlheap`) cache drivers have been removed. If `system
 ## Known limitations
 
 - Sign-in through Twitter and Facebook and other integrations with retired third-party services are untested and may not work.
-- Installing languages and plugins from the administration panel relies on the retired Sharetronix marketplace ([#8](https://github.com/belomaxorka/sharetronix/issues/8)).
+- Installing languages and the "Get New" tab of the themes page rely on the retired Sharetronix marketplace ([#8](https://github.com/belomaxorka/sharetronix/issues/8)).
 - On PHP 8.1 and later, dates use English month and day names regardless of the language pack ([#9](https://github.com/belomaxorka/sharetronix/issues/9)).
 
 Other known defects are tracked in [GitHub issues](https://github.com/belomaxorka/sharetronix/issues).

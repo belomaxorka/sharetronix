@@ -54,6 +54,11 @@
 	  the plugin was not installed or had been uninstalled: any signed-in user could open its pages
 	  (for example the maintenance settings page) and any visitor could call its services. Only
 	  installed plugins answer now.
+	* The plugin actions of the administration were links without a token that took a filesystem
+	  path from the address, ran the installer.php found there and, on uninstall, deleted that
+	  directory with everything in it; a page on another site could make a signed-in administrator
+	  follow them. They are now forms with a token and accept only the name of a plugin folder in
+	  apps/.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -386,6 +391,9 @@
 	  a generic or empty error instead of the plugin's message. The plugin's message is shown now.
 	* Uninstalling a plugin dropped its tables but left them registered to the plugin in
 	  plugins_tables. The registration is now removed with the table.
+	* Installing a plugin with an invalid manifest.json (such as the pdate plugin of the 3.0.1
+	  release) copied its files into apps/ itself, registered a plugin without a name and took the
+	  whole site down. The manifest is now checked before anything is installed.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
@@ -429,6 +437,10 @@
 	  instead.
 	* The plugin events onUserFollow and onUserUnfollow also receive the user to follow or unfollow,
 	  as their second argument; the first argument is still the current user.
+	* The Plugins page of the administration lists the plugins in apps/ and installs, disables,
+	  enables and uninstalls them; it no longer depends on the retired Sharetronix marketplace and
+	  no longer asks for marketplace credentials. Installing and uninstalling show what the plugin's
+	  installer.php will change and ask for confirmation.
 
 	Removed:
 	* Removed the obsolete root README.txt.

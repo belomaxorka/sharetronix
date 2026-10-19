@@ -24,13 +24,19 @@
 	$tpl->initRoutine('AdminLeftMenu', array());
 	$tpl->routine->load();
 	
-	$tabs = array('index', 'view', 'install', 'confirm_install', 'uninstall', 'confirm_uninstall', "enterStxKey");
+	$tabs = array('index', 'install', 'confirm_install', 'enable', 'disable', 'uninstall', 'confirm_uninstall');
 	$tab = ( isset($this->params->tab) && in_array($this->params->tab, $tabs) ) ? $this->params->tab : current($tabs);
 	
 	if( $this->param('installed') == 'ok' ){
 		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->okMessage($this->lang('admadm_frm_ok'), $this->lang('admin_apps_installed_msg')) );
 	}elseif( $this->param('uninstalled') == 'ok' ){
 		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->okMessage($this->lang('admadm_frm_ok'), $this->lang('admin_apps_uninstalled_msg')) );
+	}elseif( $this->param('enabled') == 'ok' ){
+		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->okMessage($this->lang('admadm_frm_ok'), $this->lang('admin_plugins_enabled_msg')) );
+	}elseif( $this->param('disabled') == 'ok' ){
+		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->okMessage($this->lang('admadm_frm_ok'), $this->lang('admin_plugins_disabled_msg')) );
+	}elseif( $this->param('msg') == 'expired' ){
+		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->errorMessage($this->lang('admgnrl_error'), $this->lang('admin_plugins_expired')) );
 	}
 	$ap = new AdminPlugins($this->user, $tpl, $this->params); 
 	call_user_func(array($ap, $tab));
