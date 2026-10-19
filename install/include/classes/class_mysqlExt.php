@@ -22,6 +22,7 @@
 			// latin1 on a stock MySQL 5.7, and non-ASCII data such as the administrator name is stored
 			// double-encoded.
 			$this->ext=='mysqli' ? mysqli_query($this->connection, 'SET NAMES utf8') : mysql_query('SET NAMES utf8', $this->connection);
+			$this->set_sql_mode();
 			
 			return $this->connection;
 		}

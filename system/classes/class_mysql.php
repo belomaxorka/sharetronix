@@ -15,6 +15,13 @@
 		public $disconnect_on_descruct;
 		// In debug mode every query is counted and timed, but only the first ones keep their text.
 		const DEBUG_QUERIES_LISTED	= 1000;
+		// SQL modes that the queries of this application and its plugins do not work with. The strict
+		// modes, on by default since MySQL 5.7 and MariaDB 10.2.4, reject the inserts that leave NOT NULL
+		// columns without a value, and ONLY_FULL_GROUP_BY (MySQL 5.7+) rejects several GROUP BY queries.
+		// Values are put in double quotes and escaped with backslashes, so ANSI_QUOTES breaks every query
+		// and NO_BACKSLASH_ESCAPES leaves a double quote in a value unescaped. TRADITIONAL and ANSI would
+		// turn some of these modes on again.
+		protected $incompatible_sql_modes	= array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL', 'ONLY_FULL_GROUP_BY', 'ANSI_QUOTES', 'ANSI', 'NO_BACKSLASH_ESCAPES');
 		
 		public function __construct($host, $user, $pass, $db)
 		{
@@ -48,10 +55,30 @@
 				return $this->fatal_error('Select DB');
 			}
 			$this->ext=='mysqli' ? mysqli_query($this->connection, 'SET NAMES utf8') : mysql_query('SET NAMES utf8', $this->connection);
+			$this->set_sql_mode();
 			if($this->debug_mode) {
 				$this->debug_record('CONNECT '.$this->dbhost, microtime(TRUE) - $time);
 			}
 			return $this->connection;
+		}
+		
+		protected function set_sql_mode()
+		{
+			// Turns off the incompatible modes for this connection only and keeps the other modes of the server.
+			$res	= $this->ext=='mysqli' ? mysqli_query($this->connection, 'SELECT @@SESSION.sql_mode') : mysql_query('SELECT @@SESSION.sql_mode', $this->connection);
+			if( ! $res ) {
+				return;
+			}
+			$row	= $this->ext=='mysqli' ? mysqli_fetch_row($res) : mysql_fetch_row($res);
+			$this->ext=='mysqli' ? mysqli_free_result($res) : mysql_free_result($res);
+			$modes	= $row[0]==='' ? array() : explode(',', $row[0]);
+			$keep	= array_diff($modes, $this->incompatible_sql_modes);
+			if( count($keep) == count($modes) ) {
+				return;
+			}
+			// Single quotes: double quotes would name an identifier while ANSI_QUOTES is still on.
+			$query	= "SET SESSION sql_mode='".implode(',', $keep)."'";
+			$this->ext=='mysqli' ? mysqli_query($this->connection, $query) : mysql_query($query, $this->connection);
 		}
 		
 		public function query($query, $remember_result=TRUE)

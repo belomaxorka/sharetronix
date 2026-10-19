@@ -88,6 +88,10 @@
 	  application reads back with unserialize(); on a server shared with other accounts they could
 	  be replaced. Files now get mode 0644 and cache entries 0600. The installer no longer makes the
 	  attachment folder writable by everyone.
+	* Turned off the NO_BACKSLASH_ESCAPES SQL mode for the application's database connections. In
+	  that mode the escaping function only doubles single quotes, while the queries put values in
+	  double quotes, so on a server configured with it a double quote in any input ended the string
+	  and changed the query.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -465,6 +469,15 @@
 	  by accident, through the "5.5.5-" prefix of its version text, which PHP 8 removes. The
 	  installer now compares the numeric version the server reports, which also decides the size of
 	  the cache table's data column.
+	* Fixed installation and use on database servers with strict SQL modes, the default of MySQL 5.7
+	  and later and of MariaDB 10.2.4 and later. Many queries leave NOT NULL columns without a value
+	  or write '' into number columns, so the installer stopped with "Field 'detect' doesn't have a
+	  default value", and on a site installed elsewhere sign-up, posts, comments, private messages
+	  and new groups failed with HTTP 500. ONLY_FULL_GROUP_BY, on by default in MySQL 5.7 and later,
+	  also broke the tag search and the notification details. Each database connection of the
+	  application and the installer now turns off STRICT_TRANS_TABLES, STRICT_ALL_TABLES,
+	  ONLY_FULL_GROUP_BY, ANSI_QUOTES, NO_BACKSLASH_ESCAPES and the TRADITIONAL and ANSI
+	  combinations for itself and keeps the other modes; the server configuration is not changed.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
