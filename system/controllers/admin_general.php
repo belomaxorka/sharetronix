@@ -16,31 +16,6 @@
 	
 	require_once( $C->INCPATH.'helpers/func_languages.php' );
 
-	$version_check_result = '';
-	if( (!isset($C->AUTOCHECK_FOR_UPDATE) || $C->AUTOCHECK_FOR_UPDATE) && function_exists('curl_init') ){
-		$ch = new curlCall( 'http://www.developer.sharetronix.com/home/versioncheck/' );
-		$ch->addPostData(	array(  'site_url' => urlencode($C->SITE_URL),
-									'lang' => urlencode($C->LANGUAGE),
-									'version' => urlencode($C->VERSION)));
-		
-		$D->req_result = $ch->getData();
-		
-		if( $D->req_result && is_string($D->req_result) ){ 
-			$D->req_result = str_replace('http://', '', $D->req_result);
-			$D->req_result = explode(':', $D->req_result);
-			$result = FALSE;
-				
-			if(count($D->req_result)>= 2){
-				$result['status'] = $D->req_result[0];
-				$result['message'] = str_replace('developer.', 'http://developer.', $D->req_result[1]);
-			}
-		}
-		
-		$version_check_result = FALSE;
-		if( isset($result['status']) && isset($result['message']) ){
-			$version_check_result = TRUE;
-		}
-	}
 	//
 	$install_dir_not_deleted = FALSE;
 	if( is_dir($C->INCPATH .'../install' ) ){
@@ -86,7 +61,6 @@
 	$email_confirm	= $s->USERS_EMAIL_CONFIRMATION;
 	$pages_protect 	= intval($s->PROTECT_OUTSIDE_PAGES);
 	$api_status		= intval($s->API_STATUS);
-	$check4update	= isset($s->AUTOCHECK_FOR_UPDATE) && $s->AUTOCHECK_FOR_UPDATE==0 ? FALSE : TRUE;
 	$name_switch	= isset($s->NAME_INDENTIFICATOR)? $s->NAME_INDENTIFICATOR : 1;
 	$stealth_mode 	= isset($s->STEALTH_MODE)? $s->STEALTH_MODE : 2;
 	
@@ -117,7 +91,6 @@
 			$email_confirm		= isset($_POST['network_email_confirm']) && $_POST['network_email_confirm']==1;
 			$pages_protect		= isset($_POST['network_protect_outside']) && $_POST['network_protect_outside']==1;
 			$api_status			= isset($_POST['network_api_status']) && $_POST['network_api_status']==1;
-			$check4update		= isset($_POST['check4update']) && $_POST['check4update']==1;
 			$name_switch		= isset($_POST['name_switch'])? (($_POST['name_switch'] == 1 || $_POST['name_switch'] == 2)? intval($_POST['name_switch']) : 1) : 1;
 			$stealth_mode		= isset($_POST['stealth_mode'])? (($_POST['stealth_mode'] == 1 || $_POST['stealth_mode'] == 2)? (int) $_POST['stealth_mode'] : 1) : 1;
 
@@ -144,7 +117,6 @@
 			$db2->query('REPLACE INTO settings SET word="POST_MAX_SYMBOLS", value="'.$post_maxlength.'" ');
 			//$db2->query('REPLACE INTO settings SET word="MOBI_DISABLED", value="'.intval(!$mobi_enabled).'" ');
 			$db2->query('REPLACE INTO settings SET word="USERS_EMAIL_CONFIRMATION", value="'.intval($email_confirm).'" ');
-			$db2->query('REPLACE INTO settings SET word="AUTOCHECK_FOR_UPDATE", value="'.intval($check4update).'" ');
 			$db2->query('REPLACE INTO settings SET word="PROTECT_OUTSIDE_PAGES", value="'.intval($pages_protect).'" ');
 			$db2->query('REPLACE INTO settings SET word="API_STATUS", value="'.intval($api_status).'" ');
 			$db2->query('REPLACE INTO settings SET word="NAME_INDENTIFICATOR", value="'.$db2->e($name_switch).'" ');
@@ -205,13 +177,6 @@
 	$tpl->initRoutine('AdminLeftMenu', array());
 	$tpl->routine->load();
 	
-	if( $version_check_result ){
-		if( $result['status']=='OK' ){
-			$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('admin_general_check_for_updates'), $result['message'] ) );
-		}else{
-			$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('admin_general_check_for_updates'), $result['message'] ) );
-		}
-	}
 	if($install_dir_not_deleted){
 		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('admin_general_check_for_install_dir_ttl'), $this->lang('admin_general_check_for_install_dir_txt') ) );
 	}
@@ -240,7 +205,6 @@
 			$table->radioButton( $this->lang('admin_general_indent_ttl'), 'name_switch', array('1'=>$this->lang('admin_general_indent_opt1'), '2'=>$this->lang('admin_general_indent_opt2')), $name_switch ),
 			$table->radioButton( $this->lang('admin_stealth_mode_ttl'), 'stealth_mode', array('1'=>$this->lang('admgnrl_frm_mobi_on'), '2'=>$this->lang('admgnrl_frm_mobi_off')), $stealth_mode ),
 			$table->textField( '', $this->lang('admin_stealth_mode_txt') ), $table->textField( '', '' ),
-			$table->checkBox( '', array( array('check4update', 1, $this->lang('admgnrl_frm_check4update'), $check4update ) ) ),
 			$table->submitButton( 'sbm', $this->lang('admgnrl_frm_sbm') )
 	);
 

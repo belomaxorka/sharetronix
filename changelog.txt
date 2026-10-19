@@ -73,6 +73,10 @@
 	* Installations that had used the plugins or languages page of 3.0 to 3.6.2 kept the marketplace
 	  credentials it saved in the settings table, the password as an unsalted md5. The 3.6.3 update
 	  deletes them; nothing reads them any more.
+	* Every visit to the general settings page sent the site's address to developer.sharetronix.com
+	  over plain HTTP to check for updates, and the page showed the answer as HTML. That host no
+	  longer exists; whoever answered in its place, or anyone on the network path, could put HTML
+	  and scripts into the administration panel. The check is removed.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
@@ -521,6 +525,8 @@
 	* Removed the "Get New" tab of the themes page, which installed themes from the retired
 	  Sharetronix marketplace. To install a theme, copy its folder to themes/ and select it on the
 	  themes page, which now says so. The 3.6.3 update deletes the files of the tab.
+	* Removed the update check of the general settings page and its option; the service it asked no
+	  longer exists.
 
 Sharetronix 3.6.2
 	* Bug fixes
