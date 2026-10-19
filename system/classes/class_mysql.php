@@ -13,6 +13,8 @@
 		protected $debug_info	= FALSE;
 		protected $ext;
 		public $disconnect_on_descruct;
+		// In debug mode every query is counted and timed, but only the first ones keep their text.
+		const DEBUG_QUERIES_LISTED	= 1000;
 		
 		public function __construct($host, $user, $pass, $db)
 		{
@@ -22,7 +24,7 @@
 			$this->dbname	= $db;
 			$this->debug_mode	= $GLOBALS['C']->DEBUG_MODE;
 			if( ! isset($GLOBALS['MYSQL_DEBUG_INFO']) ) {
-				$GLOBALS['MYSQL_DEBUG_INFO']	= (object) array('queries'=>array(), 'time'=>0);
+				$GLOBALS['MYSQL_DEBUG_INFO']	= (object) array('queries'=>array(), 'time'=>0, 'count'=>0);
 			}
 			$this->debug_info	= & $GLOBALS['MYSQL_DEBUG_INFO'];
 			$this->ext	= 'mysql';
@@ -47,12 +49,7 @@
 			}
 			$this->ext=='mysqli' ? mysqli_query($this->connection, 'SET NAMES utf8') : mysql_query('SET NAMES utf8', $this->connection);
 			if($this->debug_mode) {
-				$time	= microtime(TRUE) - $time;
-				$this->debug_info->queries[]	= (object) array (
-					'query'	=> 'CONNECT '.$this->dbhost,
-					'time'	=> number_format($time, 5, '.', ''),
-				);
-				$this->debug_info->time		+= $time;
+				$this->debug_record('CONNECT '.$this->dbhost, microtime(TRUE) - $time);
 			}
 			return $this->connection;
 		}
@@ -65,12 +62,7 @@
 			$time	= microtime(TRUE);
 			$result	= $this->ext=='mysqli' ? mysqli_query($this->connection, $query) : mysql_query($query, $this->connection);
 			if($this->debug_mode) {
-				$time	= microtime(TRUE) - $time;
-				$this->debug_info->queries[]	= (object) array (
-					'query'	=> $query,
-					'time'	=> number_format($time, 5, '.', ''),
-				);
-				$this->debug_info->time	+= $time;
+				$this->debug_record($query, microtime(TRUE) - $time);
 			}
 			if(FALSE == $result) {
 				return $this->fatal_error($query);
@@ -198,6 +190,18 @@
 			//return FALSE;
 		}
 		
+		private function debug_record($query, $time)
+		{
+			$this->debug_info->count	++;
+			$this->debug_info->time	+= $time;
+			if( count($this->debug_info->queries) < self::DEBUG_QUERIES_LISTED ) {
+				$this->debug_info->queries[]	= (object) array (
+					'query'	=> $query,
+					'time'	=> number_format($time, 5, '.', ''),
+				);
+			}
+		}
+		
 		public function get_debug_info()
 		{
 			$debug_info	= clone($this->debug_info);
@@ -209,6 +213,7 @@
 		public function delete_debug_info()
 		{
 			$this->debug_info->queries	= array();
+			$this->debug_info->count	= 0;
 		}
 		
 		public function __destruct()

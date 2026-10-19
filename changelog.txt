@@ -327,6 +327,11 @@
 	  $C->DEBUG_USERS ran every cron job in debug mode: all query texts stayed in memory and failed
 	  queries printed their SQL to the cron output. The worker now sets the address after the check;
 	  jobs still see 127.0.0.1.
+	* Limited the memory used by the debug query log. In debug mode the database layer kept the text
+	  and time of every query until the end of the request, about 600 bytes per query (27-30 MB for
+	  50,000 queries), so long requests could run out of memory. It still counts and times every
+	  query, but keeps the text of the first 1000 only; the debug console shows the full number and
+	  how many are listed.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

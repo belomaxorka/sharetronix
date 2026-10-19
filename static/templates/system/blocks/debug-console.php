@@ -11,7 +11,7 @@
 	$sql1	= $GLOBALS['db1']->get_debug_info();
 	$mch	= $GLOBALS['cache']->get_debug_info();
 	
-	$debug_info_mysql = '<em>Query Number:</em> <strong>'.count($sql1->queries).'</strong><br /> ';
+	$debug_info_mysql = '<em>Query Number:</em> <strong>'.$sql1->count.'</strong>'.( $sql1->count > count($sql1->queries) ? ' (the first '.count($sql1->queries).' are listed)' : '' ).'<br /> ';
 	$debug_info_mysql .= '<em>Query Time:</em> <strong>'.(( $sql1->time > 1 )? '<span style="color: red;">'.floatval($sql1->time).'</span>' : floatval($sql1->time)).'</strong><br /> ';
 	$debug_info_mysql .= '<table id="table_assigned_vars"><tr><td><h2>Query Time</h2></td><td><h2>Query Value</h2></td></tr>';
 	
