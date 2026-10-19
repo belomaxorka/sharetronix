@@ -647,6 +647,11 @@
 	* A cache folder that the web server cannot write to filled the PHP log with two warnings for
 	  every cache entry written (70 lines for five dashboard views). The file cache now logs one
 	  line per request that names the folder.
+	* The daily cleanup of the file cache removed only the expired entries of the current version
+	  and key prefix: entries written before an update or under another $C->CACHE_KEYS_PREFIX stayed
+	  in system/cache/ for good, and entries that were not writable for the cleanup user were
+	  skipped even where the folder allowed deleting them. Expired entries of every prefix are now
+	  removed.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

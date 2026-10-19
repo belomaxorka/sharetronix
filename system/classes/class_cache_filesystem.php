@@ -144,27 +144,23 @@
 		
 		public function garbage_collector()
 		{
-			$prefix	= md5($this->keys_prefix).'-';
-			$prefixlen	= strlen($prefix);
 			$time	= microtime(TRUE);
 			$dir	= opendir($this->path);
 			if( ! $dir ) {
 				return 0;
 			}
 			$i	= 0;
-			while($filename = readdir($dir)) {
-				if($filename=="." || $filename=="..") {
-					continue;
-				}
-				if( substr($filename, 0, $prefixlen) != $prefix ) {
-					continue;
-				}
+			while( FALSE !== ($filename = readdir($dir)) ) {
 				$file	= $this->path.'/'.$filename;
 				if( preg_match('/^[0-9a-f]{32}-[0-9a-f]{32}\..+\.tmp$/', $filename) ) {
 					// left behind by an interrupted write
 					if( @filemtime($file) < time()-3600 ) {
 						@unlink($file);
 					}
+					continue;
+				}
+				// Expired entries of every key prefix: those of an older version are never read again.
+				if( ! preg_match('/^[0-9a-f]{32}-[0-9a-f]{32}$/', $filename) ) {
 					continue;
 				}
 				// A request may delete an expired entry while this runs; a missing file is not an error.
@@ -174,8 +170,8 @@
 				}
 				$tm	= fread($fp, 10);
 				fclose($fp);
-				if( intval($tm) <= time() && is_writable($file) ) {
-					unlink($file);
+				// Deleting needs write access to the folder, not to the file (see remove_file()).
+				if( intval($tm) <= time() && @unlink($file) ) {
 					$i	++;
 				}
 			}
