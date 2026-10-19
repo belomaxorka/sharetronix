@@ -6,6 +6,7 @@
 		private $keys_prefix;
 		private $debug_mode;
 		private $debug_info;
+		private $error_logged;
 		
 		public function __construct()
 		{
@@ -17,6 +18,7 @@
 				'queries'	=> array(),
 				'time'	=> 0,
 			);
+			$this->error_logged	= FALSE;
 		}
 		
 		private function find_filename($key)
@@ -74,17 +76,19 @@
 			// A temporary file replaces the entry in one step (rename), so that a concurrent request
 			// reads the old or the new value, never a partly written or mixed one.
 			$tmp	= $file.'.'.getmypid().'-'.mt_rand().'.tmp';
-			$res	= FALSE !== file_put_contents($tmp, (time()+$ttl)."\n".serialize($data));
+			$res	= FALSE !== @file_put_contents($tmp, (time()+$ttl)."\n".serialize($data));
 			if( $res ) {
 				// read back with unserialize(), so only the owner may write or read it
-				chmod($tmp, 0600);
+				@chmod($tmp, 0600);
 				$res	= @rename($tmp, $file);
 				if( ! $res && $this->remove_file($file) ) {
 					// Windows does not replace a file that another process holds open.
-					$res	= rename($tmp, $file);
+					$res	= @rename($tmp, $file);
 				}
 			}
 			if( ! $res ) {
+				// before the unlink() of the temporary file: error_get_last() still holds the failed write
+				$this->log_error();
 				@unlink($tmp);
 			}
 			if( $this->debug_mode ) {
@@ -117,6 +121,17 @@
 				return $res;
 			}
 			return $res;
+		}
+		
+		private function log_error()
+		{
+			// One line per request, like the memcached and Redis drivers, instead of warnings for every entry.
+			if( $this->error_logged ) {
+				return;
+			}
+			$this->error_logged	= TRUE;
+			$e	= error_get_last();
+			error_log('Sharetronix cache: cannot write files in '.$this->path.' ('.($e ? $e['message'] : 'unknown error').'); this request does not store cache entries.');
 		}
 		
 		public function get_debug_info()

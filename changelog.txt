@@ -644,6 +644,9 @@
 	  unserialize() notices and chmod() warnings and, in a stress test, returned values mixed from
 	  two writes. Entries are now written to a temporary file that replaces the entry in one step;
 	  the daily cleanup removes temporary files left by interrupted writes.
+	* A cache folder that the web server cannot write to filled the PHP log with two warnings for
+	  every cache entry written (70 lines for five dashboard views). The file cache now logs one
+	  line per request that names the folder.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
