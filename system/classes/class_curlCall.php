@@ -58,6 +58,10 @@
 		
 		public function __destruct()
 		{
-			curl_close($this->_ch);
+			// Since PHP 8.0 the handle is an object, freed with its last reference; curl_close() has
+			// no effect there and is deprecated as of 8.5.
+			if( PHP_VERSION_ID < 80000 ) {
+				curl_close($this->_ch);
+			}
 		}
 	}

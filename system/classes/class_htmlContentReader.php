@@ -57,7 +57,9 @@
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 				$this->html = curl_exec($ch);
-				curl_close($ch);  
+				if( PHP_VERSION_ID < 80000 ) {
+					curl_close($ch);
+				}
 			}else{
 				$this->html = file_get_contents($this->url);
 			}

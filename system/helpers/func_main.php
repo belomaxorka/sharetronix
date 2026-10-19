@@ -93,15 +93,14 @@
 			@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 			$res	= curl_exec($ch);
 			fclose($dst);
-			if( ! $res ) {
+			$failed	= ! $res || curl_errno($ch);
+			// curl_close() has no effect since PHP 8.0 and is deprecated as of 8.5
+			if( PHP_VERSION_ID < 80000 ) {
 				curl_close($ch);
+			}
+			if( $failed ) {
 				return FALSE;
 			}
-			if( curl_errno($ch) ) {
-				curl_close($ch);
-				return FALSE;
-			}
-			curl_close($ch);
 			chmod($dest, 0777);
 			return TRUE;
 		}
