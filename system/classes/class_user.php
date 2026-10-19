@@ -472,8 +472,9 @@
 				return false;
 			}
 
+			// The search text and the address built from it come from the request.
 			$this->db2->query('INSERT INTO searches(user_id, search_key, search_string, search_url, added_date) VALUES(
-				'. (int) $this->id .', "'.$search_key.'", "'.$search_string.'", "'.$search_url.'", '. time() .'
+				'. (int) $this->id .', "'.$search_key.'", "'.$this->db2->e($search_string).'", "'.$this->db2->e($search_url).'", '. time() .'
 			);');
 			
 			$this->get_saved_searches(TRUE);

@@ -107,6 +107,9 @@
 	* The group suggestions of the post form and the group check service listed private groups, with
 	  their numbers, names and titles, to everybody, guests included. They now show private groups
 	  only to their members and to network administrators, like the group search.
+	* Saving a search put the search text into the SQL statement unescaped: a double quote in it
+	  ended the statement with an SQL error (HTTP 500), a backslash was lost, and any signed-in
+	  member's text could change the statement. The text is now escaped.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
