@@ -53,7 +53,10 @@
 		$users_not_for_invitations = array_merge($users_not_for_invitations, $tmp);
 		$users_not_for_invitations = array_unique($users_not_for_invitations);		
 		
-		$r = $this->db2->query('SELECT SQL_CALC_FOUND_ROWS  * FROM users WHERE id NOT IN('.implode(',', $users_not_for_invitations).') ORDER BY username ASC LIMIT '.$from.', '.$C->PAGING_NUM_USERS);
+		// A COUNT(*) with the same condition instead of SQL_CALC_FOUND_ROWS and FOUND_ROWS(), which MySQL 8.0.17 deprecated (warning 1287).
+		$where = 'id NOT IN('.implode(',', $users_not_for_invitations).')';
+		$num_results = $this->db2->fetch_field('SELECT COUNT(*) FROM users WHERE '.$where);
+		$r = $this->db2->query('SELECT * FROM users WHERE '.$where.' ORDER BY username ASC LIMIT '.$from.', '.$C->PAGING_NUM_USERS);
 		while($row = $this->db2->fetch_object($r)){
 			$tmp = new stdClass;
 			$tmp->username 	= $row->username;
@@ -67,7 +70,9 @@
 	}else{
 		if( !empty($_POST['usersearch']) ){ 
 			$srch = $this->db2->e($_POST['usersearch']);
-			$r = $this->db2->query('SELECT SQL_CALC_FOUND_ROWS  * FROM users WHERE username LIKE "%'.$srch.'%" OR fullname LIKE "%'.$srch.'%" ORDER BY username ASC LIMIT '.$from.', '.$C->PAGING_NUM_USERS);
+			$where = 'username LIKE "%'.$srch.'%" OR fullname LIKE "%'.$srch.'%"';
+			$num_results = $this->db2->fetch_field('SELECT COUNT(*) FROM users WHERE '.$where);
+			$r = $this->db2->query('SELECT * FROM users WHERE '.$where.' ORDER BY username ASC LIMIT '.$from.', '.$C->PAGING_NUM_USERS);
 			while($row = $this->db2->fetch_object($r)){
 				$tmp = new stdClass;
 				$tmp->username 	= $row->username;
@@ -80,8 +85,9 @@
 		}
 	}
 	
-	$r = $this->db2->query('SELECT FOUND_ROWS() AS cnt'); 
-	$num_results = $this->db2->fetch_object($r)->cnt;
+	if( !isset($num_results) ) {
+		$num_results = 0;
+	}
 	$num_pages	= ceil($num_results / $C->PAGING_NUM_USERS);
 	$paging_url	= $C->SITE_URL.$g->groupname.'/invite/pg:';
 	

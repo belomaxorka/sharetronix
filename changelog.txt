@@ -725,6 +725,9 @@
 	  no row for them. A site updated from a release before 3.5 has none until the 4.0.0 update adds
 	  them, and every page of a signed-in administrator logged "Undefined property:
 	  stdClass::$ADMIN_STEALTH_MODE" while the new files ran on the old database.
+	* Counted the members on the group invitation page with a COUNT(*) query instead of
+	  SQL_CALC_FOUND_ROWS and FOUND_ROWS(), which MySQL 8.0.17 deprecated (warning 1287 on every
+	  view of the page).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
