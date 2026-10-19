@@ -40,6 +40,12 @@
 			break;
 		case 'set':
 			
+			// A signed-out request (an expired session) has no user to comment as.
+			if( ! $this->user->is_logged ) {
+				echo 'ERROR:'.$page->lang('global_ajax_post_error');
+				return;
+			}
+			
 			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['comments_text']) )
 			{
 				$msg	= isset($_POST['comments_text']) ? trim($_POST['comments_text']) : '';

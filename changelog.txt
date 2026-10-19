@@ -549,6 +549,10 @@
 	  strict mode (MySQL 5.7 and later, MariaDB 10.2.4 and later) an installer.php that inserted a
 	  row without a value for every NOT NULL column failed with "doesn't have a default value". It
 	  now turns off the same modes as the application's connections.
+	* Posting, commenting or sending a private message after the session had expired ended in HTTP
+	  500 and a PHP fatal error ("Attempt to modify property on false"), because the services built
+	  the post for a user who was not signed in. They now answer with the usual error message;
+	  nothing was stored before either.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

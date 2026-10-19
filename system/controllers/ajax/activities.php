@@ -143,6 +143,12 @@
 			break;
 		case 'set':
 			
+			// A signed-out request (an expired session) has no user to post as.
+			if( ! $user->is_logged ) {
+				echo 'ERROR:'.$page->lang('global_ajax_post_error');
+				return;
+			}
+			
 			$activity_text 	= isset($_POST[ 'activities_text' ])? $_POST[ 'activities_text' ] : '';
 			$activities_token 	= isset($_POST[ 'token' ])? $_POST[ 'token' ] : '';
 			

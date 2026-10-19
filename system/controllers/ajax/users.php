@@ -163,6 +163,12 @@
 			
 			case 'sendmessage':
 
+				// A signed-out request (an expired session) has no user to send from.
+				if( ! $user->is_logged ) {
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
+					return;
+				}
+				
 				$prv_user_id = isset($_POST[ 'users_id' ])? $_POST[ 'users_id' ] : '';
 				$prv_text = isset($_POST[ 'text' ])? trim($_POST[ 'text' ]) : '';
 								
