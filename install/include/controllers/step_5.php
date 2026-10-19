@@ -79,6 +79,7 @@
 				$config	= config_replace_variable( $config,	'$C->DB_PASS',	$s['MYSQL_PASS'] );
 				$config	= config_replace_variable( $config,	'$C->DB_NAME',	$s['MYSQL_DBNAME'] );
 				$config	= config_replace_variable( $config,	'$C->DB_MYEXT',	$s['MYSQL_MYEXT'] );
+				$config	= config_replace_variable( $config,	'$C->DB_CHARSET',	'utf8mb4' );
 				$config	= config_replace_variable( $config,	'$C->CACHE_MECHANISM',	'filesystem' );
 				$config	= config_replace_variable( $config,	'$C->CACHE_EXPIRE',	3600, FALSE );
 				$config	= config_replace_variable( $config,	'$C->CACHE_MEMCACHE_HOST',	'' );

@@ -18,6 +18,7 @@
 		$C->DB_PASS	= '';
 		$C->DB_NAME	= '';
 		$C->DB_MYEXT = ''; // 'mysqli' or 'mysql'
+		$C->DB_CHARSET = ''; // 'utf8mb4'; empty for the utf8 tables of an older database
 	// 
 	
 	// CACHE SETTINGS

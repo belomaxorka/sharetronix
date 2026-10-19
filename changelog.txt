@@ -657,6 +657,20 @@
 	* When installer step 2 cannot connect to the database, it now also shows the reason the server
 	  or the PHP driver gave, for example "1045 Access denied for user ...", and for error 2054
 	  explains that PHP 7.2 cannot log in to the caching_sha2_password accounts of MySQL 8.
+	* New installations store all text as utf8mb4 with the collation utf8mb4_unicode_520_ci, so
+	  posts, comments, private messages and names keep emoji and other characters outside the Basic
+	  Multilingual Plane. Before, such a character was lost: MariaDB stored it as "????", and MySQL
+	  cut the text off at it, so the rest of a post or a name was lost too. The installer creates
+	  the tables and the database default in utf8mb4, writes $C->DB_CHARSET = 'utf8mb4' to
+	  system/conf_main.php, and refuses a database server without that collation (all supported
+	  servers have it). The application, the installer and the plugin installer connect with utf8mb4
+	  only when $C->DB_CHARSET is 'utf8mb4', so a database that is not converted yet keeps working
+	  in utf8. Plugin tables created by the plugin installer are utf8mb4 with the same collation
+	  unless the plugin asks for another character set. To fit the MyISAM key limit of 1000 bytes,
+	  the unique keys of users.email, unconfirmed_registrations.email, groups.groupname and
+	  plugins_tables.table and the keys of applications.consumer_key and
+	  pubsubhubbub_subscriptions.feed_url index the first 250 characters; the columns keep their
+	  length.
 
 	Removed:
 	* Removed the obsolete root README.txt.

@@ -81,6 +81,9 @@
 		$res = delete_all_tables();
 	
 		if( $res ){
+			// Tables that plugins create without a character set get the one of the core tables.
+			// Optional: the user may lack the privilege, and the core tables name their own.
+			$db->soft_query('ALTER DATABASE '.$db->quote_name($_SESSION['INSTALL_DATA']['MYSQL_DBNAME']).' CHARACTER SET utf8mb4 COLLATE '.mysql::UTF8MB4_COLLATION);
 			$res = create_all_tables();
 			insert_all_system_tables();
 		}

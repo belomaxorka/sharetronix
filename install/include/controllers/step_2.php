@@ -63,6 +63,11 @@
 				$D->error	= TRUE;
 				$D->errmsg	= 'Your MySQL server doesn\'t meet sharetronix requirenments, version 5.0 or higher required.';
 			}
+			// The tables use utf8mb4 with this collation.
+			if( !$D->error && ! $db->fetch_field("SHOW COLLATION LIKE '".mysql::UTF8MB4_COLLATION."'") ) {
+				$D->error	= TRUE;
+				$D->errmsg	= 'Your database server does not support the utf8mb4 character set with the '.mysql::UTF8MB4_COLLATION.' collation. Sharetronix needs MySQL 5.7 or later or MariaDB 10.4 or later.';
+			}
 		}
 		
 		if( ! $D->error ) {

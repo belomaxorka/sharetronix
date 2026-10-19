@@ -19,14 +19,16 @@ class DatabaseReal implements DatabaseInterface {
 	}
 	
 	
-	public function create_table($table_name, $engine = 'MyISAM', $charset = 'utf8') {
+	public function create_table($table_name, $engine = 'MyISAM', $charset = 'utf8mb4') {
 
 		$sql = sprintf("
 			CREATE TABLE %s ( 
 				id INT(11) NOT NULL AUTO_INCREMENT,
 				PRIMARY KEY (id)
-			) ENGINE=%s DEFAULT CHARSET=%s;
-			", $table_name, $engine, $charset
+			) ENGINE=%s DEFAULT CHARSET=%s%s;
+			", $table_name, $engine, $charset,
+			// the collation of the core tables: text of two collations cannot be compared
+			$charset == 'utf8mb4' ? ' COLLATE=' . mysql::UTF8MB4_COLLATION : ''
 		);
 		$this->execute($sql);
 

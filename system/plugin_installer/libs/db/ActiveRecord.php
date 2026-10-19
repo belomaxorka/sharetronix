@@ -47,12 +47,13 @@ class ActiveRecord{
 		/* connect to db */
 		try {
 			$this->link = new PDO('mysql:host=' . $C->DB_HOST . ";dbname=" . $C->DB_NAME, $C->DB_USER, $C->DB_PASS);
-			$this->link->exec('SET NAMES utf8');
-			// The SQL modes of the application's connections (mysql::set_sql_mode()): installers, too,
-			// insert rows without a value for every NOT NULL column.
 			if(!class_exists('mysql')) {
 				require_once dirname(__FILE__) . '/../../../classes/class_mysql.php';
 			}
+			// The character set of the application's connections (mysql::connect()).
+			$this->link->exec(isset($C->DB_CHARSET) && $C->DB_CHARSET == 'utf8mb4' ? 'SET NAMES utf8mb4 COLLATE ' . mysql::UTF8MB4_COLLATION : 'SET NAMES utf8');
+			// The SQL modes of the application's connections (mysql::set_sql_mode()): installers, too,
+			// insert rows without a value for every NOT NULL column.
 			$res = $this->link->query('SELECT @@SESSION.sql_mode');
 			$mode = $res ? mysql::compatible_sql_mode($res->fetchColumn()) : false;
 			if($mode !== false) {

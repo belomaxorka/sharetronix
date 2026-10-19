@@ -12,9 +12,15 @@
 		protected $debug_mode	= FALSE;
 		protected $debug_info	= FALSE;
 		protected $ext;
+		protected $charset;
 		public $disconnect_on_descruct;
 		// In debug mode every query is counted and timed, but only the first ones keep their text.
 		const DEBUG_QUERIES_LISTED	= 1000;
+		// Tables and connections use utf8mb4, which holds every character (emoji too), with one
+		// explicit collation: comparing text of two different collations fails ("Illegal mix of
+		// collations"), and the server defaults differ between MySQL and MariaDB versions. This one
+		// tells emoji apart and exists on every supported server.
+		const UTF8MB4_COLLATION	= 'utf8mb4_unicode_520_ci';
 		// SQL modes that the queries of this application and its plugins do not work with. The strict
 		// modes, on by default since MySQL 5.7 and MariaDB 10.2.4, reject the inserts that leave NOT NULL
 		// columns without a value, and ONLY_FULL_GROUP_BY (MySQL 5.7+) rejects several GROUP BY queries.
@@ -40,6 +46,9 @@
 				// PHP 8.1+ throws mysqli exceptions by default; this class checks the return values.
 				mysqli_report(MYSQLI_REPORT_OFF);
 			}
+			// $C->DB_CHARSET is 'utf8mb4' once the tables use it (new installations, or after the
+			// 3.6.3 update); a utf8mb4 connection to utf8 tables would fail on text with emoji.
+			$this->charset	= isset($GLOBALS['C']->DB_CHARSET) && $GLOBALS['C']->DB_CHARSET=='utf8mb4' ? 'utf8mb4' : 'utf8';
 			$this->disconnect_on_descruct	= TRUE;
 		}
 		
@@ -54,7 +63,8 @@
 			if(FALSE == $db) {
 				return $this->fatal_error('Select DB');
 			}
-			$this->ext=='mysqli' ? mysqli_query($this->connection, 'SET NAMES utf8') : mysql_query('SET NAMES utf8', $this->connection);
+			$names	= $this->charset=='utf8mb4' ? 'SET NAMES utf8mb4 COLLATE '.self::UTF8MB4_COLLATION : 'SET NAMES utf8';
+			$this->ext=='mysqli' ? mysqli_query($this->connection, $names) : mysql_query($names, $this->connection);
 			$this->set_sql_mode();
 			if($this->debug_mode) {
 				$this->debug_record('CONNECT '.$this->dbhost, microtime(TRUE) - $time);

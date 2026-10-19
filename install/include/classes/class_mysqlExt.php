@@ -20,11 +20,28 @@
 			}
 			// Like mysql::connect(): without it the connection uses the server's default character set,
 			// latin1 on a stock MySQL 5.7, and non-ASCII data such as the administrator name is stored
-			// double-encoded.
-			$this->ext=='mysqli' ? mysqli_query($this->connection, 'SET NAMES utf8') : mysql_query('SET NAMES utf8', $this->connection);
+			// double-encoded. The installer creates utf8mb4 tables; the statements of the updater are
+			// ASCII, so they also work on the utf8 tables of a database that is not converted yet.
+			$names	= 'SET NAMES utf8mb4 COLLATE '.self::UTF8MB4_COLLATION;
+			$this->ext=='mysqli' ? mysqli_query($this->connection, $names) : mysql_query($names, $this->connection);
 			$this->set_sql_mode();
 			
 			return $this->connection;
+		}
+		
+		// Runs a statement whose failure must not stop the installer or the updater. Returns the
+		// result, or FALSE and keeps the error number and text in $soft_error.
+		public $soft_error	= '';
+		public function soft_query($query)
+		{
+			if( FALSE == $this->connection ) {
+				$this->connect();
+			}
+			$result	= $this->ext=='mysqli' ? mysqli_query($this->connection, $query) : mysql_query($query, $this->connection);
+			if( FALSE === $result ) {
+				$this->soft_error	= $this->ext=='mysqli' ? mysqli_errno($this->connection).' '.mysqli_error($this->connection) : mysql_errno($this->connection).' '.mysql_error($this->connection);
+			}
+			return $result;
 		}
 		
 		// The error number and text of the last connect() that returned 1.
