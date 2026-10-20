@@ -91,7 +91,7 @@
 						<span class="pager-item title">'. $page->lang('paging_title') .'</span>';
 		
 						if($pg > 3) {
-							$html .= '<a href="'. $paging_url . ($pg-1) .'" class="pager-item next-prev prev">Previous</a>';
+							$html .= '<a href="'. $paging_url . ($pg-1) .'" class="pager-item next-prev prev">'. $page->lang('paging_prev') .'</a>';
 						}
 
 						 
@@ -112,7 +112,7 @@
 						}
 
 						if($pg < $num_pages-2) {
-							$html .= '<a href="'. ( ($user->is_logged)? $paging_url:$C->SITE_URL.'signup' ) . ($pg+1) .'" class="pager-item next-prev next">Next</a>';
+							$html .= '<a href="'. ( ($user->is_logged)? $paging_url:$C->SITE_URL.'signup' ) . ($pg+1) .'" class="pager-item next-prev next">'. $page->lang('paging_next') .'</a>';
 							//$html .= ( ($user->is_logged)? $paging_url:$C->SITE_URL.'signup' ) . ($pg+1);
 						}
 				

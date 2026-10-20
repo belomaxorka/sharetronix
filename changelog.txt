@@ -952,6 +952,8 @@
 	  language. They now use the language pack; the searches show their own existing texts, for
 	  example "There is no such member NAME." for a post search by an unknown member, and an empty
 	  user or group search asks for a text to search for.
+	* The Previous and Next links of the page lists were English in every language; they now use the
+	  new strings paging_prev and paging_next next to the existing "Pages:".
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

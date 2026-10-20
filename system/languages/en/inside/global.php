@@ -104,6 +104,8 @@
 		'groups_orderby_posts'	=> 'Posts',
 		
 		'paging_title'	=> 'Pages:',
+		'paging_prev'	=> 'Previous',
+		'paging_next'	=> 'Next',
 		
 		'user_unfollow_confirm'	=> 'Unfollow #USERNAME# - Are you sure?',
 		'post_unfave_confirm'	=> 'Remove from Favorites - Are you sure?',
