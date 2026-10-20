@@ -846,6 +846,9 @@
 	* On PHP 8.1 and later, the API logged a deprecation for every saved search it answered and for
 	  trends/top10: they formatted dates with gmstrftime(). They use gmdate() with the same English
 	  format as the other dates of the API.
+	* The rss and atom formats of the API's direct messages listed no message and logged a warning
+	  for each one: they read a column that their query does not select. They list the messages now,
+	  like the json and xml formats.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

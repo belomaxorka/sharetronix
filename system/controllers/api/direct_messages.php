@@ -269,7 +269,7 @@
 			
 			if($twitter_data->is_feed())
 				while($stat = $this->db2->fetch_object($res)) 
-					$answer .= $twitter_data->print_status_simple($stat->pid, 'private');
+					$answer .= $twitter_data->print_status_simple($stat->id, 'private');
 			else{
 				$answer .= $twitter_data->data_section('direct-messages', FALSE, FALSE, TRUE, ' type="array"');
 					while($message = $this->db2->fetch_object($res)){	
