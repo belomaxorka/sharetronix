@@ -965,6 +965,8 @@
 	  the administration ("SITE - Languages") were English in every language. They now use the
 	  language pack, with the site name last as on the other pages: the members tabs take their
 	  existing titles ("Network Members", "Members I Follow", "My Followers", "Administrators").
+	* The choices of the notification settings (None, Post, E-mail, Both, Post & E-mail) were
+	  English in every language; they now use the new strings os_st_notif_opt_*.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
