@@ -30,7 +30,7 @@ class DatabaseReal implements DatabaseInterface {
 
 		$sql = sprintf("
 			CREATE TABLE %s ( 
-				id INT(11) NOT NULL AUTO_INCREMENT,
+				id INT NOT NULL AUTO_INCREMENT,
 				PRIMARY KEY (id)
 			) ENGINE=%s DEFAULT CHARSET=%s%s;
 			", $table_name, $engine, $charset,
@@ -96,9 +96,7 @@ class DatabaseReal implements DatabaseInterface {
 		}
 		
 		if($limit == false) {
-			if($type == ColumnType::INTEGER) {
-				$type .= "(11) ";
-			}
+			// an INTEGER gets no display width: MySQL 8.0.17 and later warn that it is deprecated
 			if($type == ColumnType::STRING) {
 				$type .= "(255) ";
 			}

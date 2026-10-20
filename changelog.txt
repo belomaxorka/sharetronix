@@ -968,6 +968,11 @@
 	  definition). The earlier or repeated definitions are removed; the texts shown do not change.
 	  Three of them had different, unused wording: the grouped group-invitation notification, the
 	  e-mail change password error and a button of the old sign-up wizard.
+	* New installations, the tables that the updater adds and the tables and integer columns that
+	  the plugin installer creates no longer give integer columns a display width (int instead of
+	  int(10)). MySQL 8.0.17 and later answered almost every one of these statements with the
+	  warning that the display width is deprecated. The width does not change the values a column
+	  holds; MariaDB shows its default width instead, and existing tables are not changed.
 
 	Removed:
 	* Removed the obsolete root README.txt.

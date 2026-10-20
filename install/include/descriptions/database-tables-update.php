@@ -4,12 +4,12 @@
 	$db_updates['3.5.0'] = array(
 			'tables' => array(
 					'groups_categories' => "CREATE TABLE IF NOT EXISTS `groups_categories` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`id` int NOT NULL AUTO_INCREMENT,
 					`title` varchar(255) NOT NULL,
 					`url` varchar(50) NOT NULL,
-					`is_admin_created` int(11) NOT NULL DEFAULT  '0',
-					`creator_id` int(11) NOT NULL,
-					`is_locked` tinyint(1) NOT NULL DEFAULT  '0',
+					`is_admin_created` int NOT NULL DEFAULT  '0',
+					`creator_id` int NOT NULL,
+					`is_locked` tinyint NOT NULL DEFAULT  '0',
 					PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
 						
@@ -24,12 +24,12 @@
 	$db_updates['3.6.0'] = array(
 			'tables' => array(
 					'post_likes' => "CREATE TABLE IF NOT EXISTS `post_likes` (
-										`id` int(11) NOT NULL AUTO_INCREMENT,
-										`group_id` int(11) NOT NULL DEFAULT  '0',
-										`user_id` int(11) NOT NULL,
-										`post_id` int(11) NOT NULL,
-										`comment_id` int(11) NOT NULL DEFAULT  '0',
-										`date` int(11) NOT NULL,
+										`id` int NOT NULL AUTO_INCREMENT,
+										`group_id` int NOT NULL DEFAULT  '0',
+										`user_id` int NOT NULL,
+										`post_id` int NOT NULL,
+										`comment_id` int NOT NULL DEFAULT  '0',
+										`date` int NOT NULL,
 										PRIMARY KEY (`id`)
 										) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
 	
