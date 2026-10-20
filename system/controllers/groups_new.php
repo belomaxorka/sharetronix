@@ -30,14 +30,17 @@
 		$plugins_manager->onPageSubmit();
 		if( !$plugins_manager->isValidEventCall() ){
 			$error = TRUE;
-			$errmsg = $plugins_manager->getEventCallErrorMessage();
+			$errtxt = $plugins_manager->getEventCallErrorMessage();
 		}
 		
 		$submit	= TRUE;
 		
-		$group = new group();
-		$errmsg = $group->createGroup();
-		$error = !empty($errmsg)? TRUE : FALSE;
+		// A plugin that refused the submit has the last word: no group, and its message is shown.
+		if( ! isset($errtxt) ){
+			$group = new group();
+			$errmsg = $group->createGroup();
+			$error = !empty($errmsg)? TRUE : FALSE;
+		}
 		
 		$group_name			= isset($_POST['group_name']) && is_string($_POST['group_name'])? htmlspecialchars( trim($_POST['group_name']) ) : '';
 		$group_alias		= isset($_POST['group_alias']) && is_string($_POST['group_alias'])? htmlspecialchars( trim($_POST['group_alias']) ) : '';
@@ -55,7 +58,7 @@
 	$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createMenu('tabs-navigation', $menu) );
 	
 	if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), $this->lang($errmsg) ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
 	}
 	
 	$table = new tableCreator();

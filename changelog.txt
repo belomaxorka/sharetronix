@@ -896,6 +896,10 @@
 	* Saving the group settings with a group type other than public or private answered "Information
 	  was saved." although nothing was saved. It now shows the error "The group must be public or
 	  private." (new string group_setterr_type).
+	* A plugin that refused the submit of the new group form (event onPageSubmit) did not stop it:
+	  the group was created anyway and the plugin's message was not shown. The form for a new group
+	  category kept the plugin's refusal but showed an empty message. Both forms now stop and show
+	  the plugin's message.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

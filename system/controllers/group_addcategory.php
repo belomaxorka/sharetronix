@@ -33,7 +33,7 @@
 		$plugins_manager->onPageSubmit();
 		if( !$plugins_manager->isValidEventCall() ){
 			$error = TRUE;
-			$errmsg = $plugins_manager->getEventCallErrorMessage();
+			$errtxt = $plugins_manager->getEventCallErrorMessage();
 		}
 		
 		$category_url = isset($_POST['group_category']) && is_string($_POST['group_category']) ? str_replace(' ', '', strtolower($_POST['group_category'])) : '';
@@ -50,7 +50,7 @@
 		
 		$submit	= TRUE;
 		
-		$error = !empty($errmsg)? TRUE : FALSE;
+		$error = ( !empty($errmsg) || isset($errtxt) )? TRUE : FALSE;
 		
 		if( !$error ){
 			$group->createGroupCategory($_POST['group_category']);
@@ -75,7 +75,7 @@
 	}
 	
 	if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), $this->lang($errmsg) ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
 	}elseif( $submit && !$error ){
 		//$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('newcat_success_title'), $this->lang('newcat_success_text') ) );
 		$this->redirect($C->SITE_URL.$return);
