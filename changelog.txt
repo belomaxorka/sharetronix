@@ -1241,6 +1241,11 @@
 	  inside/payment.php, email/domainconfirm.php, outside/domainconfirm.php, outside/header.php and
 	  the iprestriction.php files of outside/ and mobile/. A plugin or theme that loads one of them
 	  with load_langfile() must ship the strings itself.
+	* Removed 337 unused strings of inside/admin.php: those of administration pages that no longer
+	  exist (network address, e-mail domains, IP restrictions, global messages, statistics, editing
+	  and inviting members, linked public networks, payments, LDAP, domain control, special groups,
+	  system clean-up, profile field settings, suspended applications) and unused texts of the
+	  existing pages.
 
 Sharetronix 3.6.2
 	* Bug fixes
