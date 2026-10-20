@@ -902,6 +902,8 @@
 	  the plugin's message.
 	* The error box of the new group and new group category forms had an empty title: it used a
 	  string of the settings pages, which these forms do not load. It now says "Error" again.
+	* Removing the profile picture in the settings showed no confirmation; it now says "Profile
+	  picture was deleted.", a string that existed but was never shown.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -134,6 +134,8 @@
 		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), $errmsg) );
 	}else if( $submit && !$error ){
 		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('st_avatat_ok'), $this->lang('st_avatat_okmsg') ) );
+	}else if( isset($msg) && $msg == 'deleted' ){
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('st_avatat_ok'), $this->lang('st_avatat_okdelmsg') ) );
 	}
 	
 	$table = new tableCreator();
