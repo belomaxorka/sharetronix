@@ -51,6 +51,7 @@
 		'srch_noresult_users_txt'	=> 'There are no members matching your search criteria.',
 		'srch_noresult_groups_ttl'	=> 'No results',
 		'srch_noresult_groups_txt'	=> 'There are no groups matching your search criteria.',
+		'srch_noresult_nostring'	=> 'Enter the text to search for.',
 		
 		'srch_title_tags'	=> 'Tags Search - #SITE_TITLE#',
 		'srch_title2_tags'	=> 'Find Tags',

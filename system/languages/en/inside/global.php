@@ -245,6 +245,8 @@
 		
 		'profile_search_no_results_ttl' => 'No results found',
 		'profile_search_no_results_txt' => 'No results found matching your search criteria',
+		'noposts_box_ttl' => 'No posts',
+		'noposts_box_txt' => 'No posts found',
 		'profile_search_invalid_field_txt' => 'Invalid search section field.',
 		'profile_search_search_by' => 'Search by',
 		

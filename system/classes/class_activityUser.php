@@ -134,7 +134,7 @@
 						$this->tpl->routine->load();
 					}
 				}else{
-					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Users', 'No Users Found'));
+					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('nousers_usr_ttl'), $this->page->lang('nousers_usr_txt')));
 				}
 			}
 		}

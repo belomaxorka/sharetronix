@@ -104,7 +104,7 @@
 				unset($post_ids);
 				
 			}else{
-				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Posts', 'No Posts Found'));
+				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('noposts_box_ttl'), $this->page->lang('noposts_box_txt')));
 			}
 
 			return ($num_results == $C->PAGING_NUM_POSTS)? array($first_id, $last_id) : array($first_id, 0);

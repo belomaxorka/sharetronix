@@ -33,7 +33,7 @@
 			if( $group ){
 				$group = $this->network->get_group_by_name( $group );
 				if( !$group ){
-					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Posts', 'No Posts Found'));
+					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('srch_noresult_posts_ttl'), $this->page->lang('srch_noresult_posts_invgrp', array('#GROUP#'=>htmlspecialchars($this->page->param('pgroup'))))));
 					return;
 				}
 			}
@@ -42,7 +42,7 @@
 			if( $user ){
 				$user = $this->network->get_user_by_username( $user ); 
 				if( !$user ){
-					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Posts', 'No Posts Found'));
+					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('srch_noresult_posts_ttl'), $this->page->lang('srch_noresult_posts_invusr', array('#USERNAME#'=>htmlspecialchars($this->page->param('puser'))))));
 					return;
 				}
 			}
@@ -116,7 +116,7 @@
 			
 			$string = $this->_validateString();
 			if( empty($string) ){
-				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No User Text', 'No Text to search provided'));
+				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('srch_noresult_users_ttl'), $this->page->lang('srch_noresult_nostring')));
 				return;
 			}
 			
@@ -139,7 +139,7 @@
 				
 				$this->tpl->layout->setVar( 'main_content_bottom', $this->tpl->designer->pager( $num_results, $num_pages, $pg, $paging_url ) );
 			}else{
-				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Users', 'No Users Found'));
+				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('srch_noresult_users_ttl'), $this->page->lang('srch_noresult_users_txt')));
 			}
 		}
 		
@@ -151,7 +151,7 @@
 				
 			$string = $this->_validateString();
 			if( empty($string) ){
-				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Group Text', 'No Text to search provided'));
+				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('srch_noresult_groups_ttl'), $this->page->lang('srch_noresult_nostring')));
 				return;
 			}
 			
@@ -173,7 +173,7 @@
 				
 				$this->tpl->layout->setVar( 'main_content_bottom', $this->tpl->designer->pager( $num_results, $num_pages, $pg, $paging_url ) );
 			}else{
-				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox('No Groups', 'No Groups Found'));
+				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('srch_noresult_groups_ttl'), $this->page->lang('srch_noresult_groups_txt')));
 			}
 		}
 	}

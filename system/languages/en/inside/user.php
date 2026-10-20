@@ -117,6 +117,8 @@
 		'nogroups_usr_follow_ttl'	=> 'No Groups',
 		'nogroups_usr_follow_txt'	=> '#USERNAME# doesn\'t follow any groups yet.',
 		'nogroups_usr_follow_txt_me'	=> 'You don\'t follow any groups yet.',
+		'nousers_usr_ttl'	=> 'No users',
+		'nousers_usr_txt'	=> 'No users found',
 		'usr_left_following'	=> 'Following',
 		
 		'noposts_usrprofileprotected_ttl_filter'		=> 'No posts',
