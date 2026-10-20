@@ -400,7 +400,11 @@ $this->limit = $limit_string;
 	public function insert($table, $data){
 		$table_fields = array_keys($data);
  		$fields = implode(", ", $table_fields);
- 		$values = "'" . implode("', '", $data) . "'";
+ 		$values = array();
+ 		foreach($data as $d){
+ 			$values[] = $this->link->quote((string) $d);
+ 		}
+ 		$values = implode(", ", $values);
 
  		$sql = "
  			INSERT INTO $table (
@@ -439,7 +443,7 @@ $this->limit = $limit_string;
 			if($strip == true){
 				$set .= "$key = $d, ";
 			} else {
-				$set .= "$key = '$d', ";
+				$set .= "$key = " . $this->link->quote((string) $d) . ", ";
 			}
 		}
 	
