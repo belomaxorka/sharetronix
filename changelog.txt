@@ -737,6 +737,10 @@
 	* The group invitation page shows each member's own picture. It read the avatar from a fresh
 	  empty object instead of the database row, so every member in the list was drawn with the
 	  default picture.
+	* The follow, unfollow, group-join, group-leave and group-invite services answer an error when
+	  the user or group id is sent as an array instead of acting on id 1. The integer value of an
+	  array is 1, so a crafted users_id[] or groups_id[] made a member follow or act on the first
+	  account or group.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

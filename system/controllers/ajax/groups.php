@@ -16,7 +16,7 @@
 		
 		case 'join': 
 			
-			$groups_id = isset($_POST['groups_id']) ? intval($_POST['groups_id']) : 0;
+			$groups_id = isset($_POST['groups_id']) && !is_array($_POST['groups_id']) ? intval($_POST['groups_id']) : 0;
 			
 			$g	= $network->get_group_by_id( $groups_id );
 			if( ! $g ) {
@@ -39,7 +39,7 @@
 			break;
 		case 'leave':
 			
-			$groups_id = isset($_POST['groups_id']) ? intval($_POST['groups_id']) : 0;
+			$groups_id = isset($_POST['groups_id']) && !is_array($_POST['groups_id']) ? intval($_POST['groups_id']) : 0;
 				
 			$g	= $network->get_group_by_id( $groups_id );
 			if( ! $g ) {
@@ -62,7 +62,7 @@
 			break;
 			
 		case 'invite':
-			if(!isset($_POST['users_id']) || !isset($_POST['groups_id'])){
+			if(!isset($_POST['users_id']) || !isset($_POST['groups_id']) || is_array($_POST['users_id']) || is_array($_POST['groups_id'])){
 				echo 'ERROR';
 				exit;
 			}
