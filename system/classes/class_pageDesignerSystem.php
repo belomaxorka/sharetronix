@@ -192,26 +192,28 @@
 		public function groupsSettingsMenu( $group_id, $follow, $is_admin = FALSE, $group_name = '' )
 		{
 			global $C;
+			$page = & $GLOBALS['page'];
 			
 			$settings_items = array(
-					array('url'=> '#', 'text'=> 'Leave', 'data_attributes' => array('role' => 'services', 'namespace' => 'groups',  'action' => 'leave', 'value' => $group_id)),
+					array('url'=> '#', 'text'=> $page->lang('grplist_tltp_unfollow'), 'data_attributes' => array('role' => 'services', 'namespace' => 'groups',  'action' => 'leave', 'value' => $group_id)),
 					//array('url'=> '#', 'text'=> 'Notifications'),
 					//array('url'=> $C->SITE_URL.$group_name.'/tab:invite', 'text'=> 'Invite'), //ako ima prava
 			);
 			if( $is_admin ){
-				$settings_items[] = array('url'=> $C->SITE_URL.$group_name.'/tab:settings', 'text'=> 'Settings');
+				$settings_items[] = array('url'=> $C->SITE_URL.$group_name.'/tab:settings', 'text'=> $page->lang('grplist_tltp_settings'));
 			}
 		
 			return
 			($follow?
-					'<a class="action-btn user-action add" data-action="join" data-value="'.$group_id.'" data-namespace="groups" data-role="services"><span class="tooltip"><span>Join</span></span></a>' :
-					$this->dropDownMenu('Settings', $settings_items, '', 'action-btn options', true));
+					'<a class="action-btn user-action add" data-action="join" data-value="'.$group_id.'" data-namespace="groups" data-role="services"><span class="tooltip"><span>'.$page->lang('grplist_tltp_follow').'</span></span></a>' :
+					$this->dropDownMenu($page->lang('grplist_tltp_settings'), $settings_items, '', 'action-btn options', true));
 		
 		}
 		
 		public function usersSettingsMenu( $user_id, $follow, $regime='friendship', $action = '' )
 		{
 			global $user;
+			$page = & $GLOBALS['page'];
 			
 			$html = '';
 			
@@ -223,12 +225,12 @@
 				
 				case 'friendship' : 
 					$follow ?
-						$html = '<a class="action-btn user-action add" data-action="follow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span class="tooltip"><span>Follow</span></span></a>' :
-						$html = '<a class="action-btn user-action disconnect-user" data-action="unfollow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span class="tooltip"><span>Unfollow</span></span></a>';
+						$html = '<a class="action-btn user-action add" data-action="follow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span class="tooltip"><span>'.$page->lang('usrlist_tltp_follow').'</span></span></a>' :
+						$html = '<a class="action-btn user-action disconnect-user" data-action="unfollow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span class="tooltip"><span>'.$page->lang('usrlist_tltp_unfollow').'</span></span></a>';
 					break;
 					
 				case 'administration' :
-						$html = '<a class="action-btn user-action remove-user" data-action="'.$action.'" data-value="'.$user_id.'" data-namespace="administration" data-role="services"><span class="tooltip"><span>'.ucfirst( str_replace('_', ' ', $action)).'</span></span></a>';
+						$html = '<a class="action-btn user-action remove-user" data-action="'.$action.'" data-value="'.$user_id.'" data-namespace="administration" data-role="services"><span class="tooltip"><span>'.admin_action_title($action).'</span></span></a>';
 					break;
 			}
 

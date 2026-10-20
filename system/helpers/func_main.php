@@ -387,6 +387,14 @@
 		return $GLOBALS['page']->lang($num==1 ? $key.'1' : $key, array('#NUM#'=>$num));
 	}
 	
+	// The tooltip of an administration action on a member in a list (remove_administrator, activate_user,
+	// remove_moderator): the string usrlist_tltp_ACTION, or the name of an action that has none.
+	function admin_action_title($action)
+	{
+		$text	= $GLOBALS['page']->lang('usrlist_tltp_'.$action);
+		return $text !== '' ? $text : ucfirst(str_replace('_', ' ', $action));
+	}
+	
 	function str_cut($str, $mx)
 	{
 		return mb_strlen($str)>$mx ? mb_substr($str, 0, $mx-1).'..' : $str;

@@ -163,6 +163,9 @@
 		'usrlist_numposts1'	=> 'Post',
 		'usrlist_tltp_follow'	=> 'Follow',
 		'usrlist_tltp_unfollow'	=> 'Unfollow',
+		'usrlist_tltp_remove_administrator'	=> 'Remove administrator',
+		'usrlist_tltp_remove_moderator'	=> 'Remove moderator',
+		'usrlist_tltp_activate_user'	=> 'Activate user',
 		
 		'grplist_numfollowers'	=> 'Members',
 		'grplist_numfollowers1'	=> 'Member',
@@ -170,6 +173,7 @@
 		'grplist_numposts1'	=> 'Post',
 		'grplist_tltp_follow'	=> 'Join',
 		'grplist_tltp_unfollow'	=> 'Leave',
+		'grplist_tltp_settings'	=> 'Settings',
 		
 		'rss_mydashboard'	=> '#USERNAME#\'s Dashboard Feed',
 		'rss_myposts'	=> '#USERNAME#\'s Posts',

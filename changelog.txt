@@ -933,6 +933,11 @@
 	  could not delete this comment" and "You could not follow that user", a final period for
 	  "Invalid attachment type and ID", and "possibly you are its only administrator" for leaving a
 	  group.
+	* The Follow, Unfollow, Join, Leave and Settings buttons of the member and group lists, the
+	  profile, the group page and the mobile profile, and the tooltips of the administration actions
+	  in member lists (remove administrator, remove moderator, activate user) were English in every
+	  language. They now use the language pack (the strings usrlist_tltp_* and grplist_tltp_*, some
+	  of which existed unused).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

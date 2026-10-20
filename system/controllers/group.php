@@ -179,7 +179,7 @@
 		if($i_am_member == true ){ 
 			$tpl->layout->block->setVar(
 					'group_header_settings_button', 
-					$tpl->designer->dropDownMenu("Settings", $menu_items, '', 'action-btn options', true)
+					$tpl->designer->dropDownMenu($this->lang('grplist_tltp_settings'), $menu_items, '', 'action-btn options', true)
 			); 
 		} else {
 			$tpl->layout->block->setVar(

@@ -51,19 +51,19 @@
 		
 		public function usersSettingsMenu( $user_id, $follow, $regime='friendship', $action = '' )
 		{
-
+			$page = & $GLOBALS['page'];
 			$html = '';
 				
 			switch( $regime ){
 		
 				case 'friendship' :
 					$follow ?
-					$html = '<a class="action-btn follow" data-action="follow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span>Follow</span></a>' :
-					$html = '<a class="action-btn unfollow" data-action="unfollow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span>Unfollow</span></a>';
+					$html = '<a class="action-btn follow" data-action="follow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span>'.$page->lang('usrlist_tltp_follow').'</span></a>' :
+					$html = '<a class="action-btn unfollow" data-action="unfollow" data-value="'.$user_id.'" data-namespace="users" data-role="services"><span>'.$page->lang('usrlist_tltp_unfollow').'</span></a>';
 					break;
 						
 				case 'administration' :
-					$html = '<a class="action-btn remove-user" data-action="'.$action.'" data-value="'.$user_id.'" data-namespace="administration" data-role="services"><span>'.ucfirst( str_replace('_', ' ', $action)).'</span></a>';
+					$html = '<a class="action-btn remove-user" data-action="'.$action.'" data-value="'.$user_id.'" data-namespace="administration" data-role="services"><span>'.admin_action_title($action).'</span></a>';
 					break;
 			}
 				
