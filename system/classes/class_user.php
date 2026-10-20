@@ -53,7 +53,8 @@
 					$this->id	= $this->info->id;
 					$this->db2->query('UPDATE users SET lastclick_date="'.time().'" WHERE id="'.$this->id.'" LIMIT 1');
 					$deflang	= $C->LANGUAGE;
-					if( ! empty($this->info->language) ) {
+					// the member's language, unless its pack has been removed since they chose it
+					if( ! empty($this->info->language) && file_exists($C->INCPATH.'languages/'.$this->info->language.'/language.php') ) {
 						$C->LANGUAGE	= $this->info->language;
 					}
 					if( $C->LANGUAGE != $deflang ) {

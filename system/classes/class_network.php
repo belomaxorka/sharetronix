@@ -56,6 +56,10 @@
 			if( ! isset($C->ADMIN_STEALTH_MODE) ) { $C->ADMIN_STEALTH_MODE = 0; }
 			if( ! isset($C->NAME_INDENTIFICATOR) ) { $C->NAME_INDENTIFICATOR = 1; }
 			
+			// English if the pack of the site's language has been removed.
+			if( ! file_exists($C->INCPATH.'languages/'.$C->LANGUAGE.'/language.php') ) {
+				$C->LANGUAGE	= 'en';
+			}
 			$current_language	= new stdClass;
 			include($C->INCPATH.'languages/'.$C->LANGUAGE.'/language.php');
 			setlocale(LC_ALL, $current_language->php_locale);

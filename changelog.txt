@@ -917,6 +917,11 @@
 	  was stored too: a stored text without a title was replaced in the form by the default text,
 	  and a title without a text caused a PHP warning and, on PHP 8.1 and later, a deprecation
 	  notice.
+	* When the language pack of a member's language had been removed from system/languages, every
+	  page the member opened logged PHP warnings and could not set the time zone and locale of the
+	  language; when it was the pack of the site's language, every page of the site did. Members of
+	  a removed language now get the site's language, and a site whose language pack is missing uses
+	  English.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
