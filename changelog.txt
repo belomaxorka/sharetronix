@@ -958,6 +958,9 @@
 	  invitation pages ("Activity filter", "Settings Menu", "Invite") were English in every
 	  language; they now use the language pack. The dashboard and search menus are titled "Activity
 	  Filter", as in the mobile menu.
+	* The "Edit post" link of posts, the "User" button of the comment editor and the end of the post
+	  form hint ("Share something in GROUP...", "Share something about @USER...") were English in
+	  every language; they now use the language pack.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

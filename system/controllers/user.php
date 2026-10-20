@@ -83,7 +83,7 @@
 		$tpl->initRoutine('Postform', array('main_content', $u));
 		$tpl->routine->load();
 	}
-	$tpl->layout->setVar('in_group', 'about @'.$u->username);
+	$tpl->layout->setVar('in_group', $this->lang('activity_text_box_about_user', array('#USERNAME#'=>$u->username)));
 	
 	switch($tab){
 		case 'info':

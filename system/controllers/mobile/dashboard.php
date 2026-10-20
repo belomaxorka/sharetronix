@@ -45,7 +45,7 @@
 		case "group":
 			$header_title = @$this->params->g;
 			$g	= $this->network->get_group_by_name($this->params->g,true);
-			$in_group = 'in ' . $g->groupname;
+			$in_group = $this->lang('activity_text_box_in_group', array('#GROUP#'=>$g->groupname));
 			break;
 		
 		default:

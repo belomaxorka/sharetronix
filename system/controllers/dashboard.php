@@ -58,7 +58,7 @@
 													$table->hiddenField( 'activities_tab', $this->param('tab')? $this->param('tab') : 'all' )
 		);
 	} elseif( isset($g) && $g ) {
-		$tpl->layout->setVar('in_group', 'in '.$g->title);
+		$tpl->layout->setVar('in_group', $this->lang('activity_text_box_in_group', array('#GROUP#'=>$g->title)));
 	}
 	
 	$tpl->display(); 

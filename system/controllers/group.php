@@ -431,7 +431,7 @@
 							$table->hiddenField( 'activities_group', $g->id )
 					);
 				}
-				$tpl->layout->setVar('in_group', 'in '.$g->groupname);
+				$tpl->layout->setVar('in_group', $this->lang('activity_text_box_in_group', array('#GROUP#'=>$g->groupname)));
 				
 				break;
 	}

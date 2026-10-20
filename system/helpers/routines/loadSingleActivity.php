@@ -63,7 +63,7 @@
 			}
 			
 			if($buff->if_can_edit() ){
-				$edit_post_link = ' <a href="" class="edit_post" data-role="services" data-namespace="activities" data-action="show_edit_box" data-posttype="'.$buff->post_type.'" data-postid="'.$buff->post_id.'">Edit post</a>';
+				$edit_post_link = ' <a href="" class="edit_post" data-role="services" data-namespace="activities" data-action="show_edit_box" data-posttype="'.$buff->post_type.'" data-postid="'.$buff->post_id.'">'.$page->lang('activity_option_edit').'</a>';
 				$tpl->layout->block->setVar( 'activity_footer', $edit_post_link );
 			}
 			

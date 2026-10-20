@@ -10,7 +10,7 @@
 			{%editor_textarea%}
 
 			<div class="attachments-options">
-				<a class="attachment-button ac-btn">User<span class="tooltip"><span><?= $this->page->lang('activity_comment_option_mention') ?></span></span></a>
+				<a class="attachment-button ac-btn"><?= $this->page->lang('activity_option_user') ?><span class="tooltip"><span><?= $this->page->lang('activity_comment_option_mention') ?></span></span></a>
 			</div>
 
 			<div class="buttons">
