@@ -33,7 +33,7 @@
 		'emlhtml_ntf_me_if_u_commments_me2'		=> "#USER# also commented on your #A1#post#A2#.",
 		'emlhtml_ntf_me_if_u_commments_m2'		=> "#USER# commented on their #A1#post#A2#.",
 		'emlhtml_ntf_me_if_u_commments_m20'		=> "#USER# also commented on their #A1#post#A2#.",
-		'emlhtml_ntf_me_if_u_commments_m3'		=> "#USER# commented on #USER2#'s post #A1#post#A2#.",
+		'emlhtml_ntf_me_if_u_commments_m3'		=> "#USER# commented on #USER2#'s #A1#post#A2#.",
 		'emlhtml_ntf_me_if_u_commments_m32'		=> "#USER# also commented on #USER2#'s #A1#post#A2#.",
 		'emlhtml_ntf_me_if_u_edt_profl'		=> '#USER# edited their profile info.',
 		'emlhtml_ntf_me_if_u_edt_pictr'		=> '#USER# changed their profile picture.',

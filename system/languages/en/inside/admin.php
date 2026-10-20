@@ -127,11 +127,11 @@
 		'admbrnd_frm_ok_txt'	=> 'Information was saved.',
 		'admbrnd_frm_err'		=> 'Error',
 		'admbrnd_frm_err_invalidfile'		=> 'Uploaded logo file is not a valid image.',
-		'admbrnd_frm_err_invalidformat'	=> 'Logo image must be JPEG, GIF, PNG or BMP format.',
+		'admbrnd_frm_err_invalidformat'	=> 'Logo image must be JPEG, GIF or PNG format.',
 		'admbrnd_frm_err_toosmall'		=> 'Logo image height must be at least 20px.',
 		'admbrnd_frm_err_cantcopy'		=> 'Logo cannot be processed, please try again later.',
 		'admbrnd_frm_err_ficn_invalidfile'		=> 'Uploaded favicon file is not a valid image.',
-		'admbrnd_frm_err_ficn_invalidformat'	=> 'Favicon must be ICO, JPEG, or PNG format.',
+		'admbrnd_frm_err_ficn_invalidformat'	=> 'Favicon must be ICO, GIF or PNG format.',
 		'admbrnd_frm_err_ficn_badsize'		=> 'Favicon size must be exactly 16x16px.',
 		'admbrnd_frm_err_ficn_cantcopy'		=> 'Favicon cannot be processed, please try again later.',
 		
@@ -526,7 +526,7 @@
 		
 		'admmenu_group_categories' => 'Group categories',
 		'admin_grcat_saved_changes' => 'Changes are saved!',
-		'admin_grcat_deleted' => 'Group deleted successfully!',
+		'admin_grcat_deleted' => 'Category deleted successfully!',
 		'admin_grcat_sub_cat_ttl' => 'Group sub-categories',
 		'admin_grcat_sub_cat_txt' => 'Users are able to create categories',
 		'admin_grcat_table_title' => 'Category name: ',

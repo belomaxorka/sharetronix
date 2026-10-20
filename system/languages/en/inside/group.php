@@ -66,7 +66,7 @@
 		'group_settings_f_oktxt'	=> 'Information was saved.',
 		'group_settings_f_err'		=> 'Error',
 		'group_setterr_avatar_invalidfile'		=> 'Uploaded file is not a valid image.',
-		'group_setterr_avatar_invalidformat'	=> 'Image must be JPEG, GIF, PNG or BMP format.',
+		'group_setterr_avatar_invalidformat'	=> 'Image must be JPEG, GIF or PNG format.',
 		'group_setterr_avatar_toosmall'		=> 'Image resolution must be at least 200x200px.',
 		'group_setterr_avatar_cantcopy'		=> 'Picture cannot be processed, please try again later.',
 		'group_setterr_title_length'			=> 'Group Name must be from 3 to 30 characters long.',

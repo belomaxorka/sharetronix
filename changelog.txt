@@ -767,6 +767,13 @@
 	  now says "Please fill in the name of your network.". Saving the Terms of use page showed only
 	  "Information was saved."; it now says whether the page is enabled, with a link to it, as its
 	  language strings intended.
+	* English texts that contradicted what the page does were corrected: the image upload errors of
+	  the profile picture, group picture and logo offered BMP, which is refused, and the favicon
+	  error named JPEG instead of GIF; an empty notifications page said "There are no feed posts for
+	  you yet."; deleting a group category said "Group deleted successfully!"; an expired e-mail
+	  confirmation link said "Confirmation time extended."; a mismatched e-mail confirmation said
+	  "Wrong re-entered e-mail address."; the e-mail about a comment on another member's post said
+	  "post" twice.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

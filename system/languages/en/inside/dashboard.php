@@ -118,7 +118,7 @@
 		
 		'dbrd_leftmenu_notifications'	=> 'Notifications',
 		'noposts_dtb_notifications_ttl'		=> 'No notifications',
-		'noposts_dtb_notifications_txt'			=> 'There are no feed posts for you yet.',
+		'noposts_dtb_notifications_txt'			=> 'You have no notifications yet.',
 		'dbrd_more_notifications_link'	=> 'more notifications from this category.',
 			
 		'global_postform_share_btn_txt' => 'Share',

@@ -61,7 +61,7 @@
 		'st_avatar_upload_delete_confirm'	=> 'Are you sure?',
 		'st_avatat_err'				=> 'Error',
 		'st_avatar_err_invalidfile'		=> 'Uploaded file is not a valid image.',
-		'st_avatar_err_invalidformat'		=> 'Image must be JPEG, GIF, PNG or BMP format.',
+		'st_avatar_err_invalidformat'		=> 'Image must be JPEG, GIF or PNG format.',
 		'st_avatar_err_toosmall'		=> 'Image resolution must be at least 200x200px.',
 		'st_avatar_err_cantcopy'		=> 'Picture cannot be processed, please try again later.',
 		'st_avatar_gravatar'			=> 'Gravatar:',
@@ -247,7 +247,7 @@
 		'st_email_pass'			=> 'Your password: ',
 		'st_email_cng_btn'		=> 'Change E-mail',
 		'st_email_current_errttl'	=> 'Error',
-		'st_email_current_error'	=> 'Wrong re-entered e-mail address.',
+		'st_email_current_error'	=> 'The two e-mail addresses do not match.',
 		'st_email_address_error'	=> 'Please, enter a valid e-mail address.',
 		'st_email_address_error1'	=> 'Wrong confirmation e-mail.',
 		'st_email_pass_error'		=> 'Wrong password.',
@@ -257,7 +257,7 @@
 		
 		'st_email_wrong_link'		=> 'Invalid confirmation link.',
 		'st_email_wrong_conf_id'	=> 'Invalid confirmation key.',
-		'st_email_wrong_time'		=> 'Confirmation time extended.',
+		'st_email_wrong_time'		=> 'The confirmation link has expired.',
 		
 		
 		'settings_email_note'		=> 'Your e-mail will be seen only by the members you follow',
