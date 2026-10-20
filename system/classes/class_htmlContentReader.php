@@ -116,10 +116,6 @@
 			$text = @iconv('UTF-8', 'UTF-8//IGNORE', $text);
 			$text = (strlen($text)>$limit_char_limit)? (mb_substr($text, 0, $limit_char_limit).'...') : $text;
 			
-			if( checkIfUnicode($text) ){
-				$text = utf8_decode($text);
-			}
-			
 			$text = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
 					'|[\x00-\x7F][\x80-\xBF]+'.
 					'|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*'.

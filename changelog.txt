@@ -866,6 +866,10 @@
 	  one of its patterns, and on PHP 8 a call behind that check would have stopped the request with
 	  a type error. Both are corrected in the bundled code, and the previews offer the pictures of
 	  the page again.
+	* Link previews keep accented letters in the title and description of the linked page. On PHP 7
+	  a title such as "Café crème" became "Caf? cr?me", and on PHP 8.2 and later every preview
+	  logged that utf8_decode() is deprecated: the text, already valid UTF-8, was converted to
+	  ISO-8859-1, whose letters the next step replaced with "?".
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
