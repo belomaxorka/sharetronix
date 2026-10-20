@@ -115,6 +115,13 @@
 				}
 			}
 			
+			// an empty list for the private members of a public group, unless a plugin gave one
+			if( !isset($num_results, $num_pages, $pg) ){
+				$num_results	= 0;
+				$num_pages		= 0;
+				$pg				= 1;
+			}
+			
 			$this->num_results = $num_results;
 			$this->num_pages = $num_pages;
 			$this->pg = $pg;

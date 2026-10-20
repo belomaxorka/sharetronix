@@ -922,6 +922,9 @@
 	  language; when it was the pack of the site's language, every page of the site did. Members of
 	  a removed language now get the site's language, and a site whose language pack is missing uses
 	  English.
+	* Opening the private members tab of a public group, which the group page does not offer but
+	  which its address still reaches, logged three PHP warnings about undefined variables; the tab
+	  now shows an empty list without them.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
