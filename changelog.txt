@@ -734,6 +734,9 @@
 	* Counted the members on the group invitation page with a COUNT(*) query instead of
 	  SQL_CALC_FOUND_ROWS and FOUND_ROWS(), which MySQL 8.0.17 deprecated (warning 1287 on every
 	  view of the page).
+	* The group invitation page shows each member's own picture. It read the avatar from a fresh
+	  empty object instead of the database row, so every member in the list was drawn with the
+	  default picture.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

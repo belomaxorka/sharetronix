@@ -62,7 +62,7 @@
 			$tmp->username 	= $row->username;
 			$tmp->id 		= $row->id;
 			$tmp->fullname 	= $row->fullname;
-			$tmp->avatar	= empty($tmp->avatar)? $GLOBALS['C']->DEF_AVATAR_USER : $tmp->avatar;
+			$tmp->avatar	= empty($row->avatar)? $GLOBALS['C']->DEF_AVATAR_USER : $row->avatar;
 		
 			$data[] = $tmp;
 		}
@@ -78,7 +78,7 @@
 				$tmp->username 	= $row->username;
 				$tmp->id 		= $row->id;
 				$tmp->fullname 	= $row->fullname;
-				$tmp->avatar	= empty($tmp->avatar)? $GLOBALS['C']->DEF_AVATAR_USER : $tmp->avatar;
+				$tmp->avatar	= empty($row->avatar)? $GLOBALS['C']->DEF_AVATAR_USER : $row->avatar;
 				
 				$data[] = $tmp;
 			}
