@@ -754,6 +754,10 @@
 	  and followers of a profile, group members, administrators) and the group option of the post
 	  form on a profile page were empty: these blocks use language strings that the pages showing
 	  them did not load. The blocks now load them.
+	* The mobile menu showed its "Activity Filter" and "My Groups" boxes without titles: the English
+	  pack defined these two strings only in a language file that is never loaded. They are now in
+	  inside/dashboard.php. The two strings of an empty administrators list on the Members page are
+	  added as well.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

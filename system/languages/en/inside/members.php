@@ -74,6 +74,8 @@
 		'nousers_box_ttl_ifollow'	=> 'No users',
 		'nousers_box_txt_followers'	=> 'You haven\'t got any followers yet.',
 		'nousers_box_ttl_followers'	=> 'No users',
+		'nousers_box_ttl_admins'	=> 'No users',
+		'nousers_box_txt_admins'	=> 'No administrators found.',
 	);
 	
 ?>

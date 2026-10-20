@@ -15,6 +15,8 @@
 		'dbrd_leftmenu_everybody'	=> 'Everybody',
 		'dbrd_leftmenu_groups'	=> 'My Groups',
 		'dbrd_leftmenu_likes'		=> 'Likes',
+		'user_dashboard_activity_filter'	=> 'Activity Filter',
+		'user_dashboard_my_groups'	=> 'My Groups',
 		
 		'dbrd_poststitle_all'		=> 'Activity Feed',
 		'dbrd_poststitle_@me'		=> '@#USERNAME#',
