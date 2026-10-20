@@ -352,40 +352,17 @@
 			exit;
 		}
 
-		ini_set('max_execution_time', 10*60*60);
-
-		$r	= $this->db2->query('SELECT * FROM posts WHERE group_id="'.intval($api_session->resource_option).'" ORDER BY id ASC');
-		while($obj = $this->db2->fetch_object($r)) 
-		{
-			$p	= new post('public', FALSE, $obj);
-			if( $p->error ) { continue; }
-			$p->delete_this_post();
+		$g	= $this->network->get_group_by_id(intval($api_session->resource_option));
+		if( ! $g ){
+			if(!isset($_POST['suppress_response_codes'])) header('HTTP/1.1 400 Bad Request');
+				else echo generate_error($api_session->format, 'Provide valid group id.', $_SERVER['REQUEST_URI'], $api_session->callback);
+			exit;
 		}
-		$r	= $this->db2->query('SELECT id FROM groups_rssfeeds WHERE group_id="'.intval($api_session->resource_option).'" ');
-		while($obj = $this->db2->fetch_object($r)) 
-		{
-			$this->db2->query('DELETE FROM groups_rssfeeds_posts WHERE rssfeed_id="'.$obj->id.'" ');
-		}
-		$this->db2->query('DELETE FROM groups_rssfeeds WHERE group_id="'.intval($api_session->resource_option).'" ');
-
-		$r	= $this->db2->query('SELECT * FROM posts WHERE user_id="0" AND group_id="'.intval($api_session->resource_option).'" ORDER BY id ASC');
-		while($obj = $this->db2->fetch_object($r)) 
-		{
-			$p	= new post('public', FALSE, $obj);
-			if( $p->error ) { continue; }
-			$p->delete_this_post();
-		}
-		$f	= array_keys($this->network->get_group_members(intval($api_session->resource_option)));
-		$this->db2->query('DELETE FROM groups_followed WHERE group_id="'.intval($api_session->resource_option).'" ');
-		$this->db2->query('DELETE FROM groups_private_members WHERE group_id="'.intval($api_session->resource_option).'" ');
-		$this->db2->query('DELETE FROM groups_admins WHERE group_id="'.intval($api_session->resource_option).'" ');
-		$this->db2->query('UPDATE groups_rssfeeds SET is_deleted=1 WHERE group_id="'.intval($api_session->resource_option).'" ');
-		foreach($f as $uid) 
-		{
-			$this->network->get_user_follows($uid, TRUE);
-		}
-		$this->db2->query('INSERT INTO groups_deleted (id, groupname, title, is_public) SELECT id, groupname, title, is_public FROM `groups` WHERE id="'.intval($api_session->resource_option).'" LIMIT 1');
-		$this->db2->query('DELETE FROM `groups` WHERE id="'.intval($api_session->resource_option).'" LIMIT 1');
+		// As the group page does: the class deletes the posts, members, administrators and notifications of the
+		// group, refreshes the cached group and the cached data of its members and administrators, and removes
+		// the avatar. The copy of that code here still used the groups_rssfeeds tables, which no longer exist.
+		$group	= new group($g);
+		$group->delete(TRUE, FALSE);
 
 		$res = $this->db2->query('SELECT id, groupname, title FROM groups_deleted WHERE id='.intval($api_session->resource_option).' LIMIT 1');
 		$gr = $this->db2->fetch_object($res);	

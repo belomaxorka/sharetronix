@@ -797,6 +797,11 @@
 	  screen_name[], name[] and the other parameters reached the string functions of the
 	  controllers, all with HTTP 500 on PHP 8; in_reply_to_status_id[] counted as status 1. No
 	  parameter of the API is an array by design.
+	* The API method groups/destroy deletes the group. It deleted the posts of the group and then
+	  stopped with a database error, because its own copy of the deletion still used the
+	  groups_rssfeeds tables that 3.x removed, so the group stayed with its members and without its
+	  posts. The method now deletes the group the way the group page does, including its
+	  notifications, the cached group and its avatar.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
