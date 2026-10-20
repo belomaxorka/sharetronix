@@ -528,7 +528,10 @@
 	  also broke the tag search and the notification details. Each database connection of the
 	  application and the installer now turns off STRICT_TRANS_TABLES, STRICT_ALL_TABLES,
 	  ONLY_FULL_GROUP_BY, ANSI_QUOTES, NO_BACKSLASH_ESCAPES and the TRADITIONAL and ANSI
-	  combinations for itself and keeps the other modes; the server configuration is not changed.
+	  combinations for itself, together with NO_ZERO_DATE, NO_ZERO_IN_DATE and
+	  ERROR_FOR_DIVISION_BY_ZERO, which only add warnings without strict mode (MySQL answers a
+	  connection that keeps them with warning 3135), and keeps the other modes; the server
+	  configuration is not changed.
 	* Messages from the contact form reached the site's address with the subject "<site> - " and
 	  without the name or e-mail address of the sender, so they could not be answered. The subject
 	  now names the contact form, the message starts with the sender's name and address, and

@@ -12,7 +12,7 @@ This repository maintains Sharetronix **3.6.2**. It keeps the platform running o
 - PHP 7.2, 8.4, or 8.5 with the `mbstring`, `mysqli`, and `gd` extensions (GD with FreeType support, for the CAPTCHA image), `short_open_tag = On`, and either the cURL extension or `allow_url_fopen = On`. An external CAPTCHA service needs the cURL extension, and installing a plugin that has database tables needs the `pdo_mysql` extension.
 - MySQL 5.7, 8.0, or 8.4, or MariaDB 10.4 or later.
 
-The application turns off the strict SQL modes, `ONLY_FULL_GROUP_BY`, `ANSI_QUOTES`, and `NO_BACKSLASH_ESCAPES` for its own database connections, so the server's `sql_mode` can stay at its default.
+The application turns off the strict SQL modes, `ONLY_FULL_GROUP_BY`, `ANSI_QUOTES`, and `NO_BACKSLASH_ESCAPES` for its own database connections, together with `NO_ZERO_DATE`, `NO_ZERO_IN_DATE`, and `ERROR_FOR_DIVISION_BY_ZERO`, which only work with strict mode, so the server's `sql_mode` can stay at its default.
 
 Text is stored as `utf8mb4`, so posts, comments, messages, and names can contain emoji. All tables and connections use the collation `utf8mb4_unicode_520_ci`, which every supported server has, whatever character set the database was created with; the installer stops with a message on a server without it.
 

@@ -26,8 +26,10 @@
 		// columns without a value, and ONLY_FULL_GROUP_BY (MySQL 5.7+) rejects several GROUP BY queries.
 		// Values are put in double quotes and escaped with backslashes, so ANSI_QUOTES breaks every query
 		// and NO_BACKSLASH_ESCAPES leaves a double quote in a value unescaped. TRADITIONAL and ANSI would
-		// turn some of these modes on again.
-		protected static $incompatible_sql_modes	= array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL', 'ONLY_FULL_GROUP_BY', 'ANSI_QUOTES', 'ANSI', 'NO_BACKSLASH_ESCAPES');
+		// turn some of these modes on again. Without the strict modes NO_ZERO_DATE, NO_ZERO_IN_DATE and
+		// ERROR_FOR_DIVISION_BY_ZERO only add warnings, and MySQL 5.7 and later answer every connection
+		// that keeps them with warning 3135 ("should be used with strict mode").
+		protected static $incompatible_sql_modes	= array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL', 'ONLY_FULL_GROUP_BY', 'ANSI_QUOTES', 'ANSI', 'NO_BACKSLASH_ESCAPES', 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE', 'ERROR_FOR_DIVISION_BY_ZERO');
 		
 		public function __construct($host, $user, $pass, $db)
 		{
