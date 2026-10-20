@@ -928,6 +928,11 @@
 	* The address members/tab:my, a tab the members page does not have, showed an empty box with a
 	  title and no text; it is now treated like any other unknown tab (plugins may answer it, and
 	  otherwise the box of the list of all members is shown).
+	* Four error messages of the attachment, comment, follow and group services now read like the
+	  others: "Could not delete this comment." and "Could not follow this user." instead of "You
+	  could not delete this comment" and "You could not follow that user", a final period for
+	  "Invalid attachment type and ID", and "possibly you are its only administrator" for leaving a
+	  group.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
