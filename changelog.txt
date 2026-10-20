@@ -913,6 +913,10 @@
 	  length.
 	* Changing the e-mail address without typing the password said "Wrong password."; it now asks to
 	  enter the password (new string st_email_pass_empty).
+	* The general settings page took the stored intro text of the home page only when an intro title
+	  was stored too: a stored text without a title was replaced in the form by the default text,
+	  and a title without a text caused a PHP warning and, on PHP 8.1 and later, a deprecation
+	  notice.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

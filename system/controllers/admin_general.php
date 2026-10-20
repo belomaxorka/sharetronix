@@ -65,7 +65,7 @@
 	$stealth_mode 	= isset($s->STEALTH_MODE)? $s->STEALTH_MODE : 2;
 	
 	$intro_ttl	= isset($C->HOME_INTRO_TTL) ? trim($C->HOME_INTRO_TTL) : '';
-	$intro_txt	= isset($C->HOME_INTRO_TTL) ? trim($C->HOME_INTRO_TXT) : '';
+	$intro_txt	= isset($C->HOME_INTRO_TXT) ? trim($C->HOME_INTRO_TXT) : '';
 	if( empty($intro_ttl) && empty($intro_txt) ) {
 		$this->load_langfile('outside/home.php');
 		$intro_ttl	= $this->lang('os_welcome_ttl', array('#SITE_TITLE#'=>$C->SITE_TITLE));
