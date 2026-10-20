@@ -168,7 +168,7 @@
 			}
 			foreach($tgs as $tg) {
 
-				$result->trends->dt	= (object) array(
+				$result->trends->dt[]	= (object) array(
 					'query'	=> '#'.$tg,
 					'name'	=> '#'.$tg,
 					'url'		=> $C->SITE_URL.'search/tab:posts/s:%23'.urlencode($tg)

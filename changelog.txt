@@ -840,6 +840,9 @@
 	  direct messages. They called gmmktime() with a seventh argument, which PHP 7.0 removed. Trends
 	  now count the posts since 00:00:01 GMT of the current day, as they did on PHP 5, and the atom
 	  feeds no longer make the call, whose result they did not use.
+	* The API resource trends/current failed whenever a post of the current day had a tag (HTTP 500
+	  on PHP 8, a warning and a broken list on PHP 7): it replaced the list with each trend instead
+	  of adding the trend to it. It now lists the trends.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
