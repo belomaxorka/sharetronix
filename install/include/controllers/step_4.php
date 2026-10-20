@@ -39,6 +39,11 @@
 			$D->error	= TRUE;
 			$D->errmsg	= 'Username must be from 3 to 30 characters long.';
 		}
+		// the rule of the sign-up form: the pages print user names in links and markup as they are
+		if( !$D->error && preg_match('/[^a-z0-9-_]/i', $D->ADMIN_USER) ) {
+			$D->error	= TRUE;
+			$D->errmsg	= 'Username can contain only latin letters, digits, dash or underscore.';
+		}
 		
 		if( !$D->error && controllers_conflicts_lookup($D->ADMIN_USER) ){
 			$D->error	= TRUE;

@@ -818,6 +818,9 @@
 	* The installer's database and administrator steps answer a field sent as an array like an empty
 	  field instead of with a PHP error, and the database step no longer logs a warning when the
 	  password field is not sent.
+	* The installer accepts only latin letters, digits, dash and underscore in the administrator's
+	  user name, like the sign-up form. It checked only the length, so a name with markup or quotes
+	  was stored and printed as it is in the links of the pages.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
