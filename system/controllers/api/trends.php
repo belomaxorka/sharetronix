@@ -144,41 +144,18 @@
 				$tmp[$tg]	++;
 			}
 		}
-		if( count($tmp) > 10 ) {
-			arsort($tmp);
-			$tmp	= array_slice(array_keys($tmp), 9);
-			foreach($tmp as $deltg) {
-				foreach($data as $dt=>$tgs) {
-					foreach($tgs as $i=>$tg) {
-						if( $tg == $deltg ) {
-							unset($data[$dt][$i]);
-						}
-					}
-					if( count($data[$dt]) == 0 ) {
-						unset($data[$dt]);
-					}
-				}
-			}
-		}
 		$result	= new stdClass;
 		$result->trends	= new stdClass;
 		$result->as_of	= $dts; 
-		foreach($data as $dt=>$tgs) {
-			if( !isset($result->trends->dt) ) {
-				$result->trends->dt	= array();
-			}
-			foreach($tgs as $tg) {
-
-				$result->trends->dt[]	= (object) array(
-					'query'	=> '#'.$tg,
-					'name'	=> '#'.$tg,
-					'url'		=> $C->SITE_URL.'search/tab:posts/s:%23'.urlencode($tg)
-				);
-			}
+		$result->trends->dt	= array();
+		// the ten tags of the day used most often, each once
+		foreach(api_top_tags($tmp, 10) as $tg) {
+			$result->trends->dt[]	= (object) array(
+				'query'	=> '#'.$tg,
+				'name'	=> '#'.$tg,
+				'url'		=> $C->SITE_URL.'search/tab:posts/s:%23'.urlencode($tg)
+			);
 		}
-		if( !isset($result->trends->dt) ) {
-				$result->trends->dt	= array();
-			}
 			
 		$num_rows = count($result->trends->dt); 
 

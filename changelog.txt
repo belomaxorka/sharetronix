@@ -855,6 +855,9 @@
 	* The API resource trends/top10 answered the last tag of the day once for every tag used that
 	  day instead of the most used tags. It now lists the ten tags of the day used most often, the
 	  most used first.
+	* The API resource trends/current kept only nine tags when more than ten were used that day and
+	  listed each of them once for every use. It now lists the ten tags of the day used most often,
+	  each once, like trends/top10.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
