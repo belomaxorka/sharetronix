@@ -961,6 +961,10 @@
 	* The "Edit post" link of posts, the "User" button of the comment editor and the end of the post
 	  form hint ("Share something in GROUP...", "Share something about @USER...") were English in
 	  every language; they now use the language pack.
+	* The browser titles of the members page ("SITE - Members") and of the language packs page of
+	  the administration ("SITE - Languages") were English in every language. They now use the
+	  language pack, with the site name last as on the other pages: the members tabs take their
+	  existing titles ("Network Members", "Members I Follow", "My Followers", "Administrators").
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

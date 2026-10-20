@@ -16,7 +16,7 @@
 	$this->load_langfile('inside/admin.php');
 	
 	$tpl = new template( array(
-		'page_title' => $C->SITE_TITLE.' - Languages',
+		'page_title' => $this->lang('admpgtitle_languages', array('#SITE_TITLE#'=>$C->SITE_TITLE)),
 		'header_page_layout'=>'sc',
 	));
 	

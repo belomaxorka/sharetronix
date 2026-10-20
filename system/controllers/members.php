@@ -97,7 +97,11 @@
 	}
 		
 	//TEMPLATE CODE START
-	$tpl = new template( array('page_title' => $C->SITE_TITLE . ' - Members', 'header_page_layout'=>'c') );
+	$page_title	= $this->lang('members_page_title_'.$tab, array('#SITE_TITLE#'=>$C->SITE_TITLE));
+	if( $page_title === '' ) {
+		$page_title	= $this->lang('members_page_title_all', array('#SITE_TITLE#'=>$C->SITE_TITLE));
+	}
+	$tpl = new template( array('page_title' => $page_title, 'header_page_layout'=>'c') );
 	
 	$menu = array( 	array('url' => 'members/tab:all', 			'css_class' => (($tab === 'all')? 'active' : ''), 			'title' => $this->lang('members_tabs_all') ),
 					array('url' => 'members/tab:admins', 		'css_class' => (($tab === 'admins')? 'active' : ''), 		'title' => $this->lang('members_tabs_admins') )

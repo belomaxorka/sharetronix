@@ -475,6 +475,7 @@
 		'admin_apps_installed_msg' => 'The Plugin was installed successfully',
 		'admin_apps_uninstalled_msg' => 'The Plugin was uninstalled successfully',
 		'admpgtitle_apps'		=> 'Plugins - #SITE_TITLE#',
+		'admpgtitle_languages'	=> 'Languages - #SITE_TITLE#',
 		'admin_languages_intro'	=> 'A language pack is a folder in system/languages/ with a language.php. Copy the folder of a language pack there; choose the default language in the general settings.',
 		'admin_languages_default_col'	=> 'Default',
 		'admin_languages_default_yes'	=> 'Default language',
