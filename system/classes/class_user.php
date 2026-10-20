@@ -313,7 +313,7 @@
 			if( ! $this->is_logged ) {
 				return FALSE;
 			}
-			$res = $this->db2->fetch_field('SELECT id FROM users_followed WHERE who = '.$this->id.' AND whom = '.$user_id.' LIMIT 1');
+			$res = $this->db2->fetch_field('SELECT id FROM users_followed WHERE who = '.$this->id.' AND whom = '.intval($user_id).' LIMIT 1');
 			return $res? TRUE : FALSE;
 		}
 		
@@ -322,7 +322,7 @@
 			if( ! $this->is_logged ) {
 				return FALSE;
 			}
-			$res = $this->db2->fetch_field('SELECT id FROM users_followed WHERE whom = '.$this->id.' AND who = '.$user_id.' LIMIT 1');
+			$res = $this->db2->fetch_field('SELECT id FROM users_followed WHERE whom = '.$this->id.' AND who = '.intval($user_id).' LIMIT 1');
 			return $res? TRUE : FALSE;
 		}
 		

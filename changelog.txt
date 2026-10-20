@@ -133,6 +133,12 @@
 	* Escaped the values shown on the installer's review page (step 5): the database host, database
 	  name and user, the administrator's name and e-mail address, the site address and the domain
 	  were printed into the page and into its script block as entered.
+	* Closed a SQL injection in the private-message service. The user id of
+	  /services/users/sendmessage was passed to user::if_user_follows_me(), which concatenated it
+	  into a SQL query without quoting or escaping, so any signed-in member could inject SQL through
+	  the users_id parameter (the value is a string, so the earlier array-parameter guard did not
+	  stop it). The sibling user::if_follow_user() had the same unescaped concatenation. Both now
+	  send only the integer value of the id to the database.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
