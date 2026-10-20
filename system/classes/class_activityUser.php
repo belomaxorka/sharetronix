@@ -134,7 +134,12 @@
 						$this->tpl->routine->load();
 					}
 				}else{
-					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('nousers_usr_ttl'), $this->page->lang('nousers_usr_txt')));
+					// the texts of the tabs: subtab1 = follows, subtab2 = followers, subtab3 = in common with the viewer
+					$n	= array('ifollow' => 1, 'followers' => 2, 'incommon' => 3);
+					$n	= isset($n[$this->subtab]) ? $n[$this->subtab] : 1;
+					$me	= ($n != 3 && $this->user->is_logged && $this->user->id == $this->target_user->id) ? '_me' : '';
+					$replace	= array('#USERNAME#' => $this->target_user->username);
+					$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('nousrs_subtab'.$n.'_ttl'.$me, $replace), $this->page->lang('nousrs_subtab'.$n.'_txt'.$me, $replace)));
 				}
 			}
 		}
@@ -166,6 +171,10 @@
 				$this->tpl->initRoutine('SingleGroup', array( &$obj, &$ifollow, $float ));
 				$this->tpl->routine->load();
 				$float = ($float == 'left-container')? 'right-container' : 'left-container';
+			}
+			if( $num_results == 0 ){
+				$me	= ($this->user->is_logged && $this->user->id == $this->target_user->id);
+				$this->tpl->layout->setVar('main_content', $this->tpl->designer->createNoPostBox($this->page->lang('nogroups_usr_follow_ttl'), $this->page->lang($me ? 'nogroups_usr_follow_txt_me' : 'nogroups_usr_follow_txt', array('#USERNAME#' => $this->target_user->username))));
 			}
 			
 			$this->num_results = $num_results;

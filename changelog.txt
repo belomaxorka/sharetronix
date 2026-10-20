@@ -988,6 +988,10 @@
 	  ("E-mail:") and usr_prof_mobile_gender.
 	* The mobile profile labelled the work phone number "Personal Phone" and the personal one "Work
 	  Phone"; the labels are now the right way round.
+	* The empty friends tabs of a profile said "No users found" whatever the tab, and an empty
+	  groups tab showed nothing. They now show the texts of the language pack for each case, for
+	  example "NAME has no followers yet.", "You don't follow anybody yet." or "NAME doesn't follow
+	  any groups yet.".
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
