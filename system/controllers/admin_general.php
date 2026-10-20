@@ -69,7 +69,7 @@
 	if( empty($intro_ttl) && empty($intro_txt) ) {
 		$this->load_langfile('outside/home.php');
 		$intro_ttl	= $this->lang('os_welcome_ttl', array('#SITE_TITLE#'=>$C->SITE_TITLE));
-		$intro_txt	= $this->lang('os_welcome_txt', array('#SITE_TITLE#'=>$C->SITE_TITLE));
+		$intro_txt	= $this->lang('os_welcome_txt', array('#SITE_TITLE#'=>$C->SITE_TITLE, '#NUM#'=>$C->POST_MAX_SYMBOLS));
 	}
 	
 	$submit	= FALSE;

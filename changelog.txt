@@ -908,6 +908,9 @@
 	  of the theme (80 pixels by default), while the error said "height must be at least 20px": a
 	  wide, low logo was accepted and stretched, a narrow, high one refused. The height is checked
 	  now, and the error names the theme's logo height.
+	* The default welcome text of the home page said that posts have "160 characters or less"
+	  whatever the administration set as the maximum post length; it now gives the configured
+	  length.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
