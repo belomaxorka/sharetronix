@@ -18,6 +18,11 @@
 		public $plugin_name;
 		public $is_mobile;
 		public $tmp_loaded_langfiles;
+		public $plugin_lang_data;
+		public $plugin_lang_data_en;
+		public $tmp_loaded_plugin_langfiles;
+		private $plugin_lang_other;
+		private $plugin_langfile_errors;
 
 		public function __construct()
 		{
@@ -35,6 +40,11 @@
 			$this->controllers	= $GLOBALS['C']->INCPATH.'controllers/';
 			$this->lang_data		= array();
 			$this->lang_data_en	= array();
+			$this->plugin_lang_data	= array();
+			$this->plugin_lang_data_en	= array();
+			$this->tmp_loaded_plugin_langfiles	= array();
+			$this->plugin_lang_other	= array();
+			$this->plugin_langfile_errors	= array();
 			$this->tpl_name	 	= 'default';
 			$this->plugin_name 	= FALSE;
 			$this->is_mobile	= FALSE;
@@ -422,6 +432,145 @@
 			require( $file );
 			ob_end_clean();
 			return is_array($lang) ? $lang : FALSE;
+		}
+		
+		// The texts of a plugin: apps/<plugin>/languages/<code>/<filename>, which sets $lang like the files of
+		// the language packs. English is the reference here as well, but the texts stay with the plugin: only
+		// plugin_lang() reads them, so they neither clash with nor change the texts of the core and of other
+		// plugins. Each file is read once per request. A missing English file, or a file that fails or sets no
+		// $lang array, is written to the PHP error log instead of stopping the page, as for plugin code.
+		public function load_plugin_langfile($plugin, $filename)
+		{
+			global $C;
+			if( ! is_string($plugin) || ! preg_match('/^[a-z0-9_]+$/i', $plugin) || ! is_string($filename) || ! preg_match('/^[a-z0-9_\-]+(\/[a-z0-9_\-]+)*\.php$/i', $filename) ) {
+				error_log('Sharetronix plugin language file not loaded: invalid name '.preg_replace('/\s+/', ' ', var_export($plugin, TRUE).', '.var_export($filename, TRUE)));
+				return FALSE;
+			}
+			if( isset($this->tmp_loaded_plugin_langfiles[$plugin][$filename]) ) {
+				return ! isset($this->plugin_langfile_errors[$plugin][$filename]);
+			}
+			$en	= $this->_read_plugin_langfile($plugin, 'en/'.$filename, TRUE);
+			if( $C->LANGUAGE != 'en' ) {
+				if( is_array($en) ) {
+					foreach($en as $k=>$v) {
+						$this->plugin_lang_data_en[$plugin][$k]	= $v;
+					}
+				}
+				$lang	= $this->_read_plugin_langfile($plugin, $C->LANGUAGE.'/'.$filename, FALSE);
+			}
+			else {
+				$lang	= $en;
+			}
+			if( is_array($lang) ) {
+				foreach($lang as $k=>$v) {
+					$this->plugin_lang_data[$plugin][$k]	= $v;
+				}
+			}
+			$this->tmp_loaded_plugin_langfiles[$plugin][$filename]	= array_keys((is_array($en) ? $en : array()) + (is_array($lang) ? $lang : array()));
+			unset($this->plugin_lang_other[$plugin]);
+			if( ! is_array($en) ) {
+				$this->plugin_langfile_errors[$plugin][$filename]	= TRUE;
+				return FALSE;
+			}
+			return TRUE;
+		}
+		
+		// A text of a plugin (see load_plugin_langfile()): the active language, then English, then ''. With
+		// $in_another_language, an installed language pack such as that of the member an e-mail goes to, that
+		// language comes first, as in lang().
+		public function plugin_lang($plugin, $key, $replace_strings=array(), $in_another_language=FALSE)
+		{
+			global $C;
+			if( empty($key) || ! is_scalar($key) || ! is_string($plugin) ) {
+				return '';
+			}
+			if( $in_another_language && $in_another_language!=$C->LANGUAGE && is_string($in_another_language) && preg_match('/^[a-z0-9_\-]+$/i', $in_another_language) && is_dir($C->INCPATH.'languages/'.$in_another_language) ) {
+				$texts	= $this->_plugin_lang_in_another_language($plugin, $in_another_language);
+				if( ! isset($texts[$key]) ) {
+					return '';
+				}
+				$txt	= $texts[$key];
+			}
+			elseif( isset($this->plugin_lang_data[$plugin][$key]) ) {
+				$txt	= $this->plugin_lang_data[$plugin][$key];
+			}
+			elseif( isset($this->plugin_lang_data_en[$plugin][$key]) ) {
+				$txt	= $this->plugin_lang_data_en[$plugin][$key];
+			}
+			else {
+				return '';
+			}
+			if( ! is_array($replace_strings) || 0 == count($replace_strings) ) {
+				return $txt;
+			}
+			return str_replace(array_keys($replace_strings), array_values($replace_strings), $txt);
+		}
+		
+		// The texts of a plugin in another language: that language over English over the active one, from
+		// the files loaded so far. Kept until the plugin loads another file.
+		private function _plugin_lang_in_another_language($plugin, $language)
+		{
+			if( isset($this->plugin_lang_other[$plugin][$language]) ) {
+				return $this->plugin_lang_other[$plugin][$language];
+			}
+			$texts	= isset($this->plugin_lang_data[$plugin]) ? $this->plugin_lang_data[$plugin] : array();
+			if( isset($this->plugin_lang_data_en[$plugin]) ) {
+				foreach($this->plugin_lang_data_en[$plugin] as $k=>$v) {
+					$texts[$k]	= $v;
+				}
+			}
+			if( $language != 'en' && isset($this->tmp_loaded_plugin_langfiles[$plugin]) ) {
+				foreach(array_keys($this->tmp_loaded_plugin_langfiles[$plugin]) as $f) {
+					$lang	= $this->_read_plugin_langfile($plugin, $language.'/'.$f, FALSE);
+					if( is_array($lang) ) {
+						foreach($lang as $k=>$v) {
+							$texts[$k]	= $v;
+						}
+					}
+				}
+			}
+			$this->plugin_lang_other[$plugin][$language]	= $texts;
+			return $texts;
+		}
+		
+		// The $lang array of apps/<plugin>/languages/<file>, or FALSE when the file is missing (logged if it
+		// is $required), fails or sets no array. Its output is dropped.
+		private function _read_plugin_langfile($plugin, $file, $required)
+		{
+			global $C;
+			$path	= $C->PLUGINS_DIR.$plugin.'/languages/'.$file;
+			if( ! is_file($path) ) {
+				if( $required ) {
+					error_log('Sharetronix plugin '.$plugin.': language file languages/'.$file.' not found; English is the reference language of a plugin');
+				}
+				return FALSE;
+			}
+			$level	= ob_get_level();
+			ob_start();
+			try {
+				$lang	= $this->_require_plugin_langfile($path);
+				$error	= is_array($lang) ? '' : 'sets no $lang array';
+			} catch( Throwable $e ) {
+				$lang	= FALSE;
+				$error	= 'failed: '.get_class($e).': '.$e->getMessage().' in '.$e->getFile().':'.$e->getLine();
+			}
+			while( ob_get_level() > $level ) {
+				ob_end_clean();
+			}
+			if( $error !== '' ) {
+				error_log('Sharetronix plugin '.$plugin.': language file languages/'.$file.' '.$error);
+				return FALSE;
+			}
+			return $lang;
+		}
+		
+		// Runs a plugin's language file in a scope of its own, so that it cannot overwrite the reader's variables.
+		private function _require_plugin_langfile($__file)
+		{
+			global $C;
+			$lang	= array();
+			require( $__file );
+			return $lang;
 		}
 		
 		public function param($key)

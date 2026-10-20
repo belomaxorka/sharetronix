@@ -1042,6 +1042,20 @@
 	  texts from the language pack (the new js_* strings of inside/footer.php); a script on a page
 	  without them, for example of a theme or plugin that replaces the footer, keeps the English
 	  text. The empty message text now reads "You cannot send an empty message.".
+	* Plugins can bring their own language files, so that they no longer depend on the texts of the
+	  core, which a release may remove: apps/<name>/languages/en/<file>.php sets $lang like the
+	  files of system/languages/en/, and a translation goes into a folder named after a language
+	  pack, such as languages/ru/. English is the reference: a text or a whole file that a
+	  translation lacks is shown in English, also in an e-mail in a member's language. In
+	  plugin.php, $this->loadLangfile('<file>.php') loads a file and $this->lang('key', $replace,
+	  $language) returns a text; the controllers, templates and cron jobs of a plugin use
+	  $page->load_plugin_langfile('<name>', '<file>.php') and $page->plugin_lang('<name>', 'key').
+	  The texts of a plugin are kept apart from those of the core and of other plugins, so the same
+	  key does not clash and a plugin cannot change a text of the core. A missing English file, or a
+	  language file that fails or sets no $lang array, is written to the PHP error log instead of
+	  stopping the page. The base class plugin now has the final methods lang() and loadLangfile():
+	  a plugin that declares a method of one of these names must rename it: PHP refuses such a
+	  class, and every page fails while the plugin is installed.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party
