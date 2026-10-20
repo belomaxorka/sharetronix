@@ -972,6 +972,9 @@
 	  A-Z, Newest on top), the Back link of the new group category form, the delete column of the
 	  group categories administration (its header said "Control", now the existing "Delete:") and
 	  the title of the error box of the sign-up and administrators pages.
+	* The messages of the plugins page of the administration (why a plugin folder cannot be
+	  installed, "already installed", "not installed", and what a failed installer.php left undone)
+	  were English in every language; they now use the new admin_plugins_err_* strings.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

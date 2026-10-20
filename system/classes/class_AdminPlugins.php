@@ -33,24 +33,24 @@
 			global $C;
 
 			if( !is_string($name) || !preg_match('/^[a-z0-9_]+$/i', $name) ){
-				return array('manifest' => FALSE, 'error' => 'The folder name may only contain letters, digits and underscores.');
+				return array('manifest' => FALSE, 'error' => $GLOBALS['page']->lang('admin_plugins_err_name'));
 			}
 			$dir = $C->PLUGINS_DIR.$name.'/';
 			if( !is_dir($dir) ){
-				return array('manifest' => FALSE, 'error' => 'The folder apps/'.$name.'/ does not exist.');
+				return array('manifest' => FALSE, 'error' => $GLOBALS['page']->lang('admin_plugins_err_nodir', array('#NAME#'=>$name)));
 			}
 			if( !is_file($dir.'manifest.json') ){
-				return array('manifest' => FALSE, 'error' => 'manifest.json is missing.');
+				return array('manifest' => FALSE, 'error' => $GLOBALS['page']->lang('admin_plugins_err_nomanifest'));
 			}
 			$manifest = json_decode(file_get_contents($dir.'manifest.json'));
 			if( !is_object($manifest) ){
-				return array('manifest' => FALSE, 'error' => 'manifest.json is not valid JSON.');
+				return array('manifest' => FALSE, 'error' => $GLOBALS['page']->lang('admin_plugins_err_badmanifest'));
 			}
 			if( !isset($manifest->plugin_name) || $manifest->plugin_name !== $name ){
-				return array('manifest' => FALSE, 'error' => 'The "plugin_name" in manifest.json must be the folder name, '.$name.'.');
+				return array('manifest' => FALSE, 'error' => $GLOBALS['page']->lang('admin_plugins_err_manifestname', array('#NAME#'=>$name)));
 			}
 			if( !is_file($dir.'plugin.php') ){
-				return array('manifest' => FALSE, 'error' => 'plugin.php is missing.');
+				return array('manifest' => FALSE, 'error' => $GLOBALS['page']->lang('admin_plugins_err_noplugin'));
 			}
 
 			return array('manifest' => $manifest, 'error' => '');
@@ -124,7 +124,7 @@
 				return $this->showError($m['error']);
 			}
 			if( $this->db->fetch_field('SELECT 1 FROM plugins WHERE name="'.$this->db->e($name).'" LIMIT 1') ){
-				return $this->showError('The plugin '.htmlspecialchars($name).' is already installed.');
+				return $this->showError($GLOBALS['page']->lang('admin_plugins_err_installed', array('#NAME#'=>htmlspecialchars($name))));
 			}
 			$result = $this->runInstaller($name, $m['manifest'], 'up', TRUE);
 			if( count($result['errors']) ){
@@ -140,7 +140,7 @@
 		{
 			$name = $this->postedPlugin();
 			if( !$this->db->fetch_field('SELECT 1 FROM plugins WHERE name="'.$this->db->e($name).'" LIMIT 1') ){
-				return $this->showError('The plugin '.htmlspecialchars($name).' is not installed.');
+				return $this->showError($GLOBALS['page']->lang('admin_plugins_err_notinstalled', array('#NAME#'=>htmlspecialchars($name))));
 			}
 			// Without its files (or with a broken manifest) the plugin can still be removed from the list.
 			$m = self::readManifest($name);
@@ -172,7 +172,7 @@
 		{
 			$name = $this->postedPlugin();
 			if( !$this->db->fetch_field('SELECT 1 FROM plugins WHERE name="'.$this->db->e($name).'" LIMIT 1') ){
-				return $this->showError('The plugin '.htmlspecialchars($name).' is not installed.');
+				return $this->showError($GLOBALS['page']->lang('admin_plugins_err_notinstalled', array('#NAME#'=>htmlspecialchars($name))));
 			}
 			$this->db->query('UPDATE plugins SET is_installed='.intval($state).' WHERE name="'.$this->db->e($name).'"');
 			$this->changed();
@@ -195,10 +195,10 @@
 				return $this->showError($m['error']);
 			}
 			if( $action == 'install' && $installed ){
-				return $this->showError('The plugin '.htmlspecialchars($name).' is already installed.');
+				return $this->showError($GLOBALS['page']->lang('admin_plugins_err_installed', array('#NAME#'=>htmlspecialchars($name))));
 			}
 			if( $action == 'uninstall' && !$installed ){
-				return $this->showError('The plugin '.htmlspecialchars($name).' is not installed.');
+				return $this->showError($GLOBALS['page']->lang('admin_plugins_err_notinstalled', array('#NAME#'=>htmlspecialchars($name))));
 			}
 			$result = $m['manifest'] ? $this->runInstaller($name, $m['manifest'], $action == 'install' ? 'up' : 'down', FALSE) : array('messages' => array(), 'errors' => array(), 'has_installer' => FALSE);
 
@@ -233,7 +233,7 @@
 				require_once $C->INCPATH.'plugin_installer/Installer.php';
 				include_once $file;
 				if( !class_exists('MyInstaller', FALSE) ){
-					$result['errors'][] = 'installer.php does not define the class MyInstaller.';
+					$result['errors'][] = $GLOBALS['page']->lang('admin_plugins_err_noinstaller');
 					return $result;
 				}
 				MyInstaller::$mode = $real ? Installer::INSTALLER_MODE_INSTALL : Installer::INSTALLER_MODE_VALIDATION;
@@ -258,18 +258,18 @@
 					// The installation stopped half-way: undo the tables and columns that up() created.
 					$undo = $inst->rollback();
 					if( $undo && count($undo['undone']) ){
-						$result['errors'][] = 'The installation was undone: '.htmlspecialchars(implode('; ', $undo['undone'])).'.';
+						$result['errors'][] = $GLOBALS['page']->lang('admin_plugins_err_undone', array('#LIST#'=>htmlspecialchars(implode('; ', $undo['undone']))));
 					}
 					if( $undo && count($undo['failed']) ){
-						$result['errors'][] = 'These could not be undone; undo them by hand before trying again: '.htmlspecialchars(implode('; ', $undo['failed'])).'.';
+						$result['errors'][] = $GLOBALS['page']->lang('admin_plugins_err_undo_failed', array('#LIST#'=>htmlspecialchars(implode('; ', $undo['failed']))));
 					}
 					if( $undo && count($undo['kept']) ){
-						$result['errors'][] = 'These statements of installer.php had been carried out and are not undone: '.htmlspecialchars(implode('; ', $undo['kept'])).'.';
+						$result['errors'][] = $GLOBALS['page']->lang('admin_plugins_err_undo_kept', array('#LIST#'=>htmlspecialchars(implode('; ', $undo['kept']))));
 					}
 				}
 				elseif( isset($inst) && count($inst->executed()) ){
 					// down() stopped half-way: the database keeps what the earlier statements did.
-					$result['errors'][] = 'The statements before it had already been carried out, and the database keeps their result; undo them by hand before trying again: '.htmlspecialchars(implode('; ', $inst->executed())).'.';
+					$result['errors'][] = $GLOBALS['page']->lang('admin_plugins_err_down_kept', array('#LIST#'=>htmlspecialchars(implode('; ', $inst->executed()))));
 				}
 			}
 
@@ -318,7 +318,7 @@
 
 		protected function showError($text)
 		{
-			$this->tpl->layout->setVar('main_content_placeholder', $this->tpl->designer->errorMessage('Error', $text));
+			$this->tpl->layout->setVar('main_content_placeholder', $this->tpl->designer->errorMessage($GLOBALS['page']->lang('global_error_msg_ttl'), $text));
 			$this->index();
 		}
 	}
