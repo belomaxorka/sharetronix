@@ -75,7 +75,7 @@
 	}
 	
 	if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('newgroup_f_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
 	}elseif( $submit && !$error ){
 		//$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('newcat_success_title'), $this->lang('newcat_success_text') ) );
 		$this->redirect($C->SITE_URL.$return);

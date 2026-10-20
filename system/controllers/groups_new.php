@@ -58,7 +58,7 @@
 	$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createMenu('tabs-navigation', $menu) );
 	
 	if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('st_avatat_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('newgroup_f_err'), isset($errtxt) ? $errtxt : $this->lang($errmsg) ) );
 	}
 	
 	$table = new tableCreator();

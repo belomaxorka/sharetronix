@@ -900,6 +900,8 @@
 	  the group was created anyway and the plugin's message was not shown. The form for a new group
 	  category kept the plugin's refusal but showed an empty message. Both forms now stop and show
 	  the plugin's message.
+	* The error box of the new group and new group category forms had an empty title: it used a
+	  string of the settings pages, which these forms do not load. It now says "Error" again.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
