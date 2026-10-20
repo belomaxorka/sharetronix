@@ -55,7 +55,6 @@
 		'iphone_np_image_button'	=> 'Attach Image',
 		'iphone_np_image_title_on'	=> 'Attached image:',
 		'iphone_np_image_button_on'	=> 'Remove Image',
-		'iphone_np_'	=> '',
 		'iphone_np_jserr_user1'		=> 'Please enter Username for the private message.',
 		'iphone_np_jserr_user2'		=> 'Invalid user #USERNAME#.',
 		'iphone_np_jserr_user3'		=> 'You cannot write a private message to yourself (it would be too schizophrenic).',

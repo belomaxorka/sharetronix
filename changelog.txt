@@ -891,6 +891,10 @@
 	  client. 3.6.3 was never released; an installation of a development snapshot that already
 	  reports 3.6.3 is updated to 4.0.0 like a 3.6.2 one, and the steps it already has are repeated
 	  without effect.
+	* The English language pack defined 10 keys twice in the same file (PHP keeps the last
+	  definition). The earlier or repeated definitions are removed; the texts shown do not change.
+	  Three of them had different, unused wording: the grouped group-invitation notification, the
+	  e-mail change password error and a button of the old sign-up wizard.
 
 	Removed:
 	* Removed the obsolete root README.txt.

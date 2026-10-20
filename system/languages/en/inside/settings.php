@@ -245,7 +245,6 @@
 		'st_email_okttl'			=> 'Done',
 		'st_email_oktxt'			=> 'Your email have been changed.',
 		'st_email_pass'			=> 'Your password: ',
-		'st_email_pass_error'		=> 'Enter your password.',
 		'st_email_cng_btn'		=> 'Change E-mail',
 		'st_email_current_errttl'	=> 'Error',
 		'st_email_current_error'	=> 'Wrong re-entered e-mail address.',
@@ -287,7 +286,6 @@
 										<br />6.Your user profile posts will not be visible for non registered users and people you do not follow.
 										<br />7.Your posts could not be reshared, instead your group posts.
 										<br />8.Your previous posts will be visible in the activity feeds of your followers.',
-		'settings_privacy_learn_more'	=> 'Learn more about this option',	
 		
 		'settings_menu_integr'	=> 'Integrations',
 		

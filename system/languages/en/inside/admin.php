@@ -374,8 +374,6 @@
 		'st_avatat_okmsg'			=> 'Profile picture was changed successfully.',
 		'st_avatat_okdelmsg'		=> 'Profile picture was deleted.',
 		'st_rssfeeds_nofeeds_txt'	=> 'You can add RSS/Atom feeds for automated posting to #USER#\'s profile.',
-		'st_avatat_okmsg'			=> 'Profile picture was changed successfully.',
-		'st_avatat_okdelmsg'		=> 'Profile picture was deleted.',
 		
 		'admldap_descr'		=> 'If your company uses LDAP for storing employees\' accounts and details, you can connect this site to the LDAP server for easier user registration. Users can login into this site with their already existing LDAP accounts.',
 		'admldap_phperrorttl'	=> 'Server incompatibility',

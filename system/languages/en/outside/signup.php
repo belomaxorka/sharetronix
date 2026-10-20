@@ -49,7 +49,6 @@
 		'signup_wizard_btn_prev' => 'Previous',
 		'signup_wizard_btn_first' => 'First',
 		'signup_wizard_btn_last' => 'Last',
-		'signup_wizard_btn_invite' => 'INVITE',
 		'signup_wizard_btn_invite' => 'GO TO REGISTRATION',
 		'signup_wizard_avatar' => 'AVATAR',
 		'signup_wizard_cont_with_reg' => 'You can continue with your registration',

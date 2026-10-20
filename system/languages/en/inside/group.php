@@ -1,9 +1,6 @@
 <?php	
 	$lang	= array
 	(
-		//LANGUAGE UPDATE 2012/01/26
-		'grp_toplnks_send_private_post_to_all'	=> 'Send Private Post to All Members',
-		//END LANGUAGE UPDATE 2012/01/26
 		'group_pagetitle_members'	=> 'Members of #GROUP# - #SITE_TITLE#',
 		'group_pagetitle_admins'	=> 'Administrators of #GROUP# - #SITE_TITLE#',
 		'group_pagetitle_settings'	=> 'Settings - #GROUP# - #SITE_TITLE#',

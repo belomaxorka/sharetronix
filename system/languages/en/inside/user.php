@@ -150,8 +150,6 @@
 		'usr_prof_ci_gtalk' => 'GTalk:',
 		'usr_prof_ci_linkedin' => 'LinkedIn:',
 		'usr_prof_ci_linkedin_info' => '(e.g. John Doe)',
-		'usr_prof_ci_email' => 'E-mail:',
-		'usr_prof_ci_email' => 'E-mail:',
 		
 		'usr_prof_ce_section_name' => 'Current Expertise',
 		'usr_prof_ce_areas' => 'Areas of Current Expertise:',
