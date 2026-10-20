@@ -758,6 +758,10 @@
 	  pack defined these two strings only in a language file that is never loaded. They are now in
 	  inside/dashboard.php. The two strings of an empty administrators list on the Members page are
 	  added as well.
+	* When removing an administrator failed, the administration answered "Could not remove this
+	  moderator.", and when activating a suspended member failed, "Could not suspend this user".
+	  These answers now say "Could not remove this administrator." and "Could not activate this
+	  user." (new strings global_ajax_post_error17 and global_ajax_post_error18).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

@@ -48,14 +48,14 @@
 			$users_id 	= isset($_POST[ 'users_id' ]) && is_string($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
 
 			if( empty($users_id) ){
-				echo 'ERROR:'.$page->lang('global_ajax_post_error2');
+				echo 'ERROR:'.$page->lang('global_ajax_post_error17');
 				return;
 			}
 			
 			$admin = new communityAdministration();
 			// FALSE: no right to do it, oneself, or not an active administrator; the list used to drop the row anyway
 			if( ! $admin->removeAdministrator($users_id) ){
-				echo 'ERROR:'.$page->lang('global_ajax_post_error2');
+				echo 'ERROR:'.$page->lang('global_ajax_post_error17');
 				return;
 			}
 			
@@ -68,14 +68,14 @@
 			$users_id 	= isset($_POST[ 'users_id' ]) && is_string($_POST[ 'users_id' ])? 	$_POST[ 'users_id' ] 		: 		'';
 		
 			if( empty($users_id) ){
-				echo 'ERROR:'.$page->lang('global_ajax_post_error3');
+				echo 'ERROR:'.$page->lang('global_ajax_post_error18');
 				return;
 			}
 				
 			$admin = new communityAdministration();
 			// FALSE: no right to do it, oneself, or not a suspended member
 			if( ! $admin->activateUser($users_id) ){
-				echo 'ERROR:'.$page->lang('global_ajax_post_error3');
+				echo 'ERROR:'.$page->lang('global_ajax_post_error18');
 				return;
 			}
 				

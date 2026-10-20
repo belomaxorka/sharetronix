@@ -283,6 +283,8 @@
 		'global_ajax_post_error14' => 'Invalid group.',
 		'global_ajax_post_error15' => 'You cannot leave this group (Possibly you are the only admin in it)',
 		'global_ajax_post_error16' => 'You could not follow that user',
+		'global_ajax_post_error17' => 'Could not remove this administrator.',
+		'global_ajax_post_error18' => 'Could not activate this user.',
 			
 		'global_ajax_post_ok' => 'Success! Moderator is removed',
 		'global_ajax_post_ok1' => 'Success! Administrator is removed',
