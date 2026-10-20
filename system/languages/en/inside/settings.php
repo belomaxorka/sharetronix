@@ -243,7 +243,7 @@
 		'st_email_conf_mes'		=> 'Your current e-mail address is: <b>#CURRENT_EMAIL#</b>. When you change it a confirmation link will be sent to the new e-mail address.',
 		'st_email_new_confirm'		=> 'Confirm new e-mail address: ',
 		'st_email_okttl'			=> 'Done',
-		'st_email_oktxt'			=> 'Your email have been changed.',
+		'st_email_oktxt'			=> 'Your e-mail address has been changed.',
 		'st_email_pass'			=> 'Your password: ',
 		'st_email_cng_btn'		=> 'Change E-mail',
 		'st_email_current_errttl'	=> 'Error',
@@ -253,7 +253,7 @@
 		'st_email_pass_error'		=> 'Wrong password.',
 		'st_email_notif_sendttl'	=> 'Check your e-mail',
 		'st_email_notif_send'		=> 'You need to confirm your new e-mail address. We sent a confirmation link to #EMAIL#.',
-		'st_email_name_repeat'		=> 'This e-mail have been already registered in #SITE_TITLE#.',
+		'st_email_name_repeat'		=> 'This e-mail address is already registered in #SITE_TITLE#.',
 		
 		'st_email_wrong_link'		=> 'Invalid confirmation link.',
 		'st_email_wrong_conf_id'	=> 'Invalid confirmation key.',

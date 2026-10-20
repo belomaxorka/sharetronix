@@ -106,7 +106,7 @@
 		'tab_user_feeds' => 'RSS Feeds',
 		
 		'noposts_usrprofileprotected_ttl'		=> 'No posts',
-		'noposts_usrprofileprotected_txt'		=> '#USERNAME# has protected his posts.',
+		'noposts_usrprofileprotected_txt'		=> '#USERNAME# has protected their posts.',
 		
 		'usr_profile_lastloginip' 	=> 'Last Login IP:', 
 		'usr_profile_regip' 		=> 'Registration IP:', 
@@ -226,8 +226,8 @@
 		'usr_prof_ok_jobstart_msg' => 'Job start year could not be greater than job end year',
 			
 			
-		'usr_top_activity_count' => '#NUM_FOLLOWERS# followers &middot #NUM_FOLLOWING# following &middot #NUM_POSTS# posts',
-		'usr_activity_count_small' => '#NUM_FOLLOWERS# followers</a> &middot #NUM_POSTS# posts',
+		'usr_top_activity_count' => '#NUM_FOLLOWERS# followers &middot; #NUM_FOLLOWING# following &middot; #NUM_POSTS# posts',
+		'usr_activity_count_small' => '#NUM_FOLLOWERS# followers</a> &middot; #NUM_POSTS# posts',
 		'usr_mobile_call_btn' => 'Call',
 		'usr_prof_mobile_email' => 'E-mail',
 		'usr_prof_mobile_location' => 'Location',

@@ -471,7 +471,7 @@
 
 		//3.1.0
 		'admin_general_check_for_install_dir_ttl' => 'Security Alert',
-		'admin_general_check_for_install_dir_txt' => 'Your installation directory(./install) is not deleted, please delete it.',
+		'admin_general_check_for_install_dir_txt' => 'Your installation directory (./install) is not deleted, please delete it.',
 		'admin_apps_installed_msg' => 'The Plugin was installed successfully',
 		'admin_apps_uninstalled_msg' => 'The Plugin was uninstalled successfully',
 		'admpgtitle_apps'		=> 'Plugins - #SITE_TITLE#',

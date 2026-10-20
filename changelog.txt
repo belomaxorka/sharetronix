@@ -777,6 +777,10 @@
 	* The Group categories page of the administration had the browser title "Delete Members"; it now
 	  has its own (new string admpgtitle_groupcategories). The mobile post page takes its title
 	  "View Post" from the language pack instead of English text in the code.
+	* Spelling and grammar of English texts in use were corrected ("has beed disabled", "Your email
+	  have been changed", "Members has been invited", "charactes", a backtick used as an apostrophe,
+	  a missing or a double space), "his posts" became "their posts", and the member and group
+	  counters use the complete HTML entity &middot; instead of &middot without a semicolon.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
