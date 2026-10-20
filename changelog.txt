@@ -149,6 +149,10 @@
 	  member or a group, the invitation list of a group and the search results) for HTML. The pages
 	  build them from the address of the request, including the decoded search term; no request was
 	  found that puts markup into them, so this is a precaution.
+	* The search page put the value of the posted field lookin into the search form of the page
+	  header without escaping it, so a page that made a signed-in member's browser post a crafted
+	  value to /search could run script on the site. Only the tabs posts, users, groups and tags are
+	  accepted now (any other value means posts), and the header escapes the value.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

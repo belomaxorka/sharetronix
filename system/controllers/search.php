@@ -19,6 +19,10 @@
 	if(isset($_POST['lookin']) && is_string($_POST['lookin'])){
 		$D->tab = $_POST['lookin'];
 	}
+	// Only the tabs of this page: the value also goes into the search form of the page header.
+	if( ! in_array($D->tab, array('posts', 'users', 'groups', 'tags'), TRUE) ) {
+		$D->tab	= 'posts';
+	}
 
 	if( isset($_POST['lookfor']) && is_string($_POST['lookfor']) && !empty($_POST['lookfor']) ){
 		$redirect_url = $C->SITE_URL.'search/tab:'.$D->tab;
