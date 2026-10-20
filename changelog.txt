@@ -876,6 +876,10 @@
 	  after 6 seconds and on each picture after 3, tries no further picture after 6 seconds, reads
 	  the description from the page it already has instead of loading the page a second time, and
 	  gives the video thumbnails 5 seconds.
+	* Link previews read the title of a page in its character set when the page names it only in the
+	  HTTP header or not at all: such a title was read as ISO-8859-1, so "Привет" or "café" appeared
+	  as "ÐÑÐ¸Ð²ÐµÑ" or "cafÃ©". The character set of the HTTP answer is used, or UTF-8 for text
+	  that is valid UTF-8.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

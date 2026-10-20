@@ -6,6 +6,8 @@
 		private $dom;
 		private $url;
 		private $meta_tags;
+		// the character set that the HTTP answer names for the page, '' when it names none
+		private $charset = '';
 		
 		public function __construct()
 		{
@@ -40,7 +42,20 @@
 			}
 			
 			$this->dom = new DOMDocument();
-			@$this->dom->loadHTML($this->html);
+			// libxml reads a page that names no character set in a <meta> tag as ISO-8859-1: it is told the
+			// character set of the HTTP answer, or UTF-8 for text that is valid UTF-8.
+			$html = $this->html;
+			if( !preg_match('/<meta[^>]+charset/i', $html) ){
+				$charset = $this->charset ? $this->charset : (mb_check_encoding($html, 'UTF-8') ? 'UTF-8' : '');
+				if( $charset ){
+					$meta = '<meta http-equiv="Content-Type" content="text/html; charset='.$charset.'">';
+					$html = preg_replace('/<head(\s[^>]*)?>/i', '$0'.$meta, $html, 1, $found);
+					if( ! $found ){
+						$html = $meta.$html;
+					}
+				}
+			}
+			@$this->dom->loadHTML($html);
 			
 			return TRUE;
 		}
@@ -62,6 +77,9 @@
 				curl_setopt($ch, CURLOPT_TIMEOUT, 6);
 				curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
 				$this->html = curl_exec($ch);
+				if( preg_match('/charset=["\']?([\w\-]+)/i', (string) curl_getinfo($ch, CURLINFO_CONTENT_TYPE), $m) ) {
+					$this->charset = $m[1];
+				}
 				if( PHP_VERSION_ID < 80000 ) {
 					curl_close($ch);
 				}
