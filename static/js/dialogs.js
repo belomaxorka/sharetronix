@@ -20,7 +20,7 @@ var Dialogs = function () {
         var btncontent = $('<div />').addClass('btn-container');
 
         var btnOK = $('<a />').addClass('btn');
-        var btnOKInner = $('<span />').text('OK');
+        var btnOKInner = $('<span />').text(stxText('js_dialog_ok', 'OK'));
         btnOK.append(btnOKInner);
         btnOK.click(function (e) {
             e.preventDefault();
@@ -30,7 +30,7 @@ var Dialogs = function () {
         });
 
         var btnYES = $('<a />').addClass('btn')
-        var btnYESInner = $('<span />').text('Yes');
+        var btnYESInner = $('<span />').text(stxText('js_dialog_yes', 'Yes'));
         btnYES.append(btnYESInner);
         btnYES.click(function (e) {
             e.preventDefault();
@@ -40,7 +40,7 @@ var Dialogs = function () {
         });
 
         var btnCancel = $('<a />').addClass('btn')
-        var btnCancelInner = $('<span />').text('Cancel');
+        var btnCancelInner = $('<span />').text(stxText('js_dialog_cancel', 'Cancel'));
         btnCancel.append(btnCancelInner);
         btnCancel.click(function (e) {
             e.preventDefault();
@@ -49,7 +49,7 @@ var Dialogs = function () {
         });
 
         var btnNO = $('<a />').addClass('btn')
-        var btnNOInner = $('<span />').text('No');
+        var btnNOInner = $('<span />').text(stxText('js_dialog_no', 'No'));
         btnNO.append(btnNOInner);
         btnNO.click(function (e) {
             e.preventDefault();

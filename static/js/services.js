@@ -23,7 +23,7 @@ var Services = function () {
 	}
 
 	function failure() {
-		return { status: 'ERROR', message: 'The request failed. Please try again.', html: '' };
+		return { status: 'ERROR', message: stxText('js_request_failed', 'The request failed. Please try again.'), html: '' };
 	}
 
 	function _init() {

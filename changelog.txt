@@ -1031,6 +1031,13 @@
 	* The installer's requirements page warns when the pdo_mysql extension is not loaded: the
 	  installation goes on, but plugins that have database tables cannot be installed until PHP
 	  loads it.
+	* The texts that the scripts show were English in every language: the buttons of the dialogs
+	  (OK, Yes, No, Cancel), the confirmations of deleting a post, a comment or an administrator,
+	  and the messages about an edited post, an attached link, a wrong group, a failed request, an
+	  empty message and the mobile "Send message" panel. The page footer now gives the scripts these
+	  texts from the language pack (the new js_* strings of inside/footer.php); a script on a page
+	  without them, for example of a theme or plugin that replaces the footer, keeps the English
+	  text. The empty message text now reads "You cannot send an empty message.".
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party

@@ -49,7 +49,7 @@ var Administration = function () {
         remove_moderator: function(el, value, event) {
         	
         	Dialogs.confirm(
-        			'Are you sure you want to delete this administrator?', 
+        			stxText('js_delete_admin_confirm', 'Are you sure you want to delete this administrator?'), 
         			function() {
 		        		var args = {
 		        				module: 'administration',
@@ -66,7 +66,7 @@ var Administration = function () {
         remove_administrator: function(el, value, event) {
         	
         	Dialogs.confirm(
-        			'Are you sure you want to delete this administrator?', 
+        			stxText('js_delete_admin_confirm', 'Are you sure you want to delete this administrator?'), 
         			function() {
 		        		var args = {
 		        				module: 'administration',

@@ -116,7 +116,7 @@ var Comments = function () {
         deleteComment: function (el, value, event) {
            
         	Dialogs.confirm(
-        			'Are you sure you want to delete this comment?', 
+        			stxText('js_delete_comment_confirm', 'Are you sure you want to delete this comment?'), 
         			function() {
 		        		var args = {
 		    					//type: 'post',

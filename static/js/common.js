@@ -252,6 +252,12 @@ var STX = function () {
     }
 } ();
 
+// The texts of the language pack for the scripts: stx_lang, written by the page footer
+// (pageDesigner::getJSLang()); the English text when the page has none.
+function stxText(key, english) {
+    return (typeof stx_lang !== 'undefined' && stx_lang[key]) ? stx_lang[key] : english;
+}
+
 
 // --- declare page load events --- //
 $(document).ready(function () {

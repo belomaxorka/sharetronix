@@ -89,6 +89,22 @@
 			return $html;
 		}
 		
+		// The texts that the scripts (static/js) show, in the language of the page: the global stx_lang that
+		// stxText() of common.js reads. Kept out of the cached list of scripts, which is the same for every
+		// language.
+		public function getJSLang()
+		{
+			$page = & $GLOBALS['page'];
+			if( ! in_array('inside/footer.php', (array) $page->tmp_loaded_langfiles) ) {
+				$page->load_langfile('inside/footer.php');
+			}
+			$texts = array();
+			foreach( array('js_dialog_ok', 'js_dialog_yes', 'js_dialog_no', 'js_dialog_cancel', 'js_delete_post_confirm', 'js_delete_comment_confirm', 'js_delete_admin_confirm', 'js_post_edited', 'js_link_attached', 'js_group_invalid', 'js_group_btn', 'js_request_failed', 'js_message_empty', 'js_send_message') as $k ) {
+				$texts[$k] = $page->lang($k);
+			}
+			return '<script type="text/javascript"> var stx_lang = '.json_encode($texts, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT).'; </script>'."\n";
+		}
+		
 		public function loadJSData()
 		{
 			global $C, $page;

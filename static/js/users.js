@@ -31,7 +31,7 @@ var Users = function () {
 		context.data('status', 'enabled').removeClass('disabled');
 		Dialogs.hidePopup();
 		if(response.status == 'ERROR' && response.message=='' ){
-			STX.showMessage('Can`t send empty message', "error");
+			STX.showMessage(stxText('js_message_empty', 'You cannot send an empty message.'), "error");
 			return;
 		}
 		STX.showMessage(response.html, "success");

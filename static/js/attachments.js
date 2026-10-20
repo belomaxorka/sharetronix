@@ -281,7 +281,7 @@ var Attachments = function () {
         url = $(el).parents('.attachment-link-field-container').find('.attachment-link-field').val();
         if (url != '') {
             if (attachedLink(url, el)) {
-                STX.showMessage('This URL is already attached!');
+                STX.showMessage(stxText('js_link_attached', 'This URL is already attached!'));
             } else {
                 showLoading($(el).parents('.data-content-placeholder'));
                 token = $(el).parents('.data-content-placeholder').attr('data-token');
@@ -466,11 +466,11 @@ var Attachments = function () {
     	if(result.status == 'ERROR'){
     		if($('.attachment-group-field').val() != ''){
     			$('.attachment-group-field-container').find('.attachment-group-field').css('color', 'red');
-        		STX.showMessage('Invalid group name', "error");
+        		STX.showMessage(stxText('js_group_invalid', 'Invalid group name'), "error");
     		}
     		
     		$('.attachment-button.group').css('background-image', 'url(/static/images/icon-add.png)');
-    		$('.attachment-button.group').text('Group');
+    		$('.attachment-button.group').text(stxText('js_group_btn', 'Group'));
     	}else{
     		$('.attachment-group-field-container').hide();
     		$('.attachment-group-field-container').find('.attachment-group-field').css('color', 'green');
@@ -498,7 +498,7 @@ var Attachments = function () {
     	if(result.status == 'ERROR'){
     		STX.showMessage(result.message, "error");
     		$('.attachment-button.group').css('background-image', 'url(/static/images/icon-add.png)');
-    		$('.attachment-button.group').text('Group');
+    		$('.attachment-button.group').text(stxText('js_group_btn', 'Group'));
     	}
     }
 

@@ -110,7 +110,7 @@ var STX = function () {
 	
 	function sendMessageShow() {
 		pageTitleText = $('.page-title').text();
-		pageTitle.text('Send message');
+		pageTitle.text(stxText('js_send_message', 'Send message'));
 		homeBtn.hide();
 		homeBtn.before(hideSendMessageBtn);
 		sendMessageBtn.addClass('active');
@@ -184,6 +184,12 @@ var STX = function () {
 
     }
 } ();
+
+// The texts of the language pack for the scripts: stx_lang, written by the page footer
+// (pageDesigner::getJSLang()); the English text when the page has none.
+function stxText(key, english) {
+    return (typeof stx_lang !== 'undefined' && stx_lang[key]) ? stx_lang[key] : english;
+}
 
 
 // --- declare page load events --- //

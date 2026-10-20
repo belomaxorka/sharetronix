@@ -52,7 +52,7 @@ var Activities = function () {
         	$('.attachment-group-field').val('');
             $('.attachment-button.group').css('background-image', 'url('+siteurl+'/static/images/icon-add.png)');
             $('.attachment-group-field-container').find('.attachment-group-field').css('color', 'black');
-            $('.attachment-button.group').text('Group');
+            $('.attachment-button.group').text(stxText('js_group_btn', 'Group'));
         }
         
     }
@@ -62,7 +62,7 @@ var Activities = function () {
     		commandFail(response, '');
     		return;
     	}
-		STX.showMessage('Post edited successfully', "success");
+		STX.showMessage(stxText('js_post_edited', 'Post edited successfully'), "success");
 		
 		var post_selector = $(context).parents('.activity-footer').siblings('.activity-content');
 		var text = $(post_selector).children('textarea').val();
@@ -334,7 +334,7 @@ var Activities = function () {
         deleteActivity: function(el, value, event) {
 
         	Dialogs.confirm(
-        			'Are you sure you want to delete this post?', 
+        			stxText('js_delete_post_confirm', 'Are you sure you want to delete this post?'), 
         			function() {
 		        		var args = {
 		    					//type: 'post',

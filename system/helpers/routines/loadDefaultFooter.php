@@ -44,7 +44,7 @@
 			setCachedHTML('footer_data_default', $tmp);
 		}
 		
-		$tpl->layout->setVar( 'footer_js_data', $tmp );
+		$tpl->layout->setVar( 'footer_js_data', $tpl->designer->getJSLang().$tmp );
 		
 		$tpl->layout->useBlock( 'comment-editor' );
 		
