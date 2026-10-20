@@ -1,6 +1,7 @@
 <?php
 
 	require_once( $C->INCPATH.'helpers/func_api.php' );
+	api_scalar_params();
 	require_once( $C->INCPATH.'classes/class_twitterdata.php' );
 	
 	$api_session = new stdClass;

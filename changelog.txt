@@ -792,6 +792,11 @@
 	  (message[]), and the post and comment actions, which loaded post or comment 1 for
 	  activities_id[], comments_id[] or activities_comment_id[] because the integer value of an
 	  array is 1. activities/set ignores activities_group[] instead of posting into group 1.
+	* The API treats a parameter sent as an array (name[]=...) as missing. callback[] reached
+	  preg_match() before the authentication of every API method, and status[], q[], user_id[],
+	  screen_name[], name[] and the other parameters reached the string functions of the
+	  controllers, all with HTTP 500 on PHP 8; in_reply_to_status_id[] counted as status 1. No
+	  parameter of the API is an array by design.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

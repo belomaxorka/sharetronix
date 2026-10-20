@@ -1,5 +1,6 @@
 <?php
 	require_once($C->INCPATH.'helpers/func_api.php');	
+	api_scalar_params();
 	
 	$format = $this->param('format');
 	$uri = $this->param('more');

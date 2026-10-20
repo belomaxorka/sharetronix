@@ -1,5 +1,6 @@
 <?php
 	require_once($C->INCPATH.'helpers/func_api.php');
+	api_scalar_params();
 	
 	$format = $this->param('format');
 	if(isset($_REQUEST['callback']) && valid_fn($_REQUEST['callback'])) $callback = $_REQUEST['callback'];

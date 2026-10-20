@@ -1,5 +1,6 @@
 <?php
 	require_once($C->INCPATH.'helpers/func_api.php');	
+	api_scalar_params();
 	
 	$api_session = new stdClass;
 	$api_session->format 	= $this->param('format');

@@ -160,6 +160,22 @@
  		else return false;
 	}
 	
+	// The API takes each parameter as one value. A parameter sent as an array (name[]=...) counts as
+	// missing: the string functions of the controllers fail on it, and intval() of an array is 1.
+	// Every API controller calls this before it reads its parameters.
+	function api_scalar_params()
+	{
+		foreach( $_GET as $k => $v ) {
+			if( is_array($v) ) unset($_GET[$k]);
+		}
+		foreach( $_POST as $k => $v ) {
+			if( is_array($v) ) unset($_POST[$k]);
+		}
+		foreach( $_REQUEST as $k => $v ) {
+			if( is_array($v) ) unset($_REQUEST[$k]);
+		}
+	}
+	
 	function check_rate_limits($ip, $rate_num = 1)
 	{
 		global $db2, $C;
