@@ -709,9 +709,11 @@
 	* Stopped the installation of a plugin when the database refuses a statement of its
 	  installer.php. The error and the statement were printed into the page and then ignored, so the
 	  plugin was registered as installed although the tables or columns that failed did not exist.
-	  The Plugins page now shows the error, names the statements that had already been carried out
-	  (the database keeps their result), and leaves the plugin uninstalled; the database connection
-	  of the installer reports errors as exceptions on PHP 7 as well.
+	  The Plugins page now shows the error and leaves the plugin uninstalled: the tables and columns
+	  that installer.php had created in that run are dropped and their plugins_tables entries put
+	  back, so the plugin can be installed again once it is fixed, and any other statement that had
+	  already been carried out is named (the database keeps its result). The database connection of
+	  the installer reports errors as exceptions on PHP 7 as well.
 	* Reported a missing pdo_mysql extension on the Plugins page. Looking at the installation or
 	  removal of a plugin that has an installer.php stopped the whole page with the bare text "Error
 	  connecting database!" when PHP had no pdo_mysql (the extension only the plugin installer

@@ -79,6 +79,12 @@ abstract class Installer {
 		return method_exists($this->db, 'getExecuted') ? $this->db->getExecuted() : array();
 	}
 	
+	// After a failed statement of up() (install mode): undoes the tables and columns that this run created,
+	// see DatabaseReal::rollback(). FALSE in validation mode.
+	final public function rollback(){
+		return method_exists($this->db, 'rollback') ? $this->db->rollback() : FALSE;
+	}
+	
 }
 
 if( function_exists("rcopy") == false || function_exists("rrmdir") == false ) {

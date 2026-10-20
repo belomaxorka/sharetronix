@@ -251,11 +251,25 @@
 					}
 				}
 			} catch( Throwable $e ) {
-				// A RuntimeException carries a message written for this page (the installer's database layer).
-				$result['errors'][] = htmlspecialchars(($e instanceof RuntimeException ? '' : get_class($e).': ').$e->getMessage());
-				// up() or down() stopped half-way: the database keeps what the earlier statements did.
-				if( isset($inst) && count($inst->executed()) ){
-					$result['errors'][] = 'The statements before it had already been carried out, and the database keeps their result; undo them by hand before trying again: '.htmlspecialchars(implode('; ', $inst->executed()));
+				// A RuntimeException of the installer's database layer carries a message written for this page;
+				// other exceptions, a PDOException too, keep their class name.
+				$result['errors'][] = htmlspecialchars((get_class($e) == 'RuntimeException' ? '' : get_class($e).': ').$e->getMessage());
+				if( isset($inst) && $real && $direction == 'up' ){
+					// The installation stopped half-way: undo the tables and columns that up() created.
+					$undo = $inst->rollback();
+					if( $undo && count($undo['undone']) ){
+						$result['errors'][] = 'The installation was undone: '.htmlspecialchars(implode('; ', $undo['undone'])).'.';
+					}
+					if( $undo && count($undo['failed']) ){
+						$result['errors'][] = 'These could not be undone; undo them by hand before trying again: '.htmlspecialchars(implode('; ', $undo['failed'])).'.';
+					}
+					if( $undo && count($undo['kept']) ){
+						$result['errors'][] = 'These statements of installer.php had been carried out and are not undone: '.htmlspecialchars(implode('; ', $undo['kept'])).'.';
+					}
+				}
+				elseif( isset($inst) && count($inst->executed()) ){
+					// down() stopped half-way: the database keeps what the earlier statements did.
+					$result['errors'][] = 'The statements before it had already been carried out, and the database keeps their result; undo them by hand before trying again: '.htmlspecialchars(implode('; ', $inst->executed())).'.';
 				}
 			}
 
