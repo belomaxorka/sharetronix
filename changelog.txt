@@ -1255,6 +1255,10 @@
 	  earlier versions, the tab texts and boxes of the old dashboard and post page, the old header
 	  navigation and footer links, competitions, and notification texts of types that are never
 	  stored.
+	* Removed 202 unused strings of inside/user.php and inside/members.php: the extended profile
+	  sections of earlier versions (name, organization, managers, work experience and other
+	  usr_prof_* fields), the old left column, top links and tabs of profiles, and the old left
+	  column and descriptions of the members page.
 
 Sharetronix 3.6.2
 	* Bug fixes
