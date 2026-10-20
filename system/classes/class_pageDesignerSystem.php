@@ -49,6 +49,8 @@
 			$page = & $GLOBALS['page'];
 			$user = & $GLOBALS['user'];
 			$html = '';
+			// The links go into href attributes, and the controllers build the address from the request.
+			$paging_url = htmlspecialchars($paging_url, ENT_QUOTES|ENT_SUBSTITUTE);
 		
 			if( $num_pages <= 1 ) {
 				return $html;

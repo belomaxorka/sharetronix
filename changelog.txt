@@ -145,6 +145,10 @@
 	  "show password" links fetched the administrator's or the database password with a POST request
 	  that answered the password itself; the links and that answer are removed, and the page shows
 	  the passwords as asterisks.
+	* Escaped the addresses of the pager links (the lists of members and groups, the posts of a
+	  member or a group, the invitation list of a group and the search results) for HTML. The pages
+	  build them from the address of the request, including the decoded search term; no request was
+	  found that puts markup into them, so this is a precaution.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account
