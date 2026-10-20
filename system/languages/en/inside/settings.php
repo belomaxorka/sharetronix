@@ -251,6 +251,7 @@
 		'st_email_address_error'	=> 'Please, enter a valid e-mail address.',
 		'st_email_address_error1'	=> 'Wrong confirmation e-mail.',
 		'st_email_pass_error'		=> 'Wrong password.',
+		'st_email_pass_empty'		=> 'Enter your password.',
 		'st_email_notif_sendttl'	=> 'Check your e-mail',
 		'st_email_notif_send'		=> 'You need to confirm your new e-mail address. We sent a confirmation link to #EMAIL#.',
 		'st_email_name_repeat'		=> 'This e-mail address is already registered in #SITE_TITLE#.',

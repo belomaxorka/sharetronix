@@ -98,7 +98,12 @@
 			$error = TRUE;
 			$errmsg = $this->lang('st_email_current_error');
 		}
-		elseif(empty($user_pass) || (md5($user_pass) != $this->user->info->password))
+		elseif(empty($user_pass))
+		{
+			$error = TRUE;
+			$errmsg = $this->lang('st_email_pass_empty');
+		}
+		elseif(md5($user_pass) != $this->user->info->password)
 		{
 			$error = TRUE;
 			$errmsg = $this->lang('st_email_pass_error');

@@ -911,6 +911,8 @@
 	* The default welcome text of the home page said that posts have "160 characters or less"
 	  whatever the administration set as the maximum post length; it now gives the configured
 	  length.
+	* Changing the e-mail address without typing the password said "Wrong password."; it now asks to
+	  enter the password (new string st_email_pass_empty).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
