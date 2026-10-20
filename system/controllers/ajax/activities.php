@@ -327,10 +327,10 @@
 					$likes = $p->get_post_likes();
 					$likes_number = isset($likes['post'])? count($likes['post']) : 0;
 						
-					$like_content = '<a href="" data-role="services" data-namespace="activities" data-action="unlike" data-value="'.htmlentities('{"activities_type":"'.$_POST['activities_type'].'","activities_id":"'.$_POST['activities_id'].'"}').'">Unlike</a>';
+					$like_content = '<a href="" data-role="services" data-namespace="activities" data-action="unlike" data-value="'.htmlentities('{"activities_type":"'.$_POST['activities_type'].'","activities_id":"'.$_POST['activities_id'].'"}').'">'.$page->lang('post_unlike_value').'</a>';
 					if( $likes_number > 0 ){
 						$showlikes_btn = '<a class="showpostlikes_btn" href="" data-role="services" data-namespace="activities" data-action="showlikes" data-value="'.htmlentities('{"activities_type":"'.$_POST['activities_type'].'","activities_id":"'.$_POST['activities_id'].'"}').'">';
-						$like_content .= ' (You' . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like this )';
+						$like_content .= likes_text(TRUE, '', $likes_number, $showlikes_btn);
 					}
 						
 					echo '<div class="like-list">'.$like_content.'</div>';
@@ -360,18 +360,18 @@
 				if( $p->like_post(FALSE) ){
 					$likes = $p->get_post_likes();
 					$likes_number = isset($likes['post'])? count($likes['post']) : 0;
-					$like_users = '';
-					$like_content = '<a href="" data-role="services" data-namespace="activities" data-action="like" data-value="'.htmlentities('{"activities_type":"'.$_POST['activities_type'].'","activities_id":"'.$_POST['activities_id'].'"}').'">Like</a>';
+					$liker = '';
+					$like_content = '<a href="" data-role="services" data-namespace="activities" data-action="like" data-value="'.htmlentities('{"activities_type":"'.$_POST['activities_type'].'","activities_id":"'.$_POST['activities_id'].'"}').'">'.$page->lang('post_like_value').'</a>';
 					if( $likes_number>0 ){
 						$showlikes_btn = '<a class="showpostlikes_btn" href="" data-role="services" data-namespace="activities" data-action="showlikes" data-value="'.htmlentities('{"activities_type":"'.$_POST['activities_type'].'","activities_id":"'.$_POST['activities_id'].'"}').'">';
 							
 						foreach ($likes['post'] as $usr) {
 							if( $usr[0] != $this->user->info->username ){
-								$like_users = ' (<a href="'.userlink( $usr[0] ).'">'.$usr[0].'</a>';
+								$liker = $usr[0];
 								break;
 							}
 						}
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like'.($likes_number==1? 's' : '').' this )';
+						$like_content .= likes_text(FALSE, $liker, $likes_number, $showlikes_btn);
 			
 					}
 			

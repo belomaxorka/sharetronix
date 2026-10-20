@@ -938,6 +938,11 @@
 	  in member lists (remove administrator, remove moderator, activate user) were English in every
 	  language. They now use the language pack (the strings usrlist_tltp_* and grplist_tltp_*, some
 	  of which existed unused).
+	* The Like and Unlike links of posts and comments and the text of who likes them ("You and 2
+	  others like this") were English in every language. They now use the language pack: the
+	  existing strings post_like_value and post_unlike_value and the new likes_* strings, which keep
+	  the whole sentence together for translators. The English text loses the space before the
+	  closing parenthesis.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

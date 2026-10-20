@@ -26,23 +26,21 @@
 			if($user->is_logged && !$page->is_mobile){
 				$is_liked  		= $c->is_comment_liked();
 				$likes_number 	= !empty($c->post->post_likes['comment_'.$c->comment_id]) ? count($c->post->post_likes['comment_'.$c->comment_id]) : 0;
-				$like_content	= '<a href="" data-role="services" data-namespace="comments" data-action="'.($is_liked? 'unlike' : 'like').'" data-value="'.htmlentities('{"activities_type":"'.$c->post->post_type.'","activities_id":"'.$c->post->post_id.'","activities_comment_id":"'.$c->comment_id.'"}').'">'.($is_liked? 'Unlike' : 'Like').'</a>';
+				$like_content	= '<a href="" data-role="services" data-namespace="comments" data-action="'.($is_liked? 'unlike' : 'like').'" data-value="'.htmlentities('{"activities_type":"'.$c->post->post_type.'","activities_id":"'.$c->post->post_id.'","activities_comment_id":"'.$c->comment_id.'"}').'">'.$page->lang($is_liked? 'post_unlike_value' : 'post_like_value').'</a>';
 				
 				if ($likes_number > 0) {
-					$like_users = $is_liked? ' (You' : '';
+					$liker = '';
 					$showlikes_btn = '<a class="showpostlikes_btn" href="" data-role="services" data-namespace="comments" data-action="showlikes" data-value="'.htmlentities('{"activities_type":"'.$c->post->post_type.'","activities_id":"'.$c->post->post_id.'","activities_comment_id":"'.$c->comment_id.'"}').'">';
 						
 					if( !$is_liked ){
 						foreach ($c->post->post_likes['comment_'.$c->comment_id] as $usr) {
 							if( $usr[0] != $user->info->username ){
-								$like_users = ' (<a href="'.userlink( $usr[0] ).'">'.$usr[0].'</a>';
+								$liker = $usr[0];
 								break;
 							}
 						}
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like'.($likes_number==1? 's' : '').' this )';
-					}else{
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like this )';
 					}
+					$like_content .= likes_text($is_liked, $liker, $likes_number, $showlikes_btn);
 						
 				}
 				
@@ -69,23 +67,21 @@
 			if($user->is_logged && !$page->is_mobile){
 				$is_liked  		= $c->is_comment_liked();
 				$likes_number 	= isset($c->post->post_likes['comment_'.$c->comment_id])? count($c->post->post_likes['comment_'.$c->comment_id]) : 0;
-				$like_content	= '<a href="" data-role="services" data-namespace="comments" data-action="'.($is_liked? 'unlike' : 'like').'" data-value="'.htmlentities('{"activities_type":"'.$c->post->post_type.'","activities_id":"'.$c->post->post_id.'","activities_comment_id":"'.$c->comment_id.'"}').'">'.($is_liked? 'Unlike' : 'Like').'</a>';
+				$like_content	= '<a href="" data-role="services" data-namespace="comments" data-action="'.($is_liked? 'unlike' : 'like').'" data-value="'.htmlentities('{"activities_type":"'.$c->post->post_type.'","activities_id":"'.$c->post->post_id.'","activities_comment_id":"'.$c->comment_id.'"}').'">'.$page->lang($is_liked? 'post_unlike_value' : 'post_like_value').'</a>';
 			
 				if ($likes_number > 0) {
-					$like_users = $is_liked? ' (You' : '';
+					$liker = '';
 					$showlikes_btn = '<a class="showpostlikes_btn" href="" data-role="services" data-namespace="comments" data-action="showlikes" data-value="'.htmlentities('{"activities_type":"'.$c->post->post_type.'","activities_id":"'.$c->post->post_id.'","activities_comment_id":"'.$c->comment_id.'"}').'">';
 			
 					if( !$is_liked ){
 						foreach ($c->post->post_likes['comment_'.$c->comment_id] as $usr) {
 							if( $usr[0] != $user->info->username ){
-								$like_users = ' (<a href="'.userlink( $usr[0] ).'">'.$usr[0].'</a>';
+								$liker = $usr[0];
 								break;
 							}
 						}
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like'.($likes_number==1? 's' : '').' this )';
-					}else{
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like this )';
 					}
+					$like_content .= likes_text($is_liked, $liker, $likes_number, $showlikes_btn);
 			
 				}
 			

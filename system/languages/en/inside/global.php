@@ -225,6 +225,12 @@
 		
 		'post_like_value' => 'Like',
 		'post_unlike_value' => 'Unlike',
+		'likes_you'		=> '(You like this)',
+		'likes_you_and_others'	=> '(You and #OTHERS# like this)',
+		'likes_user'		=> '(#USER# likes this)',
+		'likes_user_and_others'	=> '(#USER# and #OTHERS# like this)',
+		'likes_others'		=> '#NUM# others',
+		'likes_others1'		=> '1 other',
 		'post_likes_num' => 'Likes',
 		'vp_liked_by'		=> 'Liked by',
 		

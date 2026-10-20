@@ -71,23 +71,21 @@
 				$is_liked  = $buff->is_post_liked();
 				
 				$likes_number = isset($buff->post_likes['post'])? count($buff->post_likes['post']) : 0;
-				$like_content = '<a href="" data-role="services" data-namespace="activities" data-action="'.($is_liked? 'unlike' : 'like').'" data-value="'.htmlentities('{"activities_type":"'.$buff->post_type.'","activities_id":"'.$buff->post_id.'"}').'">'.($is_liked? 'Unlike' : 'Like').'</a>';
+				$like_content = '<a href="" data-role="services" data-namespace="activities" data-action="'.($is_liked? 'unlike' : 'like').'" data-value="'.htmlentities('{"activities_type":"'.$buff->post_type.'","activities_id":"'.$buff->post_id.'"}').'">'.$page->lang($is_liked? 'post_unlike_value' : 'post_like_value').'</a>';
 					
 				if ($likes_number > 0) {
-					$like_users = $is_liked? ' (You' : '';
+					$liker = '';
 					$showlikes_btn = '<a class="showpostlikes_btn" href="" data-role="services" data-namespace="activities" data-action="showlikes" data-value="'.htmlentities('{"activities_type":"'.$buff->post_type.'","activities_id":"'.$buff->post_id.'"}').'">';
 						
 					if( !$is_liked ){
 						foreach ($buff->post_likes['post'] as $usr) {
 							if( $usr[0] != $user->info->username ){
-								$like_users = ' (<a href="'.userlink( $usr[0] ).'">'.$usr[0].'</a>';
+								$liker = $usr[0];
 								break;
 							}
 						}
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like'.($likes_number==1? 's' : '').' this )';
-					}else{
-						$like_content .= $like_users . (($likes_number>1)? ' and '.$showlikes_btn. ($likes_number-1).' other'.($likes_number-1>1? 's' : '').'</a>' : '') . ' like this )';
 					}
+					$like_content .= likes_text($is_liked, $liker, $likes_number, $showlikes_btn);
 						
 				}
 				

@@ -395,6 +395,22 @@
 		return $text !== '' ? $text : ucfirst(str_replace('_', ' ', $action));
 	}
 	
+	// The text after the Like link of a post or comment, who likes it: "(You and 2 others like this)".
+	// $liker is the username of a member who likes it, for a viewer who does not; $showlikes_btn opens
+	// the link to the list of all of them.
+	function likes_text($is_liked, $liker, $likes_number, $showlikes_btn)
+	{
+		if( $likes_number < 1 || (!$is_liked && $liker === '') ) {
+			return '';
+		}
+		$replace	= array('#USER#' => $is_liked ? '' : '<a href="'.userlink($liker).'">'.$liker.'</a>');
+		if( $likes_number > 1 ) {
+			$replace['#OTHERS#']	= $showlikes_btn.lang_count('likes_others', $likes_number - 1).'</a>';
+			return ' '.$GLOBALS['page']->lang($is_liked ? 'likes_you_and_others' : 'likes_user_and_others', $replace);
+		}
+		return ' '.$GLOBALS['page']->lang($is_liked ? 'likes_you' : 'likes_user', $replace);
+	}
+	
 	function str_cut($str, $mx)
 	{
 		return mb_strlen($str)>$mx ? mb_substr($str, 0, $mx-1).'..' : $str;
