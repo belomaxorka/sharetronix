@@ -1246,6 +1246,11 @@
 	  and inviting members, linked public networks, payments, LDAP, domain control, special groups,
 	  system clean-up, profile field settings, suspended applications) and unused texts of the
 	  existing pages.
+	* Removed 337 unused strings of inside/global.php, dashboard.php, view.php, notifications.php,
+	  header.php, footer.php and faq.php: the post form, resharing, favourites and user box of
+	  earlier versions, the tab texts and boxes of the old dashboard and post page, the old header
+	  navigation and footer links, competitions, and notification texts of types that are never
+	  stored.
 
 Sharetronix 3.6.2
 	* Bug fixes

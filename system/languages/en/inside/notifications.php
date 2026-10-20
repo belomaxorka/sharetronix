@@ -32,12 +32,7 @@
 		'grouped_msg_ntf_me_if_u_creates_grp'	=> '#USER# created #NOTIFOBJ# and #A1# #NUM# other groups #A2#.',
 		//'grouped_msg_ntf_me_if_u_joins_grp'		=> '#USER# and #A1# #NUM# other members #A2# are now members of #NOTIFOBJ#.',
 		'grouped_msg_ntf_me_if_u_joins_grp'		=> '#USER# is now member of #NOTIFOBJ# and #A1# #NUM# other groups #A2#.',
-		'grouped_msg_ntf_me_if_u_posts_qme'		=> '#USER# and #A1# #NUM# other members #A2# mentioned you in their #A3#post#A2#.',
-		'grouped_msg_ntf_me_if_u_posts_prvmsg'	=> '#USER# and #A1# #NUM# other members #A2# sent you a #A3#private message#A2#.',
 		'grouped_msg_ntf_me_if_u_registers'		=> '#USER# and #A1# #NUM# other members #A2# joined the #NOTIFOBJ# network.',
-		'grouped_msg_ntf_grp_if_u_joins'		=> '#USER# and #A1# #NUM# other members #A2# joined the group.',
-		'grouped_msg_ntf_me_on_post_like'		=> '#USER# and #A1# #NUM# other members #A2# liked your #A3#post#A2#.',
-		'grouped_msg_ntf_me_on_comment_like'	=> '#USER# and #A1# #NUM# other members #A2# liked your comment on #A3#post#A2#.',
 		'grouped_msg_ntf_me_if_u_invit_me_grp'	=> '#USER# invites you to join #NOTIFOBJ# and #A1# #NUM# other groups #A2#.',
 		
 		'single_msg_ntf_me_if_u_follows_me'		=> '#USER# is now following you.',
@@ -47,12 +42,7 @@
 		'single_msg_ntf_me_if_u_creates_grp'	=> '#USER# created new group: #NOTIFOBJ#.',
 		'single_msg_ntf_me_if_u_joins_grp'		=> '#USER# is now a member of #NOTIFOBJ#.',
 		'single_msg_ntf_me_if_u_invit_me_grp'	=> '#USER# invites you to join #NOTIFOBJ#.',
-		'single_msg_ntf_me_if_u_posts_qme'		=> '#USER# mentioned you in their #A3#post#A2#.',
-		'single_msg_ntf_me_if_u_posts_prvmsg'	=> '#USER# sent you a #A3#private message#A2#.',
 		'single_msg_ntf_me_if_u_registers'		=> '#USER# joined the #NOTIFOBJ# network.',
-		'single_msg_ntf_grp_if_u_joins'		=> '#USER# joined the group.',
-		'single_msg_ntf_me_on_post_like'		=> '#USER# liked your #A3#post#A2#.',
-		'single_msg_ntf_me_on_comment_like'		=> '#USER# liked your comment on #A3#post#A2#.',
 	);
 	
 ?>

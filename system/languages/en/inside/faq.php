@@ -126,9 +126,6 @@
 		'faqpb_c6_p4_text'	=> "The private groups are accessible only to users who have been invited, i.e. who have received an invitation. Posts in private groups are not publicly available to all users in #SITE_TITLE#.\n\nPrivate groups are appropriate for sharing confidential information and discussions that should not become public.\n\nTo create a private group, select the option [b]Private Group[/b] in the form to create a new group.\n\nTo convert an already created private group to a public one you have to be administrator of this group. Go to the tab [b]Group Settings[/b] and select [b]Private Group[/b]. During the process of conversion from public to private group all the users who are current members of the group will continue to be its members and will have access to the existing posts.",
 		'faqpb_c6_p4_image'	=> '',
 		
-		'faq_title'			=> 'FAQ',
-		'cant_understand'		=> 'Still don\'t understand something? You can allways ask our support.',
-		'cont_us'			=> 'Contact Us',
 	);
 	
 ?>
