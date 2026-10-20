@@ -1270,6 +1270,8 @@
 	* Removed 80 unused strings of inside/invite.php and email/invite.php: the recommendation form,
 	  the import of Gmail and other address books, the file upload and the personal invitation link
 	  of earlier versions, and old titles, tabs and texts of the invitation pages and e-mail.
+	* Removed 29 unused strings of inside/search.php: the per-tab page titles and headings, the post
+	  type and date filters and the default search form of earlier versions.
 
 Sharetronix 3.6.2
 	* Bug fixes
