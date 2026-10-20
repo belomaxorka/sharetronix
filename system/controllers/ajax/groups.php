@@ -84,7 +84,7 @@
 			break;
 		
 		case 'autocomplete':
-			$name		= isset($_POST['groups_name']) ? trim($_POST['groups_name']) : '';
+			$name		= isset($_POST['groups_name']) && is_string($_POST['groups_name']) ? trim($_POST['groups_name']) : '';
 			if( empty($name) ) {
 				echo 'ERROR';
 				return;
@@ -117,7 +117,7 @@
 			
 		case 'checkgroup':
 
-			$name		= isset($_POST['group_name']) ? trim($_POST['group_name']) : '';
+			$name		= isset($_POST['group_name']) && is_string($_POST['group_name']) ? trim($_POST['group_name']) : '';
 			if( empty($name) ) {
 				echo 'ERROR';
 				return;

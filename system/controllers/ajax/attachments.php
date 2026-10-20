@@ -20,7 +20,7 @@
 	$token = $page->param('token');
 
 	if( !$token ){
-		if( isset($_POST['token']) && !empty($_POST['token']) ){
+		if( isset($_POST['token']) && is_string($_POST['token']) && !empty($_POST['token']) ){
 			$token = trim($_POST['token']);
 		}
 	}
@@ -136,7 +136,7 @@
 		
 		case 'seturl':
 			
-			if( !isset($_POST['url']) || empty($_POST['url']) ){
+			if( !isset($_POST['url']) || !is_string($_POST['url']) || empty($_POST['url']) ){
 				echo 'ERROR:'.$page->lang('global_ajax_post_error8');
 				return;
 			}
@@ -196,7 +196,7 @@
 		
 		case 'setgroup':
 				
-			if( !isset($_POST['group_id']) || empty($_POST['group_id']) ){
+			if( !isset($_POST['group_id']) || !is_string($_POST['group_id']) || empty($_POST['group_id']) ){
 				echo 'ERROR:'.$page->lang('global_ajax_post_error8');
 				return;
 			}
@@ -216,7 +216,7 @@
 			break;
 		
 		case 'delete':
-			if( !isset($_POST['attachment_id']) || !isset($_POST['attachment_type']) ) {
+			if( !isset($_POST['attachment_id']) || !isset($_POST['attachment_type']) || is_array($_POST['attachment_id']) || !is_string($_POST['attachment_type']) ) {
 				echo 'ERROR:'.$page->lang('global_ajax_post_error9');
 				return;
 			}/*elseif( empty($_POST['attachment_type']) || empty($_POST['attachment_id']) ){
@@ -242,7 +242,7 @@
 			
 			$sess = &$user->sess;
 			
-			if(!isset($_POST['link_index'], $_POST['image'])){
+			if(!isset($_POST['link_index'], $_POST['image']) || is_array($_POST['link_index']) || !is_string($_POST['image'])){
 				return;
 			}
 

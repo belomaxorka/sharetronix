@@ -30,7 +30,7 @@
 			$this->pm 		= & $GLOBALS['plugins_manager'];
 			$this->target_user = FALSE;
 			
-			$this->tab 			= $this->page->param('tab')? $this->page->param('tab') : (isset($_POST['activities_tab'])? $this->db2->e($_POST['activities_tab']) : '');
+			$this->tab 			= $this->page->param('tab')? $this->page->param('tab') : (isset($_POST['activities_tab']) && is_string($_POST['activities_tab'])? $this->db2->e($_POST['activities_tab']) : '');
 			$this->subtab 		= $this->page->param('subtab')? $this->page->param('subtab') : '';
 			$this->query_order 	= '';
 

@@ -785,6 +785,13 @@
 	  id takes. /services/administration/removeadmin compared the id as it was sent, so a request
 	  with "01" or "1 " instead of "1" removed the rights of the administrator herself, also of the
 	  only one; suspending and activating members used the same comparison.
+	* More services answer a parameter sent as an array with the error they give for a missing
+	  value, instead of a PHP error (HTTP 500 on PHP 8) or acting on id 1: groups/autocomplete (open
+	  to visitors) and groups/checkgroup, the attachment services (token[], url[], group_id[],
+	  attachment_id[], attachment_type[], image[]), the notification details, the edit of a post
+	  (message[]), and the post and comment actions, which loaded post or comment 1 for
+	  activities_id[], comments_id[] or activities_comment_id[] because the integer value of an
+	  array is 1. activities/set ignores activities_group[] instead of posting into group 1.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

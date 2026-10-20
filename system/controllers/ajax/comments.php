@@ -13,7 +13,7 @@
 			
 		case 'getall':
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) )
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) )
 			{
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
@@ -46,7 +46,7 @@
 				return;
 			}
 			
-			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['comments_text']) )
+			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['comments_text']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) )
 			{
 				$msg	= isset($_POST['comments_text']) && is_string($_POST['comments_text']) ? trim($_POST['comments_text']) : '';
 				if( empty($msg) ) {
@@ -91,7 +91,7 @@
 	
 		case 'delete':
 			
-			if( isset($_POST['activities_id'], $_POST['comments_id'], $_POST['activities_type']) )
+			if( isset($_POST['activities_id'], $_POST['comments_id'], $_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['comments_id']) && !is_array($_POST['activities_type']) )
 			{
 				$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $_POST['comments_id'] );
 				if( $c->error ) {
@@ -114,7 +114,7 @@
 			
 		case 'like': 
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && isset($_POST['activities_comment_id']) ) {
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && isset($_POST['activities_comment_id']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) && !is_array($_POST['activities_comment_id']) ) {
 				$comment_id = intval($_POST['activities_comment_id']);
 			
 				$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $_POST['activities_comment_id'] );
@@ -149,7 +149,7 @@
 		
 		case 'unlike': 
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && isset($_POST['activities_comment_id']) ) {
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && isset($_POST['activities_comment_id']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) && !is_array($_POST['activities_comment_id']) ) {
 				$comment_id = intval($_POST['activities_comment_id']);
 			
 				$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $_POST['activities_comment_id'] );
@@ -194,7 +194,7 @@
 			
 		case 'showlikes': 
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && isset($_POST['activities_comment_id']) ) {
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && isset($_POST['activities_comment_id']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) && !is_array($_POST['activities_comment_id']) ) {
 				$comment_id = intval($_POST['activities_comment_id']);
 				
 				if( !is_numeric($comment_id) || $comment_id < 1 ){

@@ -9,7 +9,7 @@
 		case 'showdetails':
 			
 			$_POST = &$_POST['users_id']; //@TODO: fix this
-			if( !isset($_POST['notifications_type']) || !isset($_POST['notifications_object']) || !isset($_POST['notifications_ingroup']) ) {
+			if( !isset($_POST['notifications_type']) || !isset($_POST['notifications_object']) || !isset($_POST['notifications_ingroup']) || !is_string($_POST['notifications_type']) || !is_string($_POST['notifications_object']) || is_array($_POST['notifications_ingroup']) ) {
 				echo 'ERROR';
 				return;
 			}

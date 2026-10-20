@@ -182,7 +182,7 @@
 								
 				$p->set_message($activity_text);
 
-				if( isset($_POST[ 'activities_group' ]) && !empty($_POST[ 'activities_group' ]) ){
+				if( isset($_POST[ 'activities_group' ]) && !is_array($_POST[ 'activities_group' ]) && !empty($_POST[ 'activities_group' ]) ){
 					$p->set_group_id( intval( $_POST[ 'activities_group' ] ) );
 				}
 				elseif(isset($att['group']) && !empty($att['group'])){
@@ -263,7 +263,7 @@
 			break;
 			
 		case 'delete':	
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) )
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) )
 			{
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
@@ -288,7 +288,7 @@
 		
 		case 'bookmark':
 				
-				if( isset($_POST['activities_id']) && isset($_POST['activities_type']) )
+				if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) )
 				{
 					$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 					if( $p->error ) {
@@ -311,7 +311,7 @@
 				
 		case 'like': 
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) ) {
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) ) {
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
 					echo 'ERROR:Invalid post data provided.';
@@ -345,7 +345,7 @@
 			
 		case 'unlike': 
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) ) {
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) ) {
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
 					echo 'ERROR:Invalid post data provided.';
@@ -387,7 +387,7 @@
 			
 		case 'showlikes': 
 			
-			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) ) {
+			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) ) {
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
 					echo 'ERROR:Invalid post data provided.';
@@ -415,7 +415,7 @@
 			
 		case 'edit': 
 			
-			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['message']) ) {
+			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['message']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) && is_string($_POST['message']) ) {
 				if( empty($_POST['message']) ){
 					echo 'ERROR:Empty message.';
 					return;
