@@ -77,7 +77,7 @@
 		
 		$result	= new stdClass;
 		$result->trends	= array();
-		$result->as_of	= gmstrftime('%a, %d %b %Y %H:%M:%S +0000', $dts);
+		$result->as_of	= gmdate('D, d M Y H:i:s \+0000', $dts);
 		foreach($data as $k=>$v) {
 			$result->trends[]	= (object) array(
 				'name'	=> '#'.$tg,

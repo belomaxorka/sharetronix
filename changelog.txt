@@ -843,6 +843,9 @@
 	* The API resource trends/current failed whenever a post of the current day had a tag (HTTP 500
 	  on PHP 8, a warning and a broken list on PHP 7): it replaced the list with each trend instead
 	  of adding the trend to it. It now lists the trends.
+	* On PHP 8.1 and later, the API logged a deprecation for every saved search it answered and for
+	  trends/top10: they formatted dates with gmstrftime(). They use gmdate() with the same English
+	  format as the other dates of the API.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

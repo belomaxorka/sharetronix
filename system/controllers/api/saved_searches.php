@@ -87,11 +87,11 @@
 		if( $obj = $this->db2->fetch_object() ) {
 			$obj->id			= intval($obj->id);
 			$obj->search_string	= stripslashes($obj->search_string);
-			$obj->added_date		= gmstrftime('%a %b %d %H:%M:%S +0000 %Y', $obj->added_date);
+			$obj->added_date		= gmdate('D M d H:i:s \+0000 Y', $obj->added_date);
 		}else {
 			$obj	= new stdClass;
 			$obj->search_string	= stripslashes($query);
-			$obj->added_date		= gmstrftime('%a %b %d %H:%M:%S +0000 %Y', time());
+			$obj->added_date		= gmdate('D M d H:i:s \+0000 Y', time());
 			$tmp_url	= trim($C->SITE_URL,'/');
 			$tmp_url	= str_replace(array('http://','https://'),'',$tmp_url);
 			$tmp_url	= '/'.trim($tmp_url,'/').'/search/tab:posts/s:'.urlencode($query);
@@ -140,7 +140,7 @@
 			
 			$obj->id			= intval($obj->id);
 			$obj->search_string	= stripslashes($obj->search_string);
-			$obj->added_date		= gmstrftime('%a %b %d %H:%M:%S +0000 %Y', $obj->added_date);		
+			$obj->added_date		= gmdate('D M d H:i:s \+0000 Y', $obj->added_date);		
 			
 			$twitter_data = new TwitterData($api_session->format, $api_session->callback, $user->id);
 			$answer = $twitter_data->data_header();
@@ -178,7 +178,7 @@
 		if($obj = $this->db2->fetch_object()) {
 			$obj->id			= intval($obj->id);
 			$obj->search_string	= stripslashes($obj->search_string);
-			$obj->added_date		= gmstrftime('%a %b %d %H:%M:%S +0000 %Y', $obj->added_date);
+			$obj->added_date		= gmdate('D M d H:i:s \+0000 Y', $obj->added_date);
 			$this->db2->query('DELETE FROM searches WHERE id="'.$this->db2->e($obj->id).'" LIMIT 1');
 			
 			$twitter_data = new TwitterData($api_session->format, $api_session->callback, $user->id);
@@ -230,7 +230,7 @@
 					$answer .= $twitter_data->data_section('saved_search');
 						$answer .= $twitter_data->data_field('id', $obj->id);
 						$answer .= $twitter_data->data_field('query', stripslashes($obj->search_string));
-						$answer .= $twitter_data->data_field('created_at', gmstrftime('%a %b %d %H:%M:%S +0000 %Y', $obj->added_date), FALSE);
+						$answer .= $twitter_data->data_field('created_at', gmdate('D M d H:i:s \+0000 Y', $obj->added_date), FALSE);
 					$answer .= $twitter_data->data_section('saved_search', FALSE, TRUE);
 					
 					$answer .= ($api_session->format == 'json' && $num_rows-1>0)? ',':''; 
