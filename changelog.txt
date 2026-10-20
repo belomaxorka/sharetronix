@@ -139,6 +139,8 @@
 	  the users_id parameter (the value is a string, so the earlier array-parameter guard did not
 	  stop it). The sibling user::if_follow_user() had the same unescaped concatenation. Both now
 	  send only the integer value of the id to the database.
+	* Sent only the integer value of the group id to the database in user::if_follow_group(), the
+	  same way as the follow-relationship queries, so a value reaching it cannot change the query.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

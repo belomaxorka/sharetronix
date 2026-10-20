@@ -331,7 +331,7 @@
 			if( ! $this->is_logged ) {
 				return FALSE;
 			}
-			$res = $this->db2->fetch_field('SELECT id FROM groups_followed WHERE user_id = "'.$this->id.'" AND group_id = "'.$group_id.'"'.' LIMIT 1');
+			$res = $this->db2->fetch_field('SELECT id FROM groups_followed WHERE user_id = "'.$this->id.'" AND group_id = "'.intval($group_id).'"'.' LIMIT 1');
 			return $res? TRUE : FALSE;
 		}
 		
