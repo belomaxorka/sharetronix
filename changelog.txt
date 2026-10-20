@@ -1236,6 +1236,11 @@
 	  FriendFeed, Delicious, Digg, MySpace and Orkut): 75 unused strings of the English language
 	  pack and system/helpers/func_externalprofiles.php, whose URL checks nothing called; the
 	  updater deletes the helper.
+	* Removed 21 files of the English language pack that no page loads: the whole mobile/ folder (14
+	  files from an earlier mobile site; the mobile pages use the inside/ files), inside/claim.php,
+	  inside/payment.php, email/domainconfirm.php, outside/domainconfirm.php, outside/header.php and
+	  the iprestriction.php files of outside/ and mobile/. A plugin or theme that loads one of them
+	  with load_langfile() must ship the strings itself.
 
 Sharetronix 3.6.2
 	* Bug fixes
