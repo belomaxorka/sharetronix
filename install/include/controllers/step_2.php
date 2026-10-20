@@ -8,11 +8,11 @@
 	$D->MYSQL_PASS		= '';
 	$D->MYSQL_DBNAME	= '';
 	
-	if( isset($_POST['MYSQL_HOST'], $_POST['MYSQL_USER'], $_POST['MYSQL_DBNAME']) ) {
+	if( isset($_POST['MYSQL_HOST'], $_POST['MYSQL_USER'], $_POST['MYSQL_DBNAME']) && is_string($_POST['MYSQL_HOST']) && is_string($_POST['MYSQL_USER']) && is_string($_POST['MYSQL_DBNAME']) ) {
 
 		$D->MYSQL_HOST	= trim($_POST['MYSQL_HOST']);
 		$D->MYSQL_USER	= trim($_POST['MYSQL_USER']);
-		$D->MYSQL_PASS	= trim($_POST['MYSQL_PASS']);
+		$D->MYSQL_PASS	= isset($_POST['MYSQL_PASS']) && is_string($_POST['MYSQL_PASS']) ? trim($_POST['MYSQL_PASS']) : '';
 		$D->MYSQL_DBNAME= trim($_POST['MYSQL_DBNAME']);	
 		
 		if( empty($D->MYSQL_HOST) ) {

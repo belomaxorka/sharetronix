@@ -24,7 +24,7 @@
 	$D->DOMAIN	= trim($D->DOMAIN, '/');
 	$D->DOMAIN	= preg_replace('/\/.*$/', '', $D->DOMAIN);
 	
-	if( isset($_POST['ADMIN_USER'], $_POST['ADMIN_PASS'], $_POST['ADMIN_PASS2'], $_POST['ADMIN_EMAIL']) ) {
+	if( isset($_POST['ADMIN_USER'], $_POST['ADMIN_PASS'], $_POST['ADMIN_PASS2'], $_POST['ADMIN_EMAIL']) && is_string($_POST['ADMIN_USER']) && is_string($_POST['ADMIN_PASS']) && is_string($_POST['ADMIN_PASS2']) && is_string($_POST['ADMIN_EMAIL']) ) {
 
 		$D->ADMIN_USER	= trim($_POST['ADMIN_USER']);
 		$D->ADMIN_PASS	= trim($_POST['ADMIN_PASS']);
