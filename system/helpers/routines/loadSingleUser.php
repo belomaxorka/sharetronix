@@ -30,7 +30,7 @@
 				
 		$tpl->layout->block->setVar( 'single_user_avatar', '<a href="'.userlink($obj->username).'" class="author bizcard" data-userid="'.$obj->id.'"><img src="'.$C->STORAGE_URL.'avatars/thumbs1/'.(empty($obj->avatar)? $C->DEF_AVATAR_USER : $obj->avatar).'" alt="'.getThisUserCommunityName($obj).'" /></a>');
 		$tpl->layout->block->setVar( 'single_user_username', '<a href="'.userlink($obj->username).'" class="author bizcard" data-userid="'.$obj->id.'">'. getThisUserCommunityName($obj) .'</a>' );
-		$tpl->layout->block->setVar( 'single_user_activity', '<a href="'.$C->SITE_URL.$obj->username.'/tab:friends/subtab:followers">'. $page->lang('usr_activity_count_small', array('#NUM_FOLLOWERS#'=>$obj->num_followers, '#NUM_POSTS#'=>$obj->num_posts)));
+		$tpl->layout->block->setVar( 'single_user_activity', '<a href="'.$C->SITE_URL.$obj->username.'/tab:friends/subtab:followers">'. $page->lang('usr_activity_count_small', array('#NUM_FOLLOWERS#'=>$obj->num_followers, '#NUM_POSTS#'=>$obj->num_posts, '#FOLLOWERS#'=>lang_count('usr_count_followers', $obj->num_followers), '#POSTS#'=>lang_count('usr_count_posts', $obj->num_posts))));
 		if($user->is_logged){
 			$tpl->layout->block->setVar( 'single_user_email', htmlspecialchars(str_cut($obj->about_me, 50) ) );
 		}

@@ -81,7 +81,7 @@
 	$tpl->layout->useBlock('user-header-info');
 	$tpl->layout->block->setVar('user_header_username', getThisUserCommunityName($D->post->post_user));
 	$tpl->layout->block->setVar('user_header_position', htmlspecialchars($D->post->post_user->location)); //should be position
-	$tpl->layout->block->setVar('user_header_activity', $this->lang('usr_top_activity_count', array('#NUM_FOLLOWERS#'=>$D->post->post_user->num_followers, '#NUM_FOLLOWING#'=>(count($he_follows)), '#NUM_POSTS#'=>$D->post->post_user->num_posts )));
+	$tpl->layout->block->setVar('user_header_activity', $this->lang('usr_top_activity_count', array('#NUM_FOLLOWERS#'=>$D->post->post_user->num_followers, '#NUM_FOLLOWING#'=>(count($he_follows)), '#NUM_POSTS#'=>$D->post->post_user->num_posts, '#FOLLOWERS#'=>lang_count('usr_count_followers', $D->post->post_user->num_followers), '#FOLLOWING#'=>lang_count('usr_count_following', count($he_follows)), '#POSTS#'=>lang_count('usr_count_posts', $D->post->post_user->num_posts) )));
 	if( $this->user->is_logged ){
 		$tpl->layout->block->setVar('user_header_follow_button', $D->post_is_mine? '' : (!in_array($D->post->post_user->id, $i_follow)? $tpl->designer->usersSettingsMenu($D->post->post_user->id, true) : $tpl->designer->usersSettingsMenu($D->post->post_user->id, false) ) );
 	}

@@ -226,8 +226,14 @@
 		'usr_prof_ok_jobstart_msg' => 'Job start year could not be greater than job end year',
 			
 			
-		'usr_top_activity_count' => '#NUM_FOLLOWERS# followers &middot; #NUM_FOLLOWING# following &middot; #NUM_POSTS# posts',
-		'usr_activity_count_small' => '#NUM_FOLLOWERS# followers</a> &middot; #NUM_POSTS# posts',
+		'usr_top_activity_count' => '#FOLLOWERS# &middot; #FOLLOWING# &middot; #POSTS#',
+		'usr_activity_count_small' => '#FOLLOWERS#</a> &middot; #POSTS#',
+		'usr_count_followers' => '#NUM# followers',
+		'usr_count_followers1' => '1 follower',
+		'usr_count_following' => '#NUM# following',
+		'usr_count_following1' => '1 following',
+		'usr_count_posts' => '#NUM# posts',
+		'usr_count_posts1' => '1 post',
 		'usr_mobile_call_btn' => 'Call',
 		'usr_prof_mobile_email' => 'E-mail',
 		'usr_prof_mobile_location' => 'Location',

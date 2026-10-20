@@ -888,6 +888,11 @@
 	  text; the greeting, the line about the notification settings and the signature came in the
 	  language of the member who caused the notification. The whole e-mail now uses the recipient's
 	  language.
+	* The counters of members and groups said "1 followers", "1 posts" and "1 members". They now use
+	  the singular for one (new strings usr_count_followers, usr_count_following and usr_count_posts
+	  with their singular forms; the existing group_subtitle_nm_members and group_subtitle_nm_posts
+	  for groups) through a new helper lang_count(). Language packs that kept the old counter texts
+	  with #NUM_FOLLOWERS#, #NUM_FOLLOWING#, #NUM_POSTS# and #NUM_MEMBERS# still work.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

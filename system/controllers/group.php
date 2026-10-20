@@ -173,7 +173,7 @@
 	$tpl->layout->useBlock('group-header-info');
 	$tpl->layout->block->setVar('group_header_username', $g->title);
 	$tpl->layout->block->setVar('group_header_icon', ($g->is_public? 'public' : 'private')); //should be position
-	$tpl->layout->block->setVar('group_header_activity', $this->lang('group_header_descr_activity', array('#NUM_MEMBERS#'=> $g->num_followers, '#NUM_POSTS#'=>$g->num_posts) ) );
+	$tpl->layout->block->setVar('group_header_activity', $this->lang('group_header_descr_activity', array('#NUM_MEMBERS#'=> $g->num_followers, '#NUM_POSTS#'=>$g->num_posts, '#MEMBERS#'=>lang_count('group_subtitle_nm_members', $g->num_followers), '#POSTS#'=>lang_count('group_subtitle_nm_posts', $g->num_posts)) ) );
 	
 	if( $this->user->is_logged ){
 		if($i_am_member == true ){ 

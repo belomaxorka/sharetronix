@@ -128,7 +128,7 @@
 				
 				$tpl->layout->useBlock('single-user-bizcard');
 				$tpl->layout->block->setVar('single_user_bizcard_avatar', '<img src="'.getAvatarUrl((empty($obj->avatar)? $C->DEF_AVATAR_USER : $obj->avatar), 'thumbs1').'" alt="'.getThisUserCommunityName($obj).'" />');
-				$tpl->layout->block->setVar('single_user_bizcard_activity', '<a href="'.$C->SITE_URL.$obj->username.'/tab:friends/subtab:followers">'. $page->lang('usr_activity_count_small', array('#NUM_FOLLOWERS#'=>$obj->num_followers, '#NUM_POSTS#'=>$obj->num_posts)));
+				$tpl->layout->block->setVar('single_user_bizcard_activity', '<a href="'.$C->SITE_URL.$obj->username.'/tab:friends/subtab:followers">'. $page->lang('usr_activity_count_small', array('#NUM_FOLLOWERS#'=>$obj->num_followers, '#NUM_POSTS#'=>$obj->num_posts, '#FOLLOWERS#'=>lang_count('usr_count_followers', $obj->num_followers), '#POSTS#'=>lang_count('usr_count_posts', $obj->num_posts))));
 				$tpl->layout->block->setVar('single_user_bizcard_username', $obj->username);
 				$tpl->layout->block->setVar('single_user_bizcard_user_identifier', getThisUserCommunityName($obj));
 				

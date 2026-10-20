@@ -25,7 +25,7 @@
 		$tpl->layout->block->setVar('single_group_type', $group_type);
 		$tpl->layout->block->setVar( 'single_group_avatar', '<a href="'.$C->SITE_URL.$obj->groupname.'"><img src="'.$C->STORAGE_URL.'avatars/thumbs1/'.(empty($obj->avatar)? $C->DEF_AVATAR_GROUP : $obj->avatar).'" alt="'.$obj->groupname.'"/></a>');
 		$tpl->layout->block->setVar( 'single_group_name', '<a href="'.$C->SITE_URL.$obj->groupname.'">'.ucfirst($obj->title).'</a>' );
-		$tpl->layout->block->setVar( 'single_group_activity', '<a href="'.$C->SITE_URL.$obj->groupname. '/tab:members">'.$page->lang('group_header_descr_activity', array('#NUM_MEMBERS#'=> $obj->num_followers, '#NUM_POSTS#'=>$obj->num_posts)));
+		$tpl->layout->block->setVar( 'single_group_activity', '<a href="'.$C->SITE_URL.$obj->groupname. '/tab:members">'.$page->lang('group_header_descr_activity', array('#NUM_MEMBERS#'=> $obj->num_followers, '#NUM_POSTS#'=>$obj->num_posts, '#MEMBERS#'=>lang_count('group_subtitle_nm_members', $obj->num_followers), '#POSTS#'=>lang_count('group_subtitle_nm_posts', $obj->num_posts))));
 		$tpl->layout->block->setVar( 'single_group_description', $obj->about_me );
 		if( $user->is_logged ){
 			$follow = !in_array($obj->id, $ifollow);

@@ -379,6 +379,14 @@
 		return $mb.'MB';
 	}
 	
+	// The text of a number of things: the key with the suffix 1 for exactly one ('1 post'), the key
+	// itself with #NUM# for any other number ('#NUM# posts'), as the language files pair them.
+	function lang_count($key, $num)
+	{
+		$num	= intval($num);
+		return $GLOBALS['page']->lang($num==1 ? $key.'1' : $key, array('#NUM#'=>$num));
+	}
+	
 	function str_cut($str, $mx)
 	{
 		return mb_strlen($str)>$mx ? mb_substr($str, 0, $mx-1).'..' : $str;

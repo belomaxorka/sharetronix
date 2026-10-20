@@ -130,7 +130,7 @@
 		
 		'group_invite_no_memebers_found' => 'No members you can invite found',
 		
-		'group_header_descr_activity' => '#NUM_MEMBERS# members &middot; #NUM_POSTS# posts', 
+		'group_header_descr_activity' => '#MEMBERS# &middot; #POSTS#', 
 		'group_settings_f_alias'		=> 'Group Alias:',
 		'group_settings_avatar_remove' => 'Remove current avatar',
 		'group_settings_add_admin_not_group_member' => '#USERNAME# is not a member of this group, and can\'t be added as admin',

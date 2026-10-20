@@ -69,7 +69,7 @@
 	$tpl->layout->useBlock('user-header-info');
 	$tpl->layout->block->setVar('user_header_username', getThisUserCommunityName($u));	
 	$tpl->layout->block->setVar('user_header_position', htmlspecialchars($u->location)); //should be position
-	$tpl->layout->block->setVar('user_header_activity', $this->lang('usr_top_activity_count', array('#NUM_FOLLOWERS#'=>$u->num_followers, '#NUM_FOLLOWING#'=>count($he_follows), '#NUM_POSTS#'=>$u->num_posts )));
+	$tpl->layout->block->setVar('user_header_activity', $this->lang('usr_top_activity_count', array('#NUM_FOLLOWERS#'=>$u->num_followers, '#NUM_FOLLOWING#'=>count($he_follows), '#NUM_POSTS#'=>$u->num_posts, '#FOLLOWERS#'=>lang_count('usr_count_followers', $u->num_followers), '#FOLLOWING#'=>lang_count('usr_count_following', count($he_follows)), '#POSTS#'=>lang_count('usr_count_posts', $u->num_posts) )));
 	
 	if( $this->user->is_logged ){
 		$tpl->layout->block->setVar('user_header_follow_button', $is_my_profile? '' : 
