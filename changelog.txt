@@ -943,6 +943,10 @@
 	  existing strings post_like_value and post_unlike_value and the new likes_* strings, which keep
 	  the whole sentence together for translators. The English text loses the space before the
 	  closing parenthesis.
+	* Several error answers of the post and comment services (like, unlike, edit, show likes) were
+	  English in every language; they now use the error strings of the language pack, two of them
+	  new (global_ajax_post_error19 and 20). Editing someone else's post now says "Could not edit
+	  this post." instead of "You could not edit this post.".
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

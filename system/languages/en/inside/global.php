@@ -295,6 +295,8 @@
 		'global_ajax_post_error16' => 'Could not follow this user.',
 		'global_ajax_post_error17' => 'Could not remove this administrator.',
 		'global_ajax_post_error18' => 'Could not activate this user.',
+		'global_ajax_post_error19' => 'Empty message.',
+		'global_ajax_post_error20' => 'Could not edit this post.',
 			
 		'global_ajax_post_ok' => 'Success! Moderator is removed',
 		'global_ajax_post_ok1' => 'Success! Administrator is removed',

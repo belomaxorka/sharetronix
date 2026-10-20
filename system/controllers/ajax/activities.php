@@ -314,7 +314,7 @@
 			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) ) {
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 
@@ -339,7 +339,7 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			
 			break;
 			
@@ -348,7 +348,7 @@
 			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) ) {
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 			
@@ -382,7 +382,7 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			break;
 			
 		case 'showlikes': 
@@ -390,7 +390,7 @@
 			if( isset($_POST['activities_id']) && isset($_POST['activities_type']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) ) {
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 			
@@ -409,7 +409,7 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			
 			break;
 			
@@ -417,18 +417,18 @@
 			
 			if( isset($_POST['activities_id'], $_POST['activities_type'], $_POST['message']) && !is_array($_POST['activities_id']) && !is_array($_POST['activities_type']) && is_string($_POST['message']) ) {
 				if( empty($_POST['message']) ){
-					echo 'ERROR:Empty message.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error19');
 					return;
 				}
 			
 				$p	= new post($_POST['activities_type'], $_POST['activities_id']);
 				if( $p->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 			
 				if( !$p->if_can_edit() ){
-					echo 'ERROR: You could not edit this post.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error20');
 					return;
 				}
 			
@@ -445,6 +445,6 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			break;
 	}

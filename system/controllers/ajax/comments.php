@@ -119,7 +119,7 @@
 			
 				$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $_POST['activities_comment_id'] );
 				if( $c->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 			
@@ -144,7 +144,7 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			break;
 		
 		case 'unlike': 
@@ -154,7 +154,7 @@
 			
 				$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $_POST['activities_comment_id'] );
 				if( $c->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 			
@@ -189,7 +189,7 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			break;
 			
 		case 'showlikes': 
@@ -198,13 +198,13 @@
 				$comment_id = intval($_POST['activities_comment_id']);
 				
 				if( !is_numeric($comment_id) || $comment_id < 1 ){
-					echo 'ERROR:Invalid comment.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error11');
 					return;
 				}
 			
 				$c	= new postcomment( new post($_POST['activities_type'], $_POST['activities_id']), $_POST['activities_comment_id'] );
 				if( $c->error ) {
-					echo 'ERROR:Invalid post data provided.';
+					echo 'ERROR:'.$page->lang('global_ajax_post_error1');
 					return;
 				}
 			
@@ -223,7 +223,7 @@
 			
 			}
 			
-			echo 'ERROR:Invalid post.';
+			echo 'ERROR:'.$page->lang('global_ajax_post_error');
 			return;
 			break;
 	}
