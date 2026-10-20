@@ -884,6 +884,10 @@
 	  HTTP header or not at all: such a title was read as ISO-8859-1, so "Привет" or "café" appeared
 	  as "ÐÑÐ¸Ð²ÐµÑ" or "cafÃ©". The character set of the HTTP answer is used, or UTF-8 for text
 	  that is valid UTF-8.
+	* Notification e-mails were written in the recipient's language only in their subject and main
+	  text; the greeting, the line about the notification settings and the signature came in the
+	  language of the member who caused the notification. The whole e-mail now uses the recipient's
+	  language.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

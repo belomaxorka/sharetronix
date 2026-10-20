@@ -526,6 +526,7 @@
 				//$mail->IsMail(); //this works 
 				
 				$D->user->username = '';
+				$D->user->language = $language;
 				$D->message_txt	= $this->page->lang('emltxt_'.$notifType, $lng['txt'], $language).$represendTxt;
 				$D->message_html	= $this->page->lang('emlhtml_'.$notifType, $lng['htm'], $language).$represendHtml;
 				$msgtxt		= $this->page->load_single_block('email/notifications_txt.php', FALSE, TRUE);
