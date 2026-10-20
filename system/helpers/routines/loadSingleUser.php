@@ -6,6 +6,11 @@
 		$page 	= & $GLOBALS['page'];
 		$user 	= & $GLOBALS['user'];
 		$pm 	= & $GLOBALS['plugins_manager'];
+		// The counters of the member are a string of inside/user.php, which the pages that list members
+		// (members, search, group members, administration) do not load themselves.
+		if( ! in_array('inside/user.php', (array) $page->tmp_loaded_langfiles) ) {
+			$page->load_langfile('inside/user.php');
+		}
 		
 		$obj = $params[0];
 		$ifollow = $params[1];

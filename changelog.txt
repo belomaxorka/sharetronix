@@ -750,6 +750,10 @@
 	  e-mail whose subject that language lacked was not sent at all, and a file missing from that
 	  language stopped the request of the member who caused the notification. English installations
 	  are not affected.
+	* The member and post counters in the lists of groups and members (groups, search, the groups
+	  and followers of a profile, group members, administrators) and the group option of the post
+	  form on a profile page were empty: these blocks use language strings that the pages showing
+	  them did not load. The blocks now load them.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

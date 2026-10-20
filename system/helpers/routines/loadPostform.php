@@ -5,6 +5,11 @@
 		
 		$page = & $GLOBALS['page'];
 		$pm = & $GLOBALS['plugins_manager'];	
+		// The attachment options of the form are strings of inside/dashboard.php, which a profile page
+		// does not load itself.
+		if( ! in_array('inside/dashboard.php', (array) $page->tmp_loaded_langfiles) ) {
+			$page->load_langfile('inside/dashboard.php');
+		}
 		
 		$save_placeholder = isset($params[0])? $params[0] : 'main_content';
 		$usr = isset($params[1])? $params[1] : new stdClass();

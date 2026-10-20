@@ -5,6 +5,11 @@
 		$page 	= & $GLOBALS['page'];
 		$user 	= & $GLOBALS['user'];
 		$pm 	= & $GLOBALS['plugins_manager'];
+		// The counters of the group are a string of inside/group.php, which the pages that list groups
+		// (groups, search, the groups of a profile) do not load themselves.
+		if( ! in_array('inside/group.php', (array) $page->tmp_loaded_langfiles) ) {
+			$page->load_langfile('inside/group.php');
+		}
 		
 		$obj = $params[0];
 		$ifollow = $params[1];
