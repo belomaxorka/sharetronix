@@ -1267,6 +1267,9 @@
 	  settings of earlier versions, the messenger and other contact fields that the contacts form no
 	  longer has, the old notification settings texts (the page uses the os_st_notif_* strings) and
 	  unused texts of the existing settings pages.
+	* Removed 80 unused strings of inside/invite.php and email/invite.php: the recommendation form,
+	  the import of Gmail and other address books, the file upload and the personal invitation link
+	  of earlier versions, and old titles, tabs and texts of the invitation pages and e-mail.
 
 Sharetronix 3.6.2
 	* Bug fixes
