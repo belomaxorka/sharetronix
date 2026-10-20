@@ -53,7 +53,7 @@
 				$db2->query('REPLACE INTO settings SET word="TERMSPAGE_CONTENT", value="'.$db2->e($tos_content).'" ');
 				$C->TERMSPAGE_ENABLED	= $tos_enabled?1:0;
 				$C->TERMSPAGE_CONTENT	= $tos_content;
-				$okmsg	= $tos_enabled ? $this->lang('admtrms_ok_txt2') : $this->lang('admtrms_ok_txt1');
+				$okmsg	= $tos_enabled ? $this->lang('admtrms_ok_txt2', array('#A1#'=>'<a href="'.$C->SITE_URL.'terms">', '#A2#'=>'</a>')) : $this->lang('admtrms_ok_txt1');
 			}
 		}
 	}
@@ -64,7 +64,7 @@
 	$tpl->routine->load();
 	
 	if( $submit && !$error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('admgnrl_okay'), $this->lang('admgnrl_okay_txt') ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('admtrms_ok_ttl'), $okmsg ) );
 	}else if( $submit && $error ){
 		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('admdelu_error'), $errmsg) );
 	}

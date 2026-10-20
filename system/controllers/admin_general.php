@@ -132,7 +132,7 @@
 			}
 			if( empty($network_name) ) {
 				$error	= TRUE;
-				$errmsg	= $this->lang('admgnrl_err_netw');
+				$errmsg	= $this->lang('admgnrl_err_netw', array('#SITE_TITLE#'=>$C->SITE_TITLE));
 			}
 			elseif( preg_match('/[^ا-یא-תÀ-ÿ一-龥а-яa-z0-9\-\.\_\s\!\?]/iu', $network_name) ) {
 				$error	= TRUE;

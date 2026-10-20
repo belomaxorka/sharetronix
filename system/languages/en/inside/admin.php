@@ -85,7 +85,7 @@
 		'admgnrl_error'		=> 'Error',
 		'admgnrl_err_comp'	=> 'Please fill in your company\'s name.',
 		'admgnrl_err_comp2'	=> 'Company name can contain only letters, digits, dashes, dots and spaces.',
-		'admgnrl_err_netw'	=> 'Please fill in the name of your company\'s network on #SITE_TITLE#.',
+		'admgnrl_err_netw'	=> 'Please fill in the name of your network.',
 		'admgnrl_err_netw2'	=> 'Network name can contain only letters, digits, dashes, dots and spaces.',
 		'admgnrl_err_email'	=> 'Please fill in valid e-mail address.',
 		'admgnrl_err_introttl'	=> 'Please enter a title for the homepage intro box.',

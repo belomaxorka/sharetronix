@@ -762,6 +762,11 @@
 	  moderator.", and when activating a suspended member failed, "Could not suspend this user".
 	  These answers now say "Could not remove this administrator." and "Could not activate this
 	  user." (new strings global_ajax_post_error17 and global_ajax_post_error18).
+	* The general settings of the administration answered an empty network name with "Please fill in
+	  the name of your company's network on #SITE_TITLE#.", the placeholder included; the message
+	  now says "Please fill in the name of your network.". Saving the Terms of use page showed only
+	  "Information was saved."; it now says whether the page is enabled, with a link to it, as its
+	  language strings intended.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
