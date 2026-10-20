@@ -802,6 +802,10 @@
 	  groups_rssfeeds tables that 3.x removed, so the group stayed with its members and without its
 	  posts. The method now deletes the group the way the group page does, including its
 	  notifications, the cached group and its avatar.
+	* The sign-in, sign-up and contact forms and the mobile sign-in answer a field sent as an array
+	  (name[]=...) like an empty field instead of with a PHP error (HTTP 500 on PHP 8), and a
+	  rememberme cookie sent as an array no longer breaks every page of that visitor; a rememberme
+	  cookie without its second part no longer logs a warning.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

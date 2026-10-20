@@ -35,11 +35,11 @@
 
 	$captcha = new captcha('signup');
 	
-	$email 		= isset($_POST['email'])?( strtolower(trim($_POST['email'])) ):'';
-	$fullname 	= isset($_POST['fullname'])?(htmlspecialchars(trim($_POST['fullname']))):'';
-	$username 	= isset($_POST['username'])?(trim($_POST['username'])):'';
-	$password2	= isset($_POST['password2'])?(trim($_POST['password2'])):'';
-	$password 	= isset($_POST['password'])?(trim($_POST['password'])):'';
+	$email 		= isset($_POST['email']) && is_string($_POST['email'])?( strtolower(trim($_POST['email'])) ):'';
+	$fullname 	= isset($_POST['fullname']) && is_string($_POST['fullname'])?(htmlspecialchars(trim($_POST['fullname']))):'';
+	$username 	= isset($_POST['username']) && is_string($_POST['username'])?(trim($_POST['username'])):'';
+	$password2	= isset($_POST['password2']) && is_string($_POST['password2'])?(trim($_POST['password2'])):'';
+	$password 	= isset($_POST['password']) && is_string($_POST['password'])?(trim($_POST['password'])):'';
 	$accept_terms	= isset($_POST['accept_terms'])&&$_POST['accept_terms']==1;
 	// spam checkar
 	$is_spamer      = empty($_POST['realname']) ? false : true;

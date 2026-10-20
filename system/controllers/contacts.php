@@ -27,9 +27,9 @@
 		}
 		
 		$submit	= TRUE;
-		$fullname	= isset($_POST['fullname'])? trim($_POST['fullname']) : '';
-		$email		= isset($_POST['email'])? trim($_POST['email']) : '';
-		$message	= isset($_POST['message'])? trim($_POST['message']) : '';
+		$fullname	= isset($_POST['fullname']) && is_string($_POST['fullname'])? trim($_POST['fullname']) : '';
+		$email		= isset($_POST['email']) && is_string($_POST['email'])? trim($_POST['email']) : '';
+		$message	= isset($_POST['message']) && is_string($_POST['message'])? trim($_POST['message']) : '';
 		if( empty($fullname) ) {
 			$error	= TRUE;
 			$errmsg	= $this->lang('cntf_err_fullname');

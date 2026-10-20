@@ -17,7 +17,7 @@
 	$password	= '';
 	$rememberme	= FALSE;
 	
-	if( isset($_POST['email'], $_POST['password']) ) {
+	if( isset($_POST['email'], $_POST['password']) && is_string($_POST['email']) && is_string($_POST['password']) ) {
 		$submit	= TRUE;
 		$email		= trim($_POST['email']);
 		$password	= trim($_POST['password']);

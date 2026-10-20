@@ -142,7 +142,7 @@
 			if( $this->is_logged ) {
 				return FALSE;
 			}
-			if( ! isset($_COOKIE['rememberme']) ) {
+			if( ! isset($_COOKIE['rememberme']) || ! is_string($_COOKIE['rememberme']) ) {
 				return FALSE;
 			}
 			$tmp	= explode('_', $_COOKIE['rememberme']);
@@ -152,7 +152,7 @@
 			}
 			$obj->username	= stripslashes($obj->username);
 			$obj->password	= stripslashes($obj->password);
-			if( $tmp[1] == md5($obj->username.'~~'.$obj->password.'~~'.$_SERVER['HTTP_USER_AGENT']) ) {
+			if( isset($tmp[1]) && $tmp[1] == md5($obj->username.'~~'.$obj->password.'~~'.$_SERVER['HTTP_USER_AGENT']) ) {
 				return $this->login($obj->username, $obj->password, TRUE);
 			}
 			setcookie('rememberme', '', time()+30*24*60*60, '/', cookie_domain());

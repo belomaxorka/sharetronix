@@ -14,7 +14,7 @@
 	$D->password	= '';
 	$D->rememberme	= FALSE;
 	
-	if( isset($_POST['email'], $_POST['password']) ) { 
+	if( isset($_POST['email'], $_POST['password']) && is_string($_POST['email']) && is_string($_POST['password']) ) { 
 		global $plugins_manager;
 		$plugins_manager->onPageSubmit();
 		if( !$plugins_manager->isValidEventCall() ){
