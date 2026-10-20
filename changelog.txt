@@ -1263,6 +1263,10 @@
 	  groups_new.php: the RSS feed and administrator settings of groups from earlier versions, the
 	  old left column, titles and tabs of group pages, the old invitation form texts and the old
 	  groups page tabs.
+	* Removed 131 unused strings of inside/settings.php: the RSS feeds and application connections
+	  settings of earlier versions, the messenger and other contact fields that the contacts form no
+	  longer has, the old notification settings texts (the page uses the os_st_notif_* strings) and
+	  unused texts of the existing settings pages.
 
 Sharetronix 3.6.2
 	* Bug fixes
