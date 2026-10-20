@@ -1,17 +1,5 @@
 <?php
 
-	if( isset($_POST['pass_type']) ){
-		if( empty($_POST['pass_type'])){
-			echo '';
-			return;
-		}
-		
-		$pass_type = trim($_POST['pass_type']);
-		
-		echo $pass_type == 'admin'? $_SESSION['INSTALL_DATA']['ADMIN_PASS'] : $_SESSION['INSTALL_DATA']['MYSQL_PASS'];
-		return;
-	}
-
 	ini_set('memory_limit', -1);
 
 	$D->error	= FALSE;

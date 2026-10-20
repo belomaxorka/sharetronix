@@ -141,6 +141,10 @@
 	  send only the integer value of the id to the database.
 	* Sent only the integer value of the group id to the database in user::if_follow_group(), the
 	  same way as the follow-relationship queries, so a value reaching it cannot change the query.
+	* The installer's review page (step 5) no longer sends the passwords back to the browser. Its
+	  "show password" links fetched the administrator's or the database password with a POST request
+	  that answered the password itself; the links and that answer are removed, and the page shows
+	  the passwords as asterisks.
 
 	Fixed:
 	* Redirected signed-in users returning from the Twitter callback without a linked account

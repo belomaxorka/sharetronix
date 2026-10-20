@@ -1,29 +1,6 @@
 	<script type="text/javascript" src="<?= htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_URL'], ENT_QUOTES, 'UTF-8') ?>static/js/jquery.js"></script>
 	<script type="text/javascript" src="<?= htmlspecialchars($_SESSION['INSTALL_DATA']['SITE_URL'], ENT_QUOTES, 'UTF-8') ?>static/js/plugins/jquery.colorbox.js"></script>
 	<script type="text/javascript">
-		var siteurl = <?= json_encode($_SESSION['INSTALL_DATA']['SITE_URL'].'install/', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
-		
-		function unshadow_password( pass_type )
-		{	
-			$.post(siteurl, "pass_type="+encodeURIComponent(pass_type), function(data) {
-				pass_type  = (pass_type == 'admin')? 'admin' : 'mysql';
-				$('#'+pass_type+'_pass').html(data);
-				$('#'+pass_type+'_pass_link').attr('onclick', 'shadow_password(\''+pass_type+'_pass\');').text('hide password');
-			});
-		}
-
-		function shadow_password( pass_field_id )
-		{	
-			var pass = $('#'+pass_field_id).text();
-			var shadowed_pass = '';
-
-			for( var i=0; i<$('#'+pass_field_id).text().length; i++ ){
-				shadowed_pass += '*';
-			}
-
-			$('#'+pass_field_id+'_link').attr('onclick', 'unshadow_password(\''+(pass_field_id == 'admin_pass'? 'admin' : 'mysql')+'\');').text('show password')
-			$('#'+pass_field_id).text(shadowed_pass); 
-		}
 		function lightbox(){    
 		  $.fn.colorbox({iframe:false, href:<?= json_encode($_SESSION['INSTALL_DATA']['SITE_URL'].'static/images/install/network_name.png', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>});
 		}
@@ -35,7 +12,6 @@
 		.third_table_column{width: 20%;text-align: center;}
 		
 		.right_tip_text{color: #444; font-size: 11px; padding: 10px; font-style: italic;}
-		.show_pass{font-size: 10px;}
 	</style>
 	
 	<h1 class="pagetitle">Review System Settings</h1>
@@ -80,7 +56,7 @@
 				<tr>
 					<td class="first_table_column">MySQL Password: </td>
 					<td class="second_table_column"><span id="mysql_pass"><?= shadow_password( $_SESSION['INSTALL_DATA']['MYSQL_PASS'] ) ?></span></td>
-					<td class="third_table_column"><?= ( strlen($_SESSION['INSTALL_DATA']['MYSQL_PASS'])>0? '<a class="show_pass" href="javascript: void(0);" onclick="unshadow_password(\'mysql\');"  id="mysql_pass_link">show password</a>' : '') ?></td>
+					<td class="third_table_column"></td>
 				</tr>
 				
 				<tr>
@@ -92,7 +68,7 @@
 				<tr>
 					<td class="first_table_column">Admin Password: </td>
 					<td class="second_table_column"><span id="admin_pass"><?= shadow_password( $_SESSION['INSTALL_DATA']['ADMIN_PASS'] ); ?></span></td>
-					<td class="third_table_column"><a class="show_pass" href="javascript: void(0);" onclick="unshadow_password('admin');" id="admin_pass_link">show password</a></td>
+					<td class="third_table_column"></td>
 				</tr>
 				
 				<tr>
