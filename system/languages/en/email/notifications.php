@@ -24,9 +24,7 @@
 		'emlsubj_ntf_me_if_u_posts_qme'		=> "#NAME# mentioned you in their post on #SITE_TITLE#",
 		'emlsubj_ntf_me_if_u_posts_prvmsg'		=> "#NAME# sent you a private message on #SITE_TITLE#",
 		'emlsubj_ntf_me_if_u_registers'		=> "#NAME# joined the #COMPANY# network",
-        'emlsubj_ntf_me_if_group_admin_send_prvmsg'		=> "#NAME# sends a private message to group members on #SITE_TITLE#",
 
-		
 		'emlhtml_ntf_me_if_u_follows_me'		=> '#NAME# (#USER#) is now following you.',
 		'emlhtml_ntf_me_if_u_follows_u2'		=> '#NAME# (#USER#) is now following #USER2#.',
 		'emlhtml_ntf_me_if_u_commments_me'		=> "#USER# commented on your #A1#post#A2#.",
@@ -67,13 +65,6 @@
 		'email_ntf_me_attached_data_image'		=> "Image ",
 		'email_ntf_me_attached_data_file'		=> "File ",
 		
-		'emlsubj_ntf_me_on_post_like'			=> "#NAME# liked your post on #SITE_TITLE#",
-		'emlhtml_ntf_me_on_post_like'			=> '#USER# liked your post on #SITE_TITLE#.',
-		'emltxt_ntf_me_on_post_like'			=> "#USER# liked your post on #SITE_TITLE#.\nCheck out at #A0#",
-		
-		'emlsubj_ntf_me_on_comment_like'			=> "#NAME# liked your comment on #SITE_TITLE#",
-		'emlhtml_ntf_me_on_comment_like'			=> '#USER# liked your comment on #SITE_TITLE#.',
-		'emltxt_ntf_me_on_comment_like'			=> "#USER# liked your comment on #SITE_TITLE#.\nCheck out at #A0#",
 	);
 	
 ?>

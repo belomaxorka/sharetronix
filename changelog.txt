@@ -1272,6 +1272,11 @@
 	  of earlier versions, and old titles, tabs and texts of the invitation pages and e-mail.
 	* Removed 29 unused strings of inside/search.php: the per-tab page titles and headings, the post
 	  type and date filters and the default search form of earlier versions.
+	* Removed 160 unused strings of the guest pages and e-mails (outside/signup.php, signin.php,
+	  home.php, contacts.php, global.php, footer.php, terms.php, email/signup.php and
+	  email/notifications.php): the sign-up wizard and network sign-in of earlier versions, the old
+	  login boxes, the subject choices of the old contact form, old footer links, and the e-mails of
+	  like and group notifications that are never sent.
 
 Sharetronix 3.6.2
 	* Bug fixes
