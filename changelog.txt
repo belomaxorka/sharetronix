@@ -925,6 +925,9 @@
 	* Opening the private members tab of a public group, which the group page does not offer but
 	  which its address still reaches, logged three PHP warnings about undefined variables; the tab
 	  now shows an empty list without them.
+	* The address members/tab:my, a tab the members page does not have, showed an empty box with a
+	  title and no text; it is now treated like any other unknown tab (plugins may answer it, and
+	  otherwise the box of the list of all members is shown).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

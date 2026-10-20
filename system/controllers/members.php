@@ -17,7 +17,7 @@
 		$tab = $this->param('tab');
 	}
 	
-	if( !in_array($tab, array('all', 'my', 'admins', 'ifollow', 'followers')) ){
+	if( !in_array($tab, array('all', 'admins', 'ifollow', 'followers')) ){
 		$pm->onPageSetCountQuery();
 		$tmp = $pm->getEventResult();
 	
@@ -122,7 +122,7 @@
 		$tpl->layout->setVar( 'main_content_bottom', $tpl->designer->pager( $num_results, $num_pages, $pg, $paging_url ) );
 	}
 	else {
-		if( !in_array($tab, array('all', 'my', 'admins', 'ifollow', 'followers')) ){
+		if( !in_array($tab, array('all', 'admins', 'ifollow', 'followers')) ){
 			$tab = 'all';
 		}
 		$tpl->layout->setVar('main_content', $tpl->designer->createNoPostBox(
