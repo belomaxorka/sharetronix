@@ -986,6 +986,8 @@
 	* The e-mail label of the profile details ("Email:") and the gender label of the mobile profile
 	  were English in every language; they now use the new strings usr_info_aboutme_email
 	  ("E-mail:") and usr_prof_mobile_gender.
+	* The mobile profile labelled the work phone number "Personal Phone" and the personal one "Work
+	  Phone"; the labels are now the right way round.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

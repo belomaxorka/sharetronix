@@ -93,8 +93,8 @@
 			
 					if( !$is_profile_protected ){
 						
-						$tmp .= !empty($udtls->work_phone)? '<a href="tel:'.htmlspecialchars($udtls->work_phone).'" class="phone"><strong>'.$this->lang('usr_left_cnt_pphone').'</strong>'.$this->lang('usr_mobile_call_btn').' '.htmlspecialchars($udtls->work_phone).'</a>' : '';
-						$tmp .= !empty($udtls->personal_phone)? '<a href="tel:'.htmlspecialchars($udtls->personal_phone).'" class="phone"><strong>'.$this->lang('usr_left_cnt_wphone').'</strong>'.$this->lang('usr_mobile_call_btn').' '.htmlspecialchars($udtls->personal_phone).'</a>' : '';
+						$tmp .= !empty($udtls->work_phone)? '<a href="tel:'.htmlspecialchars($udtls->work_phone).'" class="phone"><strong>'.$this->lang('usr_left_cnt_wphone').'</strong>'.$this->lang('usr_mobile_call_btn').' '.htmlspecialchars($udtls->work_phone).'</a>' : '';
+						$tmp .= !empty($udtls->personal_phone)? '<a href="tel:'.htmlspecialchars($udtls->personal_phone).'" class="phone"><strong>'.$this->lang('usr_left_cnt_pphone').'</strong>'.$this->lang('usr_mobile_call_btn').' '.htmlspecialchars($udtls->personal_phone).'</a>' : '';
 						$tmp .= $is_admin_or_follows_me? '<a href="mailto:'.$u->email.'" class="email"><strong>'.$this->lang('usr_prof_mobile_email').'</strong>'.$u->email.'</a>' : '';
 						
 						$tmp .= !empty($u->location)? '
