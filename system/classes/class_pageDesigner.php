@@ -255,7 +255,8 @@
 			$html .= '<div'. (($cssClass != '') ? ' class="'.$cssClass.'"' : "") .'><h3>'.$title.'</h3><ul>';
 		
 			foreach( $data as $k=>$v ){
-				$html .= '<li><em>'. htmlspecialchars($k) .($show_semicolon? ':' : '').'</em> <strong>'. htmlspecialchars($v) .'</strong></li>';
+				// the labels of the language packs mostly end with their own colon ("Join date:")
+				$html .= '<li><em>'. htmlspecialchars($k) .($show_semicolon && substr(rtrim($k), -1) != ':' ? ':' : '').'</em> <strong>'. htmlspecialchars($v) .'</strong></li>';
 			}
 		
 			$html .= '</ul></div>';

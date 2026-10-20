@@ -980,6 +980,9 @@
 	  instead of the site's or the administrator's language: the plugin installer read conf_main.php
 	  again and reset the language that the database sets. It no longer reads the configuration when
 	  the application has already done so.
+	* The details of a profile showed every label with two colons ("Join date::", "Location::"): the
+	  labels of the language pack end with a colon and the list added another. A label that ends
+	  with a colon no longer gets a second one.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
