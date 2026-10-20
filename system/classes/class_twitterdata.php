@@ -56,8 +56,6 @@ class TwitterData
 			if($this->format == 'xml' || $this->format == 'json') $desc = '';
 			else if($this->format == 'atom')
 			{
-				$dts	= @gmmktime(0, 0, 1, gmdate('m'), gmdate('d'), gmdate('Y'), $u->lastpost_date);
-				
 				if($this->uid == -1)
 				{
 					$desc = '<title>'.$C->SITE_TITLE.'public timeline</title>';

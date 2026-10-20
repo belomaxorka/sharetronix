@@ -835,6 +835,11 @@
 	* The installer accepts only latin letters, digits, dash and underscore in the administrator's
 	  user name, like the sign-up form. It checked only the length, so a name with markup or quotes
 	  was stored and printed as it is in the links of the pages.
+	* The API answered trends/top10 and trends/current with HTTP 500 on PHP 7 and later (a database
+	  error on PHP 7, a fatal error on PHP 8), and on PHP 8 also every atom feed of a timeline or of
+	  direct messages. They called gmmktime() with a seventh argument, which PHP 7.0 removed. Trends
+	  now count the posts since 00:00:01 GMT of the current day, as they did on PHP 5, and the atom
+	  feeds no longer make the call, whose result they did not use.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

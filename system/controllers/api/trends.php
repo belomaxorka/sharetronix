@@ -54,7 +54,8 @@
 		exit;
 	}elseif( $api_session->resource == 'top10' ) 
 	{
-		$dts	= @gmmktime(0, 0, 1, gmdate('m'), gmdate('d'), gmdate('Y'), time()-24*60*60);
+		// the posts since 00:00:01 GMT today; gmmktime() takes six arguments since PHP 7.0
+		$dts	= gmmktime(0, 0, 1, gmdate('m'), gmdate('d'), gmdate('Y'));
 		$msg	= array();
 		$this->db2->query('SELECT message FROM posts WHERE user_id<>0 AND posttags>0 AND date>'.$dts);
 		
@@ -109,7 +110,8 @@
 	}
 	elseif( $api_session->resource == 'current' ) 
 	{
-		$dts	= @gmmktime(0, 0, 1, gmdate('m'), gmdate('d'), gmdate('Y'), time()-24*60*60);
+		// the posts since 00:00:01 GMT today; gmmktime() takes six arguments since PHP 7.0
+		$dts	= gmmktime(0, 0, 1, gmdate('m'), gmdate('d'), gmdate('Y'));
 		$msg	= array();
 		$this->db2->query('SELECT date, message FROM posts WHERE user_id<>0 AND posttags>0 AND date>'.$dts);
 		while($obj = $this->db2->fetch_object()) 
