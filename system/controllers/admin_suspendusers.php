@@ -25,7 +25,7 @@
 	$submit = FALSE;
 	$error = FALSE;
 	
-	if( isset($_POST['admin']) ) {
+	if( isset($_POST['admin']) && is_string($_POST['admin']) ) {
 		$submit = TRUE;
 		
 		$plugins_manager->onAdminSettingsSubmit();
@@ -47,7 +47,7 @@
 	
 	$res = $db2->query('SELECT * FROM users WHERE active=0');
 	
-	$suspuser = (isset($_GET['usrtosusp']) && !empty($_GET['usrtosusp']))? trim(htmlspecialchars(urldecode($_GET['usrtosusp']))) : '';
+	$suspuser = (isset($_GET['usrtosusp']) && is_string($_GET['usrtosusp']) && !empty($_GET['usrtosusp']))? trim(htmlspecialchars(urldecode($_GET['usrtosusp']))) : '';
 	
 	$tpl = new template( array('page_title' => $this->lang('admpgtitle_suspendusers', array('#SITE_TITLE#'=>$C->SITE_TITLE)), 'header_page_layout'=>'sc') );
 	

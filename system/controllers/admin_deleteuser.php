@@ -20,7 +20,7 @@
 	$error	= FALSE;
 	$errmsg	= '';
 	$deluser	= '';
-	if( isset($_POST['deluser'], $_POST['admpass']) ) {
+	if( isset($_POST['deluser'], $_POST['admpass']) && is_string($_POST['deluser']) && is_string($_POST['admpass']) ) {
 		$submit	= TRUE;
 		$deluser	= $_POST['deluser'];
 		
@@ -54,7 +54,7 @@
 		}
 	}
 	
-	$deluser = (isset($_GET['usrtodel']) && !empty($_GET['usrtodel']))? trim(htmlspecialchars(urldecode($_GET['usrtodel']))) : '';
+	$deluser = (isset($_GET['usrtodel']) && is_string($_GET['usrtodel']) && !empty($_GET['usrtodel']))? trim(htmlspecialchars(urldecode($_GET['usrtodel']))) : '';
 	
 	$tpl = new template( array('page_title' => $this->lang('admpgtitle_deleteuser', array('#SITE_TITLE#'=>$C->SITE_TITLE)), 'header_page_layout'=>'sc') );
 	

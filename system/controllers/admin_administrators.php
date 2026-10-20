@@ -29,7 +29,7 @@
 	$submit = FALSE;
 	$error = FALSE;
 	
-	if( isset($_POST['admin']) ) {
+	if( isset($_POST['admin']) && is_string($_POST['admin']) ) {
 		$submit = TRUE;
 			
 		$plugins_manager->onAdminSettingsSubmit();
@@ -38,7 +38,7 @@
 			$errmsg = $plugins_manager->getEventCallErrorMessage();
 		}
 
-		if(!$csrf->check_if_valid($_POST['token'])){
+		if(!isset($_POST['token']) || !$csrf->check_if_valid($_POST['token'])){
 			$error = TRUE;
 			$errmsg = $this->lang('admin_invalid_session');
 		}

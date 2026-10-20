@@ -811,6 +811,10 @@
 	  account deletion settings, the search form, the new group form and the settings, deletion,
 	  administrators, categories and invitation search of a group, the invitation form and the
 	  resending of an invitation, and the new password form of the password recovery.
+	* The administration pages answer a field sent as an array like a missing field instead of with
+	  a PHP error (HTTP 500 on PHP 8): the general settings, deleting and suspending members
+	  (including the user names in their links), the terms of use, the theme and the administrators
+	  list, which also no longer reads a missing form token.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

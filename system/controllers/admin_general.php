@@ -97,11 +97,11 @@
 			if( isset($_POST['network_post_length']) && in_array(intval($_POST['network_post_length']),$menu_postlength) ) {
 				$post_maxlength	= intval($_POST['network_post_length']);
 			}
-			if( isset($_POST['network_timezone']) && isset($menu_timezones[$_POST['network_timezone']]) ) {
+			if( isset($_POST['network_timezone']) && is_string($_POST['network_timezone']) && isset($menu_timezones[$_POST['network_timezone']]) ) {
 				$def_timezone	= $_POST['network_timezone'];
 			}
 			
-			if( isset($_POST['network_language']) && isset($menu_languages[$_POST['network_language']]) ) {
+			if( isset($_POST['network_language']) && is_string($_POST['network_language']) && isset($menu_languages[$_POST['network_language']]) ) {
 				$def_language	= $_POST['network_language'];
 				$old	= $db2->fetch_field('SELECT value FROM settings WHERE word="LANGUAGE" LIMIT 1');
 				if( $old != $def_language ) {
@@ -127,7 +127,7 @@
 			$db2->query('REPLACE INTO settings SET word="NAME_INDENTIFICATOR", value="'.$db2->e($name_switch).'" ');
 			$db2->query('REPLACE INTO settings SET word="ADMIN_STEALTH_MODE", value="'.$db2->e($stealth_mode).'" ');
 			
-			if( isset($_POST['network_name']) ) {
+			if( isset($_POST['network_name']) && is_string($_POST['network_name']) ) {
 				$network_name	= htmlspecialchars(trim($_POST['network_name']));
 			}
 			if( empty($network_name) ) {
@@ -142,7 +142,7 @@
 				$db2->query('REPLACE INTO settings SET word="SITE_TITLE", value="'.$db2->e($network_name).'" ');
 				$db2->query('REPLACE INTO settings SET word="COMPANY", value="'.$db2->e($network_name).'" ');
 			}
-			if( isset($_POST['network_email']) ) {
+			if( isset($_POST['network_email']) && is_string($_POST['network_email']) ) {
 				$system_email	= htmlspecialchars(trim($_POST['network_email']));
 			}
 			if( empty($system_email) || !is_valid_email($system_email) ) {
@@ -153,8 +153,8 @@
 				$db2->query('REPLACE INTO settings SET word="SYSTEM_EMAIL", value="'.$db2->e($system_email).'" ');
 			}
 			if( !$error ) {
-				$intro_ttl	= isset($_POST['network_intro_title']) ? htmlspecialchars( trim($_POST['network_intro_title']) ) : '';
-				$intro_txt	= isset($_POST['network_intro_txt']) ? htmlspecialchars( trim($_POST['network_intro_txt']) ) : '';
+				$intro_ttl	= isset($_POST['network_intro_title']) && is_string($_POST['network_intro_title']) ? htmlspecialchars( trim($_POST['network_intro_title']) ) : '';
+				$intro_txt	= isset($_POST['network_intro_txt']) && is_string($_POST['network_intro_txt']) ? htmlspecialchars( trim($_POST['network_intro_txt']) ) : '';
 				if( empty($intro_ttl) ) {
 					$error	= TRUE;
 					$errmsg	= $this->lang('admgnrl_err_introttl');

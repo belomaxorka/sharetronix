@@ -26,7 +26,7 @@
 	$hdr_show_favicon	= $C->HDR_SHOW_FAVICON;
 	$hdr_custom_favicon	= empty($C->HDR_CUSTOM_FAVICON) ? '' : ('attachments/'.$this->network->id.'/'.$C->HDR_CUSTOM_FAVICON);
 
-	if( isset($_POST['set_theme']) && $_POST['set_theme']!=$C->THEME && isset($themes_selection[$_POST['set_theme']]) ) {
+	if( isset($_POST['set_theme']) && is_string($_POST['set_theme']) && $_POST['set_theme']!=$C->THEME && isset($themes_selection[$_POST['set_theme']]) ) {
 		$C->THEME		= $_POST['set_theme'];
 		$C->THEMEOBJ	= $themes_selection[$_POST['set_theme']];
 		$db2->query('REPLACE INTO settings SET word="THEME", value="'.$db2->e($C->THEME).'" ');

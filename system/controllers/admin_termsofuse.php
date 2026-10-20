@@ -31,7 +31,7 @@
 	$error	= FALSE;
 	$errmsg	= '';
 	$okmsg	= '';
-	if( isset($_POST['tos_content']) ) {
+	if( isset($_POST['tos_content']) && is_string($_POST['tos_content']) ) {
 		$submit	= TRUE;
 		
 		$plugins_manager->onAdminSettingsSubmit();
