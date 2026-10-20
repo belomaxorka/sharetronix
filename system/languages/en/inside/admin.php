@@ -35,6 +35,7 @@
 		'admpgtitle_suspendusers'	=> 'Suspend Members - #SITE_TITLE#',
 		'admpgtitle_suspendapps'	=> 'Suspend Applications - #SITE_TITLE#',
 		'admpgtitle_deleteuser'		=> 'Delete Members - #SITE_TITLE#',
+		'admpgtitle_groupcategories'	=> 'Group categories - #SITE_TITLE#',
 		'admpgtitle_inviteusers'	=> 'Invite Members - #SITE_TITLE#',
 		'admpgtitle_invitedusers'	=> 'Invited Members - #SITE_TITLE#',
 		'admpgtitle_linkednetworks'	=> 'Linked Public Networks - #SITE_TITLE#',

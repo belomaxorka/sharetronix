@@ -64,8 +64,8 @@
 	
 	$header_buttons = '<a href="'.$C->SITE_URL.'" class="btn home"><span></span></a>';
 	$tpl = new template( array(
-			'page_title' => 'View Post',
-			'header_title' => 'View Post',
+			'page_title' => $this->lang('viewpost_page_title'),
+			'header_title' => $this->lang('viewpost_page_title'),
 			'header_buttons' => $header_buttons
 		)
 	);

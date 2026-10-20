@@ -70,7 +70,7 @@
 		$this->redirect($C->SITE_URL.'/admin/groupcategories/msg:saved');
 	}
 	
-	$tpl = new template( array('page_title' => $this->lang('admpgtitle_deleteuser', array('#SITE_TITLE#'=>$C->SITE_TITLE)), 'header_page_layout'=>'sc') );
+	$tpl = new template( array('page_title' => $this->lang('admpgtitle_groupcategories', array('#SITE_TITLE#'=>$C->SITE_TITLE)), 'header_page_layout'=>'sc') );
 	
 	$tpl->initRoutine('AdminLeftMenu', array());
 	$tpl->routine->load();
