@@ -893,6 +893,9 @@
 	  with their singular forms; the existing group_subtitle_nm_members and group_subtitle_nm_posts
 	  for groups) through a new helper lang_count(). Language packs that kept the old counter texts
 	  with #NUM_FOLLOWERS#, #NUM_FOLLOWING#, #NUM_POSTS# and #NUM_MEMBERS# still work.
+	* Saving the group settings with a group type other than public or private answered "Information
+	  was saved." although nothing was saved. It now shows the error "The group must be public or
+	  private." (new string group_setterr_type).
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

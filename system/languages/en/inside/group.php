@@ -77,6 +77,7 @@
 		'group_setterr_name_exists'			=> 'Group Alias is already in use by another group.',
 		'group_setterr_name_existsu'			=> 'Group Alias is already in use by a network member.',
 		'group_setterr_name_existss'			=> 'Group Alias is already in use by the system.',
+		'group_setterr_type'			=> 'The group must be public or private.',
 		'group_admsett_ttl'			=> 'Group Administrators',
 		'group_admsett_f_adm'			=> 'Current admins:',
 		'group_admsett_f_adm_you'		=> 'You',

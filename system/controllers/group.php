@@ -104,7 +104,7 @@
 			if( empty($errmsg) && isset($_POST['group_type']) && is_string($_POST['group_type']) ){
 				$type = trim($_POST['group_type']);
 				if( $type != 'private' && $type != 'public' ){
-					$errmsg = $this->lang('group_settings_f_type'); //change this with valid lang type
+					$errmsg = 'group_setterr_type';
 				}elseif( $type == 'public' && $g->is_private ){
 					$group->changeType( 'public' );
 				}elseif( $type == 'private' && $g->is_public ){
