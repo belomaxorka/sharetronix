@@ -103,7 +103,7 @@
 								</a>
 								' : '';
 						
-						$tmp .= !empty($u->gender) ? '<span class="gender '.(($u->gender == 'm')? 'male' : 'female').'"><strong>Gender</strong>'.(($u->gender == 'm')? $this->lang('usr_info_aboutme_gender_m') : $this->lang('usr_info_aboutme_gender_f')).'</span>' : '';
+						$tmp .= !empty($u->gender) ? '<span class="gender '.(($u->gender == 'm')? 'male' : 'female').'"><strong>'.$this->lang('usr_prof_mobile_gender').'</strong>'.(($u->gender == 'm')? $this->lang('usr_info_aboutme_gender_m') : $this->lang('usr_info_aboutme_gender_f')).'</span>' : '';
 						
 						$tmp .= !empty($u->position) ? '<span class="job-title"><strong>'.$this->lang('usr_prof_nt_jobtitle').'</strong>'.htmlspecialchars($u->position).'</span>' : '';
 						

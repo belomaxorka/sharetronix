@@ -983,6 +983,9 @@
 	* The details of a profile showed every label with two colons ("Join date::", "Location::"): the
 	  labels of the language pack end with a colon and the list added another. A label that ends
 	  with a colon no longer gets a second one.
+	* The e-mail label of the profile details ("Email:") and the gender label of the mobile profile
+	  were English in every language; they now use the new strings usr_info_aboutme_email
+	  ("E-mail:") and usr_prof_mobile_gender.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

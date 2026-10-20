@@ -59,6 +59,7 @@
 		'usr_info_aboutme_pphone'	=> 'Personal phone:',
 		'usr_info_aboutme_wphone'	=> 'Work phone:',
 		'usr_info_aboutme_pemail'	=> 'Personal e-mail:',
+		'usr_info_aboutme_email'	=> 'E-mail:',
 		'usr_info_aboutme_datereg'	=> 'Join date:',
 		'usr_info_aboutme_datelgn'	=> 'Last online:',
 		'usr_info_aboutme_lgndtfrmt'	=> '%l:%M %p, %B %d, %Y',
@@ -239,6 +240,7 @@
 		'usr_mobile_call_btn' => 'Call',
 		'usr_prof_mobile_email' => 'E-mail',
 		'usr_prof_mobile_location' => 'Location',
+		'usr_prof_mobile_gender' => 'Gender',
 			
 		'usr_private_msg_protection_enabled' => '#USERNAME# has private messages protection.',
 		'usr_private_msg_sent' => 'The private message has been sent successfully',

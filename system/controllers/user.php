@@ -109,7 +109,7 @@
 						}
 						
 						if($is_admin_or_follows_me || $is_my_profile){
-							$dtls['Email'] = $u->email;
+							$dtls[$this->lang('usr_info_aboutme_email')] = $u->email;
 							
 							if(!empty($u->birthdate) && $u->birthdate!= '0000-00-00' ) {
 								$dtls[$this->lang('usr_info_aboutme_birthdate')] = date('m/d/Y',strtotime($u->birthdate));
