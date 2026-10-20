@@ -975,6 +975,11 @@
 	* The messages of the plugins page of the administration (why a plugin folder cannot be
 	  installed, "already installed", "not installed", and what a failed installer.php left undone)
 	  were English in every language; they now use the new admin_plugins_err_* strings.
+	* On the plugins page of the administration, the confirmation of a plugin with an installer.php
+	  showed the rest of the page (the footer, for example) in the language of system/conf_main.php
+	  instead of the site's or the administrator's language: the plugin installer read conf_main.php
+	  again and reset the language that the database sets. It no longer reads the configuration when
+	  the application has already done so.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

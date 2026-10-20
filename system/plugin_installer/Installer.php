@@ -11,7 +11,12 @@ if(defined("PROJPATH") == false){
 }
 define("PLUGINDIR", PROJPATH . "apps" . DIRECTORY_SEPARATOR);
 
-include PROJPATH . 'system/conf_main.php';
+// The plugins page (class_AdminPlugins) includes this file after the application has read its
+// settings; reading conf_main.php again would reset those that the database overrides, such as the
+// language, for the rest of the page.
+if( !isset($C->INCPATH) ){
+	include PROJPATH . 'system/conf_main.php';
+}
 $C->INSTALLER_PATH = $C->INCPATH . "plugin_installer" . DIRECTORY_SEPARATOR;
 
 
