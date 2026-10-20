@@ -125,14 +125,14 @@
 	}
 
 	if( $since_dt !== FALSE ) {
-		$tmp	= mktime(0, 0, 1, intval(substr($since_dt,0,4), intval(substr($since_dt,5,2), intval(substr($since_dt,8,2)))));
+		$tmp	= mktime(0, 0, 1, intval(substr($since_dt,5,2)), intval(substr($since_dt,8,2)), intval(substr($since_dt,0,4)));
 		$since_dt	= FALSE;
 		if( $tmp && $tmp < time() ) {
 			$since_dt	= $tmp;
 		}
 	}
 	if( $until_dt !== FALSE ) {
-		$tmp	= mktime(0, 0, 1, intval(substr($until_dt,0,4), intval(substr($until_dt,5,2), intval(substr($until_dt,8,2)))));
+		$tmp	= mktime(0, 0, 1, intval(substr($until_dt,5,2)), intval(substr($until_dt,8,2)), intval(substr($until_dt,0,4)));
 		$until_dt	= FALSE;
 		if( $tmp && $tmp < time() ) {
 			$until_dt	= $tmp;

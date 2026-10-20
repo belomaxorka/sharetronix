@@ -858,6 +858,9 @@
 	* The API resource trends/current kept only nine tags when more than ten were used that day and
 	  listed each of them once for every use. It now lists the ten tags of the day used most often,
 	  each once, like trends/top10.
+	* The since and until dates of the API search (YYYY-MM-DD) were ignored, so the search answered
+	  posts of every date: the date was put together from its parts in the wrong order. They now
+	  limit the answer to posts from the start of the since day and before the until day.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
