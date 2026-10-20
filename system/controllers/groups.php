@@ -112,9 +112,9 @@
 		
 		$menu[] = array('url' => 'groups/tab:my', 		'css_class' => (($tab === 'my')? 'active' : ''), 		'title' => $this->lang('groups_page_tab_my') );
 		$menu[] = array('url' => 'groups/new', 			'css_class' => 'right highlighted', 					'title' => $this->lang('newgroup_title2') );
-		$menu[] = array('url' => 'groups/tab:'.$tab.'/'.$category.'orderby:posts', 			'css_class' => 'no-border '.(($orderby == 'posts')? 'actv' : ''), 					'title' => 'Most Active' );
-		$menu[] = array('url' => 'groups/tab:'.$tab.'/'.$category.'orderby:name', 			'css_class' => 'no-border '.(($orderby == 'name')? 'actv' : ''), 					'title' => 'A-Z' );
-		$menu[] = array('url' => 'groups/tab:'.$tab.'/'.$category.'orderby:date', 			'css_class' => 'no-border '.(($orderby == 'date')? 'actv' : ''), 					'title' => 'Newest on top' );
+		$menu[] = array('url' => 'groups/tab:'.$tab.'/'.$category.'orderby:posts', 			'css_class' => 'no-border '.(($orderby == 'posts')? 'actv' : ''), 					'title' => $this->lang('groups_sort_posts') );
+		$menu[] = array('url' => 'groups/tab:'.$tab.'/'.$category.'orderby:name', 			'css_class' => 'no-border '.(($orderby == 'name')? 'actv' : ''), 					'title' => $this->lang('groups_sort_name') );
+		$menu[] = array('url' => 'groups/tab:'.$tab.'/'.$category.'orderby:date', 			'css_class' => 'no-border '.(($orderby == 'date')? 'actv' : ''), 					'title' => $this->lang('groups_sort_date') );
 	}
 	
 	$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createMenu('tabs-navigation', $menu, 'groups_top_tab_menu') );

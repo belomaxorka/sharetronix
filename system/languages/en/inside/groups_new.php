@@ -18,6 +18,7 @@
 		'newcat_success_text' => 'Category created successfully',
 		'newcat_success_title' => 'Success',
 		'newcat_invalid' => 'Invalid category',
+		'newcat_back_btn' => 'Back',
 	);
 	
 ?>

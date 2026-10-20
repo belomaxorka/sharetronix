@@ -81,7 +81,7 @@
 		$this->redirect($C->SITE_URL.$return);
 	}
 	
-	$tpl->layout->setVar( 'main_content', '<a href="'.$C->SITE_URL.$return.'" class="back-button-new-cat">Back</a>' );
+	$tpl->layout->setVar( 'main_content', '<a href="'.$C->SITE_URL.$return.'" class="back-button-new-cat">'.$this->lang('newcat_back_btn').'</a>' );
 	
 	$table = new tableCreator();
 	$rows = array();

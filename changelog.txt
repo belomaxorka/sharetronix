@@ -967,6 +967,11 @@
 	  existing titles ("Network Members", "Members I Follow", "My Followers", "Administrators").
 	* The choices of the notification settings (None, Post, E-mail, Both, Post & E-mail) were
 	  English in every language; they now use the new strings os_st_notif_opt_*.
+	* Further English texts of forms now use the language pack: the picture hint and the "Remove
+	  Current" row of the profile picture settings, the sort links of the groups page (Most Active,
+	  A-Z, Newest on top), the Back link of the new group category form, the delete column of the
+	  group categories administration (its header said "Control", now the existing "Delete:") and
+	  the title of the error box of the sign-up and administrators pages.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

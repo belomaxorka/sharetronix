@@ -95,14 +95,14 @@
 		$rows[] = "<tr class='catstitles'><td>".$this->lang('admin_grcat_table_title')."</td>
 		<td>".$this->lang('admin_grcat_table_locked')."</td>
 		<td>".$this->lang('admin_grcat_table_admin')."</td>
-		<td>Control</td>
+		<td>".$this->lang('admin_grcat_table_delete')."</td>
 		</tr>";
 		foreach($group_sub_categories as $key => $value){
 			$rows[] = $table->textFieldSpecial(
 				$value->title,
 				$table->checkBoxSpecial( "", array( array('is_locked_'.$value->id, $value->id, '', ($value->is_locked == 1? $value->id : 0) ) ) ),
 				$table->checkBoxSpecial( "", array( array('is_admin_'.$value->id, $value->id, '', ($value->is_admin_created == 1? $value->id : 0) ) ) ),
-				'<a class="deletebutton" href="'.$C->SITE_URL.'admin/groupcategories/delete:'.$value->id.'">Delete</a>' 
+				'<a class="deletebutton" href="'.$C->SITE_URL.'admin/groupcategories/delete:'.$value->id.'">'.$this->lang('admin_grcat_delete_link').'</a>' 
 				,'admincats'
 				);
 		}

@@ -143,8 +143,8 @@
 	$rows = array(
 			$table->textField( $this->lang('st_avatar_current_picture'), '<img src="'. $C->STORAGE_URL .'avatars/thumbs1/'. $u->info->avatar .'" alt="" border="0" />' ),
 			$table->fileField( $this->lang('st_avatar_change_picture'), 'profile_avatar', '' ),
-			$table->textField( '', 'JPEG, GIF or PNG; 200x200px or larger.' ),
-			$table->textField( 'Remove Current', '<a href="'.$C->SITE_URL.'settings/avatar/del:current">'.$this->lang('st_avatar_upload_or_delete').'</a>' ),
+			$table->textField( '', $this->lang('st_avatar_change_info') ),
+			$table->textField( $this->lang('st_avatar_remove_ttl'), '<a href="'.$C->SITE_URL.'settings/avatar/del:current">'.$this->lang('st_avatar_upload_or_delete').'</a>' ),
 			$table->submitButton( 'sbm', $this->lang('st_avatar_uploadbtn') ),
 			$table->textField( $this->lang('st_avatar_gravatar'), $this->lang('st_avatar_gravatar_info', array('#EMAIL#'=>htmlspecialchars($u->info->email))) ),
 			$table->submitButton( 'use_gravatar', $this->lang('st_avatar_gravatar_btn') )

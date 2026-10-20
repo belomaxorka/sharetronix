@@ -8,6 +8,9 @@
 		'groups_page_ttl2'	=> 'Groups',
 		'groups_page_tab_all'	=> 'All Groups',
 		'groups_page_tab_my'	=> 'My Groups',
+		'groups_sort_posts'	=> 'Most Active',
+		'groups_sort_name'	=> 'A-Z',
+		'groups_sort_date'	=> 'Newest on top',
 		'groups_page_tab_add'	=> 'Create New Group',
 		'groups_page_tab_special'	=> 'Special Groups',
 		

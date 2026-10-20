@@ -535,6 +535,7 @@
 		'admin_grcat_table_locked' => 'Is locked: ',
 		'admin_grcat_table_admin' => 'Is admin category: ',
 		'admin_grcat_table_delete' => 'Delete: ',
+		'admin_grcat_delete_link' => 'Delete',
 		'admin_grcat_no_cats_ttl' => 'No subcategories',
 		'admin_grcat_no_cats_txt' => 'No subcategories found',
 			

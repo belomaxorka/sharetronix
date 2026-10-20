@@ -259,7 +259,7 @@
 	$tpl = new template( array('page_title' => $this->lang('signup_page_title', array('#SITE_TITLE#'=>$C->SITE_TITLE)), 'header_page_layout'=>'c') );
 	
 	if( $error && !empty($errmsg) ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage('Error', $errmsg ) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('signup_error'), $errmsg ) );
 	}	
 
 	if( !$is_email_confirmed && $C->USERS_EMAIL_CONFIRMATION ){

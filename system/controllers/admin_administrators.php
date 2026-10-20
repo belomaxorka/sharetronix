@@ -71,7 +71,7 @@
 	if( ($submit && !$error) || $this->param('msg') == 'admsaved' ){
 		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->okMessage($this->lang('admtrms_ok_ttl'), $this->lang('admadm_frm_ok_txt') ) );
 	}else if( $submit && $error ){
-		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage('Error', $errmsg) );
+		$tpl->layout->setVar('main_content_placeholder', $tpl->designer->errorMessage($this->lang('global_error_msg_ttl'), $errmsg) );
 	}
 	
 	$tpl->layout->setVar('main_content_placeholder', '<h2>' . $this->lang('admadm_frm_adm') . '</h2>');

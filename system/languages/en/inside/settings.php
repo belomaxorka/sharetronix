@@ -59,6 +59,7 @@
 		'st_avatar_uploadbtn'			=> 'Upload Picture',
 		'st_avatar_upload_or'			=> 'or',
 		'st_avatar_upload_or_delete'		=> 'remove current',
+		'st_avatar_remove_ttl'			=> 'Remove Current',
 		'st_avatar_upload_delete_confirm'	=> 'Are you sure?',
 		'st_avatat_err'				=> 'Error',
 		'st_avatar_err_invalidfile'		=> 'Uploaded file is not a valid image.',
