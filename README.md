@@ -130,16 +130,17 @@ A plugin that cannot be loaded, for example because its code does not run on the
 
 A theme is a folder in `themes/` with a `manifest.json`. Copy it there and select it in **Administration → Themes**; to remove a theme, select another one and delete its folder.
 
-A language pack is a folder in `system/languages/` with a `language.php`. Copy it there; **Administration → Languages** lists the installed packs, and the general settings choose the default language. The English pack, `system/languages/en/`, is the reference: a text or a whole language file that another pack lacks is shown in English, also in the e-mails sent in a member's language, so a pack made for an older release keeps working.
+A language pack is a folder in `system/languages/` with a `language.php`. Copy it there; **Administration → Languages** lists the installed packs, and the general settings choose the default language. The English pack, `system/languages/en/`, is the reference: a text or a whole language file that another pack lacks is shown in English, also in the e-mails sent in a member's language, so a pack made for an older release keeps working. A plugin brings its own texts in `apps/<name>/languages/`, with a folder of the same name for each language it translates (see [Plugin texts and translations](#plugin-texts-and-translations)).
 
 ### Writing a plugin
 
-This fork keeps the plugin interface of Sharetronix 3.x and does not extend it. A plugin folder `apps/<name>/` contains:
+This fork keeps the plugin interface of Sharetronix 3.x and adds only the plugin's own language files. A plugin folder `apps/<name>/` contains:
 
 - `manifest.json` with `plugin_name`, which must be the folder name (letters, digits, and `_`); the Plugins page also shows `version`, `author`, and `descr`.
-- `plugin.php` with `class <name> extends plugin`. A public method named after an event runs when the core fires the event and receives the event's arguments as one array (`$args[0]`, `$args[1]`). `$this->setVar('<placeholder>', $html)` adds HTML to a `{%placeholder%}` of the templates being rendered; `'replace'` as the third argument replaces its content. The base class also provides `$this->db2`, `$this->user`, `$this->network`, `$this->page`, `$this->cache`, `getCurrentController()`, `getCurrentTab()`, and `isMobileRegime()`.
+- `plugin.php` with `class <name> extends plugin`. A public method named after an event runs when the core fires the event and receives the event's arguments as one array (`$args[0]`, `$args[1]`). `$this->setVar('<placeholder>', $html)` adds HTML to a `{%placeholder%}` of the templates being rendered; `'replace'` as the third argument replaces its content. The base class also provides `$this->db2`, `$this->user`, `$this->network`, `$this->page`, `$this->cache`, `getCurrentController()`, `getCurrentTab()`, `isMobileRegime()`, and `loadLangfile()` and `lang()` for the plugin's texts.
 - Optionally `installer.php` with `class MyInstaller extends Installer`, whose `up()` and `down()` create and remove the plugin's tables and fields through the helpers in `system/plugin_installer/`. The Plugins page shows what they will change before it runs them. `create_table()` makes a MyISAM table in `utf8mb4` with the collation of the core tables; a key on more than 250 characters of a column exceeds the MyISAM key limit of 1000 bytes on MySQL, so index a prefix (`KEY (name(250))`).
 - Optionally `system/controllers/` for pages at `/plugin/<name>/...` (signed-in users only), `system/controllers/ajax/<action>.php` for `/services/<name>/<action>`, `system/cronjobs/php_<interval>/*.php` for jobs that run after the core jobs of that interval, and `static/js/*.js` and `static/css/*.css`, which the pages include.
+- Optionally `languages/<code>/*.php` with the plugin's texts, see [Plugin texts and translations](#plugin-texts-and-translations).
 
 All of these work only while the plugin is installed and enabled. A handler of an event marked *veto* can stop the action with `$this->setVar('<event>_error', $message)`; the core then cancels it and shows the message where the page or the AJAX answer has room for one. A handler of the query events returns SQL, which the core runs as it is.
 
@@ -156,6 +157,54 @@ All of these work only while the plugin is installed and enabled. A handler of a
 | `onPostLoad`, `onPostCommentLoad` | A post or comment is rendered | The post or comment |
 | `onSingleUserLoad`, `onSingleGroupLoad` | A user or group is rendered in a list | The user or group |
 | `onPageSetQuery`, `onPageSetCountQuery`, `onPageSetQueryOrder` | A feed, the group list, or the member list is opened with a `tab:` the core does not know | — (return the query, the count query, or the `ORDER BY` clause) |
+
+### Plugin texts and translations
+
+A plugin keeps its texts in its own language files instead of using those of the core, whose keys may change or disappear in a release. `apps/<name>/languages/en/<file>.php` sets `$lang` like the files of `system/languages/en/`, with placeholders such as `#NAME#`; a translation is a folder named after a language pack, for example `languages/ru/<file>.php`. English is the reference: each file must exist in `languages/en/`, and a text or a whole file that a translation lacks is shown in English.
+
+```php
+<?php
+	// apps/hello/languages/en/hello.php
+	$lang	= array
+	(
+		'hello_greeting'	=> 'Hello, #NAME#!',
+		'hello_mail_subject'	=> '#NAME# follows you',
+	);
+?>
+```
+
+```php
+<?php
+	// apps/hello/plugin.php
+	class hello extends plugin
+	{
+		public function onPageLoad()
+		{
+			if( !$this->user->is_logged ){
+				return;
+			}
+			$this->loadLangfile('hello.php');
+			$this->setVar('main_content_top_placeholder', htmlspecialchars($this->lang('hello_greeting', array('#NAME#' => $this->user->info->username))));
+		}
+
+		public function onUserFollow( $args )
+		{
+			$this->loadLangfile('hello.php');
+			// in the language of the member who gets the e-mail
+			$subject = $this->lang('hello_mail_subject', array('#NAME#' => $args[0]->info->username), $args[1]->language);
+		}
+	}
+?>
+```
+
+- `$this->loadLangfile('<file>.php')` loads a file in the language of the page. Each file is read once per request, so a handler may call it every time. Call it in the event handlers, not in the constructor: the plugins are created before the page.
+- `$this->lang('key', $replace)` returns the text, with the keys of `$replace` replaced, or `''` for an unknown key. A member's `language` as the third argument gives the text in that language, for e-mails.
+- Controllers, AJAX controllers, cron jobs, templates, and `installer.php` of a plugin call the page object: `load_plugin_langfile('<name>', '<file>.php')` and `plugin_lang('<name>', 'key', $replace, $language)`. It is `$this` in a page controller, `$this->page` in a template, `$page` in a cron job, and `$GLOBALS['page']` everywhere.
+- The keys of `languages/<code>/js.php` are given to the scripts on the pages of signed-in members: `stxText('<name>:<key>', 'English text')` returns the text in the language of the page, and the English text given to it where a page has none.
+
+The texts of a plugin are separate from those of the core and of other plugins: the same key does not clash, a plugin cannot change a text of the core, and `$this->lang()` does not return texts of the core; use `$this->page->lang()` for those. A missing English file, or a language file that fails or sets no `$lang` array, is reported in the PHP error log instead of stopping the page.
+
+A plugin written for an older version that declares its own method `lang()` or `loadLangfile()` must rename it: these methods of the base class are final, PHP refuses such a class, and every page fails while the plugin is installed. To recover, set `$C->PLUGINS_DISABLED = TRUE;` (see above) and uninstall or fix the plugin.
 
 ## Upgrading
 
@@ -182,6 +231,8 @@ New accounts no longer take their picture from Gravatar during sign-up; they sta
 The StopForumSpam check at sign-up no longer refuses addresses whose reports are old (see [Spam checks](#spam-checks)). To refuse every address that has ever been reported, as 3.6.2 did for IP addresses, set `$C->STOPFORUMSPAM_MIN_CONFIDENCE = 0;` in `system/conf_main.php`.
 
 Sign-up and sign-in through Facebook and Twitter have been removed: Facebook shut down the registration plugin they relied on, and Twitter sign-in needs the paid X API. The updater deletes `system/libraries/twitter/`, `system/classes/class_twitter_module.php`, and the button images. Members who signed up that way set a password at sign-up and sign in with it like everyone else; password recovery works for them too. `$C->FACEBOOK_API_KEY`, `$C->FACEBOOK_API_ID`, `$C->FACEBOOK_API_SECRET`, `$C->TWITTER_CONSUMER_KEY`, `$C->TWITTER_CONSUMER_SECRET`, `$C->YAHOO_CONSUMER_KEY`, and `$C->YAHOO_CONSUMER_SECRET` in `system/conf_main.php` are ignored and can be removed. The `facebook_uid` and `twitter_uid` columns of the `users` table are kept.
+
+Sharetronix 4.0.0 no longer ships the language strings and the 21 language files that the core does not use. A plugin that showed such a core text with `$page->lang()` now shows an empty text, and one that loads a removed file with `load_langfile()` stops the page with a fatal error; move these texts into the plugin's own language files (see [Plugin texts and translations](#plugin-texts-and-translations)). A plugin that declares its own method `lang()` or `loadLangfile()` makes every page fail after the upgrade: rename the method before you upgrade.
 
 ## Known limitations
 
