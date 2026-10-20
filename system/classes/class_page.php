@@ -13,6 +13,7 @@
 		public $html;
 		public $controllers;
 		public $lang_data;
+		public $lang_data_en;
 		public $tpl_name;
 		public $plugin_name;
 		public $is_mobile;
@@ -33,6 +34,7 @@
 			$this->html		= NULL;
 			$this->controllers	= $GLOBALS['C']->INCPATH.'controllers/';
 			$this->lang_data		= array();
+			$this->lang_data_en	= array();
 			$this->tpl_name	 	= 'default';
 			$this->plugin_name 	= FALSE;
 			$this->is_mobile	= FALSE;
@@ -325,10 +327,21 @@
 			}
 			$this->tmp_loaded_langfiles[]	= $filename;
 			global $C;
-			$lang	= array();
-			ob_start();
-			require( $GLOBALS['C']->INCPATH.'languages/'.$GLOBALS['C']->LANGUAGE.'/'.$filename );
-			ob_end_clean();
+			$file	= $C->INCPATH.'languages/'.$C->LANGUAGE.'/'.$filename;
+			// English is the reference pack: lang() gives the English text of a key that the active language
+			// pack lacks, and a file that this pack lacks is not an error.
+			if( $C->LANGUAGE != 'en' && file_exists($C->INCPATH.'languages/en/'.$filename) ) {
+				$lang	= $this->_read_langfile($C->INCPATH.'languages/en/'.$filename);
+				if( is_array($lang) ) {
+					foreach($lang as $k=>$v) {
+						$this->lang_data_en[$k]	= $v;
+					}
+				}
+				if( ! file_exists($file) ) {
+					return;
+				}
+			}
+			$lang	= $this->_read_langfile($file);
 			if( ! is_array($lang) ) {
 				return FALSE;
 			}
@@ -345,10 +358,15 @@
 			if( empty($key) ) {
 				return '';
 			}
-			if( ! isset($this->lang_data[$key]) ) {
+			if( isset($this->lang_data[$key]) ) {
+				$txt	= $this->lang_data[$key];
+			}
+			elseif( isset($this->lang_data_en[$key]) ) {
+				$txt	= $this->lang_data_en[$key];
+			}
+			else {
 				return '';
 			}
-			$txt	= $this->lang_data[$key];
 			if( 0 == count($replace_strings) ) {
 				return $txt;
 			}
@@ -368,11 +386,16 @@
 				$lang_data[$k]	= $v;
 			}
 			if( $in_language && is_dir($GLOBALS['C']->INCPATH.'languages/'.$in_language) ) {
+				// English first, for the keys and files that the other language pack lacks
+				foreach($this->lang_data_en as $k=>$v) {
+					$lang_data[$k]	= $v;
+				}
 				foreach($this->tmp_loaded_langfiles as $f) {
-					$lang	= array();
-					ob_start();
-					require( $GLOBALS['C']->INCPATH.'languages/'.$in_language.'/'.$f );
-					ob_end_clean();
+					$file	= $GLOBALS['C']->INCPATH.'languages/'.$in_language.'/'.$f;
+					if( ! file_exists($file) ) {
+						continue;
+					}
+					$lang	= $this->_read_langfile($file);
 					if( is_array($lang) ) {
 						foreach($lang as $k=>$v) {
 							$lang_data[$k]	= $v;
@@ -388,6 +411,17 @@
 				return $txt;
 			}
 			return str_replace(array_keys($replace_strings), array_values($replace_strings), $txt);
+		}
+		
+		// The $lang array of a language file, or FALSE when it sets no array; its output is dropped.
+		private function _read_langfile($file)
+		{
+			global $C;
+			$lang	= array();
+			ob_start();
+			require( $file );
+			ob_end_clean();
+			return is_array($lang) ? $lang : FALSE;
 		}
 		
 		public function param($key)

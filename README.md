@@ -130,7 +130,7 @@ A plugin that cannot be loaded, for example because its code does not run on the
 
 A theme is a folder in `themes/` with a `manifest.json`. Copy it there and select it in **Administration → Themes**; to remove a theme, select another one and delete its folder.
 
-A language pack is a folder in `system/languages/` with a `language.php`. Copy it there; **Administration → Languages** lists the installed packs, and the general settings choose the default language.
+A language pack is a folder in `system/languages/` with a `language.php`. Copy it there; **Administration → Languages** lists the installed packs, and the general settings choose the default language. The English pack, `system/languages/en/`, is the reference: a text or a whole language file that another pack lacks is shown in English, also in the e-mails sent in a member's language, so a pack made for an older release keeps working.
 
 ### Writing a plugin
 

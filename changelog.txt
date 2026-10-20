@@ -743,6 +743,13 @@
 	  the user or group id is sent as an array instead of acting on id 1. The integer value of an
 	  array is 1, so a crafted users_id[] or groups_id[] made a member follow or act on the first
 	  account or group.
+	* A language pack other than English that lacks texts or whole files of the English pack showed
+	  those texts empty, and a missing file stopped each page that needs it with a server error.
+	  Such texts now come from the English pack in system/languages/en/, while the texts the pack
+	  has keep its own wording. The same applies to the e-mails sent in a member's language: an
+	  e-mail whose subject that language lacked was not sent at all, and a file missing from that
+	  language stopped the request of the member who caused the notification. English installations
+	  are not affected.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
