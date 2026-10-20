@@ -861,6 +861,11 @@
 	* The since and until dates of the API search (YYYY-MM-DD) were ignored, so the search answered
 	  posts of every date: the date was put together from its parts in the wrong order. They now
 	  limit the answer to posts from the start of the since day and before the until day.
+	* On PHP 7.3 and later, link previews offered no picture of the linked page and logged a warning
+	  for every picture: the bundled url_to_absolute() refused every address, because PCRE2 rejects
+	  one of its patterns, and on PHP 8 a call behind that check would have stopped the request with
+	  a type error. Both are corrected in the bundled code, and the previews offer the pictures of
+	  the page again.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
