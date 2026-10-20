@@ -951,13 +951,16 @@
 	* The 4.0.0 update converts an existing database to utf8mb4 with the collation
 	  utf8mb4_unicode_520_ci: the core tables, the tables registered by installed plugins and the
 	  database default; tables of other applications in the same database are left alone. Long keys
-	  get the same 250-character prefixes as in new installations, and the data itself does not
-	  change; text that older versions already lost (emoji stored as "?" by MariaDB, or cut off by
-	  MySQL) cannot be restored. Afterwards the update writes $C->DB_CHARSET = 'utf8mb4' to
-	  system/conf_main.php, which therefore must be writable during the update; the updater lists it
-	  otherwise. Converting copies each table once, so a large site needs some time; an interrupted
-	  update can be run again and skips the converted tables. A plugin table that cannot be
-	  converted keeps utf8 and is named on the result page.
+	  get the same 250-character prefixes as in new installations, a key of a plugin table on
+	  several columns that would exceed the MyISAM limit of 1000 bytes gets shorter prefixes on its
+	  text columns, in proportion, unless it is unique, and the data itself does not change; text
+	  that older versions already lost (emoji stored as "?" by MariaDB, or cut off by MySQL) cannot
+	  be restored. Afterwards the update writes $C->DB_CHARSET = 'utf8mb4' to system/conf_main.php,
+	  which therefore must be writable during the update; the updater lists it otherwise. Converting
+	  copies each table once, so a large site needs some time; an interrupted update can be run
+	  again and skips the converted tables. A plugin table that cannot be converted, such as one
+	  with a unique key on several long columns on MySQL, keeps utf8 and is named on the result
+	  page.
 	* The release after 3.6.2 is numbered 4.0.0 instead of 3.6.3, because it changes requirements
 	  and data: it needs the mbstring extension and a database server with utf8mb4, converts the
 	  database to utf8mb4, drops unused tables, and removes retired integrations and the marketplace

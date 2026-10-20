@@ -206,6 +206,9 @@
 	// The index changes that let a MyISAM table use utf8mb4, for ALTER TABLE: a MyISAM key holds
 	// at most 1000 bytes, 250 characters of utf8mb4. A key on one longer column (or prefix) is
 	// rebuilt on the first 250 characters with the same name and uniqueness, like the installer's.
+	// A longer key on several columns is rebuilt only when it is not UNIQUE, with shorter prefixes
+	// on its text columns (utf8mb4_composite_key()); a UNIQUE one stays, as shorter prefixes could
+	// make different rows equal: MySQL then refuses to convert the table, MariaDB makes it a hash key.
 	function utf8mb4_key_changes($table, $engine)
 	{
 		global $db;
@@ -214,13 +217,17 @@
 			return '';
 		}
 		$keys	= array();
-		$res	= $db->query('SELECT s.INDEX_NAME AS i, s.NON_UNIQUE AS u, s.COLUMN_NAME AS col, s.SUB_PART AS sub, c.CHARACTER_MAXIMUM_LENGTH AS len FROM information_schema.STATISTICS s JOIN information_schema.COLUMNS c ON c.TABLE_SCHEMA=s.TABLE_SCHEMA AND c.TABLE_NAME=s.TABLE_NAME AND c.COLUMN_NAME=s.COLUMN_NAME WHERE s.TABLE_SCHEMA=DATABASE() AND s.TABLE_NAME="'.$db->e($table).'" AND s.INDEX_TYPE<>"FULLTEXT"');
+		$res	= $db->query('SELECT s.INDEX_NAME AS i, s.NON_UNIQUE AS u, s.COLUMN_NAME AS col, s.SUB_PART AS sub, c.CHARACTER_MAXIMUM_LENGTH AS len, c.CHARACTER_OCTET_LENGTH AS octets, c.CHARACTER_SET_NAME AS cs, c.DATA_TYPE AS type, c.NUMERIC_PRECISION AS prec FROM information_schema.STATISTICS s LEFT JOIN information_schema.COLUMNS c ON c.TABLE_SCHEMA=s.TABLE_SCHEMA AND c.TABLE_NAME=s.TABLE_NAME AND c.COLUMN_NAME=s.COLUMN_NAME WHERE s.TABLE_SCHEMA=DATABASE() AND s.TABLE_NAME="'.$db->e($table).'" AND s.INDEX_TYPE<>"FULLTEXT" ORDER BY s.INDEX_NAME, s.SEQ_IN_INDEX');
 		while( $obj = $db->fetch_object($res) ) {
 			$keys[$obj->i][]	= $obj;
 		}
 		$sql	= '';
 		foreach( $keys as $name => $parts ) {
 			$p	= $parts[0];
+			if( $name != 'PRIMARY' && count($parts) > 1 && $p->u && ($cols = utf8mb4_composite_key($parts)) ) {
+				$sql	.= 'DROP INDEX '.$db->quote_name($name).', ADD KEY '.$db->quote_name($name).' ('.$cols.'), ';
+				continue;
+			}
 			if( $name == 'PRIMARY' || count($parts) != 1 || $p->len === NULL || ($p->sub ? $p->sub : $p->len) <= 250 ) {
 				continue;
 			}
@@ -228,6 +235,64 @@
 		}
 		
 		return $sql;
+	}
+	
+	// The columns of a key on several columns for ADD KEY, with the prefixes of its text columns shortened
+	// in proportion so that the key holds at most 1000 bytes in utf8mb4 (4 bytes a character, a column of
+	// another type its size), or FALSE when the key fits as it is or cannot be made to fit.
+	function utf8mb4_composite_key($parts)
+	{
+		global $db;
+		
+		// the bytes of a key part of a type that has no characters (8 for any other type)
+		$sizes	= array('tinyint'=>1, 'smallint'=>2, 'mediumint'=>3, 'int'=>4, 'integer'=>4, 'bigint'=>8, 'float'=>4, 'double'=>8, 'real'=>8, 'date'=>3, 'time'=>6, 'year'=>1, 'datetime'=>8, 'timestamp'=>7, 'enum'=>2, 'set'=>8);
+		$fixed	= 0;
+		$chars	= 0;
+		$text	= array();
+		foreach( $parts as $k => $q ) {
+			if( $q->col === NULL ) {
+				// an expression (a functional key part of MySQL 8) is not rebuilt here
+				return FALSE;
+			}
+			$type	= strtolower((string) $q->type);
+			if( $type == 'enum' || $type == 'set' ) {
+				$fixed	+= $sizes[$type];
+			}
+			elseif( $q->cs !== NULL ) {
+				$text[$k]	= intval($q->sub ? $q->sub : $q->len);
+				$chars	+= $text[$k];
+			}
+			elseif( $q->octets !== NULL ) {
+				// a binary string keeps its bytes
+				$fixed	+= intval($q->sub ? $q->sub : $q->octets);
+			}
+			elseif( $type == 'decimal' || $type == 'bit' ) {
+				$fixed	+= intval(ceil($q->prec / ($type == 'bit' ? 8 : 2))) + 1;
+			}
+			else {
+				$fixed	+= isset($sizes[$type]) ? $sizes[$type] : 8;
+			}
+		}
+		$room	= intval(floor((1000 - $fixed) / 4));
+		if( ! $text || $fixed + 4 * $chars <= 1000 || $room < count($text) ) {
+			return FALSE;
+		}
+		// each text column keeps its share of the characters that fit, at least one
+		$sum	= 0;
+		foreach( $text as $k => $n ) {
+			$text[$k]	= max(1, intval(floor($n * $room / $chars)));
+			$sum	+= $text[$k];
+		}
+		while( $sum > $room ) {
+			$text[array_search(max($text), $text)]--;
+			$sum--;
+		}
+		$cols	= array();
+		foreach( $parts as $k => $q ) {
+			$cols[]	= $db->quote_name($q->col).(isset($text[$k]) ? '('.$text[$k].')' : ($q->sub ? '('.$q->sub.')' : ''));
+		}
+		
+		return implode(', ', $cols);
 	}
 
 ?>
