@@ -18,6 +18,6 @@
 						array('url' => 'settings/notifications','css_class' => (($tab === 'notifications')? ' selected' : ''), 	'title' => $page->lang('settings_menu_notif') ),
 						array('url' => 'settings/privacy', 		'css_class' => (($tab === 'privacy')? ' selected' : ''), 		'title' => $page->lang('settings_menu_privacy') )
 		);
-		$tpl->layout->setVar( 'left_content_placeholder', $tpl->designer->createInfoBlock('Settings Menu', $tpl->designer->createMenu('feed-navigation', $menu)) );
+		$tpl->layout->setVar( 'left_content_placeholder', $tpl->designer->createInfoBlock($page->lang('settings_menu_ttl'), $tpl->designer->createMenu('feed-navigation', $menu)) );
 		
 	}

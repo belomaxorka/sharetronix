@@ -14,6 +14,6 @@
 						array('url' => 'invite/sentinvites',	'css_class' => (($tab === 'sentinvites')? 'active' : ''), 	'title' => $page->lang('os_invite_tab_sentinvites') )
 		);
 		
-		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createInfoBlock('Invite', $tpl->designer->createMenu('tabs-navigation', $menu)) );
+		$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createInfoBlock($page->lang('invite_menu_ttl'), $tpl->designer->createMenu('tabs-navigation', $menu)) );
 		
 	}

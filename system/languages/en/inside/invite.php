@@ -3,6 +3,7 @@
 	$lang	= array
 	(
 		'invite_title'	=> 'Invitation center',
+		'invite_menu_ttl'	=> 'Invite',
 		
 		'invite_ttl_colleagues' 	=> 'Invite Colleagues - #SITE_TITLE#',
 		'invite_ttl_personalurl'	=> 'Invite Colleagues - #SITE_TITLE#',

@@ -56,7 +56,7 @@
 					array('url' => 'search/tab:groups'.($this->param('s')? '/s:'.$this->param('s') : ''), 	'css_class' => (($D->tab === 'groups')? ' active' : ''),  'title' => $this->lang('srch_tab_groups') ),
 					array('url' => 'search/tab:tags'.($this->param('s')? '/s:'.$this->param('s') : ''), 	'css_class' => (($D->tab === 'tags')? ' active' : ''), 	'title' => $this->lang('srch_tab_tags') ),
 	);
-	$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createInfoBlock('Activity filter', $tpl->designer->createMenu('tabs-navigation', $menu)) );
+	$tpl->layout->setVar( 'main_content_placeholder', $tpl->designer->createInfoBlock($this->lang('srch_activity_filter'), $tpl->designer->createMenu('tabs-navigation', $menu)) );
 	
 	$tpl->useStaticHTML();
 	$tpl->staticHTML->useActivityContainer();

@@ -61,6 +61,7 @@
 		'srch_tab_tags'		=> 'Tags',
 		'srch_get_string'		=> 'Search ...',
 		'srch_page_title'	=> 'Search - #SITE_TITLE#',
+		'srch_activity_filter'	=> 'Activity Filter',
 	);
 	
 ?>

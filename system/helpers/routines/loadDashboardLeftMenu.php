@@ -26,7 +26,7 @@
 						array('url' => 'dashboard/tab:likes', 		'css_class' => 'post-like'.(($tab === 'likes')? ' selected' : ''), 'title' => $page->lang('dbrd_leftmenu_likes') ),
 						array('url' => 'dashboard/tab:everybody', 	'css_class' => 'filter-all'.(($tab === 'everybody')? ' selected' : ''), 'title' => $page->lang('dbrd_leftmenu_everybody', array('#COMPANY#'=>$C->COMPANY)) )
 		);
-		$tpl->layout->setVar( 'left_content_placeholder', $tpl->designer->createInfoBlock('Activity filter', $tpl->designer->createMenu('feed-navigation', $menu, 'dashboard_main_left_menu')) );
+		$tpl->layout->setVar( 'left_content_placeholder', $tpl->designer->createInfoBlock($page->lang('user_dashboard_activity_filter'), $tpl->designer->createMenu('feed-navigation', $menu, 'dashboard_main_left_menu')) );
 		
 		$menu = array();
 		foreach( $my_groups as $group ){

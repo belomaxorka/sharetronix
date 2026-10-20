@@ -25,6 +25,7 @@
 		'settings_conn_ttl2'	=> 'Your Application Connections',
 		
 		'settings_menu_title'		=> 'System Settings',
+		'settings_menu_ttl'		=> 'Settings Menu',
 		'settings_menu_profile'		=> 'Profile Information',
 		'settings_menu_contacts'	=> 'Contacts Details',
 		'settings_menu_avatar'		=> 'Profile Picture',
