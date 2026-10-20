@@ -1056,6 +1056,10 @@
 	  stopping the page. The base class plugin now has the final methods lang() and loadLangfile():
 	  a plugin that declares a method of one of these names must rename it: PHP refuses such a
 	  class, and every page fails while the plugin is installed.
+	* The scripts of a plugin get its texts in the language of the page: every key of the plugin's
+	  languages/<code>/js.php is in the stx_lang of the page footer as '<name>:<key>', so that
+	  stxText('<name>:<key>', 'English text') returns it. A text that is not valid UTF-8 is left out
+	  instead of breaking the texts of all scripts.
 
 	Changed:
 	* Licensed the project under GNU AGPLv3 while retaining original author credits and third-party
