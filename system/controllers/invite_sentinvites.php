@@ -40,7 +40,7 @@
 		$invites[$tmp->id]	= $obj;
 	}
 
-	if( isset($_GET['resend_to']) && !empty($_GET['resend_to']) && in_array(urldecode($_GET['resend_to']), $could_be_invited) ){
+	if( isset($_GET['resend_to']) && is_string($_GET['resend_to']) && !empty($_GET['resend_to']) && in_array(urldecode($_GET['resend_to']), $could_be_invited) ){
 		$_GET['resend_to'] = urldecode($_GET['resend_to']);
 		$obj = $db2->fetch('SELECT * FROM unconfirmed_registrations WHERE email="'.$_GET['resend_to'].'" LIMIT 1');
 		$check = $db2->fetch_field('SELECT 1 FROM users_invitations WHERE user_id="'.$this->user->id.'" AND recp_email="'.$_GET['resend_to'].'" LIMIT 1');

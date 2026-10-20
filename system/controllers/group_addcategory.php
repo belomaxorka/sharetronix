@@ -36,9 +36,9 @@
 			$errmsg = $plugins_manager->getEventCallErrorMessage();
 		}
 		
-		$category_url = str_replace(' ', '', strtolower($_POST['group_category']));
+		$category_url = isset($_POST['group_category']) && is_string($_POST['group_category']) ? str_replace(' ', '', strtolower($_POST['group_category'])) : '';
 		
-		if(!isset($_POST['group_category']) || empty($_POST['group_category'])){
+		if(!isset($_POST['group_category']) || !is_string($_POST['group_category']) || empty($_POST['group_category'])){
 			$errmsg = 'newcat_invalid_name';
 		}else if(in_array(strtolower($_POST['group_category']), $sub_categories)){
 			$errmsg = 'newcat_name_already_exists';
@@ -56,7 +56,7 @@
 			$group->createGroupCategory($_POST['group_category']);
 		}
 		
-		$group_category	= isset($_POST['group_category'])? htmlspecialchars( trim($_POST['group_category']) ) : '';
+		$group_category	= isset($_POST['group_category']) && is_string($_POST['group_category'])? htmlspecialchars( trim($_POST['group_category']) ) : '';
 	}
 
 	$tpl = new template( array('page_title' => $this->lang('newcat_page_title'), 'header_page_layout'=>'c') );

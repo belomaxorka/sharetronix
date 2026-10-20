@@ -54,11 +54,11 @@
 		}
 		
 		if( !$error ){
-			if( isset($_POST['timezone']) && isset($menu_timezones[$_POST['timezone']]) ) {
+			if( isset($_POST['timezone']) && is_string($_POST['timezone']) && isset($menu_timezones[$_POST['timezone']]) ) {
 				$timezone	= $_POST['timezone'];
 			}
 			$language	= $C->LANGUAGE;
-			if( isset($_POST['language']) && isset($menu_languages[$_POST['language']]) ) {
+			if( isset($_POST['language']) && is_string($_POST['language']) && isset($menu_languages[$_POST['language']]) ) {
 				$language	= $_POST['language'];
 			}
 			$db2->query('UPDATE users SET language="'.$db2->e($language).'", timezone="'.$db2->e($timezone).'" WHERE id="'.$this->user->id.'" LIMIT 1');

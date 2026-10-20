@@ -31,7 +31,7 @@
 			$error	= FALSE;
 			$errmsg	= '';
 			
-			if( isset($_POST['pass1'], $_POST['pass2']) ) {
+			if( isset($_POST['pass1'], $_POST['pass2']) && is_string($_POST['pass1']) && is_string($_POST['pass2']) ) {
 				$submit = TRUE;
 				
 				$pass	= trim($_POST['pass1']);

@@ -24,8 +24,8 @@
 		$submit	= TRUE;
 		foreach($_POST['name'] as $i=>$v) {
 			$tmp	= (object) array (
-				'name'	=> trim($v),
-				'email'	=> isset($_POST['email'][$i]) ? trim($_POST['email'][$i]) : '',
+				'name'	=> is_string($v) ? trim($v) : '',
+				'email'	=> isset($_POST['email'][$i]) && is_string($_POST['email'][$i]) ? trim($_POST['email'][$i]) : '',
 			);
 			if( empty($tmp->name) && empty($tmp->email) ) {
 				continue;

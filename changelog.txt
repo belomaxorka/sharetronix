@@ -806,6 +806,11 @@
 	  (name[]=...) like an empty field instead of with a PHP error (HTTP 500 on PHP 8), and a
 	  rememberme cookie sent as an array no longer breaks every page of that visitor; a rememberme
 	  cookie without its second part no longer logs a warning.
+	* The forms of signed-in members answer a field sent as an array like a missing field instead of
+	  with a PHP error (HTTP 500 on PHP 8): the profile, contacts, e-mail, password, system and
+	  account deletion settings, the search form, the new group form and the settings, deletion,
+	  administrators, categories and invitation search of a group, the invitation form and the
+	  resending of an invitation, and the new password form of the password recovery.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

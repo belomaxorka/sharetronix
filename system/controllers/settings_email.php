@@ -75,7 +75,7 @@
 			}
 		}
 
-	}elseif( isset($_POST['new_email'], $_POST['new_email_confirm'], $_POST['user_pass']) ) 
+	}elseif( isset($_POST['new_email'], $_POST['new_email_confirm'], $_POST['user_pass']) && is_string($_POST['new_email']) && is_string($_POST['new_email_confirm']) && is_string($_POST['user_pass']) ) 
 	{
 		$submit			= TRUE;
 		$new_email		= mb_strtolower(trim($_POST['new_email']));

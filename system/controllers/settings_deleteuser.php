@@ -15,7 +15,7 @@
 	$submit	= FALSE;
 	$error	= FALSE;
 	$errmsg	= '';
-	if( isset($_POST['userpass']) ) 
+	if( isset($_POST['userpass']) && is_string($_POST['userpass']) ) 
 	{
 		$submit	= TRUE;
 		

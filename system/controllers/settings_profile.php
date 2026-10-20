@@ -60,11 +60,11 @@
 		}
 		
 		if( !$error ){
-			$name		= isset($_POST['profile_name'])? htmlspecialchars( trim($_POST['profile_name']) ) : '';
-			$location	= isset($_POST['profile_location'])? htmlspecialchars( trim($_POST['profile_location']) ) : '';
-			$gender		= isset($_POST['profile_gender']) ? trim($_POST['profile_gender']) : '';
-			$aboutme	= isset($_POST['profile_aboutme'])? htmlspecialchars( trim($_POST['profile_aboutme']) ) : '';
-			$tags		= isset($_POST['profile_tags'])? htmlspecialchars( trim($_POST['profile_tags']) ) : '';
+			$name		= isset($_POST['profile_name']) && is_string($_POST['profile_name'])? htmlspecialchars( trim($_POST['profile_name']) ) : '';
+			$location	= isset($_POST['profile_location']) && is_string($_POST['profile_location'])? htmlspecialchars( trim($_POST['profile_location']) ) : '';
+			$gender		= isset($_POST['profile_gender']) && is_string($_POST['profile_gender']) ? trim($_POST['profile_gender']) : '';
+			$aboutme	= isset($_POST['profile_aboutme']) && is_string($_POST['profile_aboutme'])? htmlspecialchars( trim($_POST['profile_aboutme']) ) : '';
+			$tags		= isset($_POST['profile_tags']) && is_string($_POST['profile_tags'])? htmlspecialchars( trim($_POST['profile_tags']) ) : '';
 			$bdate_d	= isset($_POST['profile_birth_day'])? intval($_POST['profile_birth_day']) : '';
 			$bdate_m	= isset($_POST['profile_birth_month'])? intval($_POST['profile_birth_month']) : '';
 			$bdate_y	= isset($_POST['profile_birth_year'])? intval($_POST['profile_birth_year']) : '';

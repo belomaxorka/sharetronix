@@ -39,10 +39,10 @@
 		$errmsg = $group->createGroup();
 		$error = !empty($errmsg)? TRUE : FALSE;
 		
-		$group_name			= isset($_POST['group_name'])? htmlspecialchars( trim($_POST['group_name']) ) : '';
-		$group_alias		= isset($_POST['group_alias'])? htmlspecialchars( trim($_POST['group_alias']) ) : '';
-		$group_description	= isset($_POST['group_description'])? htmlspecialchars( mb_substr(trim($_POST['group_description']) , 0, $C->POST_MAX_SYMBOLS) ) : '';
-		$group_type			= isset($_POST['group_type'])? (trim($_POST['group_type'])=='private' ? 'private' : 'public') : '';
+		$group_name			= isset($_POST['group_name']) && is_string($_POST['group_name'])? htmlspecialchars( trim($_POST['group_name']) ) : '';
+		$group_alias		= isset($_POST['group_alias']) && is_string($_POST['group_alias'])? htmlspecialchars( trim($_POST['group_alias']) ) : '';
+		$group_description	= isset($_POST['group_description']) && is_string($_POST['group_description'])? htmlspecialchars( mb_substr(trim($_POST['group_description']) , 0, $C->POST_MAX_SYMBOLS) ) : '';
+		$group_type			= isset($_POST['group_type']) && is_string($_POST['group_type'])? (trim($_POST['group_type'])=='private' ? 'private' : 'public') : '';
 		$group_category		= isset($_POST['group_category'])? (int) $_POST['group_category'] : 0;
 	}
 

@@ -37,9 +37,9 @@
 		}
 		
 		if( !$error ){
-			$website_new	= isset($_POST['profile_website'])? htmlspecialchars( strip_tags(trim($_POST['profile_website'])) ) : '';
-			$work_phone_new	= isset($_POST['profile_wphone'])? htmlspecialchars( strip_tags(trim($_POST['profile_wphone'])) ) : '';
-			$personal_phone_new		= isset($_POST['profile_pphone']) ? htmlspecialchars(  strip_tags(trim($_POST['profile_pphone'])) ) : '';
+			$website_new	= isset($_POST['profile_website']) && is_string($_POST['profile_website'])? htmlspecialchars( strip_tags(trim($_POST['profile_website'])) ) : '';
+			$work_phone_new	= isset($_POST['profile_wphone']) && is_string($_POST['profile_wphone'])? htmlspecialchars( strip_tags(trim($_POST['profile_wphone'])) ) : '';
+			$personal_phone_new		= isset($_POST['profile_pphone']) && is_string($_POST['profile_pphone']) ? htmlspecialchars(  strip_tags(trim($_POST['profile_pphone'])) ) : '';
 			
 			$update_fields	= array('website'=>'', 'personal_phone'=>'', 'work_phone'=>'');
 			

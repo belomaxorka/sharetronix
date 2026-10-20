@@ -89,19 +89,19 @@
 		
 		if( $tab == 'settings' && $subtab == 'main' && !$error ){
 		
-			if( isset($_POST['group_name']) && $_POST['group_name'] != $g->title ){
+			if( isset($_POST['group_name']) && is_string($_POST['group_name']) && $_POST['group_name'] != $g->title ){
 				$errmsg = $group->changeTitle( $_POST['group_name'] );
 			}
-			if( empty($errmsg) && isset($_POST['group_alias']) && $_POST['group_alias'] != $g->groupname ){
+			if( empty($errmsg) && isset($_POST['group_alias']) && is_string($_POST['group_alias']) && $_POST['group_alias'] != $g->groupname ){
 				$errmsg = $group->changeName( $_POST['group_alias'] );
 			}
-			if( empty($errmsg) && isset($_POST['group_category']) && $_POST['group_category'] != $g->category_id ){
+			if( empty($errmsg) && isset($_POST['group_category']) && is_string($_POST['group_category']) && $_POST['group_category'] != $g->category_id ){
 				$errmsg = $group->changeCategory( $_POST['group_category'], $sub_categories );
 			}
-			if( empty($errmsg) && isset($_POST['group_description']) && $_POST['group_description'] != $g->about_me ){
+			if( empty($errmsg) && isset($_POST['group_description']) && is_string($_POST['group_description']) && $_POST['group_description'] != $g->about_me ){
 				$errmsg = $group->changeDescription( $_POST['group_description'] );
 			}
-			if( empty($errmsg) && isset($_POST['group_type']) ){
+			if( empty($errmsg) && isset($_POST['group_type']) && is_string($_POST['group_type']) ){
 				$type = trim($_POST['group_type']);
 				if( $type != 'private' && $type != 'public' ){
 					$errmsg = $this->lang('group_settings_f_type'); //change this with valid lang type
@@ -123,7 +123,7 @@
 			}
 			
 		}else if( $tab == 'settings' && $subtab == 'delgroup' && !$error ){
-			if( isset($_POST['postsact']) && $this->user->info->password == md5($_POST['password']) ){
+			if( isset($_POST['postsact'], $_POST['password']) && is_string($_POST['password']) && $this->user->info->password == md5($_POST['password']) ){
 				$delete_posts = $_POST['postsact'] == 'keep'? FALSE : TRUE;
 				
 				$group->delete( $delete_posts );
@@ -329,7 +329,7 @@
 				}else if( $subtab == 'admins' ){
 					
 									
-					if(isset($_POST['add_admin'])){						
+					if(isset($_POST['add_admin']) && is_string($_POST['add_admin'])){						
 						$u_become_admin = $this->network->get_user_by_username($_POST['add_admin']);						
 						if($u_become_admin){
 							$is_member = (in_array($u_become_admin->id, $group_members))? TRUE : FALSE;

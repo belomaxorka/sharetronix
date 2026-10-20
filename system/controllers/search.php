@@ -16,19 +16,19 @@
 		$D->tab	= $this->param('tab');
 	}
 	
-	if(isset($_POST['lookin'])){
+	if(isset($_POST['lookin']) && is_string($_POST['lookin'])){
 		$D->tab = $_POST['lookin'];
 	}
 
-	if( isset($_POST['lookfor']) && !empty($_POST['lookfor']) ){
+	if( isset($_POST['lookfor']) && is_string($_POST['lookfor']) && !empty($_POST['lookfor']) ){
 		$redirect_url = $C->SITE_URL.'search/tab:'.$D->tab;
-		if( isset($_POST['lookfor']) && !empty($_POST['lookfor']) ){
+		if( isset($_POST['lookfor']) && is_string($_POST['lookfor']) && !empty($_POST['lookfor']) ){
 			$redirect_url .= '/s:'.urlencode(trim($_POST['lookfor']));	
 		}
-		if( isset($_POST['puser']) && !empty($_POST['puser']) ){
+		if( isset($_POST['puser']) && is_string($_POST['puser']) && !empty($_POST['puser']) ){
 			$redirect_url .= '/puser:'.urlencode(trim($_POST['puser']));
 		}
-		if( isset($_POST['pgroup']) && !empty($_POST['pgroup']) ){
+		if( isset($_POST['pgroup']) && is_string($_POST['pgroup']) && !empty($_POST['pgroup']) ){
 			$redirect_url .= '/pgroup:'.urlencode(trim($_POST['pgroup']));
 		}
 		if( isset($_POST['pcomments']) && $_POST['pcomments'] == 1 ){

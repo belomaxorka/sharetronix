@@ -17,7 +17,7 @@
 	$pass_new	= '';
 	$pass_new2	= '';
 	
-	if( isset($_POST['pass_old'], $_POST['pass_new'], $_POST['pass_new2']) ) {
+	if( isset($_POST['pass_old'], $_POST['pass_new'], $_POST['pass_new2']) && is_string($_POST['pass_old']) && is_string($_POST['pass_new']) && is_string($_POST['pass_new2']) ) {
 		$submit	= TRUE;
 		
 		$plugins_manager->onUserSettingsSubmit();

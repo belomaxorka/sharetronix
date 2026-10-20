@@ -68,7 +68,7 @@
 		}
 		
 	}else{
-		if( !empty($_POST['usersearch']) ){ 
+		if( !empty($_POST['usersearch']) && is_string($_POST['usersearch']) ){ 
 			$srch = $this->db2->e($_POST['usersearch']);
 			$where = 'username LIKE "%'.$srch.'%" OR fullname LIKE "%'.$srch.'%"';
 			$num_results = $this->db2->fetch_field('SELECT COUNT(*) FROM users WHERE '.$where);
