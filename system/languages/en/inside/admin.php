@@ -129,7 +129,7 @@
 		'admbrnd_frm_err'		=> 'Error',
 		'admbrnd_frm_err_invalidfile'		=> 'Uploaded logo file is not a valid image.',
 		'admbrnd_frm_err_invalidformat'	=> 'Logo image must be JPEG, GIF or PNG format.',
-		'admbrnd_frm_err_toosmall'		=> 'Logo image height must be at least 20px.',
+		'admbrnd_frm_err_toosmall'		=> 'Logo image height must be at least #H# pixels.',
 		'admbrnd_frm_err_cantcopy'		=> 'Logo cannot be processed, please try again later.',
 		'admbrnd_frm_err_ficn_invalidfile'		=> 'Uploaded favicon file is not a valid image.',
 		'admbrnd_frm_err_ficn_invalidformat'	=> 'Favicon must be ICO, GIF or PNG format.',

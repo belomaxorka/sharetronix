@@ -63,9 +63,9 @@
 							$error	= TRUE;
 							$errmsg	= $this->lang('admbrnd_frm_err_invalidformat');
 						}
-						elseif( $w < $C->LOGO_HEIGHT ) {
+						elseif( $h < $C->LOGO_HEIGHT ) {
 							$error	= TRUE;
-							$errmsg	= $this->lang('admbrnd_frm_err_toosmall');
+							$errmsg	= $this->lang('admbrnd_frm_err_toosmall', array('#H#'=>$C->LOGO_HEIGHT));
 						}
 						else {
 							$path	= $C->STORAGE_DIR.'attachments/'.$this->network->id.'/';
