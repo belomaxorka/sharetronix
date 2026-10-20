@@ -17,7 +17,7 @@
 				return FALSE;
 			}
 			
-			if( $this->user->id === $user_id ){
+			if( intval($this->user->id) === intval($user_id) ){
 				return FALSE;
 			}
 			
@@ -40,7 +40,7 @@
 				return FALSE;
 			}
 				
-			if( $this->user->id === $user_id ){
+			if( intval($this->user->id) === intval($user_id) ){
 				return FALSE;
 			}
 				
@@ -63,7 +63,7 @@
 				return FALSE;
 			}
 		
-			if( $this->user->id === $user_id ){
+			if( intval($this->user->id) === intval($user_id) ){
 				return FALSE;
 			}
 		

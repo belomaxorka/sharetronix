@@ -781,6 +781,10 @@
 	  have been changed", "Members has been invited", "charactes", a backtick used as an apostrophe,
 	  a missing or a double space), "his posts" became "their posts", and the member and group
 	  counters use the complete HTML entity &middot; instead of &middot without a semicolon.
+	* The administration checks refuse to act on the signed-in administrator whatever form her user
+	  id takes. /services/administration/removeadmin compared the id as it was sent, so a request
+	  with "01" or "1 " instead of "1" removed the rights of the administrator herself, also of the
+	  only one; suspending and activating members used the same comparison.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
