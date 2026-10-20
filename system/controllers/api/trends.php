@@ -78,7 +78,8 @@
 		$result	= new stdClass;
 		$result->trends	= array();
 		$result->as_of	= gmdate('D, d M Y H:i:s \+0000', $dts);
-		foreach($data as $k=>$v) {
+		// the ten tags of the day used most often
+		foreach(api_top_tags($data, 10) as $tg) {
 			$result->trends[]	= (object) array(
 				'name'	=> '#'.$tg,
 				'url'		=> $C->SITE_URL.'search/tab:posts/s:%23'.urlencode($tg)

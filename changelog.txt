@@ -852,6 +852,9 @@
 	* On PHP 8.1 and later, the page of sent invitations logged a deprecation for every invitation:
 	  it passed the time of the invitation to strftime() as the format, which returned the same
 	  number. The time is used as it is stored.
+	* The API resource trends/top10 answered the last tag of the day once for every tag used that
+	  day instead of the most used tags. It now lists the ten tags of the day used most often, the
+	  most used first.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

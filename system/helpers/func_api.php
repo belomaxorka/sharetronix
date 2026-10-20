@@ -176,6 +176,20 @@
 		}
 	}
 	
+	// The $n tags of $counts (tag => number of uses) used most often, most used first; among tags with the same
+	// number the one counted first comes first, on every PHP version (sort() is stable only since PHP 8.0).
+	function api_top_tags($counts, $n)
+	{
+		$tags	= array_keys($counts);
+		if( ! $tags ) {
+			return array();
+		}
+		$uses	= array_values($counts);
+		$order	= range(0, count($tags) - 1);
+		array_multisort($uses, SORT_DESC, SORT_NUMERIC, $order, SORT_ASC, SORT_NUMERIC, $tags);
+		return array_slice($tags, 0, $n);
+	}
+	
 	function check_rate_limits($ip, $rate_num = 1)
 	{
 		global $db2, $C;
