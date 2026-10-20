@@ -870,6 +870,12 @@
 	  a title such as "Café crème" became "Caf? cr?me", and on PHP 8.2 and later every preview
 	  logged that utf8_decode() is deprecated: the text, already valid UTF-8, was converted to
 	  ISO-8859-1, whose letters the next step replaced with "?".
+	* A link preview of an address whose server accepts the connection but does not answer held the
+	  request until the web server gave up (Apache answered 504 after 300 seconds), and every
+	  picture of a page on such a server could add a minute. The preview now gives up on the page
+	  after 6 seconds and on each picture after 3, tries no further picture after 6 seconds, reads
+	  the description from the page it already has instead of loading the page a second time, and
+	  gives the video thumbnails 5 seconds.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and

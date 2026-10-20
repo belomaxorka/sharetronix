@@ -56,12 +56,17 @@
 				curl_setopt($ch, CURLOPT_HEADER, FALSE);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+				// The answer of the link preview waits for this request: without limits cURL waited up to
+				// 300 seconds for a host that did not answer, far beyond the time limit of the request.
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+				curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
 				$this->html = curl_exec($ch);
 				if( PHP_VERSION_ID < 80000 ) {
 					curl_close($ch);
 				}
 			}else{
-				$this->html = file_get_contents($this->url);
+				$this->html = file_get_contents($this->url, FALSE, stream_context_create(array('http' => array('timeout' => 6))));
 			}
 		}
 		
@@ -88,7 +93,17 @@
 				return FALSE;
 			}
 
-			$meta=@get_meta_tags($this->url);
+			// The meta tags of the page that parseUrl() read; get_meta_tags($this->url) read the page a second
+			// time, without a time limit. get_meta_tags() reads a file, so the page goes through a temporary one.
+			global $C;
+			$meta = array();
+			if( !empty($this->html) ){
+				$tmp = $C->STORAGE_TMP_DIR.uniqid('_meta_', true);
+				if( @file_put_contents($tmp, $this->html) !== FALSE ){
+					$meta = @get_meta_tags($tmp);
+				}
+				@unlink($tmp);
+			}
 			
 			if(isset($meta['description']) && !empty($meta['description'])){
 				$this->meta_tags['description'] = $this->_strEncoder(trim($meta['description']));
@@ -218,7 +233,7 @@
 				$file = str_replace(".gif", ".jpg", $file);
 				file_put_contents( $C->STORAGE_DIR . 'attachments/1/' . $file, 
 						file_get_contents(
-								str_replace('###ID###', $data->src_id, $S->embed_thumb_orig)
+								str_replace('###ID###', $data->src_id, $S->embed_thumb_orig), FALSE, stream_context_create(array('http' => array('timeout' => 5)))
 						)
 				);
 			}
@@ -242,7 +257,7 @@
 						$tmp = explode('/', $data->orig_url);
 						$video_id = end( $tmp );
 							
-						$tmp = @file_get_contents('http://vimeo.com/api/v2/video/'.$video_id.'.json');
+						$tmp = @file_get_contents('http://vimeo.com/api/v2/video/'.$video_id.'.json', FALSE, stream_context_create(array('http' => array('timeout' => 5))));
 						$json = json_decode( $tmp );
 						if( isset($json[0]->thumbnail_medium) ){
 							$video_image = $json[0]->thumbnail_medium;	
@@ -329,8 +344,15 @@
 			
 			$max_images = 4;
 			$images_stored = array();
+			// The answer of the link preview waits for these requests: each remote step gets 3 seconds
+			// (default_socket_timeout is 60), and after 6 seconds no further image is tried.
+			$socket_timeout = ini_set('default_socket_timeout', 3);
+			$until = microtime(TRUE) + 6;
 			
 			foreach($images as $key => $image_source){
+				if( microtime(TRUE) > $until ){
+					break;
+				}
 				if(!is_valid_url($image_source)){
 					continue;
 				}
@@ -341,15 +363,23 @@
 				$unique_name = uniqid('_image_', true);
 				$tmp_image = $C->STORAGE_TMP_DIR.$unique_name;
 				
+				$fin = @fopen($image_source, "rb");
+				if( ! $fin ){
+					continue;
+				}
 				$fout = fopen($tmp_image, 'w');
-				$fin = fopen($image_source, "rb");
 
-				while (!feof($fin)) {
+				while (!feof($fin) && microtime(TRUE) <= $until) {
 					$buffer= fread($fin, 32*1024);
 					fwrite($fout,$buffer);
 				}
+				$complete = feof($fin);
 				fclose($fin);
 				fclose($fout);
+				if( ! $complete ){
+					@unlink($tmp_image);
+					break;
+				}
 				
 				$valid_image = validate_image($unique_name); 
 				
@@ -363,6 +393,9 @@
 				if(count($images_stored) >= $max_images){
 					break;
 				}
+			}
+			if( $socket_timeout !== FALSE ){
+				ini_set('default_socket_timeout', $socket_timeout);
 			}
 			
 			return $images_stored;
