@@ -1259,6 +1259,10 @@
 	  sections of earlier versions (name, organization, managers, work experience and other
 	  usr_prof_* fields), the old left column, top links and tabs of profiles, and the old left
 	  column and descriptions of the members page.
+	* Removed 91 unused strings of inside/group.php, groups.php, group_invite.php and
+	  groups_new.php: the RSS feed and administrator settings of groups from earlier versions, the
+	  old left column, titles and tabs of group pages, the old invitation form texts and the old
+	  groups page tabs.
 
 Sharetronix 3.6.2
 	* Bug fixes
