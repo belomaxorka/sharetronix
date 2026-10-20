@@ -17,7 +17,7 @@
 	while($tmp = $db2->fetch_object($r)) {
 		$obj	= new stdClass;
 		$obj->fullname	= stripslashes($tmp->recp_name);
-		$obj->date		= strftime($tmp->date);
+		$obj->date		= $tmp->date;
 		$obj->email		= stripslashes($tmp->recp_email);
 		$obj->is_accepted	= FALSE;
 		$obj->resend	= FALSE;

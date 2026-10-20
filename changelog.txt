@@ -849,6 +849,9 @@
 	* The rss and atom formats of the API's direct messages listed no message and logged a warning
 	  for each one: they read a column that their query does not select. They list the messages now,
 	  like the json and xml formats.
+	* On PHP 8.1 and later, the page of sent invitations logged a deprecation for every invitation:
+	  it passed the time of the invitation to strftime() as the format, which returned the same
+	  number. The time is used as it is stored.
 
 	Added:
 	* Added a GitHub Actions workflow that checks the syntax of every PHP file on PHP 7.2, 8.4, and
